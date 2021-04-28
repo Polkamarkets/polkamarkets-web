@@ -2,7 +2,9 @@ import { useEffect } from 'react';
 
 import { filteredMarketsSelector, getMarkets } from 'redux/ducks/markets';
 
-import { Tabs, MarketList } from 'components';
+import { InfoIcon } from 'assets/icons';
+
+import { Tabs, MarketList, Text } from 'components';
 
 import { useAppDispatch, useAppSelector } from 'hooks';
 
@@ -27,6 +29,13 @@ function Home() {
     <div className="pm-home">
       <div className="pm-home__content">
         <HomeMobileInfo />
+        <div className="pm-home__disclaimer">
+          <InfoIcon />
+          <Text as="p" scale="caption" fontWeight="semibold" color="white">
+            The markets listed here are for informational purposes, we take no
+            profits from them.
+          </Text>
+        </div>
         <HomeCategories />
 
         {/* <div className="navigation">

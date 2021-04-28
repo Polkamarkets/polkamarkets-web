@@ -29,6 +29,23 @@
     }
   }
 
+  &__disclaimer {
+    @include flex-row(center, center);
+    flex-wrap: wrap;
+    gap: 0.8rem;
+
+    width: 100%;
+    padding: 0.7rem 1.2rem;
+    margin-bottom: 0.8rem;
+
+    border: 0.1rem solid $gray-600;
+    border-radius: 0.4rem;
+
+    svg {
+      fill: $primary-500;
+    }
+  }
+
   &__categories {
     display: none;
 
