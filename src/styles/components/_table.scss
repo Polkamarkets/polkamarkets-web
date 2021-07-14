@@ -102,13 +102,7 @@
     }
 
     &__empty {
-      padding: 0rem;
-
-      & > * {
-        border-top: none;
-        border-top-left-radius: 0rem;
-        border-top-right-radius: 0rem;
-      }
+      padding: 3rem 0rem;
     }
   }
 }
