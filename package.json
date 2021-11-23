@@ -111,6 +111,7 @@
     "prettier": "^2.2.1"
   },
   "resolutions": {
-    "styled-components": "^5"
+    "styled-components": "^5",
+    "ansi-regex": "^5.0.1"
   }
 }
