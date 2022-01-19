@@ -11,7 +11,7 @@ export type Network = {
   buyEc20Url?: string;
 };
 
-export const { REACT_APP_NETWORK_ID, REACT_APP_ERC20_CONTRACT_ADDRESS } =
+export const { REACT_APP_NETWORK_ID, REACT_APP_GOVERNANCE_CONTRACT_ADDRESS } =
   process.env;
 
 const NETWORKS: {
@@ -24,7 +24,8 @@ const NETWORKS: {
     currency: ETH,
     decimals: 18,
     explorerURL: 'https://etherscan.io',
-    rpcUrls: []
+    rpcUrls: [],
+    buyEc20Url: `//app.uniswap.org/#/swap?outputCurrency=${REACT_APP_GOVERNANCE_CONTRACT_ADDRESS}&inputCurrency=ETH`
   },
   '0x3': {
     id: '3',
@@ -61,7 +62,7 @@ const NETWORKS: {
     decimals: 18,
     explorerURL: 'https://kovan.etherscan.io',
     rpcUrls: [],
-    buyEc20Url: `//app.uniswap.org/#/swap?outputCurrency=${REACT_APP_ERC20_CONTRACT_ADDRESS}&inputCurrency=ETH`
+    buyEc20Url: `//app.uniswap.org/#/swap?outputCurrency=${REACT_APP_GOVERNANCE_CONTRACT_ADDRESS}&inputCurrency=ETH`
   },
   '0x501': {
     id: '1281',
@@ -80,7 +81,7 @@ const NETWORKS: {
     decimals: 18,
     explorerURL: 'https://moonriver.moonscan.io',
     rpcUrls: ['https://rpc.moonriver.moonbeam.network'],
-    buyEc20Url: `//app.sushi.com/swap?inputCurrency=&outputCurrency=${REACT_APP_ERC20_CONTRACT_ADDRESS}`
+    buyEc20Url: `//app.sushi.com/swap?inputCurrency=&outputCurrency=${REACT_APP_GOVERNANCE_CONTRACT_ADDRESS}`
   },
   '0x507': {
     id: '1287',
@@ -99,7 +100,7 @@ const NETWORKS: {
     decimals: 18,
     explorerURL: 'https://etherscan.io',
     rpcUrls: ['http://localhost:8545'],
-    buyEc20Url: `//app.uniswap.org/#/swap?outputCurrency=${REACT_APP_ERC20_CONTRACT_ADDRESS}&inputCurrency=ETH`
+    buyEc20Url: `//app.uniswap.org/#/swap?outputCurrency=${REACT_APP_GOVERNANCE_CONTRACT_ADDRESS}&inputCurrency=ETH`
   },
   '0x270f': {
     id: '9999',

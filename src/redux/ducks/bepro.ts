@@ -5,6 +5,7 @@ const initialState = {
   isLoggedIn: false,
   ethAddress: '',
   ethBalance: 0,
+  governanceBalance: 0,
   polkBalance: 0,
   polkApproved: false,
   portfolio: {},
@@ -31,6 +32,10 @@ const beproSlice = createSlice({
     changeEthBalance: (state, action: PayloadAction<number>) => ({
       ...state,
       ethBalance: action.payload
+    }),
+    changeGovernanceBalance: (state, action: PayloadAction<number>) => ({
+      ...state,
+      governanceBalance: action.payload
     }),
     changePolkBalance: (state, action: PayloadAction<number>) => ({
       ...state,
@@ -75,6 +80,7 @@ const {
   changeIsLoggedIn,
   changeEthAddress,
   changeEthBalance,
+  changeGovernanceBalance,
   changePolkBalance,
   changePolkApproved,
   changePortfolio,
@@ -102,6 +108,9 @@ const login = async (dispatch: any) => {
 
     const polkBalance = await beproService.getERC20Balance();
     dispatch(changePolkBalance(polkBalance));
+
+    const governanceBalance = await beproService.getGovernanceBalance();
+    dispatch(changeGovernanceBalance(governanceBalance));
 
     const polkApproved = await beproService.isRealitioERC20Approved();
     dispatch(changePolkApproved(polkApproved));
@@ -147,6 +156,7 @@ export {
   changeIsLoggedIn,
   changeEthAddress,
   changeEthBalance,
+  changeGovernanceBalance,
   changePolkBalance,
   changePolkApproved,
   changePortfolio,

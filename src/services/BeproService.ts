@@ -37,6 +37,7 @@ export default class BeproService {
     this.getPredictionMarketContract();
     this.getRealitioERC20Contract();
     this.getERC20Contract();
+    this.governanceContract();
   }
 
   public getPredictionMarketContract() {
@@ -48,6 +49,12 @@ export default class BeproService {
   public getERC20Contract() {
     this.contracts.erc20 = this.bepro.getERC20Contract({
       contractAddress: process.env.REACT_APP_ERC20_CONTRACT_ADDRESS
+    });
+  }
+
+  public governanceContract() {
+    this.contracts.governance = this.bepro.getERC20Contract({
+      contractAddress: process.env.REACT_APP_GOVERNANCE_CONTRACT_ADDRESS
     });
   }
 
@@ -304,6 +311,19 @@ export default class BeproService {
 
     // returns user balance in ETH
     const balance = await this.contracts.erc20.getTokenAmount(this.address);
+
+    return parseFloat(balance) || 0;
+  }
+
+  public async getGovernanceBalance(): Promise<number> {
+    if (!this.address) return 0;
+
+    // TODO improve this: ensuring erc20 contract is initialized
+    // eslint-disable-next-line no-underscore-dangle
+    await this.contracts.governance.__init__();
+
+    // returns user balance in ETH
+    const balance = await this.contracts.governance.getTokenAmount(this.address);
 
     return parseFloat(balance) || 0;
   }

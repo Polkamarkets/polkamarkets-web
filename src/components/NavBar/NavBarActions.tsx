@@ -24,7 +24,9 @@ function NavBarActions() {
 
   const walletConnected = useAppSelector(state => state.bepro.isLoggedIn);
   const ethBalance = useAppSelector(state => state.bepro.ethBalance);
-  const polkBalance = useAppSelector(state => state.bepro.polkBalance);
+  const governanceBalance = useAppSelector(
+    state => state.bepro.governanceBalance
+  );
   const walletAddress = useAppSelector(state => state.bepro.ethAddress);
 
   // Example
@@ -69,7 +71,7 @@ function NavBarActions() {
             },
             {
               id: 'polk',
-              balance: formatNumberToString(polkBalance),
+              balance: formatNumberToString(governanceBalance),
               currencyIcon: <PolkamarketsIconSmall />
             }
           ]}

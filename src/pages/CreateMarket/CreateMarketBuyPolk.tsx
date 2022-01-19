@@ -7,15 +7,17 @@ import { Text, ProgressBar, Button } from 'components';
 import { useAppSelector, useNetwork } from 'hooks';
 
 type CreateMarketBuyPolkProps = {
-  requiredPolkBalance: number;
+  requiredGovernanceBalance: number;
 };
 
 function CreateMarketBuyPolk({
-  requiredPolkBalance
+  requiredGovernanceBalance
 }: CreateMarketBuyPolkProps) {
   const [isLoadingBuyPolk, setIsLoadingBuyPolk] = useState(false);
 
-  const polkBalance = useAppSelector(state => state.bepro.polkBalance);
+  const governanceBalance = useAppSelector(
+    state => state.bepro.governanceBalance
+  );
 
   const { buyEc20Url } = useNetwork();
 
@@ -45,7 +47,7 @@ function CreateMarketBuyPolk({
               fontWeight="semibold"
               className="pm-p-create-market-buy-polk__amount"
             >
-              {`${requiredPolkBalance - polkBalance} POLK`}
+              {`${requiredGovernanceBalance - governanceBalance} POLK`}
             </Text>
             {` to create markets.`}
           </>
@@ -53,8 +55,8 @@ function CreateMarketBuyPolk({
       </div>
       <ProgressBar
         min={0}
-        max={requiredPolkBalance}
-        percent={(polkBalance / requiredPolkBalance) * 100}
+        max={requiredGovernanceBalance}
+        percent={(governanceBalance / requiredGovernanceBalance) * 100}
         color="warning"
       />
       <Button
