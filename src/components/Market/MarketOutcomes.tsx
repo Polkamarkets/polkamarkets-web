@@ -6,6 +6,7 @@ import { Market, Outcome } from 'models/market';
 import { useAppSelector } from 'hooks';
 
 import MarketOutcome from './MarketOutcome';
+import MarketOutcomeMultiple from './MarketOutcomeMultiple';
 
 type MarketOutcomesProps = {
   market: Market;
@@ -73,9 +74,67 @@ function MarketOutcomes({ market }: MarketOutcomesProps) {
     ]
   );
 
+  const buildOutcomeMultipleObject = useCallback(
+    (outcomesSlice: Outcome[]) => {
+      const ids = outcomesSlice.map(outcome => outcome.id);
+      const titles = outcomesSlice.map(outcome => outcome.title);
+
+      const title = `${titles.length}+ ${'Outcome'}${
+        titles.length !== 1 ? 's' : ''
+      }`;
+
+      const subtitle = titles.join(', ');
+
+      // States
+      const isSelectedOutcome =
+        market.id === selectedMarketId && ids.includes(selectedOutcomeId);
+      const isWinningOutcome =
+        isMarketResolved && ids.includes(resolvedOutcomeId);
+
+      return {
+        ids,
+        title,
+        subtitle,
+        state: {
+          isDefault: !isMarketResolved,
+          isSuccess: isWinningOutcome,
+          isDanger: !isWinningOutcome,
+          isActive: isSelectedOutcome
+        },
+        result: {
+          isResolved: isMarketResolved,
+          state: {
+            isWon: isWinningOutcome && !isMarketVoided,
+            isLoss: !isWinningOutcome && !isMarketVoided,
+            isVoided: isMarketVoided
+          }
+        }
+      };
+    },
+    [
+      isMarketResolved,
+      isMarketVoided,
+      market.id,
+      resolvedOutcomeId,
+      selectedMarketId,
+      selectedOutcomeId
+    ]
+  );
+
+  const hasMultipleOutcomes = outcomes.length > 3;
+
   const outcomesObjects = useMemo(() => {
-    return outcomes.map(outcome => buildOutcomeObject(outcome));
-  }, [buildOutcomeObject, outcomes]);
+    if (hasMultipleOutcomes) {
+      return outcomes.slice(0, 2).map(outcome => buildOutcomeObject(outcome));
+    }
+
+    return outcomes.slice(0, 2).map(outcome => buildOutcomeObject(outcome));
+  }, [buildOutcomeObject, hasMultipleOutcomes, outcomes]);
+
+  const multipleOutcomesObject = useMemo(() => {
+    if (!hasMultipleOutcomes) return undefined;
+    return buildOutcomeMultipleObject(outcomes.slice(2));
+  }, [buildOutcomeMultipleObject, hasMultipleOutcomes, outcomes]);
 
   return (
     <ul className="pm-c-market-outcomes">
@@ -84,6 +143,14 @@ function MarketOutcomes({ market }: MarketOutcomesProps) {
           <MarketOutcome market={market} outcome={outcome} />
         </li>
       ))}
+      {multipleOutcomesObject ? (
+        <li>
+          <MarketOutcomeMultiple
+            market={market}
+            outcome={multipleOutcomesObject}
+          />
+        </li>
+      ) : null}
     </ul>
   );
 }
