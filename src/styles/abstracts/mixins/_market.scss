@@ -19,6 +19,10 @@
       border-color: map-get($border-colors-map, 'active');
     }
 
+    &.multiple {
+      border-style: dashed;
+    }
+
     &:disabled {
       opacity: 0.5;
     }
