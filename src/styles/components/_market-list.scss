@@ -1,11 +1,10 @@
-.market-list {
-  @include flex-column;
-  gap: 2rem;
-
+.pm-c-market-list {
   height: 100%;
-  width: 100%;
+  margin-top: px-to-rem(10px);
 
-  margin: 1rem 0rem;
+  &__item {
+    padding-bottom: px-to-rem(20px);
+  }
 }
 
 .pm-c-market-list__empty-state,
@@ -14,15 +13,14 @@
     width: 100%;
     height: auto;
 
-    padding: 5.9rem 2rem;
+    padding: px-to-rem(50px) px-to-rem(20px);
+    margin: px-to-rem(10px) px-to-rem(0px);
 
     border: 0.1rem solid themed('state-info-border-color');
     border-radius: 0.4rem;
-    transition: $market-list-transitions;
 
     &__body {
-      @include flex-column(center, center);
-      gap: 1.2rem;
+      @include flex-column(center, center, px-to-rem(12px));
 
       svg {
         fill: $primary-500;
@@ -45,6 +43,6 @@
 
   &__actions {
     @extend .pm-c-market-list__empty-state__body;
-    padding: 2rem 0rem;
+    padding: px-to-rem(20px) px-to-rem(0px);
   }
 }

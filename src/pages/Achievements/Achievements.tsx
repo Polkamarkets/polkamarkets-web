@@ -3,7 +3,7 @@ import { useEffect, useState, useMemo, useCallback } from 'react';
 
 import isEmpty from 'lodash/isEmpty';
 import { closeRightSidebar } from 'redux/ducks/ui';
-import { BeproService } from 'services';
+import { PolkamarketsService } from 'services';
 import { useGetAchievementsQuery } from 'services/Polkamarkets';
 
 import { Button, Toast, ToastNotification } from 'components';
@@ -81,10 +81,10 @@ function Achievements() {
 
   // Memoized callbacks
   const getUserAchievements = useCallback(async () => {
-    const beproService = new BeproService(networkConfig);
-    await beproService.login();
+    const polkamarketsService = new PolkamarketsService(networkConfig);
+    await polkamarketsService.login();
 
-    const response = await beproService.getAchievements();
+    const response = await polkamarketsService.getAchievements();
     setUserAchievements(response);
   }, [networkConfig]);
 

@@ -1,0 +1,33 @@
+.pm-c-dropdown {
+  position: relative;
+  display: inline-block;
+
+  &__selected {
+    @include flex-row(flex-start, center, 2);
+    cursor: pointer;
+
+    padding: 0rem;
+    margin: 0rem;
+
+    background-color: unset;
+    border: none;
+
+    svg {
+      fill: var(--color-text-3);
+    }
+  }
+
+  &__content {
+    display: none;
+    position: absolute;
+    z-index: 1;
+    right: 0;
+
+    &.visible {
+      @include flex-column(center, flex-start);
+      gap: 0.8rem;
+
+      min-width: 17rem;
+    }
+  }
+}

@@ -1,11 +1,28 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { environment } from 'config';
+import dayjs from 'dayjs';
+import inRange from 'lodash/inRange';
+import isEmpty from 'lodash/isEmpty';
+import omitBy from 'lodash/omitBy';
 import orderBy from 'lodash/orderBy';
 import uniqBy from 'lodash/uniqBy';
 import { Category } from 'models/category';
 import { Market } from 'models/market';
 import * as marketService from 'services/Polkamarkets/market';
+import { MarketState } from 'types/market';
 
-import { MarketState } from '../../services/Polkamarkets/market';
+import { FavoriteMarketsByNetwork } from 'contexts/favoriteMarkets';
+
+import networks from 'hooks/useNetwork/networks';
+
+const AVAILABLE_NETWORKS_IDS = Object.keys(environment.NETWORKS);
+
+const AVAILABLE_NETWORKS = Object.values(networks).filter(network =>
+  AVAILABLE_NETWORKS_IDS.includes(network.id)
+);
+
+const isMarketFromAvailableNetwork = (market: Market) =>
+  AVAILABLE_NETWORKS_IDS.includes(`${market.networkId}`);
 
 export interface MarketsIntialState {
   markets: Market[];
@@ -23,6 +40,7 @@ export interface MarketsIntialState {
   };
   filter: string;
   filterByVerified: boolean;
+  sorterByEndingSoon: boolean;
   sorter: {
     value: string;
     sortBy: any | undefined;
@@ -45,6 +63,7 @@ const initialState: MarketsIntialState = {
   },
   filter: '',
   filterByVerified: true,
+  sorterByEndingSoon: true,
   sorter: {
     value: 'featured',
     sortBy: undefined
@@ -62,27 +81,47 @@ const marketsSlice = createSlice({
         [action.payload]: true
       }
     }),
-    success: (
-      state,
-      action: PayloadAction<{
-        type: MarketState | string;
-        data: Market[];
-        networkId: string;
-      }>
-    ) => ({
-      ...state,
-      markets: uniqBy([...state.markets, ...action.payload.data], 'id').filter(
-        market => `${market.networkId}` === action.payload.networkId
-      ),
-      isLoading: {
-        ...state.isLoading,
-        [action.payload.type]: false
-      },
-      error: {
-        ...state.error,
-        [action.payload.type]: null
+    success: {
+      reducer: (
+        state,
+        action: PayloadAction<{
+          type: MarketState | string;
+          data: Market[];
+        }>
+      ) => ({
+        ...state,
+        markets: uniqBy(
+          [...state.markets, ...action.payload.data],
+          (market: Market) => `${market.networkId}${market.id}`
+        ).filter(isMarketFromAvailableNetwork),
+        isLoading: {
+          ...state.isLoading,
+          [action.payload.type]: false
+        },
+        error: {
+          ...state.error,
+          [action.payload.type]: null
+        }
+      }),
+      prepare(type: MarketState | string, data: Market[]) {
+        return {
+          payload: {
+            type,
+            data: data.map(market => {
+              const network = AVAILABLE_NETWORKS.find(
+                ({ id }) => id === `${market.networkId}`
+              );
+
+              return {
+                ...market,
+                network
+              } as Market;
+            })
+          },
+          type
+        };
       }
-    }),
+    },
     error: (state, action) => ({
       ...state,
       markets: [],
@@ -104,6 +143,10 @@ const marketsSlice = createSlice({
     setFilterByVerified: (state, action: PayloadAction<boolean>) => ({
       ...state,
       filterByVerified: action.payload
+    }),
+    setSorterByEndingSoon: (state, action: PayloadAction<boolean>) => ({
+      ...state,
+      sorterByEndingSoon: action.payload
     }),
     setSorter: (state, action) => ({
       ...state,
@@ -160,6 +203,7 @@ const {
   error,
   setFilter,
   setFilterByVerified,
+  setSorterByEndingSoon,
   setSorter,
   changeMarketOutcomeData,
   changeMarketQuestion,
@@ -169,6 +213,7 @@ const {
 export {
   setFilter,
   setFilterByVerified,
+  setSorterByEndingSoon,
   setSorter,
   changeMarketOutcomeData,
   changeMarketQuestion,
@@ -183,9 +228,21 @@ export const filteredMarketsSelector = (
   const regExpFullFilter = new RegExp(`^${state.filter}$`, 'i');
   const verifiedFilter = verified =>
     state.filterByVerified ? state.filterByVerified && verified : true;
+  const isEndingSoonFilter = expiresAt =>
+    inRange(dayjs().diff(dayjs(expiresAt), 'hours'), -24, 1);
 
-  function sorted(markets) {
+  function sorted(markets: Market[]) {
     if (state.sorter.sortBy) {
+      if (state.sorterByEndingSoon) {
+        return [
+          ...markets.filter(market => isEndingSoonFilter(market.expiresAt)),
+          ...orderBy(
+            markets.filter(market => !isEndingSoonFilter(market.expiresAt)),
+            [state.sorter.value],
+            [state.sorter.sortBy]
+          )
+        ];
+      }
       return orderBy(markets, [state.sorter.value], [state.sorter.sortBy]);
     }
 
@@ -217,22 +274,34 @@ export function getMarkets(marketState: MarketState, networkId: string) {
         networkId
       });
       const { data } = response;
-      dispatch(success({ type: marketState, data, networkId }));
+      dispatch(success(marketState, data));
     } catch (err) {
       dispatch(error({ type: marketState, error: err }));
     }
   };
 }
 
-export function getFavoriteMarkets(ids: string[], networkId) {
+export function getFavoriteMarketsByNetwork(ids: string[], networkId) {
   return async dispatch => {
     dispatch(request('favorites'));
     try {
-      const response = await marketService.getMarketsByIds(ids, networkId);
+      const response = await marketService.getMarketsByIds({ ids, networkId });
       const { data } = response;
-      dispatch(success({ type: 'favorites', data, networkId }));
+      dispatch(success('favorites', data));
     } catch (err) {
       dispatch(error({ type: 'favorites', error: err }));
     }
+  };
+}
+
+export function getFavoriteMarkets(favoriteMarkets: FavoriteMarketsByNetwork) {
+  return async dispatch => {
+    return Promise.all(
+      Object.keys(omitBy(favoriteMarkets, isEmpty)).map(networkId =>
+        dispatch(
+          getFavoriteMarketsByNetwork(favoriteMarkets[networkId], networkId)
+        )
+      )
+    );
   };
 }

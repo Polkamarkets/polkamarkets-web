@@ -11,7 +11,6 @@ function FooterTerms() {
         className="pm-l-footer__terms-text-secondary"
         style={{
           textAlign: 'center',
-          paddingBottom: '1rem',
           whiteSpace: 'pre-line'
         }}
       >

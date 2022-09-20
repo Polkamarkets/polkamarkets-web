@@ -1,13 +1,6 @@
-import { ReactNode } from 'react';
+import { Currency } from 'types/currency';
 
 import { EthereumIcon, MoonbeamIcon, MoonriverIcon } from 'assets/icons';
-
-export type Currency = {
-  name: string;
-  ticker: string;
-  symbol: string;
-  icon: ReactNode;
-};
 
 const DEV: Currency = {
   name: 'Dev',

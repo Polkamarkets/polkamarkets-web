@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, CSSProperties } from 'react';
 
 import { CheckIcon, InfoIcon, WarningIcon } from 'assets/icons';
 
@@ -33,6 +33,10 @@ type AlertMiniProps = {
    */
   styles?: AlertMiniStyle;
   /**
+   * Aditional CSS styles
+   */
+  style?: CSSProperties;
+  /**
    * Additional content of Alert
    */
   description: ReactNode;
@@ -45,10 +49,15 @@ type AlertMiniProps = {
 function AlertMini({
   variant = 'default',
   styles = 'subtle',
+  style,
   description
 }: AlertMiniProps) {
   return (
-    <div className={`pm-c-alert-mini-${styles}--${variant}`} role="alert">
+    <div
+      style={style}
+      className={`pm-c-alert-mini-${styles}--${variant}`}
+      role="alert"
+    >
       {variants[variant].icon}
       <Text
         as="p"

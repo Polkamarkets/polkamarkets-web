@@ -6,30 +6,27 @@ import without from 'lodash/without';
 
 import { FavoriteMarketsContext } from 'contexts/favoriteMarkets';
 
-import useNetwork from './useNetwork';
-
 function useFavoriteMarkets() {
-  const { network } = useNetwork();
   const { favoriteMarkets, setFavoriteMarkets } = useContext(
     FavoriteMarketsContext
   );
 
-  function addFavoriteMarket(marketId: string) {
+  function addFavoriteMarket(networkId: string, marketId: string) {
     setFavoriteMarkets({
       ...favoriteMarkets,
-      [network.id]: uniq([...(favoriteMarkets[network.id] || []), marketId])
+      [networkId]: uniq([...(favoriteMarkets[networkId] || []), marketId])
     });
   }
 
-  function removeFavoriteMarket(marketId: string) {
+  function removeFavoriteMarket(networkId: string, marketId: string) {
     setFavoriteMarkets({
       ...favoriteMarkets,
-      [network.id]: [...without(favoriteMarkets[network.id] || [], marketId)]
+      [networkId]: [...without(favoriteMarkets[networkId] || [], marketId)]
     });
   }
 
   return {
-    favoriteMarkets: favoriteMarkets[network.id] || [],
+    favoriteMarkets,
     addFavoriteMarket,
     removeFavoriteMarket
   };

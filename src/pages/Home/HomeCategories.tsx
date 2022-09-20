@@ -6,7 +6,7 @@ function HomeCategories() {
   const categories = useCategories();
 
   return (
-    <ul className="pm-home__categories">
+    <ul className="pm-p-home__categories">
       {categories?.map(category => (
         <li key={category.title}>
           <Category

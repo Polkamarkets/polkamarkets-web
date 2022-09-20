@@ -7,11 +7,12 @@ import { useAppDispatch } from 'redux/store';
 
 // import { CaretDownIcon, CaretUpIcon } from 'assets/icons';
 
+import { AreaChart } from 'components/Charts/AreaChart';
+
 import { useAppSelector } from 'hooks';
 import useCategories from 'hooks/useCategories';
 
 // import Label from '../Label';
-import MiniAreaChart from '../MiniAreaChart';
 import Text from '../Text';
 
 type BackgroundColor = 'yellow' | 'blue' | 'green' | 'pink' | 'orange';
@@ -64,7 +65,13 @@ function Category({
       onKeyPress={handleCategorySelected}
     >
       <div className="pm-c-category__header">
-        <Text as="label" scale="body" fontWeight="semibold" color="white">
+        <Text
+          as="label"
+          scale="body"
+          fontWeight="semibold"
+          color="white"
+          className="cursor-pointer"
+        >
           {title}
         </Text>
         {/* disabling change labels at the moment
@@ -76,14 +83,7 @@ function Category({
       </div>
       <div className="pm-c-category__body">
         {chartData ? (
-          <MiniAreaChart
-            serie={chartData}
-            height={50}
-            color="white"
-            gradientShade="light"
-            strokeWidth={1}
-            strokeCurve="straight"
-          />
+          <AreaChart data={chartData} height="5rem" color="white" />
         ) : null}
       </div>
     </div>

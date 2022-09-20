@@ -8,7 +8,7 @@ import { capitalize } from 'helpers/string';
 import reverse from 'lodash/reverse';
 import times from 'lodash/times';
 import { Market } from 'models/market';
-import { BeproService } from 'services';
+import { PolkamarketsService } from 'services';
 
 import { ShareIcon } from 'assets/icons';
 
@@ -107,7 +107,7 @@ function formatMarketPositions(
 
       if (action.answerId) {
         // mapping realitio answer to outcome
-        outcomeId = BeproService.bytes32ToInt(action.answerId);
+        outcomeId = PolkamarketsService.bytes32ToInt(action.answerId);
         outcome =
           outcomeId === -1 ? 'Invalid' : market.outcomes[outcomeId]?.title;
       }

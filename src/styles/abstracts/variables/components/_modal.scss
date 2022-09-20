@@ -16,7 +16,11 @@ $modal-themes: (
       ),
     background: #f8faff,
     border: #e3e7f0,
-    shadow: rgba(137, 158, 198, 0.17)
+    shadow: rgba(137, 158, 198, 0.17),
+    text-colors: (
+      primary: #313a4c,
+      secondary: #8193ae
+    )
   ),
   dark: (
     overlay-background-color:
@@ -27,6 +31,10 @@ $modal-themes: (
       ),
     background: #0e1016,
     border: #252c3b,
-    shadow: rgba(0, 0, 0, 0.4)
+    shadow: rgba(0, 0, 0, 0.4),
+    text-colors: (
+      primary: #f3f4f6,
+      secondary: #637084
+    )
   )
 ) !default;

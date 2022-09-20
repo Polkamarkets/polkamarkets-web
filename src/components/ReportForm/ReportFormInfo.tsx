@@ -14,6 +14,7 @@ function ReportFormInfo() {
             aria-label="Learn more"
             target="_blank"
             rel="noreferrer"
+            variant="information"
           />
         </>
       }

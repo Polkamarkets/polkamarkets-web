@@ -13,7 +13,21 @@ $table-themes: (
     table-row-item-background-color: #f8faff,
     table-row-item-background-color-hover: #f0f1f5,
     table-row-item-color: #171b23,
-    table-row-item-secondary-color: #a7b0bd
+    table-row-item-secondary-color: #a7b0bd,
+    table-action-overlay-background-color: (
+      top:
+        linear-gradient(
+          180deg,
+          rgba(123, 120, 171, 0.15) 0%,
+          rgba(174, 170, 252, 0) 100%
+        ),
+      bottom:
+        linear-gradient(
+          180deg,
+          rgba(174, 170, 252, 0) 0%,
+          rgba(123, 120, 171, 0.15) 100%
+        )
+    )
   ),
   dark: (
     table-border-color: $gray-600,
@@ -23,7 +37,11 @@ $table-themes: (
     table-row-item-background-color: $gray-1000,
     table-row-item-background-color-hover: $gray-700,
     table-row-item-color: $gray-50,
-    table-row-item-secondary-color: $gray-500
+    table-row-item-secondary-color: $gray-500,
+    table-action-overlay-background-color: (
+      top: linear-gradient(180deg, #0e1016 0%, rgba(14, 16, 22, 0) 100%),
+      bottom: linear-gradient(180deg, rgba(14, 16, 22, 0) 0%, #0e1016 100%)
+    )
   )
 ) !default;
 
@@ -31,3 +49,4 @@ $table-transitions: border-color 0.2s ease;
 $table-header-item-transitions: background-color 0.2s ease-out, color 0.2s ease;
 $table-row-item-transitions: background-color 0.2s ease-out, color 0.2s ease,
   border-color 0.2s ease;
+$table-action-overlay-transition: background-color 0.2s ease-out;

@@ -57,7 +57,7 @@ type TextColor =
   | 'light-gray'
   | 'dark-gray';
 
-type TextProps = {
+export type TextProps = React.PropsWithChildren<{
   /**
    * HTML text element
    * @default 'p'
@@ -85,8 +85,11 @@ type TextProps = {
    * Aditional CSS inline style
    */
   style?: React.CSSProperties;
-  children?: React.ReactNode | any;
-};
+  /**
+   * Id to be used by form actions of a11y purposes.
+   */
+  id?: string;
+}>;
 
 /**
  * Basic text writing, including headings, body text, and more
@@ -97,22 +100,19 @@ function Text({
   fontWeight = 'regular',
   color,
   className,
-  style,
-  children
+  ...props
 }: TextProps) {
-  return React.createElement(
-    as,
-    {
-      className: classNames(
-        className,
-        scale,
-        fontWeight,
-        color && `text-${color}`
-      ),
-      style
-    },
-    children
-  );
+  return React.createElement(as, {
+    className: classNames(
+      {
+        [`text-${color}`]: color,
+        [scale]: scale,
+        [fontWeight]: fontWeight
+      },
+      className
+    ),
+    ...props
+  });
 }
 
 Text.displayName = 'Text';

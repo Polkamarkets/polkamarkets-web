@@ -5,11 +5,11 @@ import dayjs from 'dayjs';
 import isNull from 'lodash/isNull';
 import { getMarket, setChartViewType } from 'redux/ducks/market';
 import { reset } from 'redux/ducks/trade';
-import { openTradeForm } from 'redux/ducks/ui';
+import { closeRightSidebar, openTradeForm } from 'redux/ducks/ui';
 
 import { ArrowLeftIcon } from 'assets/icons';
 
-import { Tabs, Table, Button, SEO } from 'components';
+import { Tabs, Table, Text, Button, SEO } from 'components';
 
 import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
 
@@ -28,17 +28,20 @@ type Params = {
 const Market = () => {
   const dispatch = useAppDispatch();
   const history = useHistory();
-  const {
-    network: { currency }
-  } = useNetwork();
+  const currency = useAppSelector(state => state.market.market.currency);
   const { symbol, ticker } = currency;
-  const { network, setNetwork } = useNetwork();
+  const { network } = useNetwork();
   const { marketId } = useParams<Params>();
   const { market, isLoading, error } = useAppSelector(state => state.market);
-  const { actions, bondActions, isLoggedIn, networkId } = useAppSelector(
-    state => state.bepro
+  const { actions, bondActions, networkId } = useAppSelector(
+    state => state.polkamarkets
   );
+  const [activeTab, setActiveTab] = useState('positions');
   const [retries, setRetries] = useState(0);
+  const isDiffNetwork = network.id !== market.networkId.toString();
+  const resolvedEmptyDataDescription = isDiffNetwork
+    ? `Switch network to ${market.network.name} to see your market positions.`
+    : 'You have no positions.';
 
   useEffect(() => {
     async function fetchMarket() {
@@ -68,22 +71,7 @@ const Market = () => {
         goToHomePage();
       }
     }
-
-    if (!isLoading && market.id !== '') {
-      if (
-        `${market.networkId}` !== network.id &&
-        (!window.ethereum || !isLoggedIn)
-      ) {
-        setNetwork(market.networkId);
-      } else if (
-        isLoggedIn &&
-        networkId &&
-        // eslint-disable-next-line radix
-        `0x${parseInt(market.networkId).toString(16)}` !== networkId
-      ) {
-        goToHomePage();
-      }
-    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     error,
     history,
@@ -102,7 +90,9 @@ const Market = () => {
     );
 
   const tableItems = formatMarketPositions(
-    (actions as any).filter(action => action.marketId === market?.id),
+    ((isDiffNetwork ? [] : actions) as any).filter(
+      action => action.marketId === market?.id
+    ),
     (bondActions as any).filter(
       action => action.questionId === market?.questionId
     ),
@@ -110,6 +100,20 @@ const Market = () => {
     symbol || ticker,
     network
   );
+
+  function resetTrade() {
+    dispatch(reset());
+  }
+
+  function closeTradeSidebar() {
+    dispatch(closeRightSidebar());
+  }
+
+  function backToMarkets() {
+    resetTrade();
+    closeTradeSidebar();
+    history.push('/');
+  }
 
   return (
     <div className="pm-p-market">
@@ -133,6 +137,7 @@ const Market = () => {
       </div>
       <div className="pm-p-market__market">
         <MarketHead
+          isVerified={market.verified}
           section={market.category}
           subsection={market.subcategory}
           imageUrl={market.imageUrl}
@@ -143,7 +148,7 @@ const Market = () => {
         <Button
           variant="outline"
           size="sm"
-          onClick={() => history.push('/')}
+          onClick={() => backToMarkets()}
           aria-label="Back to Markets"
         >
           <ArrowLeftIcon />
@@ -159,14 +164,35 @@ const Market = () => {
       <div className="pm-p-market__stats">
         <MarketStats market={market} />
       </div>
+      {market.resolutionSource ? (
+        <div className="pm-p-market__source">
+          <Text
+            as="p"
+            scale="tiny"
+            fontWeight="semibold"
+            style={{ margin: '0.8rem 0rem' }}
+            color="lighter-gray"
+          >
+            {`Resolution source: `}
+            <a
+              href={market.resolutionSource}
+              target="_blank"
+              className="tiny semibold text-primary"
+              rel="noreferrer"
+            >
+              {market.resolutionSource}
+            </a>
+          </Text>
+        </div>
+      ) : null}
       <div className="pm-p-market__tabs">
-        <Tabs defaultActiveId="positions">
+        <Tabs value={activeTab} onChange={tab => setActiveTab(tab)}>
           <Tabs.TabPane tab="Positions" id="positions">
             <Table
               columns={tableItems.columns}
               rows={tableItems.rows}
               isLoadingData={isLoading}
-              emptyDataDescription="You have no positions."
+              emptyDataDescription={resolvedEmptyDataDescription}
             />
           </Tabs.TabPane>
           {market.news && market.news.length > 0 ? (

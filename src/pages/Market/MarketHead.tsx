@@ -1,6 +1,9 @@
-import { Breadcrumb, Text } from 'components';
+import { VerifiedIcon } from 'assets/icons';
+
+import { Breadcrumb, Text, Tooltip } from 'components';
 
 type MarketHeadProps = {
+  isVerified: boolean;
   section: string;
   subsection: string;
   imageUrl: string;
@@ -8,6 +11,7 @@ type MarketHeadProps = {
 };
 
 const MarketHead = ({
+  isVerified,
   section,
   subsection,
   imageUrl,
@@ -15,7 +19,23 @@ const MarketHead = ({
 }: MarketHeadProps) => {
   return (
     <div className="market-head">
-      <img className="market-head__image" alt="market head" src={imageUrl} />
+      <div className="relative height-min-content">
+        <img className="market-head__image" alt="market head" src={imageUrl} />
+        {isVerified ? (
+          <div
+            className="absolute"
+            style={{ bottom: '-0.5rem', right: '1.5rem' }}
+          >
+            <Tooltip
+              className="width-max-content"
+              text="Verified Market"
+              position="bottom"
+            >
+              <VerifiedIcon style={{ cursor: 'pointer' }} />
+            </Tooltip>
+          </div>
+        ) : null}
+      </div>
       <div className="market-head__details">
         <Breadcrumb>
           <Breadcrumb.Item>{section}</Breadcrumb.Item>

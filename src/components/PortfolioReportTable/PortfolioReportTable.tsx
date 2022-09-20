@@ -7,9 +7,9 @@ import classnames from 'classnames';
 import { roundNumber } from 'helpers/math';
 import isEmpty from 'lodash/isEmpty';
 import { Market } from 'models/market';
-import { login, fetchAditionalData } from 'redux/ducks/bepro';
 import { changeMarketQuestion } from 'redux/ducks/markets';
-import { BeproService, PolkamarketsApiService } from 'services';
+import { login, fetchAditionalData } from 'redux/ducks/polkamarkets';
+import { PolkamarketsService, PolkamarketsApiService } from 'services';
 
 import { CaretDownIcon, CaretUpIcon } from 'assets/icons';
 
@@ -48,17 +48,17 @@ const PortfolioReportTable = ({
   }
 
   async function handleClaimReport(market: Market) {
-    const beproService = new BeproService(networkConfig);
+    const polkamarketsService = new PolkamarketsService(networkConfig);
 
     handleChangeIsLoading(market.id, true);
 
     try {
-      await beproService.claimWinningsAndWithdraw(market.questionId);
+      await polkamarketsService.claimWinningsAndWithdraw(market.questionId);
 
       // triggering cache reload action on api
       new PolkamarketsApiService().reloadMarket(market.slug);
 
-      const question = await beproService.getQuestion(market.questionId);
+      const question = await polkamarketsService.getQuestion(market.questionId);
       dispatch(changeMarketQuestion({ marketId: market.id, question }));
 
       // updating wallet

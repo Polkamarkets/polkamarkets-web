@@ -1,10 +1,12 @@
 $mini-table-themes: (
   light: (
     mini-table-item-title-color: #a7b0bd,
-    mini-table-item-value-color: #171b23
+    mini-table-item-value-color: #171b23,
+    mini-table-item-separator-color: rgba(#c2cad6, 0.75)
   ),
   dark: (
     mini-table-item-title-color: #637084,
-    mini-table-item-value-color: #f9fafb
+    mini-table-item-value-color: #f9fafb,
+    mini-table-item-separator-color: rgba(#637084, 0.75)
   )
 ) !default;

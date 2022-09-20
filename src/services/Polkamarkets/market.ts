@@ -3,18 +3,12 @@ import pickBy from 'lodash/pickBy';
 import { Market } from 'models/market';
 
 import api, { polkamarketsApiUrl } from './api';
+import { GetMarketsByStateArgs, GetMarketsByIdsArgs } from './types';
 
 async function getMarket(marketSlug: string) {
   const url = `${polkamarketsApiUrl}/markets/${marketSlug}`;
   return api.get<Market>(url);
 }
-
-export type MarketState = 'open' | 'closed' | 'resolved';
-
-type MarketsFilters = {
-  state: MarketState;
-  networkId: string;
-};
 
 const getMarketsAbortControllers: { [key: string]: any } = {
   open: undefined,
@@ -22,7 +16,7 @@ const getMarketsAbortControllers: { [key: string]: any } = {
   resolved: undefined
 };
 
-async function getMarkets({ state, networkId }: MarketsFilters) {
+async function getMarkets({ state, networkId }: GetMarketsByStateArgs) {
   if (typeof getMarketsAbortControllers[state] !== typeof undefined) {
     getMarketsAbortControllers[state].abort();
   }
@@ -42,7 +36,7 @@ async function getMarkets({ state, networkId }: MarketsFilters) {
   });
 }
 
-async function getMarketsByIds(ids: string[], networkId: string) {
+async function getMarketsByIds({ ids, networkId }: GetMarketsByIdsArgs) {
   const url = `${polkamarketsApiUrl}/markets`;
   return api.get<Market[]>(url, {
     params: pickBy(

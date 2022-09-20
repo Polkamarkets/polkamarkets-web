@@ -1,3 +1,83 @@
+:root,
+[data-theme='light'] {
+  --color-bg-1: #f8faff;
+  --color-bg-2: #fbfcfe;
+  --color-bg-3: #f5f6fa;
+  --color-bg-4: #dde1e8;
+  --color-bg-primary: 93, 85, 250;
+  --color-bg-gradient-yellow: linear-gradient(
+    106.37deg,
+    #bd7052 0%,
+    #e5cc73 99.91%
+  );
+  --color-bg-gradient-blue: linear-gradient(
+    106.37deg,
+    #52b7bd 0%,
+    #8373e5 99.91%
+  );
+  --color-bg-gradient-green: linear-gradient(
+    106.37deg,
+    #52bd70 0%,
+    #73d0e5 99.91%
+  );
+  --color-bg-gradient-pink: linear-gradient(
+    106.37deg,
+    #ae52bd 0%,
+    #e57381 99.91%
+  );
+  --color-bg-gradient-orange: linear-gradient(
+    106.37deg,
+    #bd5252 0%,
+    #e59c73 99.91%
+  );
+}
+
+@supports (--css: variables) {
+  [data-theme='dark'] {
+    --color-bg-1: #0e1016;
+    --color-bg-2: #12141c;
+    --color-bg-3: #171b23;
+    --color-bg-4: #232a36;
+  }
+}
+
+$bg-colors-map: (
+  1: var(--color-bg-1),
+  2: var(--color-bg-2),
+  3: var(--color-bg-3),
+  4: var(--color-bg-4),
+  primary: var(--color-bg-primary),
+  primary-10: rgba(var(--color-bg-primary), 0.1)
+);
+
+$bg-gradient-colors: (
+  yellow: var(--color-bg-gradient-yellow),
+  blue: var(--color-bg-gradient-blue),
+  green: var(--color-bg-gradient-green),
+  pink: var(--color-bg-gradient-pink),
+  orange: var(--color-bg-gradient-orange)
+);
+
+@each $bg-gradient-color, $bg-gradient-color-value in $bg-gradient-colors {
+  .bg-gradient-#{'' + $bg-gradient-color} {
+    background: $bg-gradient-color-value;
+  }
+}
+
+@each $bg-color, $bg-color-value in $bg-colors-map {
+  .bg-#{'' + $bg-color} {
+    background-color: $bg-color-value;
+  }
+
+  .bg-#{'' + $bg-color}-on-hover {
+    transition: 0.2s color ease-in-out;
+
+    &:hover {
+      background-color: $bg-color-value;
+    }
+  }
+}
+
 @each $color, $value in $colors {
   .background-#{'' + $color} {
     background-color: $value;

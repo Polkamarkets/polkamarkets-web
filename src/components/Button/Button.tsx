@@ -44,6 +44,11 @@ type ButtonProps = {
    */
   noHover?: boolean;
   /**
+   * Truncate text inside of button
+   * @default 'false'
+   */
+  truncated?: boolean;
+  /**
    * Loading state
    * @default 'false'
    */
@@ -60,9 +65,11 @@ function Button({
   size = 'normal',
   fullwidth = false,
   noHover = false,
+  truncated = false,
   loading = false,
   children,
   onClick,
+  className,
   ...props
 }: ButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement>) {
   const ref = useRef<HTMLButtonElement>(null);
@@ -84,10 +91,14 @@ function Button({
       ref={ref}
       type={type}
       className={classNames(
-        `pm-c-button-${variant}--${color}`,
-        `pm-c-button--${size}`,
-        fullwidth && 'pm-c-button--fullwidth',
-        noHover && 'pm-c-button--no-hover'
+        {
+          [`pm-c-button-${variant}--${color}`]: variant && color,
+          [`pm-c-button--${size}`]: size,
+          'pm-c-button--fullwidth': fullwidth,
+          'pm-c-button--no-hover': noHover,
+          'pm-c-button--truncated': truncated
+        },
+        className
       )}
       style={
         loading

@@ -1,12 +1,4 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-  ReactNode,
-  Children
-} from 'react';
+import { createContext, useContext, useMemo, ReactNode, Children } from 'react';
 
 import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
@@ -57,12 +49,11 @@ type TabsProps = {
    */
   direction?: 'row' | 'column';
   /**
-   * Id of the default active tab pane
-   */
-  defaultActiveId?: string;
-  /**
    * Custom filter component
    */
+  fullwidth?: boolean;
+  value: string;
+  onChange: (_value: string) => void;
   filters?: ReactNode[];
   children?: ReactNode;
 };
@@ -72,22 +63,19 @@ type TabsProps = {
  */
 function Tabs({
   direction = 'row',
-  defaultActiveId,
   filters,
-  children
+  fullwidth,
+  children,
+  value,
+  onChange
 }: TabsProps) {
-  const [activeTab, setActiveTab] = useState<string | undefined>(undefined);
-
   const tabs = useMemo(() => getChildrenTabs(children), [children]);
+  const tabsIds = tabs.map(tab => tab.id);
 
-  useEffect(() => {
-    setActiveTab(defaultActiveId);
-  }, [defaultActiveId]);
-
-  if (!activeTab || !children) return null;
+  if (!tabsIds.includes(value) || !children) return null;
 
   return (
-    <div className="pm-c-tabs">
+    <div className={classNames({ 'pm-c-tabs': true, 'width-full': fullwidth })}>
       <div className="pm-c-tabs__header">
         <ul className={`pm-c-tabs__list--${direction}`}>
           {tabs?.map((tab, index) => (
@@ -96,13 +84,13 @@ function Tabs({
               tabIndex={index}
               className={classNames({
                 'pm-c-tabs__item': true,
-                active: activeTab === tab.id
+                active: value === tab.id
               })}
             >
               <button
                 type="button"
                 name={tab.name}
-                onClick={() => setActiveTab(tab.id)}
+                onClick={() => onChange(tab.id)}
               >
                 {tab.name}
               </button>
@@ -122,14 +110,12 @@ function Tabs({
         ) : null}
       </div>
 
-      <ActiveTabContext.Provider value={activeTab}>
+      <ActiveTabContext.Provider value={value}>
         <div className="pm-c-tabs__content">{children}</div>
       </ActiveTabContext.Provider>
     </div>
   );
 }
-
-Tabs.displayName = 'Tabs';
 
 Tabs.TabPane = TabPane;
 

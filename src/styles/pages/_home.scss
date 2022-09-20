@@ -1,16 +1,14 @@
-.pm-home {
+.pm-p-home {
+  @include flex-column($gap: px-to-rem(24px));
+  height: 100%;
   width: 100%;
-  margin: 0rem auto;
-
-  display: grid;
-  grid-template-columns: 1fr auto;
+  margin: px-to-rem(0px) auto;
 
   &__mobile-info {
     @include flex-column(center, center);
+    margin-top: px-to-rem(16px);
 
-    margin: 1.6rem 0rem;
-
-    @include breakpoint-to('sm') {
+    @include breakpoint-to('md') {
       display: none;
     }
   }
@@ -20,33 +18,8 @@
 
     @include breakpoint-to('sm') {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
-      gap: 2rem;
-
-      margin: 0 0rem 2.4rem 0rem;
+      grid-template-columns: repeat(auto-fit, minmax(px-to-rem(100px), 1fr));
+      gap: px-to-rem(20px);
     }
   }
-
-  &__content {
-    grid-column: 1;
-  }
-
-  &__sidebar {
-    grid-column: 2;
-  }
-}
-
-.navigation {
-  display: flex;
-  flex-direction: row;
-
-  justify-content: space-between;
-}
-
-.filters {
-  @include flex-row;
-
-  gap: 3.2rem;
-
-  height: fit-content;
 }

@@ -19,7 +19,9 @@ function Networks() {
   const { network, setNetwork } = useNetwork();
   const [dropdownIsVisible, setDropdownIsVisible] = useState(false);
   const [isChangingNetwork, setIsChangingNetwork] = useState(false);
-  const walletConnected = useAppSelector(state => state.bepro.isLoggedIn);
+  const walletConnected = useAppSelector(
+    state => state.polkamarkets.isLoggedIn
+  );
 
   const ref = useRef<HTMLOListElement>(null);
 

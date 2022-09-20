@@ -6,7 +6,9 @@ import { useAppSelector } from 'hooks';
 const PrivateBeta = lazy(() => import('pages/PrivateBeta'));
 
 const AuthRoutes = () => {
-  const walletConnected = useAppSelector(state => state.bepro.isLoggedIn);
+  const walletConnected = useAppSelector(
+    state => state.polkamarkets.isLoggedIn
+  );
 
   return (
     <Suspense fallback={null}>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { BeproService } from 'services';
+import { PolkamarketsService } from 'services';
 
 import { Text, CreateMarketForm } from 'components';
 
@@ -10,20 +10,18 @@ import CreateMarketBuyPolk from './CreateMarketBuyPolk';
 
 function CreateMarket() {
   const { networkConfig } = useNetwork();
-  const polkBalance = useAppSelector(state => state.bepro.polkBalance);
+  const polkBalance = useAppSelector(state => state.polkamarkets.polkBalance);
   const [requiredBalance, setRequiredBalance] = useState(0);
 
   const needsBuyPolk = polkBalance < requiredBalance;
 
-  async function getMinimumRequiredBalance() {
-    const beproService = new BeproService(networkConfig);
-
-    const response = await beproService.getMinimumRequiredBalance();
-    setRequiredBalance(response);
-  }
-
   useEffect(() => {
-    getMinimumRequiredBalance();
+    (async function getMinimumRequiredBalance() {
+      const polkamarketsService = new PolkamarketsService(networkConfig);
+
+      const response = await polkamarketsService.getMinimumRequiredBalance();
+      setRequiredBalance(response);
+    })();
   }, [polkBalance, networkConfig]);
 
   return (

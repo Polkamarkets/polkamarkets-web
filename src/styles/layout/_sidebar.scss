@@ -57,10 +57,7 @@
       font-size: 1.4rem;
       transition: all 0.2s ease-in-out 0s;
 
-      opacity: 0.5;
-
-      &-title {
-      }
+      opacity: 0.6;
 
       &.active,
       &:hover {
@@ -75,13 +72,16 @@
         }
 
         .sidebar__link-counter {
-          @extend .label-normal--primary;
+          background-color: themed('counter-background-color-active');
+          color: themed('counter-text-color-active');
         }
       }
 
       &-counter {
-        @extend .label-normal--default, .label-sm;
+        @extend .label-sm;
         margin-left: auto;
+        background-color: themed('counter-background-color');
+        color: themed('counter-text-color');
       }
 
       &--lg {
@@ -116,7 +116,8 @@
           }
 
           .sidebar__link-counter {
-            @extend .label-normal--primary;
+            background-color: themed('counter-background-color-active');
+            color: themed('counter-text-color-hover');
           }
         }
       }

@@ -5,7 +5,7 @@ import { fromPriceChartToLineChartSeries } from 'helpers/chart';
 
 import { ChartHeader, LineChart, Text } from 'components';
 
-import { useAppSelector, useNetwork, useTheme } from 'hooks';
+import { useAppSelector, useTheme } from 'hooks';
 
 const intervals = [
   { id: '24h', name: '24H', value: 24 },
@@ -16,9 +16,7 @@ const intervals = [
 
 const MarketChart = () => {
   const { theme } = useTheme();
-  const {
-    network: { currency }
-  } = useNetwork();
+  const currency = useAppSelector(state => state.market.market.currency);
   const { ticker } = currency;
   const predictions = useAppSelector(state => state.market.market.outcomes);
   const { chartViewType } = useAppSelector(state => state.market);
@@ -31,7 +29,7 @@ const MarketChart = () => {
   );
 
   const series = predictions.map(prediction => {
-    const chart = prediction.priceCharts.find(
+    const chart = prediction.priceCharts?.find(
       priceChart => priceChart.timeframe === timeframe?.id
     );
 

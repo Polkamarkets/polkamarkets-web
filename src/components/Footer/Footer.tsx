@@ -1,9 +1,15 @@
 // import Text from '../Text';
 // import FooterLinks from './FooterLinks';
 // import FooterMenu from './FooterMenu';
+import { useFooterVisibility } from 'hooks';
+
 import FooterTerms from './FooterTerms';
 
 function Footer() {
+  const { visible } = useFooterVisibility();
+
+  if (!visible) return null;
+
   return (
     <div className="pm-l-footer">
       <FooterTerms />

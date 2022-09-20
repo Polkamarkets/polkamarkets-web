@@ -1,6 +1,8 @@
-import { useState, memo } from 'react';
+import { useState, useMemo, memo } from 'react';
 
+import { isEmpty } from 'lodash';
 import { setFilter } from 'redux/ducks/portfolio';
+import { useGetMarketsByIdsQuery } from 'services/Polkamarkets';
 
 import {
   ButtonGroup,
@@ -10,7 +12,7 @@ import {
   Filter
 } from 'components';
 
-import { useAppSelector, useAppDispatch } from 'hooks';
+import { useAppSelector, useAppDispatch, useNetwork } from 'hooks';
 
 import {
   formatLiquidityPositions,
@@ -41,24 +43,51 @@ function TabsFilter() {
 const PortfolioTabsFilter = memo(TabsFilter);
 
 function PortfolioTabs() {
+  const { network } = useNetwork();
   const [currentTab, setCurrentTab] = useState('marketPositions');
 
-  const markets = useAppSelector(state => state.markets.markets);
-  const isLoadingMarketsSelector = useAppSelector(
-    state => state.markets.isLoading
-  );
-  const isLoadingMarkets = Object.values(isLoadingMarketsSelector).some(
-    value => value === true
+  const {
+    bonds,
+    portfolio,
+    actions,
+    marketsWithActions,
+    marketsWithBonds,
+    isLoading
+  } = useAppSelector(state => state.polkamarkets);
+
+  const {
+    portfolio: isLoadingPortfolio,
+    bonds: isLoadingBonds,
+    actions: isLoadingActions
+  } = isLoading;
+
+  const marketsIds = [...marketsWithActions, ...marketsWithBonds];
+
+  const { data: markets, isLoading: isLoadingMarkets } =
+    useGetMarketsByIdsQuery(
+      {
+        ids: marketsIds,
+        networkId: network.id
+      },
+      {
+        skip: isLoadingBonds || isLoadingActions || isEmpty(marketsIds)
+      }
+    );
+
+  const marketPositions = useMemo(
+    () => formatMarketPositions(portfolio, actions, markets),
+    [actions, markets, portfolio]
   );
 
-  const { bonds, portfolio, actions } = useAppSelector(state => state.bepro);
-  const isLoadingPortfolio = useAppSelector(
-    state => state.bepro.isLoading.portfolio
+  const liquidityPositions = useMemo(
+    () => formatLiquidityPositions(portfolio, markets),
+    [markets, portfolio]
   );
 
-  const marketPositions = formatMarketPositions(portfolio, markets, actions);
-  const liquidityPositions = formatLiquidityPositions(portfolio, markets);
-  const reportPositions = formatReportPositions(bonds, markets);
+  const reportPositions = useMemo(
+    () => formatReportPositions(bonds, markets),
+    [bonds, markets]
+  );
 
   return (
     <div className="portfolio-tabs">
@@ -92,7 +121,9 @@ function PortfolioTabs() {
           <PortfolioMarketTable
             rows={marketPositions.rows}
             headers={marketPositions.headers}
-            isLoadingData={isLoadingMarkets || isLoadingPortfolio}
+            isLoadingData={
+              isLoadingMarkets || isLoadingPortfolio || isLoadingActions
+            }
           />
         ) : null}
         {currentTab === 'liquidityPositions' ? (
@@ -106,14 +137,14 @@ function PortfolioTabs() {
           <PortfolioReportTable
             rows={reportPositions.rows}
             headers={reportPositions.headers}
-            isLoadingData={isLoadingMarkets || isLoadingPortfolio}
+            isLoadingData={
+              isLoadingMarkets || isLoadingPortfolio || isLoadingBonds
+            }
           />
         ) : null}
       </div>
     </div>
   );
 }
-
-PortfolioTabs.displayName = 'PortfolioTabs';
 
 export default PortfolioTabs;

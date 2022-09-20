@@ -1,4 +1,4 @@
-import { useEffect, memo } from 'react';
+import { useEffect, memo, useCallback } from 'react';
 
 import isEmpty from 'lodash/isEmpty';
 import { Market } from 'models/market';
@@ -8,10 +8,11 @@ import { InfoIcon } from 'assets/icons';
 
 import { Button } from 'components/Button';
 
-import { useAppSelector, useNetwork } from 'hooks';
+import { useAppSelector, useFooterVisibility } from 'hooks';
 
 import PredictionCard from '../PredictionCard';
 import Text from '../Text';
+import VirtualizedList from '../VirtualizedList';
 
 type MarketListAsyncProps = {
   id: string;
@@ -27,25 +28,39 @@ const MarketListAsync = ({
   markets
 }: MarketListAsyncProps) => {
   const dispatch = useAppDispatch();
-  const { network } = useNetwork();
+  const { show, hide } = useFooterVisibility();
   const { isLoading, error } = useAppSelector(state => state.markets);
 
   useEffect(() => {
     if (!isEmpty(filterBy)) {
-      dispatch(asyncAction(filterBy, network.id));
+      dispatch(asyncAction(filterBy));
     }
-  }, [dispatch, asyncAction, filterBy, network.id]);
+  }, [dispatch, asyncAction, filterBy]);
 
-  function refreshMarkets() {
-    if (!isEmpty(filterBy)) {
-      dispatch(asyncAction(filterBy, network.id));
+  useEffect(() => {
+    if (!isEmpty(markets)) {
+      hide();
     }
-  }
+    return () => show();
+  }, [dispatch, markets, hide, show]);
+
+  const refreshMarkets = useCallback(() => {
+    if (!isEmpty(filterBy)) {
+      dispatch(asyncAction(filterBy));
+    }
+  }, [asyncAction, dispatch, filterBy]);
+
+  const setFooterVisibility = useCallback(
+    (atBottom: boolean) => (atBottom ? show() : hide()),
+    [hide, show]
+  );
 
   if (isLoading[id])
     return (
-      <div className="pm-market__loading" style={{ paddingTop: '5rem' }}>
-        <span className="spinner--primary" />
+      <div className="pm-c-market-list__empty-state">
+        <div className="pm-c-market-list__empty-state__body">
+          <span className="spinner--primary" />
+        </div>
       </div>
     );
 
@@ -91,13 +106,18 @@ const MarketListAsync = ({
   }
 
   return (
-    <ul className="market-list">
-      {markets.map(market => (
-        <li className="market-list__item" key={market.id}>
-          <PredictionCard market={market} />
-        </li>
-      ))}
-    </ul>
+    <div className="pm-c-market-list">
+      <VirtualizedList
+        height="100%"
+        data={markets}
+        itemContent={(_index, market) => (
+          <div className="pm-c-market-list__item">
+            <PredictionCard market={market} />
+          </div>
+        )}
+        atBottom={atBottom => setFooterVisibility(atBottom)}
+      />
+    </div>
   );
 };
 

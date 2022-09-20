@@ -1,7 +1,7 @@
 import { useField } from 'formik';
 import { Outcome as MarketOutcome } from 'models/market';
 import { selectOutcome } from 'redux/ducks/trade';
-import { BeproService } from 'services';
+import { PolkamarketsService } from 'services';
 
 import { useAppSelector } from 'hooks';
 
@@ -18,13 +18,13 @@ function ReportFormOutcomeSelect() {
   const { bestAnswer, bond } = useAppSelector(
     state => state.market.market.question
   );
-  const { bonds, portfolio } = useAppSelector(state => state.bepro);
+  const { bonds, portfolio } = useAppSelector(state => state.polkamarkets);
 
   // Form state
   const [field, _meta, helpers] = useField('outcome');
 
   // converting bytes32 to int
-  const resolvedOutcomeId = BeproService.bytes32ToInt(bestAnswer);
+  const resolvedOutcomeId = PolkamarketsService.bytes32ToInt(bestAnswer);
   const isStarted = bond > 0;
 
   const getOutcomeColor = (outcome: MarketOutcome): BadgeColor =>
@@ -52,7 +52,7 @@ function ReportFormOutcomeSelect() {
   };
 
   const getOutcomeBond = outcomeId => {
-    const answerId = BeproService.intToBytes32(outcomeId);
+    const answerId = PolkamarketsService.intToBytes32(outcomeId);
 
     if (!bonds[questionId]) return 0;
 

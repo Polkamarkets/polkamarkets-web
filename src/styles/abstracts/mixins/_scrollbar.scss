@@ -2,12 +2,14 @@
   @if $size == 'normal' {
     ::-webkit-scrollbar {
       width: $scrollbar-normal-width;
+      height: $scrollbar-normal-height;
     }
   }
 
   @if $size == 'sm' {
     ::-webkit-scrollbar {
       width: $scrollbar-sm-width;
+      height: $scrollbar-sm-height;
     }
   }
 }

@@ -110,5 +110,46 @@
         border-top-right-radius: 0rem;
       }
     }
+
+    &__action-overlay {
+      position: absolute;
+      left: 0.1rem;
+      z-index: 100;
+
+      width: calc(100% - 0.9rem);
+      height: 9.1rem;
+      padding: 1.55rem;
+
+      transition: $table-action-overlay-transition;
+
+      &--top {
+        @extend .pm-c-table__action-overlay;
+        top: 4.25rem;
+        background: map-get(
+          themed('table-action-overlay-background-color'),
+          'top'
+        );
+      }
+
+      &--bottom {
+        @extend .pm-c-table__action-overlay;
+        bottom: 0.1rem;
+
+        background: map-get(
+          themed('table-action-overlay-background-color'),
+          'bottom'
+        );
+      }
+    }
+
+    &__action-button {
+      @extend .pm-c-button-ghost--primary, .pm-c-button--xs;
+      padding: 0.8rem 0.9rem;
+      border-radius: 10.8rem;
+
+      svg {
+        opacity: 0.5;
+      }
+    }
   }
 }

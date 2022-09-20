@@ -1,3 +1,7 @@
+import { useMemo } from 'react';
+
+import identity from 'lodash/identity';
+import pickBy from 'lodash/pickBy';
 import { Category } from 'models/category';
 
 import {
@@ -9,6 +13,8 @@ import {
 } from 'assets/icons';
 
 import { generateChartRandomData } from 'pages/Portfolio/utils';
+
+import useAppSelector from './useAppSelector';
 
 const categories: Category[] = [
   {
@@ -64,7 +70,29 @@ const categories: Category[] = [
 ];
 
 function useCategories() {
-  return categories;
+  const markets = useAppSelector(state => state.markets.markets);
+
+  const marketCountByCategory = useMemo(() => {
+    const marketCount = {};
+    markets.forEach(market => {
+      const { category } = market;
+      if (!marketCount[category]) {
+        marketCount[category] = 0;
+      }
+      marketCount[category] += 1;
+    });
+    return marketCount;
+  }, [markets]);
+
+  return categories.map(category =>
+    pickBy(
+      {
+        ...category,
+        marketCount: marketCountByCategory[category.title.toLowerCase()]
+      },
+      identity
+    )
+  ) as Category[];
 }
 
 export default useCategories;

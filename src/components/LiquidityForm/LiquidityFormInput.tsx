@@ -13,18 +13,23 @@ import { calculateLiquidityDetails } from './utils';
 
 function LiquidityFormInput() {
   const dispatch = useAppDispatch();
+  const { network } = useNetwork();
   const transactionType = useAppSelector(
     state => state.liquidity.transactionType
   );
   const market = useAppSelector(state => state.market.market);
   const marketId = useAppSelector(state => state.market.market.id);
+  const marketNetworkId = useAppSelector(
+    state => state.market.market.networkId
+  );
+
+  const isWrongNetwork = network.id !== `${marketNetworkId}`;
 
   // buy and sell have different maxes
-  const balance = useAppSelector(state => state.bepro.ethBalance);
-  const portfolio = useAppSelector(state => state.bepro.portfolio);
-  const {
-    network: { currency }
-  } = useNetwork();
+  const balance = useAppSelector(state => state.polkamarkets.ethBalance);
+  const portfolio = useAppSelector(state => state.polkamarkets.portfolio);
+  const currency = useAppSelector(state => state.market.market.currency);
+
   const amount = useAppSelector(state => state.liquidity.amount);
 
   const roundDown = (value: number) => Math.floor(value * 1e5) / 1e5;
@@ -78,6 +83,7 @@ function LiquidityFormInput() {
         max={max()}
         onChange={liquidityAmount => handleChangeAmount(liquidityAmount)}
         currency={currentCurrency()}
+        disabled={isWrongNetwork}
       />
     </div>
   );

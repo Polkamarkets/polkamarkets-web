@@ -1,13 +1,20 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { environment } from 'config';
 import { camelizeKeys } from 'humps';
+import uniq from 'lodash/uniq';
 
-import { getAchievementsTransformResponse } from './functions';
+import {
+  getAchievementsTransformResponse,
+  getLeaderboardByAddressTransformResponse,
+  getLeaderboardByTimeframeTransformResponse,
+  getPortfolioByAddressTransformResponse,
+  getPortfolioFeedByAddressTransformResponse
+} from './functions';
 import {
   GetMarketBySlugArgs,
   GetMarketBySlugData,
-  GetMarketByStateArgs,
-  GetMarketByStateData,
+  GetMarketsByStateArgs,
+  GetMarketsByStateData,
   GetMarketsByIdsArgs,
   GetMarketsByIdsData,
   ReloadMarketBySlugArgs,
@@ -19,7 +26,13 @@ import {
   ReloadPortfolioByAddressArgs,
   ReloadPortfolioByAddressData,
   GetAchievementsArgs,
-  GetAchievementsData
+  GetAchievementsData,
+  GetLeaderboardByTimeframeData,
+  GetLeaderboardByTimeframeArgs,
+  GetLeaderboardByAddressData,
+  GetLeaderboardByAddressArgs,
+  GetPortfolioFeedByAddressData,
+  GetPortfolioFeedByAddressArgs
 } from './types';
 
 function camelize<T extends object>(response: T): T {
@@ -35,14 +48,15 @@ const polkamarketsApi = createApi({
       transformResponse: (response: GetMarketBySlugData) => camelize(response)
     }),
     getMarketsByState: builder.query<
-      GetMarketByStateData,
-      GetMarketByStateArgs
+      GetMarketsByStateData,
+      GetMarketsByStateArgs
     >({
       query: ({ state }) => `/markets?state=${state}`,
-      transformResponse: (response: GetMarketByStateData) => camelize(response)
+      transformResponse: (response: GetMarketsByStateData) => camelize(response)
     }),
     getMarketsByIds: builder.query<GetMarketsByIdsData, GetMarketsByIdsArgs>({
-      query: ({ ids }) => `/markets?id=${ids.join(',')}`,
+      query: ({ ids, networkId }) =>
+        `/markets?id=${uniq(ids).join(',')}&network_id=${networkId}`,
       transformResponse: (response: GetMarketsByIdsData) => camelize(response)
     }),
     reloadMarketBySlug: builder.mutation<
@@ -71,9 +85,10 @@ const polkamarketsApi = createApi({
       GetPortfolioByAddressData,
       GetPortfolioByAddressArgs
     >({
-      query: ({ address }) => `/portfolios/${address}`,
+      query: ({ address, networkId }) =>
+        `/portfolios/${address}?network_id=${networkId}`,
       transformResponse: (response: GetPortfolioByAddressData) =>
-        camelize(response)
+        getPortfolioByAddressTransformResponse(camelize(response))
     }),
     reloadPortfolioByAddress: builder.mutation<
       ReloadPortfolioByAddressData,
@@ -88,6 +103,33 @@ const polkamarketsApi = createApi({
       query: ({ networkId }) => `/achievements?network_id=${networkId}`,
       transformResponse: (response: GetAchievementsData) =>
         getAchievementsTransformResponse(camelize(response))
+    }),
+    getLeaderboardByTimeframe: builder.query<
+      GetLeaderboardByTimeframeData,
+      GetLeaderboardByTimeframeArgs
+    >({
+      query: ({ timeframe, networkId }) =>
+        `/leaderboards?timeframe=${timeframe}&network_id=${networkId}`,
+      transformResponse: (response: GetLeaderboardByTimeframeData) =>
+        getLeaderboardByTimeframeTransformResponse(camelize(response))
+    }),
+    getLeaderboardByAddress: builder.query<
+      GetLeaderboardByAddressData,
+      GetLeaderboardByAddressArgs
+    >({
+      query: ({ address, timeframe, networkId }) =>
+        `/leaderboards/${address}?timeframe=${timeframe}&network_id=${networkId}`,
+      transformResponse: (response: GetLeaderboardByAddressData) =>
+        getLeaderboardByAddressTransformResponse(camelize(response))
+    }),
+    getPortfolioFeedByAddress: builder.query<
+      GetPortfolioFeedByAddressData,
+      GetPortfolioFeedByAddressArgs
+    >({
+      query: ({ address, networkId }) =>
+        `/portfolios/${address}/feed?network_id=${networkId}`,
+      transformResponse: (response: GetPortfolioFeedByAddressData) =>
+        getPortfolioFeedByAddressTransformResponse(camelize(response))
     })
   })
 });
@@ -102,5 +144,8 @@ export const {
   useCreateMarketByIdMutation,
   useGetPortfolioByAddressQuery,
   useReloadPortfolioByAddressMutation,
-  useGetAchievementsQuery
+  useGetAchievementsQuery,
+  useGetLeaderboardByTimeframeQuery,
+  useGetLeaderboardByAddressQuery,
+  useGetPortfolioFeedByAddressQuery
 } = polkamarketsApi;

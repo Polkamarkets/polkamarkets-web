@@ -1,0 +1,49 @@
+:root {
+  --font-scale-heading: 1;
+
+  --font-size-heading-1: 2.6rem;
+  --font-size-heading-2: 2.1rem;
+  --font-size-heading-3: 1.7rem;
+  --font-size-body-1: 1.7rem;
+  --font-size-body-2: 1.4rem;
+  --font-size-body-3: 1.2rem;
+  --font-size-body-4: 1.2rem;
+}
+
+$font-sizes: (
+  'heading-1': calc(var(--font-scale-heading) * var(--font-size-heading-1)),
+  'heading-2': calc(var(--font-scale-heading) * var(--font-size-heading-2)),
+  'heading-3': calc(var(--font-scale-heading) * var(--font-size-heading-3)),
+  'body-1': calc(var(--font-scale-heading) * var(--font-size-body-1)),
+  'body-2': calc(var(--font-scale-heading) * var(--font-size-body-2)),
+  'body-3': calc(var(--font-scale-heading) * var(--font-size-body-3)),
+  'body-4': calc(var(--font-scale-heading) * var(--font-size-body-4))
+);
+
+$line-heights: (
+  'heading-1': 1.38,
+  'heading-2': 1.48,
+  'heading-3': 1.52,
+  'body-1': 1.52,
+  'body-2': 1.5,
+  'body-3': 1.5,
+  'body-4': 1.19
+);
+
+$letter-spacings: (
+  'heading-1': -0.01em,
+  'heading-2': -0.01em,
+  'heading-3': -0.01em,
+  'body-1': -0.01em,
+  'body-2': -0.01em,
+  'body-3': normal,
+  'body-4': 0.08em
+);
+
+@each $name, $value in $font-sizes {
+  .text-#{$name} {
+    font-size: $value;
+    line-height: map-get($line-heights, $name);
+    letter-spacing: map-get($letter-spacings, $name);
+  }
+}

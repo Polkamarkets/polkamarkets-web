@@ -113,6 +113,10 @@
           );
         }
       }
+
+      :disabled {
+        pointer-events: none;
+      }
     }
 
     &__logo {

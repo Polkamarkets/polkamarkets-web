@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 
-import { getMarkets } from 'redux/ducks/markets';
 import { getPortfolio } from 'redux/ducks/portfolio';
 import { closeRightSidebar } from 'redux/ducks/ui';
 
@@ -18,16 +17,13 @@ const PortfolioPage = () => {
     state => state.ui.rightSidebar.visible
   );
 
-  const ethAddress = useAppSelector(state => state.bepro.ethAddress);
+  const ethAddress = useAppSelector(state => state.polkamarkets.ethAddress);
 
   useEffect(() => {
     if (rightSidebarIsVisible) {
       dispatch(closeRightSidebar());
     }
-    dispatch(getMarkets('open', network.id));
-    dispatch(getMarkets('closed', network.id));
-    dispatch(getMarkets('resolved', network.id));
-  }, [rightSidebarIsVisible, dispatch, network.id]);
+  }, [rightSidebarIsVisible, dispatch]);
 
   useEffect(() => {
     if (ethAddress) {

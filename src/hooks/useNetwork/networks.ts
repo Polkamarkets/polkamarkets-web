@@ -1,4 +1,7 @@
-import { Currency, DEV, ETH, MOVR, GLMR } from 'hooks/useNetwork/currencies';
+import { environment } from 'config';
+import { Currency } from 'types/currency';
+
+import { DEV, ETH, MOVR, GLMR } from 'hooks/useNetwork/currencies';
 
 export type Network = {
   id: string;
@@ -11,9 +14,6 @@ export type Network = {
   rpcUrls: Array<string>;
   buyEc20Url?: string;
 };
-
-export const { REACT_APP_NETWORK_ID, REACT_APP_ERC20_CONTRACT_ADDRESS } =
-  process.env;
 
 const NETWORKS: {
   [key: string]: Network;
@@ -67,7 +67,7 @@ const NETWORKS: {
     decimals: 18,
     explorerURL: 'https://kovan.etherscan.io',
     rpcUrls: [],
-    buyEc20Url: `//app.uniswap.org/#/swap?outputCurrency=${REACT_APP_ERC20_CONTRACT_ADDRESS}&inputCurrency=ETH`
+    buyEc20Url: `//app.uniswap.org/#/swap?outputCurrency=${environment.ERC20_CONTRACT_ADDRESS}&inputCurrency=ETH`
   },
   '0x501': {
     id: '1281',
@@ -88,7 +88,7 @@ const NETWORKS: {
     decimals: 18,
     explorerURL: 'https://moonbeam.moonscan.io',
     rpcUrls: ['https://rpc.api.moonbeam.network'],
-    buyEc20Url: `//app.solarflare.io/exchange/swap?outputCurrency=${REACT_APP_ERC20_CONTRACT_ADDRESS}`
+    buyEc20Url: `//app.solarflare.io/exchange/swap?outputCurrency=${environment.ERC20_CONTRACT_ADDRESS}`
   },
   '0x505': {
     id: '1285',
@@ -99,7 +99,7 @@ const NETWORKS: {
     decimals: 18,
     explorerURL: 'https://moonriver.moonscan.io',
     rpcUrls: ['https://rpc.moonriver.moonbeam.network'],
-    buyEc20Url: `//app.sushi.com/swap?inputCurrency=&outputCurrency=${REACT_APP_ERC20_CONTRACT_ADDRESS}`
+    buyEc20Url: `//app.sushi.com/swap?inputCurrency=&outputCurrency=${environment.ERC20_CONTRACT_ADDRESS}`
   },
   '0x507': {
     id: '1287',
@@ -120,7 +120,7 @@ const NETWORKS: {
     decimals: 18,
     explorerURL: 'https://etherscan.io',
     rpcUrls: ['http://localhost:8545'],
-    buyEc20Url: `//app.uniswap.org/#/swap?outputCurrency=${REACT_APP_ERC20_CONTRACT_ADDRESS}&inputCurrency=ETH`
+    buyEc20Url: `//app.uniswap.org/#/swap?outputCurrency=${environment.ERC20_CONTRACT_ADDRESS}&inputCurrency=ETH`
   },
   '0x270f': {
     id: '9999',

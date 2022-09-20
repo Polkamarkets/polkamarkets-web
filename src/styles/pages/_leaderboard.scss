@@ -1,0 +1,87 @@
+.pm-p-leaderboard {
+  @include flex-column($justify: flex-start, $align: flex-start, $gap: 5);
+  width: 100%;
+}
+
+.pm-c-leaderboard-table {
+  &__wallet {
+    @include flex-row($gap: 4);
+
+    svg {
+      flex-shrink: 0;
+    }
+  }
+
+  &__wallet,
+  &__volume,
+  &__liquidity {
+    white-space: nowrap;
+  }
+
+  &__achievements-list {
+    position: relative;
+  }
+
+  &__achievement {
+    position: absolute;
+    border-radius: 50%;
+    background-color: var(--color-border-3);
+    border: solid 0.3rem var(--color-border-3);
+
+    top: 50%;
+    transform: translateY(-50%);
+
+    $index: 1 2 3 4;
+    $z-index: 4 3 2 1;
+    $space: 0rem 2rem 4rem 6rem;
+
+    @each $i, $z, $s in zip($index, $z-index, $space) {
+      &:nth-child(#{$i}) {
+        z-index: $z;
+        right: $s;
+      }
+    }
+
+    &--small {
+      @extend .pm-c-leaderboard-table__achievement;
+      height: 2.8rem;
+      width: 2.8rem;
+    }
+
+    &--medium {
+      @extend .pm-c-leaderboard-table__achievement;
+      height: 3.2rem;
+      width: 3.2rem;
+    }
+
+    &--more {
+      @extend .pm-c-leaderboard-table__achievement;
+      @include flex-row(center, center);
+      background: map-get($colors, 'pure-white');
+    }
+  }
+
+  &__rank {
+    @include flex-row($justify: flex-end, $gap: 3);
+
+    svg {
+      flex-shrink: 0;
+    }
+  }
+}
+
+.pm-c-leaderboard-stats {
+  @include flex-column($gap: 5);
+  padding: map-get($spacers, 5);
+  min-width: 29rem;
+}
+
+.pm-c-leaderboard-top-wallets {
+  &__wallet {
+    @include flex-row($gap: 3);
+
+    svg {
+      flex-shrink: 0;
+    }
+  }
+}

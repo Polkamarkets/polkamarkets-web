@@ -2,7 +2,7 @@ import { AlertMini } from 'components';
 
 function HomeMobileInfo() {
   return (
-    <div className="pm-home__mobile-info">
+    <div className="pm-p-home__mobile-info">
       <AlertMini
         variant="information"
         description="Our mobile version is read-only, you're only allowed to watch the markets. If you want to
@@ -11,7 +11,5 @@ function HomeMobileInfo() {
     </div>
   );
 }
-
-HomeMobileInfo.displayName = 'HomeMobileInfo';
 
 export default HomeMobileInfo;

@@ -10,7 +10,7 @@
       }
 
       .fill-empty-space {
-        border-color: themed('mini-table-item-title-color');
+        border-color: themed('mini-table-item-separator-color');
       }
     }
   } @else {
@@ -20,7 +20,7 @@
     }
 
     .fill-empty-space {
-      border-color: $color;
+      border-color: rgba($color, 0.75);
     }
   }
 }

@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { login, fetchAditionalData } from 'redux/ducks/bepro';
 import { changeOutcomeData, changeData } from 'redux/ducks/market';
 import { changeMarketOutcomeData, changeMarketData } from 'redux/ducks/markets';
+import { login, fetchAditionalData } from 'redux/ducks/polkamarkets';
 import { selectOutcome } from 'redux/ducks/trade';
 import { closeTradeForm } from 'redux/ducks/ui';
-import { BeproService, PolkamarketsApiService } from 'services';
+import { PolkamarketsService, PolkamarketsApiService } from 'services';
 
 import TWarningIcon from 'assets/icons/TWarningIcon';
 
@@ -14,6 +14,7 @@ import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
 import useToastNotification from 'hooks/useToastNotification';
 
 import { Button } from '../Button';
+import NetworkSwitch from '../Networks/NetworkSwitch';
 import Text from '../Text';
 import Toast from '../Toast';
 import ToastNotification from '../ToastNotification';
@@ -28,16 +29,20 @@ function TradeFormActions() {
   // Market selectors
   const type = useAppSelector(state => state.trade.type);
   const marketId = useAppSelector(state => state.trade.selectedMarketId);
+  const marketNetworkId = useAppSelector(
+    state => state.market.market.networkId
+  );
   const marketSlug = useAppSelector(state => state.market.market.slug);
   const predictionId = useAppSelector(state => state.trade.selectedOutcomeId);
   const { amount, shares, totalStake, fee } = useAppSelector(
     state => state.trade
   );
   const maxAmount = useAppSelector(state => state.trade.maxAmount);
-  const ethAddress = useAppSelector(state => state.bepro.ethAddress);
+  const ethAddress = useAppSelector(state => state.polkamarkets.ethAddress);
 
   // Derivated state
   const isMarketPage = location.pathname === `/markets/${marketSlug}`;
+  const isWrongNetwork = network.id !== `${marketNetworkId}`;
 
   // Local state
   const [isLoading, setIsLoading] = useState(false);
@@ -52,9 +57,9 @@ function TradeFormActions() {
   }
 
   async function reloadMarketPrices() {
-    const marketData = await new BeproService(networkConfig).getMarketData(
-      marketId
-    );
+    const marketData = await new PolkamarketsService(
+      networkConfig
+    ).getMarketData(marketId);
 
     marketData.outcomes.forEach((outcomeData, outcomeId) => {
       const data = { price: outcomeData.price, shares: outcomeData.shares };
@@ -92,7 +97,7 @@ function TradeFormActions() {
     setTransactionSuccess(false);
     setTransactionSuccessHash(undefined);
 
-    const beproService = new BeproService(networkConfig);
+    const polkamarketsService = new PolkamarketsService(networkConfig);
 
     setIsLoading(true);
     setNeedsPricesRefresh(false);
@@ -102,7 +107,7 @@ function TradeFormActions() {
       const minShares = shares * 0.999;
 
       // calculating shares amount from smart contract
-      const sharesToBuy = await beproService.calcBuyAmount(
+      const sharesToBuy = await polkamarketsService.calcBuyAmount(
         marketId,
         predictionId,
         amount
@@ -117,7 +122,7 @@ function TradeFormActions() {
       }
 
       // performing buy action on smart contract
-      const response = await beproService.buy(
+      const response = await polkamarketsService.buy(
         marketId,
         predictionId,
         amount,
@@ -154,7 +159,7 @@ function TradeFormActions() {
     setTransactionSuccess(false);
     setTransactionSuccessHash(undefined);
 
-    const beproService = new BeproService(networkConfig);
+    const polkamarketsService = new PolkamarketsService(networkConfig);
 
     setIsLoading(true);
     setNeedsPricesRefresh(false);
@@ -165,7 +170,7 @@ function TradeFormActions() {
       const minShares = shares * 1.001;
 
       // calculating shares amount from smart contract
-      const sharesToSell = await beproService.calcSellAmount(
+      const sharesToSell = await polkamarketsService.calcSellAmount(
         marketId,
         predictionId,
         ethAmount
@@ -180,7 +185,7 @@ function TradeFormActions() {
       }
 
       // performing sell action on smart contract
-      const response = await beproService.sell(
+      const response = await polkamarketsService.sell(
         marketId,
         predictionId,
         ethAmount,
@@ -230,7 +235,8 @@ function TradeFormActions() {
             Cancel
           </Button>
         ) : null}
-        {needsPricesRefresh ? (
+        {isWrongNetwork ? <NetworkSwitch /> : null}
+        {needsPricesRefresh && !isWrongNetwork ? (
           <div className="pm-c-trade-form-actions__group--column">
             <Button
               color="default"
@@ -263,7 +269,7 @@ function TradeFormActions() {
             </Text>
           </div>
         ) : null}
-        {type === 'buy' && !needsPricesRefresh ? (
+        {type === 'buy' && !needsPricesRefresh && !isWrongNetwork ? (
           <Button
             color="success"
             fullwidth
@@ -274,7 +280,7 @@ function TradeFormActions() {
             Buy
           </Button>
         ) : null}
-        {type === 'sell' && !needsPricesRefresh ? (
+        {type === 'sell' && !needsPricesRefresh && !isWrongNetwork ? (
           <Button
             color="danger"
             fullwidth

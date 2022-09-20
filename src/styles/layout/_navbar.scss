@@ -64,6 +64,27 @@
           background-color: $gray-500 !important;
         }
       }
+
+      &-metamask {
+        &__status {
+          display: inline-flex;
+          background-color: #8a96a810;
+          padding: 1.2rem;
+          border-radius: 50%;
+          position: relative;
+          margin-bottom: 3.2rem;
+
+          & .pm-c-pill-normal--danger {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            padding: 0;
+            width: 2rem;
+            height: 2rem;
+            justify-content: center;
+          }
+        }
+      }
     }
   }
 }

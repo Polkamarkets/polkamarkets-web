@@ -5,10 +5,10 @@ import { configureStore } from '@reduxjs/toolkit';
 import thunkMiddleware from 'redux-thunk';
 import polkamarketsApi from 'services/Polkamarkets';
 
-import bepro from './ducks/bepro';
 import liquidity from './ducks/liquidity';
 import market from './ducks/market';
 import markets from './ducks/markets';
+import polkamarkets from './ducks/polkamarkets';
 import portfolio from './ducks/portfolio';
 import trade from './ducks/trade';
 import ui from './ducks/ui';
@@ -20,7 +20,7 @@ const store = configureStore({
     liquidity,
     markets,
     portfolio,
-    bepro,
+    polkamarkets,
     ui,
     [polkamarketsApi.reducerPath]: polkamarketsApi.reducer
   },

@@ -1,0 +1,99 @@
+.pm-p-profile {
+  @include flex-column($gap: px-to-rem(16px));
+}
+
+.pm-p-profile-summary {
+  @include flex-column(flex-start, flex-start, px-to-rem(32px));
+  width: 100%;
+
+  &__address-group {
+    @include flex-row(flex-start, center);
+    min-width: 0;
+    width: 100%;
+  }
+
+  &__address--start {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  &__address--end {
+    flex-shrink: 0;
+  }
+
+  &__explorer-icon {
+    height: px-to-rem(10px);
+    width: px-to-rem(10px);
+    margin-left: px-to-rem(6px);
+    fill: var(--color-text-3);
+
+    transition: 0.2s fill ease-in-out;
+
+    &:hover {
+      fill: var(--color-text-1);
+    }
+  }
+
+  @include breakpoint-to('xl') {
+    @include flex-row(space-between, flex-start, px-to-rem(32px));
+  }
+
+  &__details {
+    @include flex-column(flex-start, flex-start, px-to-rem(8px));
+    width: 100%;
+  }
+
+  &__history {
+    @include flex-column(flex-start, flex-start, px-to-rem(8px));
+
+    .pm-c-divider--circle {
+      display: none;
+    }
+
+    @include breakpoint-to('md') {
+      @include flex-row(flex-start, center, px-to-rem(8px));
+
+      .pm-c-divider--circle {
+        display: inline-block;
+      }
+    }
+  }
+
+  &__stats {
+    display: grid;
+    gap: px-to-rem(16px);
+    grid-template-columns: repeat(auto-fit, minmax(px-to-rem(204px), 1fr));
+    width: 100%;
+
+    @include breakpoint-to('xl') {
+      grid-template-columns: repeat(auto-fit, minmax(px-to-rem(150px), 1fr));
+      max-width: px-to-rem(645px);
+    }
+  }
+
+  &__stat {
+    @include flex-column(flex-start, flex-start, px-to-rem(4px));
+    width: 100%;
+    padding: px-to-rem(16px);
+    border-radius: $border-radius--small;
+  }
+}
+
+.pm-p-profile-your-stats {
+  @include flex-column(flex-start, flex-start, px-to-rem(24px));
+
+  @include breakpoint-to('lg') {
+    @include flex-row(center, flex-start, px-to-rem(24px));
+  }
+}
+
+.pm-p-profile-lists {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: px-to-rem(24px);
+
+  @include breakpoint-to('lg') {
+    grid-template-columns: repeat(2, minmax(px-to-rem(200px), 1fr));
+  }
+}

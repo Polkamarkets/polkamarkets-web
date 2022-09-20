@@ -4,14 +4,18 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { environment } from 'config';
 import { NetworkConfig } from 'config/environment';
 import { toHexadecimal } from 'helpers/string';
-import { changeNetworkId, fetchAditionalData, login } from 'redux/ducks/bepro';
+import {
+  changeNetworkId,
+  fetchAditionalData,
+  login
+} from 'redux/ducks/polkamarkets';
 import store from 'redux/store';
 
 import { useAppDispatch } from 'hooks';
 
 import useAppSelector from '../useAppSelector';
 import useLocalStorage from '../useLocalStorage';
-import NETWORKS, { Network, REACT_APP_NETWORK_ID } from './networks';
+import NETWORKS, { Network } from './networks';
 
 declare global {
   interface Window {
@@ -19,20 +23,21 @@ declare global {
   }
 }
 
-const DEFAULT_NETWORK_ID = toHexadecimal(REACT_APP_NETWORK_ID || 42);
-const DEFAULT_NETWORK = NETWORKS[DEFAULT_NETWORK_ID];
-const DEFAULT_NETWORK_CONFIG = environment.NETWORKS[DEFAULT_NETWORK.id];
-
-const UNKNOWN_NETWORK = NETWORKS['0x270f'];
-
-const AVAILABLE_NETWORKS = Object.keys(environment.NETWORKS);
-
 function fetchUserData(networkConfig: NetworkConfig) {
   store.dispatch(login(networkConfig));
   store.dispatch(fetchAditionalData(networkConfig));
 }
 
 function useNetwork() {
+  // Constants
+  const DEFAULT_NETWORK_ID = toHexadecimal(environment.NETWORK_ID || 42);
+  const DEFAULT_NETWORK = NETWORKS[DEFAULT_NETWORK_ID];
+  const DEFAULT_NETWORK_CONFIG = environment.NETWORKS[DEFAULT_NETWORK.id];
+
+  const UNKNOWN_NETWORK = NETWORKS['0x270f'];
+
+  const AVAILABLE_NETWORKS = Object.keys(environment.NETWORKS);
+
   // Third-party hooks
   const location = useLocation();
   const history = useHistory();
@@ -46,9 +51,11 @@ function useNetwork() {
 
   // Redux state selectors
   const metamaskWalletIsConnected = useAppSelector(
-    state => state.bepro.isLoggedIn
+    state => state.polkamarkets.isLoggedIn
   );
-  const metamaskNetworkId = useAppSelector(state => state.bepro.networkId);
+  const metamaskNetworkId = useAppSelector(
+    state => state.polkamarkets.networkId
+  );
 
   // Derivated state
   const metamaskNetwork = metamaskNetworkId
@@ -96,6 +103,7 @@ function useNetwork() {
     }
 
     getCurrentEthereumNetworkId();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localNetwork]);
 
   useEffect(() => {

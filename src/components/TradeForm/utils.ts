@@ -31,7 +31,10 @@ function formatMiniTableItems(
       key: 'pricePerFraction',
       title: 'Price per share',
       // eslint-disable-next-line prettier/prettier
-      value: `${roundNumber(price || selectedPredictionObj?.price || 0, 3)} ${ticker}`
+      value: `${roundNumber(
+        price || selectedPredictionObj?.price || 0,
+        3
+      )} ${ticker}`
     },
     {
       key: 'shares',
@@ -69,14 +72,15 @@ function calculateSharesBought(
   outcome: Outcome,
   ethAmount: number
 ): TradeDetails {
-  // TODO: move formulas to beprojs
+  // TODO: move formulas to polkamarketsjs
 
   // taking fee of ethAmount
   const fee = market.fee * ethAmount;
   const amount = ethAmount - fee;
 
   // eslint-disable-next-line prettier/prettier
-  const newOutcomeShares = market.liquidity ** 2 / (market.liquidity ** 2 / outcome.shares + amount);
+  const newOutcomeShares =
+    market.liquidity ** 2 / (market.liquidity ** 2 / outcome.shares + amount);
 
   const shares = outcome.shares - newOutcomeShares + amount || 0;
   const price = amount / shares || 0;
@@ -99,7 +103,7 @@ function calculateEthAmountSold(
   outcome: Outcome,
   shares: number
 ): TradeDetails {
-  // TODO: move formulas to beprojs
+  // TODO: move formulas to polkamarketsjs
   // x = 1/2 (-sqrt(a^2 - 2 a (y + z) + 4 b + (y + z)^2) + a + y + z)
   // x = ETH amount user will receive
   // y = # shares sold

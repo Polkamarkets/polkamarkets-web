@@ -64,7 +64,7 @@ function calculateLiquidityAdded(
   market: Market,
   ethAmount: number
 ): LiquidityDetails {
-  // TODO: move formulas to beprojs
+  // TODO: move formulas to polkamarketsjs
   const minOutcome = market.outcomes.reduce((prev, curr) => {
     return prev.shares < curr.shares ? prev : curr;
   });
@@ -96,7 +96,7 @@ function calculateLiquidityRemoved(
   market: Market,
   sharesAmount: number
 ): LiquidityDetails {
-  // TODO: move formulas to beprojs
+  // TODO: move formulas to polkamarketsjs
   const maxOutcome = market.outcomes.reduce((prev, curr) => {
     return prev.shares > curr.shares ? prev : curr;
   });

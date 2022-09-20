@@ -1,12 +1,12 @@
 import * as realitioLib from '@reality.eth/reality-eth-lib/formatters/question';
-import * as beprojs from 'bepro-js';
 import environment, { NetworkConfig } from 'config/environment';
+import * as polkamarketsjs from 'polkamarkets-js';
 
-export default class BeproService {
-  // bepro app
-  public bepro: any;
+export default class PolkamarketsService {
+  // polkamarkets app
+  public polkamarkets: any;
 
-  // bepro smart contract instances
+  // polkamarkets smart contract instances
   public contracts: any = {};
 
   // indicates if user has already done a successful metamask login
@@ -47,12 +47,12 @@ export default class BeproService {
     this.realitioErc20ContractAddress = REALITIO_ERC20_CONTRACT_ADDRESS;
     this.achievementsContractAddress = ACHIEVEMENTS_CONTRACT_ADDRESS;
 
-    this.bepro = new beprojs.Application({
+    this.polkamarkets = new polkamarketsjs.Application({
       web3Provider: WEB3_PROVIDER,
       web3EventsProvider: WEB3_EVENTS_PROVIDER
     });
 
-    this.bepro.start();
+    this.polkamarkets.start();
     // fetching contract
     this.getContracts();
   }
@@ -65,44 +65,44 @@ export default class BeproService {
   }
 
   public getPredictionMarketContract() {
-    this.contracts.pm = this.bepro.getPredictionMarketContract({
+    this.contracts.pm = this.polkamarkets.getPredictionMarketContract({
       contractAddress: this.predictionMarketContractAddress
     });
   }
 
   public getERC20Contract() {
-    this.contracts.erc20 = this.bepro.getERC20Contract({
+    this.contracts.erc20 = this.polkamarkets.getERC20Contract({
       contractAddress: this.erc20ContractAddress
     });
   }
 
   public getRealitioERC20Contract() {
-    this.contracts.realitio = this.bepro.getRealitioERC20Contract({
+    this.contracts.realitio = this.polkamarkets.getRealitioERC20Contract({
       contractAddress: this.realitioErc20ContractAddress
     });
   }
 
   public getAchievementsContract() {
-    this.contracts.achievements = this.bepro.getAchievementsContract({
+    this.contracts.achievements = this.polkamarkets.getAchievementsContract({
       contractAddress: this.achievementsContractAddress
     });
   }
 
   // returns wether wallet is connected to service or not
   public async isLoggedIn(): Promise<boolean> {
-    return this.bepro.isLoggedIn();
+    return this.polkamarkets.isLoggedIn();
   }
 
   public async login() {
     if (this.loggedIn) return true;
 
     try {
-      this.loggedIn = await this.bepro.login();
+      this.loggedIn = await this.polkamarkets.login();
       // successful login
       if (this.loggedIn) {
         this.address = await this.getAddress();
-        // TODO: set this in bepro
-        this.bepro.web3.eth.defaultAccount = this.address;
+        // TODO: set this in polkamarkets
+        this.polkamarkets.web3.eth.defaultAccount = this.address;
         // re-fetching contracts
         this.getContracts();
       }
@@ -117,14 +117,14 @@ export default class BeproService {
   public async getAddress(): Promise<string> {
     if (this.address) return this.address;
 
-    return this.bepro.getAddress() || '';
+    return this.polkamarkets.getAddress() || '';
   }
 
   public async getBalance(): Promise<number> {
     if (!this.address) return 0;
 
     // returns user balance in ETH
-    const balance = await this.bepro.getETHBalance();
+    const balance = await this.polkamarkets.getETHBalance();
 
     return parseFloat(balance) || 0;
   }
@@ -486,6 +486,19 @@ export default class BeproService {
     const response = await this.contracts.realitio.getMyActions();
 
     return response;
+  }
+
+  public async getBondMarketIds(): Promise<string[]> {
+    // ensuring user has wallet connected
+    if (!this.address) return [];
+
+    const questions = await this.contracts.realitio.getMyQuestions();
+
+    const marketIds = await this.contracts.pm.getMarketIdsFromQuestions({
+      questions: questions.map(question => question.question)
+    });
+
+    return marketIds;
   }
 
   public async getQuestion(questionId: string): Promise<Object> {

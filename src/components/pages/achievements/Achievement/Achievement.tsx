@@ -1,6 +1,6 @@
 import { ReactNode, useState, memo } from 'react';
 
-import { BeproService } from 'services';
+import { PolkamarketsService } from 'services';
 import { Achievement as AchievementProps } from 'types/achievement';
 
 import { CheckIcon, MedalIcon } from 'assets/icons';
@@ -67,11 +67,11 @@ function Achievement({
   async function claimNFT() {
     setIsClaimingNFT(true);
 
-    const beproService = new BeproService(networkConfig);
+    const polkamarketsService = new PolkamarketsService(networkConfig);
 
     try {
-      await beproService.login();
-      const response = await beproService.claimAchievement(id);
+      await polkamarketsService.login();
+      const response = await polkamarketsService.claimAchievement(id);
 
       if (response.status && response.transactionHash) {
         await onClaimCompleted(id, response.status, response.transactionHash);

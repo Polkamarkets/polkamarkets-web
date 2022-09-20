@@ -53,6 +53,14 @@
     pointer-events: none;
   }
 
+  &--truncated {
+    @extend .pm-c-button;
+    display: inline-block !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
   @include themes($button-normal-themes) {
     @each $color, $color-map in themed('background-colors') {
       &-normal--#{$color} {

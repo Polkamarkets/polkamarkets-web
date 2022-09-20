@@ -1,6 +1,8 @@
 import React from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
+import classNames from 'classnames';
+
 type TooltipPosition =
   | 'auto'
   | 'auto-start'
@@ -28,6 +30,7 @@ type TooltipProps = {
    */
   text: string;
   children: React.ReactNode;
+  className?: string;
   /**
    * The tooltip is disabled or not
    */
@@ -41,6 +44,7 @@ function Tooltip({
   position = 'top',
   text,
   children,
+  className,
   disabled = false
 }: TooltipProps) {
   const {
@@ -57,7 +61,7 @@ function Tooltip({
         <div
           ref={setTooltipRef}
           {...getTooltipProps({
-            className: 'pm-c-tooltip'
+            className: classNames('pm-c-tooltip', className)
           })}
         >
           <div

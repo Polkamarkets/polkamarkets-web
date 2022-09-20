@@ -3,19 +3,17 @@ import { Market } from 'models/market';
 
 import { Card, Text } from 'components';
 
-import { useNetwork } from 'hooks';
+import { useAppSelector } from 'hooks';
 
 type MarketStatsProps = {
   market: Market;
 };
 
 function MarketStats({ market }: MarketStatsProps) {
-  const {
-    network: { currency }
-  } = useNetwork();
+  const currency = useAppSelector(state => state.market.market.currency);
   const { symbol } = currency;
   const outcomeStats = market.outcomes.map(outcome => {
-    const chartData = outcome.priceCharts.find(
+    const chartData = outcome.priceCharts?.find(
       chart => chart.timeframe === '24h'
     );
 

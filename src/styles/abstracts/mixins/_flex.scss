@@ -3,7 +3,12 @@
   flex-direction: row;
   justify-content: $justify;
   align-items: $align;
-  gap: $gap;
+
+  @if map-has-key($spacers, $gap) {
+    gap: map-get($spacers, $gap);
+  } @else {
+    gap: $gap;
+  }
 }
 
 @mixin flex-column($justify: flex-start, $align: stretch, $gap: null) {
@@ -11,5 +16,10 @@
   flex-direction: column;
   justify-content: $justify;
   align-items: $align;
-  gap: $gap;
+
+  @if map-has-key($spacers, $gap) {
+    gap: map-get($spacers, $gap);
+  } @else {
+    gap: $gap;
+  }
 }

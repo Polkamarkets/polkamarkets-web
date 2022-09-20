@@ -2,7 +2,7 @@ import { ReactNode, createContext } from 'react';
 
 import { useLocalStorage } from 'hooks';
 
-type FavoriteMarketsByNetwork = { [key: string]: string[] };
+export type FavoriteMarketsByNetwork = { [key: string]: string[] };
 
 type FavoriteMarkets = {
   favoriteMarkets: FavoriteMarketsByNetwork;

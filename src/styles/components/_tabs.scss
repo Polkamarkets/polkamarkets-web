@@ -3,7 +3,7 @@
     @include flex-column;
     gap: 1.6rem;
 
-    height: fit-content;
+    height: 100%;
 
     &__header {
       @include flex-row(space-between, center);

@@ -38,3 +38,8 @@
   @extend %border;
   border-left-style: solid;
 }
+
+.border-dashed-bottom {
+  @extend %border;
+  border-bottom-style: dashed;
+}

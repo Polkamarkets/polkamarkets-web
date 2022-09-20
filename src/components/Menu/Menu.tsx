@@ -7,15 +7,20 @@ type ItemProps = {
    * Aditional CSS inline style
    */
   style?: React.CSSProperties;
+  fullWidth?: boolean;
   children: React.ReactNode;
 };
 
 /**
  * Menu item
  */
-function Item({ style, children, ...props }: ItemProps) {
+function Item({ style, children, fullWidth = false, ...props }: ItemProps) {
   return (
-    <li className="menu__item" style={style} {...props}>
+    <li
+      className={classNames({ menu__item: true, 'width-full': fullWidth })}
+      style={style}
+      {...props}
+    >
       {children}
     </li>
   );

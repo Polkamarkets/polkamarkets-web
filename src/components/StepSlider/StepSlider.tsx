@@ -50,9 +50,14 @@ export const themes: Themes = {
 type StepSliderProps = {
   currentValue: number;
   onChange: (value: number) => void;
+  disabled?: boolean;
 };
 
-function StepSlider({ currentValue, onChange }: StepSliderProps) {
+function StepSlider({
+  currentValue,
+  onChange,
+  disabled = false
+}: StepSliderProps) {
   const { theme } = useTheme();
 
   const currentTheme: Theme = themes[theme];
@@ -65,6 +70,7 @@ function StepSlider({ currentValue, onChange }: StepSliderProps) {
         max={100}
         marks={marks}
         onChange={value => onChange(value)}
+        disabled={disabled}
         trackStyle={{ backgroundColor: currentTheme.trackBackgroundColor }}
         railStyle={{ backgroundColor: currentTheme.railBackgroundColor }}
         dotStyle={{

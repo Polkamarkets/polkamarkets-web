@@ -1,24 +1,33 @@
 .pm-l-layout {
   @include themes($layout-themes) {
     display: grid;
+    height: 100%;
     max-width: 100%;
 
     grid-template-areas:
       'nav header header'
       'nav main aside'
-      'nav footer aside';
+      'nav main aside';
     grid-template-columns: auto minmax(0, 1fr) auto;
     grid-template-rows: auto 1fr auto;
 
     background-color: themed('background-color');
-    transition: all 0.2s ease-in-out 0s;
+    transition: background-color 0.2s ease-in-out 0s;
 
     &__header {
       grid-area: header;
       z-index: 1000;
 
       background-color: themed('background-color');
-      transition: all 0.2s ease-in-out 0s;
+      transition: background-color 0.2s ease-in-out 0s;
+    }
+
+    &__alert {
+      display: none;
+
+      @include breakpoint-to('md') {
+        display: inline;
+      }
     }
 
     &__nav {
@@ -28,7 +37,23 @@
     &__main {
       grid-area: main;
 
-      padding: 2.4rem;
+      display: grid;
+      grid-template-rows: 1fr auto;
+      padding: px-to-rem(8px) px-to-rem(24px) px-to-rem(12px) px-to-rem(24px);
+
+      height: 100%;
+    }
+
+    &__scrollable-area {
+      height: calc(100vh - 6.8rem);
+
+      &--with-alert {
+        height: calc(100vh - 6.8rem);
+
+        @include breakpoint-to('md') {
+          height: calc(100vh - 11rem);
+        }
+      }
     }
 
     &__aside {
@@ -36,11 +61,12 @@
     }
 
     &__footer {
-      grid-area: footer;
+      grid-row-start: 2;
+      grid-row-end: 3;
 
       width: 100%;
       background-color: themed('background-color');
-      transition: all 0.2s ease-in-out 0s;
+      transition: background-color 0.2s ease-in-out 0s;
     }
   }
 }

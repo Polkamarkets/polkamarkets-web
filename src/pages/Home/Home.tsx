@@ -18,26 +18,24 @@ function Home() {
   const openMarkets = markets.filter(market => market.state === 'open');
   const closedMarkets = markets.filter(market => market.state === 'closed');
   const resolvedMarkets = markets.filter(market => market.state === 'resolved');
-  const favoritesMarkets = markets.filter(market =>
-    favoriteMarkets.includes(market.id)
+  const favoritesMarkets = markets.filter(
+    market =>
+      favoriteMarkets[`${market.networkId}`] &&
+      favoriteMarkets[`${market.networkId}`].includes(market.id)
   );
 
   return (
-    <div className="pm-home">
-      <div className="pm-home__content">
-        <HomeMobileInfo />
-        <HomeCategories />
-        <HomeTabs
-          openMarkets={openMarkets}
-          closedMarkets={closedMarkets}
-          resolvedMarkets={resolvedMarkets}
-          favoritesMarkets={favoritesMarkets}
-        />
-      </div>
+    <div className="pm-p-home">
+      <HomeMobileInfo />
+      <HomeCategories />
+      <HomeTabs
+        openMarkets={openMarkets}
+        closedMarkets={closedMarkets}
+        resolvedMarkets={resolvedMarkets}
+        favoritesMarkets={favoritesMarkets}
+      />
     </div>
   );
 }
-
-Home.displayName = 'Home';
 
 export default Home;

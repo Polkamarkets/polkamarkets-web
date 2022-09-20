@@ -1,0 +1,31 @@
+:root,
+[data-theme='light'] {
+  --color-border-1: #e3e7f0;
+  --color-border-2: #c2cad6;
+  --color-border-3: #ffffff;
+}
+
+@supports (--css: variables) {
+  [data-theme='dark'] {
+    --color-border-1: #252c3b;
+    --color-border-2: #637084;
+    --color-border-3: #171b23;
+  }
+}
+
+$border-colors-map: (
+  1: var(--color-border-1),
+  2: var(--color-border-2),
+  3: var(--color-border-3)
+);
+
+@each $border-color, $border-color-value in $border-colors-map {
+  .border-#{'' + $border-color} {
+    border-color: $border-color-value;
+  }
+
+  .border-#{'' + $border-color + '-75'} {
+    border-color: $border-color-value;
+    opacity: 0.75;
+  }
+}

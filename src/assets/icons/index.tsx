@@ -32,7 +32,6 @@ import MarketsIcon from './MarketsIcon';
 import MedalIcon from './MedalIcon';
 import MediumIcon from './MediumIcon';
 import MetaMaskIcon from './MetaMaskIcon';
-import MetaMaskIconSmall from './MetaMaskIconSmall';
 import MoonbeamIcon from './MoonbeamIcon';
 import MoonIcon from './MoonIcon';
 import MoonriverIcon from './MoonriverIcon';
@@ -59,6 +58,7 @@ import TrophyIcon from './TrophyIcon';
 import TwarningIcon from './TWarningIcon';
 import TwitterIcon from './TwitterIcon';
 import UsersIcon from './UsersIcon';
+import VerifiedIcon from './VerifiedIcon';
 import WalletIcon from './WalletIcon';
 import WarningIcon from './WarningIcon';
 import WhiteHouseIcon from './WhiteHouseIcon';
@@ -98,7 +98,6 @@ export {
   MedalIcon,
   MediumIcon,
   MetaMaskIcon,
-  MetaMaskIconSmall,
   MoonbeamIcon,
   MoonriverIcon,
   MoonIcon,
@@ -125,7 +124,10 @@ export {
   TwitterIcon,
   TrophyIcon,
   UsersIcon,
+  VerifiedIcon,
   WalletIcon,
   WarningIcon,
   WhiteHouseIcon
 };
+export { default as RemoveOutlinedIcon } from './RemoveOutlinedIcon';
+export { default as WarningOutlinedIcon } from './WarningOutlinedIcon';

@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { roundNumber } from 'helpers/math';
 import { selectOutcome } from 'redux/ducks/trade';
 
-import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
+import { useAppDispatch, useAppSelector } from 'hooks';
 
 import MiniTable from '../MiniTable';
 import Text from '../Text';
@@ -12,10 +12,6 @@ import Text from '../Text';
 function TradeFormPredictions() {
   const location = useLocation();
   const dispatch = useAppDispatch();
-  const {
-    network: { currency }
-  } = useNetwork();
-  const { symbol } = currency;
 
   const selectedMarketId = useAppSelector(
     state => state.trade.selectedMarketId
@@ -23,9 +19,11 @@ function TradeFormPredictions() {
   const selectedOutcomeId = useAppSelector(
     state => state.trade.selectedOutcomeId
   );
+
+  const symbol = useAppSelector(state => state.market.market.currency.symbol);
   const outcomes = useAppSelector(state => state.market.market.outcomes);
   const marketSlug = useAppSelector(state => state.market.market.slug);
-  const portfolio = useAppSelector(state => state.bepro.portfolio);
+  const portfolio = useAppSelector(state => state.polkamarkets.portfolio);
 
   const isMarketPage = location.pathname === `/markets/${marketSlug}`;
 

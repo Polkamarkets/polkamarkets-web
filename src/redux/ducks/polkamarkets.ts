@@ -1,8 +1,38 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { NetworkConfig } from 'config/environment';
-import { BeproService } from 'services';
+import { PolkamarketsService } from 'services';
 
-const initialState = {
+export type Action = {
+  action: string;
+  marketId: number;
+  outcomeId: number;
+  shares: number;
+  value: number;
+  timestamp: number;
+  transactionHash: string;
+};
+
+export type PolkamarketsInitialState = {
+  isLoggedIn: boolean;
+  networkId: string;
+  ethAddress: string;
+  ethBalance: number;
+  polkBalance: number;
+  polkApproved: boolean;
+  portfolio: any;
+  actions: Action[];
+  marketsWithActions: string[];
+  bonds: any;
+  marketsWithBonds: string[];
+  bondActions: any[];
+  isLoading: {
+    portfolio: boolean;
+    bonds: boolean;
+    actions: boolean;
+  };
+};
+
+const initialState: PolkamarketsInitialState = {
   isLoggedIn: false,
   networkId: '',
   ethAddress: '',
@@ -11,15 +41,19 @@ const initialState = {
   polkApproved: false,
   portfolio: {},
   actions: [],
+  marketsWithActions: [],
   bonds: {},
+  marketsWithBonds: [],
   bondActions: [],
   isLoading: {
-    portfolio: false
+    portfolio: false,
+    bonds: false,
+    actions: false
   }
 };
 
-const beproSlice = createSlice({
-  name: 'bepro',
+const polkamarketsSlice = createSlice({
+  name: 'polkamarkets',
   initialState,
   reducers: {
     changeIsLoggedIn: (state, action: PayloadAction<boolean>) => ({
@@ -50,13 +84,28 @@ const beproSlice = createSlice({
       ...state,
       portfolio: action.payload
     }),
-    changeActions: (state, action: PayloadAction<any>) => ({
+    changeActions: (state, action: PayloadAction<Action[]>) => ({
       ...state,
       actions: action.payload
     }),
+    changeMarketsWithActions: {
+      reducer: (state, action: PayloadAction<string[]>) => ({
+        ...state,
+        marketsWithActions: action.payload
+      }),
+      prepare: (actions: Action[]) => {
+        return {
+          payload: actions.map(action => action.marketId.toString())
+        };
+      }
+    },
     changeBonds: (state, action: PayloadAction<Object>) => ({
       ...state,
       bonds: action.payload
+    }),
+    changeMarketsWithBonds: (state, action: PayloadAction<string[]>) => ({
+      ...state,
+      marketsWithBonds: action.payload
     }),
     changeBondActions: (state, action: PayloadAction<any>) => ({
       ...state,
@@ -75,7 +124,7 @@ const beproSlice = createSlice({
   }
 });
 
-export default beproSlice.reducer;
+export default polkamarketsSlice.reducer;
 
 const {
   changeIsLoggedIn,
@@ -86,32 +135,34 @@ const {
   changePolkApproved,
   changePortfolio,
   changeActions,
+  changeMarketsWithActions,
   changeBonds,
+  changeMarketsWithBonds,
   changeBondActions,
   changeLoading
-} = beproSlice.actions;
+} = polkamarketsSlice.actions;
 
 // fetching initial wallet details
 function login(networkConfig: NetworkConfig) {
   return async dispatch => {
-    const beproService = new BeproService(networkConfig);
+    const polkamarketsService = new PolkamarketsService(networkConfig);
 
-    const isLoggedIn = await beproService.isLoggedIn();
+    const isLoggedIn = await polkamarketsService.isLoggedIn();
     dispatch(changeIsLoggedIn(isLoggedIn));
 
     if (isLoggedIn) {
-      await beproService.login();
+      await polkamarketsService.login();
 
-      const address = await beproService.getAddress();
+      const address = await polkamarketsService.getAddress();
       dispatch(changeEthAddress(address));
 
-      const balance = await beproService.getBalance();
+      const balance = await polkamarketsService.getBalance();
       dispatch(changeEthBalance(balance));
 
-      const polkBalance = await beproService.getERC20Balance();
+      const polkBalance = await polkamarketsService.getERC20Balance();
       dispatch(changePolkBalance(polkBalance));
 
-      const polkApproved = await beproService.isRealitioERC20Approved();
+      const polkApproved = await polkamarketsService.isRealitioERC20Approved();
       dispatch(changePolkApproved(polkApproved));
     }
   };
@@ -119,11 +170,11 @@ function login(networkConfig: NetworkConfig) {
 
 function fetchAditionalData(networkConfig: NetworkConfig) {
   return async dispatch => {
-    const beproService = new BeproService(networkConfig);
-    const isLoggedIn = await beproService.isLoggedIn();
+    const polkamarketsService = new PolkamarketsService(networkConfig);
+    const isLoggedIn = await polkamarketsService.isLoggedIn();
 
     if (isLoggedIn) {
-      await beproService.login();
+      await polkamarketsService.login();
 
       dispatch(
         changeLoading({
@@ -132,11 +183,28 @@ function fetchAditionalData(networkConfig: NetworkConfig) {
         })
       );
 
-      const portfolio = await beproService.getPortfolio();
+      dispatch(
+        changeLoading({
+          key: 'bonds',
+          value: true
+        })
+      );
+
+      dispatch(
+        changeLoading({
+          key: 'actions',
+          value: true
+        })
+      );
+
+      const portfolio = await polkamarketsService.getPortfolio();
       dispatch(changePortfolio(portfolio));
 
-      const bonds = await beproService.getBonds();
+      const bonds = await polkamarketsService.getBonds();
       dispatch(changeBonds(bonds));
+
+      const bondMarketIds = await polkamarketsService.getBondMarketIds();
+      dispatch(changeMarketsWithBonds(bondMarketIds));
 
       dispatch(
         changeLoading({
@@ -145,10 +213,25 @@ function fetchAditionalData(networkConfig: NetworkConfig) {
         })
       );
 
-      const actions = await beproService.getActions();
-      dispatch(changeActions(actions));
+      dispatch(
+        changeLoading({
+          key: 'bonds',
+          value: false
+        })
+      );
 
-      const bondActions = await beproService.getBondActions();
+      const actions = (await polkamarketsService.getActions()) as Action[];
+      dispatch(changeActions(actions));
+      dispatch(changeMarketsWithActions(actions));
+
+      dispatch(
+        changeLoading({
+          key: 'actions',
+          value: false
+        })
+      );
+
+      const bondActions = await polkamarketsService.getBondActions();
       dispatch(changeBondActions(bondActions));
     }
   };

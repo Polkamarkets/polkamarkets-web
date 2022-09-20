@@ -1,0 +1,28 @@
+.pm-c-profile-achievement {
+  @include flex-column(flex-start, center, px-to-rem(24px));
+  padding: px-to-rem(24px);
+  margin-right: px-to-rem(12px);
+  width: 100%;
+
+  @include breakpoint-to('sm') {
+    display: flex;
+    flex-direction: row;
+  }
+
+  &__description {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    word-break: break-word;
+  }
+
+  &__stats {
+    @include flex-column(center, center, px-to-rem(16px));
+
+    @include breakpoint-to('sm') {
+      @include flex-row(space-between, center, px-to-rem(16px));
+    }
+  }
+}

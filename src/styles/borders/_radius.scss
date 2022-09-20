@@ -1,12 +1,12 @@
-$border-radius--small: 0.4rem !default;
-$border-radius--medium: 0.8rem !default;
-$border-radius--large: 1.6rem !default;
+$border-radius--small: 0.4rem;
+$border-radius--medium: 0.8rem;
+$border-radius--large: 1.6rem;
 
 $border-radius-sizes: (
-  small: $border-radius--small,
-  medium: $border-radius--medium,
-  large: $border-radius--large
-) !default;
+  'small': $border-radius--small,
+  'medium': $border-radius--medium,
+  'large': $border-radius--large
+);
 
 @each $size, $value in $border-radius-sizes {
   .border-radius-#{$size} {

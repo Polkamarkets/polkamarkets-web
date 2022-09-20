@@ -2,7 +2,7 @@ import { ReactNode, useEffect, useState } from 'react';
 
 import { useField } from 'formik';
 import { roundNumber } from 'helpers/math';
-import { BeproService } from 'services';
+import { PolkamarketsService } from 'services';
 
 import { ArrowRightIcon, InfoIcon } from 'assets/icons';
 
@@ -64,10 +64,10 @@ function ReportFormDetails() {
   // UGLY WORKAROUND! TODO: get data from api
   useEffect(() => {
     async function getOutcomesBonds() {
-      const beproService = new BeproService(networkConfig);
-      // await beproService.login();
+      const polkamarketsService = new PolkamarketsService(networkConfig);
+      // await polkamarketsService.login();
 
-      const response = await beproService.getQuestionBonds(questionId);
+      const response = await polkamarketsService.getQuestionBonds(questionId);
       setBonds(response);
 
       // TODO: improve this calculating total bond

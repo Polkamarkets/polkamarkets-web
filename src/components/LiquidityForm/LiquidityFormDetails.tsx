@@ -2,15 +2,13 @@ import { roundNumber } from 'helpers/math';
 
 import { InfoIcon } from 'assets/icons';
 
-import { useAppSelector, useNetwork } from 'hooks';
+import { useAppSelector } from 'hooks';
 
 import Text from '../Text';
 import Tooltip from '../Tooltip';
 
 function LiquidityFormDetails() {
-  const {
-    network: { currency }
-  } = useNetwork();
+  const currency = useAppSelector(state => state.market.market.currency);
   const liquidityDetails = useAppSelector(
     state => state.liquidity.liquidityDetails
   );
@@ -18,7 +16,7 @@ function LiquidityFormDetails() {
     state => state.liquidity.transactionType
   );
   const market = useAppSelector(state => state.market.market);
-  const portfolio = useAppSelector(state => state.bepro.portfolio);
+  const portfolio = useAppSelector(state => state.polkamarkets.portfolio);
   const feesEarned = portfolio[market.id]?.claimStatus.liquidityFees || 0;
 
   return (
@@ -39,7 +37,7 @@ function LiquidityFormDetails() {
             </Tooltip>
           </Text>
 
-          <Text as="span" scale="body" fontWeight="semibold">
+          <Text as="span" scale="caption" fontWeight="semibold">
             {
               // eslint-disable-next-line prettier/prettier
               `${roundNumber(liquidityDetails.liquidityStake, 3)} ${
@@ -66,7 +64,7 @@ function LiquidityFormDetails() {
               Fees Earned
             </Text>
 
-            <Text as="span" scale="body" fontWeight="semibold">
+            <Text as="span" scale="caption" fontWeight="semibold">
               {
                 // eslint-disable-next-line prettier/prettier
                 `${roundNumber(feesEarned, 3)} ${currency.symbol}`
@@ -119,7 +117,7 @@ function LiquidityFormDetails() {
                 </Tooltip>
               </Text>
 
-              <Text as="span" scale="body" fontWeight="semibold">
+              <Text as="span" scale="caption" fontWeight="semibold">
                 {`${roundNumber(outcomeDetails.stake, 3)} ${currency.symbol}`}
               </Text>
             </div>

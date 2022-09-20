@@ -6,8 +6,8 @@ import { useHistory } from 'react-router-dom';
 import classnames from 'classnames';
 import { roundNumber } from 'helpers/math';
 import isEmpty from 'lodash/isEmpty';
-import { login, fetchAditionalData } from 'redux/ducks/bepro';
-import { BeproService } from 'services';
+import { login, fetchAditionalData } from 'redux/ducks/polkamarkets';
+import { PolkamarketsService } from 'services';
 
 import {
   ArrowDownIcon,
@@ -73,12 +73,12 @@ const PortfolioMarketTable = ({
   }
 
   async function handleClaimWinnings(marketId) {
-    const beproService = new BeproService(networkConfig);
+    const polkamarketsService = new PolkamarketsService(networkConfig);
 
     handleChangeIsLoading(marketId, true);
 
     try {
-      await beproService.claimWinnings(marketId);
+      await polkamarketsService.claimWinnings(marketId);
 
       // updating wallet
       await updateWallet();
@@ -90,12 +90,12 @@ const PortfolioMarketTable = ({
   }
 
   async function handleClaimVoided(marketId, outcomeId) {
-    const beproService = new BeproService(networkConfig);
+    const polkamarketsService = new PolkamarketsService(networkConfig);
 
     handleChangeIsLoadingVoided(marketId, outcomeId, true);
 
     try {
-      await beproService.claimVoidedOutcomeShares(marketId, outcomeId);
+      await polkamarketsService.claimVoidedOutcomeShares(marketId, outcomeId);
 
       // updating wallet
       await updateWallet();

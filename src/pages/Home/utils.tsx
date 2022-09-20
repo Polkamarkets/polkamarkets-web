@@ -18,7 +18,7 @@ const filters = [
     ]
   },
   {
-    value: 'volume',
+    value: 'volumeEur',
     name: 'Volume',
     defaultTrigger: 1,
     optionalTriggers: [
@@ -33,7 +33,7 @@ const filters = [
     ]
   },
   {
-    value: 'liquidity',
+    value: 'liquidityEur',
     name: 'Liquidity',
     defaultTrigger: 1,
     optionalTriggers: [
@@ -48,7 +48,7 @@ const filters = [
     ]
   },
   {
-    value: 'id',
+    value: 'createdAt',
     name: 'Newest',
     defaultTrigger: 1,
     optionalTriggers: [

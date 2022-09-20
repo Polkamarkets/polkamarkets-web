@@ -2,7 +2,7 @@ import { roundNumber } from 'helpers/math';
 
 import { Card, Grid, Text } from 'components';
 
-import { useNetwork } from 'hooks';
+import { useAppSelector } from 'hooks';
 
 type MarketAnalyticsProps = {
   liquidity: number;
@@ -15,9 +15,7 @@ function MarketAnalytics({
   volume,
   expiration
 }: MarketAnalyticsProps) {
-  const {
-    network: { currency }
-  } = useNetwork();
+  const currency = useAppSelector(state => state.market.market.currency);
   const { ticker } = currency;
 
   return (

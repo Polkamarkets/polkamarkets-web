@@ -21,13 +21,15 @@ type FilterProps = {
   defaultOption: string;
   options: Option[];
   onChange: any;
+  onTouch?: (_touched: boolean) => void;
 };
 
 function Filter({
   description,
   defaultOption,
   options,
-  onChange
+  onChange,
+  onTouch
 }: FilterProps) {
   const [selectedOption, setSelectedOption] = useState<Option | undefined>();
   const [selectedOptionalTrigger, setSelectedOptionalTrigger] = useState<
@@ -43,11 +45,19 @@ function Filter({
     const defaultSelectedTrigger =
       defaultSelectedOption?.optionalTriggers?.[defaultTrigger];
 
+    if (onTouch) {
+      onTouch(false);
+    }
+
     setSelectedOption(defaultSelectedOption);
     setSelectedOptionalTrigger(defaultSelectedTrigger || undefined);
-  }, [defaultOption, options]);
+  }, [defaultOption, onTouch, options]);
 
   function handleChangeOption(option: Option) {
+    if (onTouch) {
+      onTouch(true);
+    }
+
     setSelectedOption(option);
 
     if (option.optionalTriggers) {
@@ -59,6 +69,10 @@ function Filter({
   }
 
   function handleChangeOptionalTrigger(option: Option, trigger: Trigger) {
+    if (onTouch) {
+      onTouch(true);
+    }
+
     setSelectedOption(option);
     setSelectedOptionalTrigger(trigger);
   }

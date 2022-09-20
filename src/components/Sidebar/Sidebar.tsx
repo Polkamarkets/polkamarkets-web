@@ -11,6 +11,7 @@ import {
   PortfolioIcon,
   AchievementsIcon
 } from 'assets/icons';
+import { LeaderboardIcon } from 'assets/icons/pages/leaderboard';
 
 import { useAppDispatch, useAppSelector } from 'hooks';
 import useCategories from 'hooks/useCategories';
@@ -113,6 +114,25 @@ const Sidebar = () => {
               </NavLink>
             </Menu.Item>
           </Tooltip>
+          <Tooltip text="Leaderboard" position="right" disabled={!collapsed}>
+            <Menu.Item key="leaderboard" style={{ padding: '1.8rem 0rem' }}>
+              <NavLink
+                to="/leaderboard"
+                className="sidebar__link--lg"
+                activeClassName="sidebar__link--lg active"
+              >
+                <LeaderboardIcon />
+                <span
+                  className={classNames(
+                    'market__link-title--lg',
+                    collapsed && 'hidden'
+                  )}
+                >
+                  Leaderboard
+                </span>
+              </NavLink>
+            </Menu.Item>
+          </Tooltip>
         </Menu>
 
         <hr className="sidebar__separator" />
@@ -127,6 +147,7 @@ const Sidebar = () => {
             >
               <Menu.Item
                 key={category.title}
+                fullWidth
                 style={{ padding: '1.6rem 0rem' }}
               >
                 <NavLink
@@ -149,17 +170,16 @@ const Sidebar = () => {
                   >
                     {category.title}
                   </span>
-                  {
-                    // TODO: calculate categories market count
-                    // <span
-                    //   className={classNames(
-                    //     'sidebar__link-counter',
-                    //     collapsed && 'hidden'
-                    //   )}
-                    // >
-                    //   {123}
-                    // </span>
-                  }
+                  {category.marketCount ? (
+                    <span
+                      className={classNames(
+                        'sidebar__link-counter',
+                        collapsed && 'hidden'
+                      )}
+                    >
+                      {category.marketCount}
+                    </span>
+                  ) : null}
                 </NavLink>
               </Menu.Item>
             </Tooltip>

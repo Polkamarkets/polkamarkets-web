@@ -2,7 +2,10 @@ import dayjs from 'dayjs';
 import inRange from 'lodash/inRange';
 import { Market } from 'models/market';
 
+import { VerifiedIcon } from 'assets/icons';
+
 import Pill, { PillColor, PillVariant } from '../Pill';
+import Tooltip from '../Tooltip';
 
 type MarketState = {
   copy: 'Awaiting Resolution' | 'Ending Soon' | 'New' | 'Resolved' | 'Voided';
@@ -31,13 +34,14 @@ type MarketFooterTagsProps = {
 };
 
 function MarketFooterTags({ market }: MarketFooterTagsProps) {
-  const { createdAt, expiresAt, state, voided } = market;
+  const { createdAt, expiresAt, state, voided, verified } = market;
 
   const isAwaitingResolution = state === 'closed';
   const isEndingSoon = inRange(dayjs().diff(dayjs(expiresAt), 'hours'), -24, 1);
   const isNew = inRange(dayjs(createdAt).diff(dayjs(), 'hours'), -24, 1);
   const isResolved = state === 'resolved' && !voided;
   const isVoided = voided;
+  const isVerified = verified;
 
   return (
     <>
@@ -91,6 +95,14 @@ function MarketFooterTags({ market }: MarketFooterTagsProps) {
           >
             {marketStates.voided.copy}
           </Pill>
+        ) : null}
+        {isVerified ? (
+          <>
+            <div className="pm-c-market-footer__divider--circle" />
+            <Tooltip text="Verified Market" position="top">
+              <VerifiedIcon size="sm" style={{ cursor: 'pointer' }} />
+            </Tooltip>
+          </>
         ) : null}
       </div>
     </>

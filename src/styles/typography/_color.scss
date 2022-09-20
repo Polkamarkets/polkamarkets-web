@@ -1,0 +1,43 @@
+:root,
+[data-theme='light'] {
+  --color-text-1: #313a4c;
+  --color-text-2: #637084;
+  --color-text-3: #8293ae;
+  --color-text-inverse: #ffffff;
+  --color-text-warning: #f0b429;
+  --color-text-violets-are-blue: #8976ff;
+  --color-text-maximum-blue-green: #28c1b8;
+}
+
+@supports (--css: variables) {
+  [data-theme='dark'] {
+    --color-text-1: #f9fafb;
+    --color-text-2: #c5cad3;
+    --color-text-3: #637084;
+    --color-text-inverse: #0e1016;
+  }
+}
+
+$text-colors-map: (
+  1: var(--color-text-1),
+  2: var(--color-text-2),
+  3: var(--color-text-3),
+  inverse: var(--color-text-inverse),
+  warning: var(--color-text-warning),
+  violets-are-blue: var(--color-text-violets-are-blue),
+  maximum-blue-green: var(--color-text-maximum-blue-green)
+);
+
+@each $text-color, $text-color-value in $text-colors-map {
+  .text-#{'' + $text-color} {
+    color: $text-color-value;
+  }
+
+  .text-#{'' + $text-color}-on-hover {
+    transition: 0.2s color ease-in-out;
+
+    &:hover {
+      color: $text-color-value;
+    }
+  }
+}

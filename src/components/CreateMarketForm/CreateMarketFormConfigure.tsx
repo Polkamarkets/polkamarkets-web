@@ -17,11 +17,11 @@ function CreateMarketFormConfigure() {
         fontWeight="medium"
         className="pm-c-create-market-form__card-title"
       >
-        Configure Market
+        Market Details
       </Text>
       <Input
         name="question"
-        label="Market Question"
+        label="Question"
         placeholder="What would you like to see the world predict?"
       />
       <div
@@ -31,8 +31,8 @@ function CreateMarketFormConfigure() {
         <OutcomeInput
           badgeColor="pink"
           name="firstOutcome.name"
-          label="Outcome"
-          placeholder="Outcome..."
+          label="Outcomes"
+          placeholder="Outcome A"
         />
         {/* <ProbabilityInput name="firstOutcome.probability" label="Probability" /> */}
       </div>
@@ -43,7 +43,7 @@ function CreateMarketFormConfigure() {
         <OutcomeInput
           badgeColor="purple"
           name="secondOutcome.name"
-          placeholder="Outcome..."
+          placeholder="Outcome B"
         />
         {/* <ProbabilityInput name="secondOutcome.probability" /> */}
       </div>
@@ -88,6 +88,11 @@ function CreateMarketFormConfigure() {
           placeholder="Subcategory"
         />
       </div>
+      <Input
+        name="resolutionSource"
+        label="Resolution Source"
+        placeholder="https://www.google.com/"
+      />
       <DateInput label="Closing Date - Local Time" name="closingDate" />
     </div>
   );

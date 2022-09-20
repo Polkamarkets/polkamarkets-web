@@ -1,4 +1,6 @@
+import { Currency } from 'types/currency';
 import { News } from 'types/market';
+import { Network } from 'types/network';
 
 export interface PriceChartPoint {
   value: number;
@@ -16,12 +18,13 @@ export interface Outcome {
   id: number | string;
   marketId: number | string;
   price: number;
+  priceChange24h: number;
   title: string;
   change: {
     type: string;
     chartData: any[];
   };
-  priceCharts: PriceChart[];
+  priceCharts?: PriceChart[];
   shares: number;
 }
 
@@ -39,12 +42,15 @@ export interface Market {
   slug: string;
   category: string;
   subcategory: string;
+  resolutionSource: string | null;
   imageUrl: string;
   bannerUrl: string;
   title: string;
   volume: number;
+  volumeEur: number;
   shares: number;
   liquidity: number;
+  liquidityEur: number;
   liquidityPrice: number;
   createdAt: string;
   expiresAt: string;
@@ -58,5 +64,7 @@ export interface Market {
   fee: number;
   question: Question;
   networkId: string;
+  network: Network;
   news: News[];
+  currency: Currency;
 }

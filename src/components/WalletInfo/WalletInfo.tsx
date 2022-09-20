@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
+import { Link } from 'react-router-dom';
 
-import { MetaMaskIconSmall } from 'assets/icons';
+import { MetaMaskIcon } from 'assets/icons';
 
 import { useNetwork } from 'hooks';
 
@@ -46,11 +47,7 @@ function WalletInfo({ wallets, address }: WalletInfoProps) {
           </Button>
         ) : null}
       </Button>
-      <a
-        target="_blank"
-        href={`${network.explorerURL}/address/${address}`}
-        rel="noreferrer"
-      >
+      <Link to={`/user/${address}`}>
         <Button
           variant="outline"
           color="default"
@@ -58,13 +55,13 @@ function WalletInfo({ wallets, address }: WalletInfoProps) {
           noHover
           aria-label="Address"
         >
-          <MetaMaskIconSmall />
+          <MetaMaskIcon />
 
           {`${address.substring(0, 4)}...${address.substring(
             address.length - 4
           )}`}
         </Button>
-      </a>
+      </Link>
     </div>
   );
 }

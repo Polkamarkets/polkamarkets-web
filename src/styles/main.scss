@@ -6,6 +6,8 @@
 @import 'layout';
 @import 'borders';
 @import 'sizing';
+@import 'interactivity';
+@import 'typography';
 
 // 1. Configuration and helpers
 @import 'helpers/display';
@@ -31,6 +33,7 @@
 @import 'components/alert-notification';
 @import 'components/amount-input';
 @import 'components/badge';
+@import 'components/modal';
 @import 'components/beta-warning';
 @import 'components/breadcrumb';
 @import 'components/button';
@@ -41,6 +44,7 @@
 @import 'components/checkbox';
 @import 'components/create-market-form';
 @import 'components/divider';
+@import 'components/dropdown';
 @import 'components/featured-card';
 @import 'components/image-cropper';
 @import 'components/input';
@@ -56,7 +60,6 @@
 @import 'components/market-table';
 @import 'components/menu';
 @import 'components/mini-table';
-@import 'components/modal';
 @import 'components/modal-notification';
 @import 'components/network-info';
 @import 'components/networks';
@@ -94,5 +97,7 @@
 @import 'pages/create-market';
 @import 'pages/restricted-country';
 @import 'pages/achievements';
+@import 'pages/leaderboard';
+@import 'pages/profile';
 
 // 7. Themes

@@ -15,7 +15,7 @@ function CreateMarketBuyPolk({
 }: CreateMarketBuyPolkProps) {
   const [isLoadingBuyPolk, setIsLoadingBuyPolk] = useState(false);
 
-  const polkBalance = useAppSelector(state => state.bepro.polkBalance);
+  const polkBalance = useAppSelector(state => state.polkamarkets.polkBalance);
 
   const {
     network: { buyEc20Url }

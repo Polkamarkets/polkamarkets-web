@@ -9,4 +9,5 @@ export interface Category {
     amount: number;
   };
   chartData: { x: dayjs.Dayjs; y: number }[];
+  marketCount?: number;
 }

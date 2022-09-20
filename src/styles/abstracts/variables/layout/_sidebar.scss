@@ -4,7 +4,12 @@ $sidebar-themes: (
     text-color: #8193ae,
     text-color-hover: #313a4c,
     text-color-active: #313a4c,
-    separator-color: #e3e7f0,
+    separator-color: rgba(#e3e7f0, 0.75),
+    counter-text-color: #8293ae,
+    counter-text-color-hover: #e6e6ff,
+    counter-text-color-active: #e6e6ff,
+    counter-background-color: #dbdce2,
+    counter-background-color-active: #5d55fa,
     shadow: 0rem 0.4rem 2.4rem rgba(137, 158, 198, 0.17)
   ),
   dark: (
@@ -12,7 +17,12 @@ $sidebar-themes: (
     text-color: #637084,
     text-color-hover: #f9fafb,
     text-color-active: #f9fafb,
-    separator-color: #252c3b,
+    separator-color: rgba(#252c3b, 0.75),
+    counter-text-color: #637084,
+    counter-text-color-hover: #e6e6ff,
+    counter-text-color-active: #e6e6ff,
+    counter-background-color: #262931,
+    counter-background-color-active: #5d55fa,
     shadow: 0rem 0.4rem 2.4rem rgba(0, 0, 0, 0.4)
   )
 ) !default;

@@ -1,41 +1,33 @@
 import { useEffect } from 'react';
 
 import { formatNumberToString } from 'helpers/math';
-import { login } from 'redux/ducks/bepro';
-import { BeproService } from 'services';
 
-import { MetaMaskIconSmall, PolkamarketsIconSmall } from 'assets/icons';
+import { PolkamarketsIconSmall } from 'assets/icons';
 
-import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
+import { useAppSelector, useNetwork } from 'hooks';
 import useAlertNotification from 'hooks/useAlertNotification';
 
 import { AlertInline } from '../Alert';
-import { Button } from '../Button';
 import Link from '../Link';
 import Networks from '../Networks';
 import WalletInfo from '../WalletInfo';
+import NavBarActionsMetamask from './NavBarActionsMetaMask';
 
 function NavBarActions() {
   const { show } = useAlertNotification();
-  const dispatch = useAppDispatch();
-  const { network, networkConfig } = useNetwork();
+  const { network } = useNetwork();
 
-  const beproService = new BeproService(networkConfig);
-
-  const walletConnected = useAppSelector(state => state.bepro.isLoggedIn);
-  const ethBalance = useAppSelector(state => state.bepro.ethBalance);
-  const polkBalance = useAppSelector(state => state.bepro.polkBalance);
-  const walletAddress = useAppSelector(state => state.bepro.ethAddress);
+  const walletConnected = useAppSelector(
+    state => state.polkamarkets.isLoggedIn
+  );
+  const ethBalance = useAppSelector(state => state.polkamarkets.ethBalance);
+  const polkBalance = useAppSelector(state => state.polkamarkets.polkBalance);
+  const walletAddress = useAppSelector(state => state.polkamarkets.ethAddress);
 
   // Example
   useEffect(() => {
     show('beta-testing');
   }, [show, walletConnected]);
-
-  const handleConnectWallet = async () => {
-    await beproService.login();
-    await dispatch(login(networkConfig));
-  };
 
   return (
     <div className="pm-l-navbar__actions">
@@ -74,16 +66,7 @@ function NavBarActions() {
           address={walletAddress}
         />
       ) : (
-        <Button
-          variant="outline"
-          color="default"
-          size="sm"
-          aria-label="Connect MetaMask"
-          onClick={handleConnectWallet}
-        >
-          <MetaMaskIconSmall />
-          Connect MetaMask
-        </Button>
+        <NavBarActionsMetamask />
       )}
     </div>
   );

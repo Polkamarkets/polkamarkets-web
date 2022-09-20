@@ -1,10 +1,11 @@
+import { memo } from 'react';
 import { Link } from 'react-router-dom';
 
 import { Market as MarketInterface } from 'models/market';
 import { clearMarket } from 'redux/ducks/market';
 import { openTradeForm } from 'redux/ducks/ui';
 
-import { useAppDispatch, useNetwork } from 'hooks';
+import { useAppDispatch } from 'hooks';
 
 import Market from '../Market';
 
@@ -14,10 +15,6 @@ type PredictionCardProps = {
 
 function PredictionCard({ market }: PredictionCardProps) {
   const dispatch = useAppDispatch();
-  const {
-    network: { currency }
-  } = useNetwork();
-  const { ticker } = currency;
 
   const { slug } = market;
 
@@ -35,12 +32,10 @@ function PredictionCard({ market }: PredictionCardProps) {
         <Market.Outcomes market={market} />
       </div>
       <div className="prediction-card__footer">
-        <Market.Footer market={market} ticker={ticker} />
+        <Market.Footer market={market} />
       </div>
     </div>
   );
 }
 
-PredictionCard.displayName = 'PredictionCard';
-
-export default PredictionCard;
+export default memo(PredictionCard);
