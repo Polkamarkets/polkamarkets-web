@@ -13,17 +13,21 @@ function Portal({
   return createPortal(children, root);
 }
 
-export default function usePortal({ onEffect, root }: UsePortalProps) {
+export default function usePortal({ root, ...outProps }: UsePortalProps) {
   const [mount, setMount] = useState<boolean>(false);
   const handleMount = useCallback(setMount, [setMount]);
   const handleUnmount = useCallback(() => setMount(false), [setMount]);
   const handlePortal = useCallback(
-    (_props: React.PropsWithChildren<Record<string, unknown>>) => {
+    (portalProps: React.PropsWithChildren<Record<string, unknown>>) => {
       if (!root || !mount) return null;
 
-      const props = { root, onEffect, ..._props };
+      const inProps = {
+        root,
+        ...outProps,
+        ...portalProps
+      };
 
-      return <Portal {...props} />;
+      return <Portal {...inProps} />;
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [mount, root]

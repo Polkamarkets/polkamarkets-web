@@ -3,16 +3,22 @@ import { useCallback, useState } from 'react';
 import { login } from 'redux/ducks/polkamarkets';
 import { PolkamarketsService } from 'services';
 
-import { MetaMaskIcon } from 'assets/icons';
+import { MetaMaskIcon, WarningOutlinedIcon } from 'assets/icons';
 
 import { Button } from 'components/Button';
 import Modal from 'components/Modal';
+import ModalFooter from 'components/ModalFooter';
+import ModalHeader from 'components/ModalHeader';
+import ModalHeaderTitle from 'components/ModalHeaderTitle';
+import ModalSection from 'components/ModalSection';
+import ModalSectionText from 'components/ModalSectionText';
+import Pill from 'components/Pill';
 
 import { useAppDispatch, useNetwork } from 'hooks';
 
-import NavBarActionsMetamaskStatus from './NavBarActionsMetaMaskStatus';
+import { connectMetamaskProps } from './ConnectMetamask.util';
 
-export default function NavBarActionsMetamask() {
+export default function ConnectMetamask() {
   const dispatch = useAppDispatch();
   const { networkConfig } = useNetwork();
   const polkamarketsService = new PolkamarketsService(networkConfig);
@@ -34,20 +40,25 @@ export default function NavBarActionsMetamask() {
 
   return (
     <>
-      <Modal show={show} onHide={handleHide} name="metamask-warning">
-        <Modal.Header>
-          <NavBarActionsMetamaskStatus />
-          <Modal.HeaderTitle>
+      <Modal show={show} onHide={handleHide} {...connectMetamaskProps}>
+        <ModalHeader>
+          <div className="pm-l-navbar__actions-metamask__status">
+            <MetaMaskIcon size={40} />
+            <Pill variant="normal" color="danger">
+              <WarningOutlinedIcon />
+            </Pill>
+          </div>
+          <ModalHeaderTitle id={connectMetamaskProps['aria-labelledby']}>
             Looks like your browser do not have Metamask installed.
-          </Modal.HeaderTitle>
-        </Modal.Header>
-        <Modal.Section>
-          <Modal.SectionText>
+          </ModalHeaderTitle>
+        </ModalHeader>
+        <ModalSection>
+          <ModalSectionText id={connectMetamaskProps['aria-describedby']}>
             Please follow up the instructions to install it, make sure your
             wallet is unlocked with at least one account on it and try again.
-          </Modal.SectionText>
-        </Modal.Section>
-        <Modal.Footer>
+          </ModalSectionText>
+        </ModalSection>
+        <ModalFooter>
           <Button
             fullwidth
             color="primary"
@@ -64,7 +75,7 @@ export default function NavBarActionsMetamask() {
           >
             Install
           </a>
-        </Modal.Footer>
+        </ModalFooter>
       </Modal>
       <Button
         variant="outline"

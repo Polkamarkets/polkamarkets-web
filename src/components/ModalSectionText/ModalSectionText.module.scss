@@ -1,0 +1,7 @@
+.root {
+  color: var(--color-text-secondary);
+
+  &:not(:last-child) {
+    margin-bottom: 1.6rem;
+  }
+}

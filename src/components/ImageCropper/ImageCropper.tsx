@@ -36,8 +36,8 @@ function ImageCroppper({
     [image]
   );
 
-  const onCropComplete = useCallback((_croppedArea, croppedAreaPixels) => {
-    setCroppedAreaPixels(croppedAreaPixels);
+  const onCropComplete = useCallback((_croppedArea, _croppedAreaPixels) => {
+    setCroppedAreaPixels(_croppedAreaPixels);
   }, []);
 
   const getCroppedImage = useCallback(async () => {

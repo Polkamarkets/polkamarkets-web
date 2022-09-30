@@ -29,6 +29,29 @@
     "jsx-a11y"
   ],
   "rules": {
+    /**
+     * START COLLISIONS
+     */
+    "no-shadow": "off",
+    "@typescript-eslint/no-shadow": ["error"],
+
+    "no-use-before-define": "off",
+    "@typescript-eslint/no-use-before-define": ["error"],
+
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_"
+      }
+    ],
+
+    "no-undef": "off",
+    /**
+     * END COLLISIONS
+     */
+
     "import/extensions": [
       "error",
       "ignorePackages",
@@ -69,23 +92,7 @@
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
     "react/require-default-props": "off",
-    "import/no-unresolved": "error",
-    "no-use-before-define": "off",
-    "no-unused-vars": [
-      "warn",
-      {
-        "argsIgnorePattern": "^_",
-        "varsIgnorePattern": "^_"
-      }
-    ],
-    "@typescript-eslint/no-use-before-define": ["error"],
-    "@typescript-eslint/no-unused-vars": [
-      "warn",
-      {
-        "argsIgnorePattern": "^_",
-        "varsIgnorePattern": "^_"
-      }
-    ]
+    "import/no-unresolved": "error"
   },
   "settings": {
     "import/parsers": {

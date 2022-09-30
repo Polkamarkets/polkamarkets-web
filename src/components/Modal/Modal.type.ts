@@ -1,21 +1,9 @@
-import React from 'react';
+import type { HTMLMotionProps } from 'framer-motion';
 
-import { TextProps } from 'components/Text';
+type ModalComponents = 'root' | 'dialog' | 'hide';
 
-export type ModalProps = React.PropsWithChildren<{
-  name: string;
+export interface ModalProps extends Omit<HTMLMotionProps<'div'>, 'className'> {
   onHide?(): void;
   show: boolean;
-}>;
-
-export type ModalHeaderProps = React.ComponentPropsWithoutRef<'header'>;
-
-export type ModalHeaderTitleProps = TextProps;
-
-export type ModalSectionProps = React.ComponentPropsWithoutRef<'section'>;
-
-export type ModalSectionTextProps = TextProps;
-
-export type ModalFooterProps = React.ComponentPropsWithoutRef<'footer'>;
-
-export type ModalContextProps = Omit<ModalProps, 'show'>;
+  className?: Partial<Record<ModalComponents, string>>;
+}

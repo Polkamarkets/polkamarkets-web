@@ -7,9 +7,16 @@ import { Button } from 'components/Button';
 import Checkbox from 'components/Checkbox';
 import Link from 'components/Link';
 import Modal from 'components/Modal';
+import ModalFooter from 'components/ModalFooter';
+import ModalHeader from 'components/ModalHeader';
+import ModalHeaderTitle from 'components/ModalHeaderTitle';
+import ModalSection from 'components/ModalSection';
+import ModalSectionText from 'components/ModalSectionText';
 import Text from 'components/Text';
 
 import { useCookie } from 'hooks';
+
+import { betaWarningProps } from './BetaWarning.util';
 
 export default function BetaWarning() {
   const location = useLocation();
@@ -24,9 +31,8 @@ export default function BetaWarning() {
   );
 
   useEffect(() => {
-    setBetaWarningCookie(show.toString());
+    setBetaWarningCookie(show?.toString());
   }, [setBetaWarningCookie, show]);
-
   function handleAgreed() {
     setAgreed(prevAgreed => !prevAgreed);
   }
@@ -35,36 +41,37 @@ export default function BetaWarning() {
   }
 
   return (
-    <Modal show={show} name="beta-warning">
-      <Modal.Header>
-        <Modal.HeaderTitle
+    <Modal show={show} {...betaWarningProps}>
+      <ModalHeader>
+        <ModalHeaderTitle
           className="pm-c-beta-warning__header-title"
           scale="tiny-uppercase"
           fontWeight="semibold"
+          id={betaWarningProps['aria-labelledby']}
         >
           <TwarningIcon
             className="pm-c-beta-warning__header-title__adornment"
             size={16}
           />
           Warning
-        </Modal.HeaderTitle>
-      </Modal.Header>
-      <Modal.Section>
-        <Modal.SectionText>
+        </ModalHeaderTitle>
+      </ModalHeader>
+      <ModalSection>
+        <ModalSectionText>
           Polkamarkets Protocol is a 100% decentralized protocol for
           informational and educational purposes only. POLKAMARKET OÜ does not
           take any custody, profits or host over any markets.
-        </Modal.SectionText>
-        <Modal.SectionText>
+        </ModalSectionText>
+        <ModalSectionText>
           POLKAMARKET OÜ displays existing markets live on EVMs or sidechains
           and is a graphical user interface for visualizing data and interacting
           with the Polkamarkets Protocol Smart Contracts via your Web 3 injected
           wallet.
-        </Modal.SectionText>
-        <Modal.SectionText>
+        </ModalSectionText>
+        <ModalSectionText id={betaWarningProps['aria-describedby']}>
           By entering the website I confirm I am not a citizen or resident in
           the United States or its territories, nor a US person.
-        </Modal.SectionText>
+        </ModalSectionText>
         <Checkbox label="text" onChange={handleAgreed}>
           <Text as="p" scale="caption" fontWeight="medium">
             <>
@@ -88,8 +95,8 @@ export default function BetaWarning() {
             .
           </Text>
         </Checkbox>
-      </Modal.Section>
-      <Modal.Footer>
+      </ModalSection>
+      <ModalFooter>
         <Button
           variant="normal"
           color="warning"
@@ -99,7 +106,7 @@ export default function BetaWarning() {
         >
           Proceed
         </Button>
-      </Modal.Footer>
+      </ModalFooter>
     </Modal>
   );
 }

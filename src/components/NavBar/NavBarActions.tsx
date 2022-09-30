@@ -4,14 +4,14 @@ import { formatNumberToString } from 'helpers/math';
 
 import { PolkamarketsIconSmall } from 'assets/icons';
 
+import { AlertInline } from 'components/Alert';
+import ConnectMetamask from 'components/ConnectMetamask';
+import Link from 'components/Link';
+import Networks from 'components/Networks';
+import WalletInfo from 'components/WalletInfo';
+
 import { useAppSelector, useNetwork } from 'hooks';
 import useAlertNotification from 'hooks/useAlertNotification';
-
-import { AlertInline } from '../Alert';
-import Link from '../Link';
-import Networks from '../Networks';
-import WalletInfo from '../WalletInfo';
-import NavBarActionsMetamask from './NavBarActionsMetaMask';
 
 function NavBarActions() {
   const { show } = useAlertNotification();
@@ -66,7 +66,7 @@ function NavBarActions() {
           address={walletAddress}
         />
       ) : (
-        <NavBarActionsMetamask />
+        <ConnectMetamask />
       )}
     </div>
   );

@@ -37,6 +37,7 @@
     "geoip-country": "^4.0.76",
     "humps": "^2.0.1",
     "lodash": "^4.17.21",
+    "mockdate": "^3.0.5",
     "polkamarkets-js": "https://github.com/Polkamarkets/polkamarkets-js",
     "prop-types": "^15.7.2",
     "public-ip": "^4.0.4",

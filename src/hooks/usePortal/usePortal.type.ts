@@ -1,10 +1,10 @@
 import React from 'react';
 
 export type UsePortalProps = {
-  onEffect?: React.EffectCallback;
   root: Element | null;
+  onEffect?: React.EffectCallback;
 };
 export type PortalProps = {
   root: Element;
-  onEffect: UsePortalProps['onEffect'];
+  onEffect?: React.EffectCallback;
 };

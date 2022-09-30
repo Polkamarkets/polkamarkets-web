@@ -1,0 +1,33 @@
+:root {
+  --color-background--rgb: var(--neutral-200--rgb);
+  --color-background-primary: rgb(
+    var(--color-background--rgb) / var(--alpha-primary)
+  );
+  --color-background-secondary: rgb(
+    var(--color-background--rgb) / var(--alpha-secondary)
+  );
+  --color-background-tertiary: rgb(
+    var(--color-background--rgb) / var(--alpha-tertiary)
+  );
+  --color-background-quaternary: rgb(
+    var(--color-background--rgb) / var(--alpha-quaternary)
+  );
+
+  --color-border: var(--neutral-300);
+
+  --color-shadow: rgb(var(--neutral-500--rgb) / var(--alpha-quinary));
+
+  --color-text-primary: var(--neutral-700);
+  --color-text-secondary: var(--neutral-500);
+
+  &[class='theme--dark'] {
+    --color-background--rgb: var(--neutral-900--rgb);
+
+    --color-border: var(--neutral-800);
+
+    --color-shadow: var(--color-background-quaternary);
+
+    --color-text-primary: var(--neutral-100);
+    --color-text-secondary: var(--neutral-600);
+  }
+}

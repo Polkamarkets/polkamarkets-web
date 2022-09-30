@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`useCookie sets a cookie 1`] = `"KEY=VALUE; expires=Sat, 01 Jan 1983 01:00:00 GMT; path=/"`;
