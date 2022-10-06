@@ -8,8 +8,13 @@ import { useAppDispatch, useAppSelector } from 'hooks';
 
 import MiniTable from '../MiniTable';
 import Text from '../Text';
+import { TradeFormPredictionType } from './TradeFormPredictions.type';
 
-function TradeFormPredictions() {
+type TradeFormPredictionsProps = {
+  type: TradeFormPredictionType;
+};
+
+function TradeFormPredictions({ type }: TradeFormPredictionsProps) {
   const location = useLocation();
   const dispatch = useAppDispatch();
 

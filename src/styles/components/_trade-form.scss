@@ -35,6 +35,13 @@
 
     width: 100%;
 
+    &--binary {
+      height: min(226px, 100%);
+    }
+
+    &--multiple {
+      height: min(346px, 100%);
+    }
     &__item {
       cursor: pointer;
 
