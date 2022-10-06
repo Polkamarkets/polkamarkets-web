@@ -28,9 +28,21 @@
 .pm-c-report-form-outcome-select {
   display: flex;
   flex-direction: column;
-  gap: 1.6rem;
-
   width: 100%;
+
+  &--binary {
+    @extend .pm-c-report-form-outcome-select;
+    height: min(334px, 100%);
+  }
+
+  &--multiple {
+    @extend .pm-c-report-form-outcome-select;
+    height: min(459px, 100%);
+  }
+
+  &__item {
+    padding-bottom: 16px;
+  }
 }
 
 .pm-c-report-form-input {
