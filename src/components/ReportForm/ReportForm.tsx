@@ -72,11 +72,11 @@ function ReportForm() {
       validationSchema={validationSchema}
     >
       <Form className="pm-c-report-form">
-        <div className="pm-c-report-form__group">
+        <div className="pm-c-report-form__view">
           <ReportFormInfo />
           <ReportFormOutcomeSelect type={outcomeSelectType} />
         </div>
-        <div className="pm-c-report-form__group">
+        <div className="pm-c-report-form__actions">
           {!isMarketQuestionFinalized ? (
             <>
               <ReportFormInput />
