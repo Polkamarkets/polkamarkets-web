@@ -4,6 +4,8 @@ import classNames from 'classnames';
 import { roundNumber } from 'helpers/math';
 import { selectOutcome } from 'redux/ducks/trade';
 
+import VirtualizedList from 'components/VirtualizedList';
+
 import { useAppDispatch, useAppSelector } from 'hooks';
 
 import MiniTable from '../MiniTable';
@@ -39,52 +41,58 @@ function TradeFormPredictions({ type }: TradeFormPredictionsProps) {
   }
 
   return (
-    <div className="pm-c-trade-form-predictions">
-      {outcomes.map((prediction, index) => (
-        <div
-          key={prediction.id}
-          className={classNames({
-            'pm-c-trade-form-predictions__item': true,
-            active:
-              prediction.id === selectedOutcomeId &&
-              prediction.marketId === selectedMarketId
-          })}
-          role="button"
-          tabIndex={index}
-          onClick={() => handleChangeSelectedPrediction(prediction.id)}
-          onKeyPress={() => handleChangeSelectedPrediction(prediction.id)}
-        >
-          <div className="pm-c-trade-form-predictions__item-prediction">
-            <Text as="p" fontWeight="bold">
-              {prediction.title}
-            </Text>
-            <Text as="span" fontWeight="semibold">
-              {`PRICE `}
-              <Text as="strong" fontWeight="bold">
-                {prediction.price.toFixed(3)}
-              </Text>
-              <Text as="strong" fontWeight="medium">
-                {` ${symbol}`}
-              </Text>
-            </Text>
+    <div className={`pm-c-trade-form-predictions--${type}`}>
+      <VirtualizedList
+        height="100%"
+        data={outcomes}
+        itemContent={(index, prediction) => (
+          <div className="pm-c-trade-form-predictions__list-item">
+            <div
+              key={prediction.id}
+              className={classNames({
+                'pm-c-trade-form-predictions__item': true,
+                active:
+                  prediction.id === selectedOutcomeId &&
+                  prediction.marketId === selectedMarketId
+              })}
+              role="button"
+              tabIndex={index}
+              onClick={() => handleChangeSelectedPrediction(prediction.id)}
+              onKeyPress={() => handleChangeSelectedPrediction(prediction.id)}
+            >
+              <div className="pm-c-trade-form-predictions__item-prediction">
+                <Text as="p" fontWeight="bold">
+                  {prediction.title}
+                </Text>
+                <Text as="span" fontWeight="semibold">
+                  {`PRICE `}
+                  <Text as="strong" fontWeight="bold">
+                    {prediction.price.toFixed(3)}
+                  </Text>
+                  <Text as="strong" fontWeight="medium">
+                    {` ${symbol}`}
+                  </Text>
+                </Text>
+              </div>
+              <MiniTable
+                rows={[
+                  {
+                    key: 'yourShares',
+                    title: 'Your Shares',
+                    // eslint-disable-next-line prettier/prettier
+                    value:
+                      roundNumber(
+                        portfolio[selectedMarketId]?.outcomes[prediction.id]
+                          ?.shares,
+                        3
+                      ) || 0
+                  }
+                ]}
+              />
+            </div>
           </div>
-          <MiniTable
-            rows={[
-              {
-                key: 'yourShares',
-                title: 'Your Shares',
-                // eslint-disable-next-line prettier/prettier
-                value:
-                  roundNumber(
-                    portfolio[selectedMarketId]?.outcomes[prediction.id]
-                      ?.shares,
-                    3
-                  ) || 0
-              }
-            ]}
-          />
-        </div>
-      ))}
+        )}
+      />
     </div>
   );
 }

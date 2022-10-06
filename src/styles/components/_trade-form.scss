@@ -42,6 +42,11 @@
     &--multiple {
       height: min(346px, 100%);
     }
+
+    &__list-item {
+      padding-bottom: 16px;
+    }
+
     &__item {
       cursor: pointer;
 
