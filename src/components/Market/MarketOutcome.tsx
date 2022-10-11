@@ -15,9 +15,10 @@ import {
   WarningIcon
 } from 'assets/icons';
 
+import { Area } from 'components/plots';
+
 import { useAppDispatch } from 'hooks';
 
-import MiniAreaChart from '../MiniAreaChart';
 import Text from '../Text';
 
 const outcomeStates = {
@@ -56,7 +57,9 @@ type MarketOutcomeProps = {
 
 function MarketOutcome({ market, outcome }: MarketOutcomeProps) {
   const dispatch = useAppDispatch();
-  const { title, state, price, result } = outcome;
+  const { id: marketId, networkId } = market;
+  const { id, title, state, price, result } = outcome;
+  const { isPriceUp, lastWeekPricesChartSeries } = price;
 
   useEffect(() => {
     if (state.isActive) {
@@ -131,10 +134,12 @@ function MarketOutcome({ market, outcome }: MarketOutcomeProps) {
         </div>
       ) : (
         <div className="pm-c-market-outcomes__item-chart">
-          <MiniAreaChart
-            serie={price.lastWeekPricesChartSeries}
-            color={price.isPriceUp ? 'success' : 'danger'}
+          <Area
+            id={`${networkId}-${marketId}-${id}`}
+            data={lastWeekPricesChartSeries}
+            color={isPriceUp ? 'green' : 'red'}
             width={48}
+            height={30}
           />
         </div>
       )}
