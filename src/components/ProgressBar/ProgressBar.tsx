@@ -1,3 +1,4 @@
+import { roundNumber } from 'helpers/math';
 import isUndefined from 'lodash/isUndefined';
 import { Line } from 'rc-progress';
 
@@ -62,7 +63,7 @@ function ProgressBar({ min, max, percent, color = 'blue' }: ProgressBarProps) {
                 fontWeight="semibold"
                 className="pm-c-progress-bar__current"
               >
-                {max * (percent / 100)}
+                {roundNumber(max * (percent / 100), 2)}
               </Text>
               {` / ${max}`}
             </>

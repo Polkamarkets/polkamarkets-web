@@ -5,6 +5,7 @@ import { renderClassName } from 'helpers/test';
 
 import ModalFooter from 'components/ModalFooter';
 import ModalHeader from 'components/ModalHeader';
+import ModalHeaderHide from 'components/ModalHeaderHide';
 import ModalHeaderTitle from 'components/ModalHeaderTitle';
 import ModalSection from 'components/ModalSection';
 import ModalSectionText from 'components/ModalSectionText';
@@ -33,6 +34,7 @@ function renderModal() {
       {...defaultProps}
     >
       <ModalHeader>
+        <ModalHeaderHide onClick={defaultProps.onHide} />
         <ModalHeaderTitle id={defaultProps['aria-labelledby']}>
           {defaultProps['aria-labelledby']}
         </ModalHeaderTitle>

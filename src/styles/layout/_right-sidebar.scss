@@ -15,10 +15,3 @@
 
   padding: 2.4rem;
 }
-
-.pm-l-right-sidebar--with-notification {
-  @extend .pm-l-right-sidebar;
-
-  top: #{$navbar-height + $alert-notification-height};
-  height: calc(100vh - #{$navbar-height + $alert-notification-height});
-}

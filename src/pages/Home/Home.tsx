@@ -1,20 +1,20 @@
 import { filteredMarketsSelector } from 'redux/ducks/markets';
 
+import { VoteProvider } from 'contexts/vote';
+
 import { useAppSelector, useFavoriteMarkets } from 'hooks';
 import useCategories from 'hooks/useCategories';
 
-import HomeCategories from './HomeCategories';
-import HomeMobileInfo from './HomeMobileInfo';
+import HomeHero from './HomeHero';
+import HomeNav from './HomeNav';
 import HomeTabs from './HomeTabs';
 
-function Home() {
+export default function Home() {
   const categories = useCategories();
   const markets = useAppSelector(state =>
     filteredMarketsSelector(state.markets, categories)
   );
-
   const { favoriteMarkets } = useFavoriteMarkets();
-
   const openMarkets = markets.filter(market => market.state === 'open');
   const closedMarkets = markets.filter(market => market.state === 'closed');
   const resolvedMarkets = markets.filter(market => market.state === 'resolved');
@@ -26,16 +26,16 @@ function Home() {
 
   return (
     <div className="pm-p-home">
-      <HomeMobileInfo />
-      <HomeCategories />
-      <HomeTabs
-        openMarkets={openMarkets}
-        closedMarkets={closedMarkets}
-        resolvedMarkets={resolvedMarkets}
-        favoritesMarkets={favoritesMarkets}
-      />
+      <HomeHero />
+      <HomeNav />
+      <VoteProvider>
+        <HomeTabs
+          openMarkets={openMarkets}
+          closedMarkets={closedMarkets}
+          resolvedMarkets={resolvedMarkets}
+          favoritesMarkets={favoritesMarkets}
+        />
+      </VoteProvider>
     </div>
   );
 }
-
-export default Home;

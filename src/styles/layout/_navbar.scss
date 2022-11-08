@@ -1,24 +1,37 @@
-.pm-l-navbar {
+.pm-l-layout__header {
   @include themes($navbar-themes) {
-    display: inline-flex;
-    justify-content: space-between;
+    display: flex;
     align-items: center;
-    gap: 1.6rem;
-
+    border-bottom: 1px solid themed('border-bottom-color');
     width: 100%;
-    padding: $navbar-padding-y $navbar-padding-x;
-
+    padding-left: 24px;
+    padding-right: 24px;
     background-color: themed('background-color');
     transition: $navbar-transitions;
+    min-height: 76px;
 
-    &__icon {
-      zoom: 1;
+    &__logos {
+      display: inherit;
+      margin-right: 24px;
+    }
 
-      display: flex;
-      flex-direction: row;
-      justify-content: flex-start;
-      align-items: center;
-      gap: 0.5rem;
+    &__nav {
+      margin-right: auto;
+
+      &-link {
+        color: themed('text');
+        font-size: 1.2rem;
+        text-decoration: none;
+        font-weight: 700;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: color 0.3s ease 0s;
+        margin-right: 24px;
+
+        &.active {
+          color: themed('text-active');
+        }
+      }
     }
 
     &__search {
@@ -68,7 +81,7 @@
       &-metamask {
         &__status {
           display: inline-flex;
-          background-color: #8a96a810;
+          background-color: #8a96a8;
           padding: 1.2rem;
           border-radius: 50%;
           position: relative;

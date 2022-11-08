@@ -1,9 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  sidebar: {
-    collapsed: true
-  },
   rightSidebar: {
     visible: false
   },
@@ -22,28 +19,6 @@ const uiSlice = createSlice({
   name: 'ui',
   initialState,
   reducers: {
-    openSidebar: state => ({
-      ...state,
-      sidebar: {
-        collapsed: false
-      },
-      rightSidebar: {
-        visible: false
-      }
-    }),
-    closeSidebar: state => ({
-      ...state,
-      sidebar: {
-        collapsed: true
-      },
-      rightSidebar: {
-        visible: !!(
-          state.tradeForm.visible ||
-          state.liquidityForm.visible ||
-          state.reportForm.visible
-        )
-      }
-    }),
     closeRightSidebar: state => ({
       ...state,
       rightSidebar: {
@@ -122,8 +97,6 @@ const uiSlice = createSlice({
 export default uiSlice.reducer;
 
 export const {
-  openSidebar,
-  closeSidebar,
   closeRightSidebar,
   openTradeForm,
   closeTradeForm,

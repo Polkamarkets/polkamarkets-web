@@ -32,25 +32,7 @@ export default function useFocustrap<V extends HTMLElement>(
     document.activeElement
   );
 
-  useEffect(() => {
-    const { current: node } = ref;
-    const hasFocusTrap =
-      node?.contains(focusTrap.start) && node?.contains(focusTrap.end);
-
-    if (!hasFocusTrap) {
-      node?.insertBefore(focusTrap.start, node.firstChild);
-      node?.appendChild(focusTrap.end);
-    }
-    focusTrap.start.focus();
-
-    return () => {
-      if (hasFocusTrap) {
-        node?.removeChild(focusTrap.start);
-        node?.removeChild(focusTrap.end);
-      }
-      (focusPrev as HTMLElement)?.focus();
-    };
-  }, [focusPrev, focusTrap, ref]);
+  useEffect(() => () => (focusPrev as HTMLElement)?.focus(), [focusPrev]);
   useEffect(() => {
     const { current: node } = ref;
     const els = node?.querySelectorAll(focusableElements?.join(', '));
@@ -65,22 +47,27 @@ export default function useFocustrap<V extends HTMLElement>(
     function handleFocus(event: FocusEvent) {
       if (event.target === focusTrap.start) {
         window.requestAnimationFrame(() => {
-          timeoutEffect(() => focusEdge.end.focus());
+          timeoutEffect(() => focusEdge.end?.focus());
         });
       }
       if (event.target === focusTrap.end) {
         window.requestAnimationFrame(() => {
-          timeoutEffect(() => focusEdge.start.focus());
+          timeoutEffect(() => focusEdge.start?.focus());
         });
       }
     }
 
     node?.addEventListener('focusout', handleBlur);
     node?.addEventListener('focusin', handleFocus);
+    node?.insertBefore(focusTrap.start, node.firstChild);
+    node?.appendChild(focusTrap.end);
+    focusTrap.start?.focus();
 
     return () => {
       node?.removeEventListener('focusout', handleBlur);
       node?.removeEventListener('focusin', handleFocus);
+      node?.removeChild(focusTrap.start);
+      node?.removeChild(focusTrap.end);
     };
   });
 }

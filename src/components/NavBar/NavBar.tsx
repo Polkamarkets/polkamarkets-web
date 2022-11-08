@@ -1,47 +1,20 @@
-import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { setFilter } from 'redux/ducks/markets';
-
-import { PolkamarketsIcon, BetaTagIcon } from 'assets/icons';
-
-import { useTheme } from 'hooks';
+import { PolkamarketsLogo } from 'assets/icons';
 
 import NavBarActions from './NavBarActions';
-import NavBarDropdownMenu from './NavBarDropdownMenu';
-import NavBarMenu from './NavBarMenu';
-import NavBarSearch from './NavBarSearch';
+import NavBarLinks from './NavBarLinks';
 
-const RISK_DISCLOSURE_DOC_URL =
-  'https://docs.google.com/document/d/1TR8HYTBOhZeZOb0E5uAo8lbK4v0Oxv3JnQD_AdYENBY/edit';
-
-function NavBar() {
-  const dispatch = useDispatch();
-  const { theme } = useTheme();
-
-  function handleNavigation() {
-    // clearing categories/search filter
-    dispatch(setFilter(''));
-  }
-
+export default function NavBar() {
   return (
-    <div className="pm-l-navbar">
-      <figure className="pm-l-navbar__icon">
-        <Link to="/" aria-label="Home" onClick={handleNavigation}>
-          <PolkamarketsIcon />
-        </Link>
-        <a href={RISK_DISCLOSURE_DOC_URL} target="_blank" rel="noreferrer">
-          <BetaTagIcon theme={theme} />
-        </a>
-      </figure>
-      <NavBarSearch />
-      <NavBarMenu />
+    <header className="pm-l-layout__header">
+      <Link to="/" aria-label="Homepage" className="pm-l-layout__header__logos">
+        <PolkamarketsLogo />
+      </Link>
+      <NavBarLinks />
       <NavBarActions />
-      <NavBarDropdownMenu />
-    </div>
+    </header>
   );
 }
 
 NavBar.displayName = 'NavBar';
-
-export default NavBar;

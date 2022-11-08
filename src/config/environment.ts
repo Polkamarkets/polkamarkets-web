@@ -3,6 +3,8 @@ import isUndefined from 'lodash/isUndefined';
 
 const environmentConfigVariables = [
   'ERC20_CONTRACT_ADDRESS',
+  'TRANSAK_API_KEY',
+  'TRANSAK_ENVIRONMENT',
   'IP_API_KEY',
   'NETWORK_ID',
   'POLKAMARKETS_API_URL',
@@ -45,6 +47,8 @@ type NetworkConfigVariable =
   | 'NETWORK_ID'
   | 'PREDICTION_MARKET_CONTRACT_ADDRESS'
   | 'REALITIO_ERC20_CONTRACT_ADDRESS'
+  | 'ACHIEVEMENTS_CONTRACT_ADDRESS'
+  | 'VOTING_CONTRACT_ADDRESS'
   | 'WEB3_PROVIDER'
   | 'WEB3_EVENTS_PROVIDER';
 
@@ -54,6 +58,7 @@ export type NetworkConfig = {
   PREDICTION_MARKET_CONTRACT_ADDRESS: string;
   REALITIO_ERC20_CONTRACT_ADDRESS: string;
   ACHIEVEMENTS_CONTRACT_ADDRESS?: string;
+  VOTING_CONTRACT_ADDRESS?: string;
   WEB3_PROVIDER: string;
   WEB3_EVENTS_PROVIDER?: string;
 };

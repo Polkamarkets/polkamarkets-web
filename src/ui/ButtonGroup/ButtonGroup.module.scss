@@ -1,0 +1,21 @@
+.root {
+  display: flex;
+}
+
+.start {
+  border-top-right-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
+}
+
+.mid {
+  border-radius: 0px !important;
+}
+
+.end {
+  border-top-left-radius: 0px !important;
+  border-bottom-left-radius: 0px !important;
+}
+
+.actived {
+  background-color: var(--color-text-quinary) !important;
+}

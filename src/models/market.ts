@@ -37,6 +37,11 @@ export interface Question {
   finalizeTs: number;
 }
 
+export type Votes = {
+  up: number;
+  down: number;
+};
+
 export interface Market {
   id: string;
   slug: string;
@@ -67,4 +72,5 @@ export interface Market {
   network: Network;
   news: News[];
   currency: Currency;
+  votes: Votes;
 }

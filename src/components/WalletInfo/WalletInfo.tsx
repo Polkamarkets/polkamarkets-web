@@ -1,67 +1,47 @@
-import { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 
-import { MetaMaskIcon } from 'assets/icons';
+import { formatNumberToString } from 'helpers/math';
 
-import { useNetwork } from 'hooks';
+import { useAppSelector, useNetwork } from 'hooks';
 
-import { Button } from '../Button';
+import { Transak } from '../integrations';
 
-type Wallet = {
-  id: string;
-  balance: number | string;
-  currencyIcon: ReactNode;
-};
-
-type WalletInfoProps = {
-  wallets: Wallet[];
-  address: string;
-};
-
-function WalletInfo({ wallets, address }: WalletInfoProps) {
+function WalletInfo() {
   const { network } = useNetwork();
+  const appState = useAppSelector(state => state);
 
   return (
     <div className="pm-c-wallet-info">
-      <Button variant="outline" color="base" size="sm">
-        {wallets[0].balance}
-        {wallets[0].currencyIcon}
-      </Button>
-      <Button
-        variant="outline"
-        color="base"
-        size="sm"
-        style={{ padding: '0.4rem 1.4rem', paddingRight: '0.5rem' }}
-      >
-        {wallets[1].balance}
-        {wallets[1].currencyIcon}
-
-        {network.buyEc20Url ? (
-          <Button
-            color="primary"
-            size="sm"
-            style={{ padding: '0.5rem 1rem' }}
-            onClick={() => window.open(network.buyEc20Url, '_blank')}
+      <div className="pm-c-wallet-info__currency">
+        {formatNumberToString(appState.polkamarkets.polkBalance)}
+        <span className="pm-c-wallet-info__currency__ticker"> POLK</span>
+        {network.buyEc20Url && (
+          <a
+            className="pm-c-button-normal--primary pm-c-button--sm pm-c-wallet-info__currency__button"
+            target="_blank"
+            rel="noreferrer"
+            href={network.buyEc20Url}
           >
             Buy $POLK
-          </Button>
-        ) : null}
-      </Button>
-      <Link to={`/user/${address}`}>
-        <Button
-          variant="outline"
-          color="default"
-          size="sm"
-          noHover
-          aria-label="Address"
+          </a>
+        )}
+      </div>
+      <div className="pm-c-wallet-info__currency">
+        {appState.polkamarkets.ethBalance.toFixed(4)}
+        <span className="pm-c-wallet-info__currency__ticker">
+          {' '}
+          {network.currency.name.match(/\w{3}/)?.[0].toUpperCase()}
+        </span>
+        <Link
+          to={`/user/${appState.polkamarkets.ethAddress}`}
+          className="pm-c-button-subtle--default pm-c-button--sm pm-c-wallet-info__currency__button"
         >
-          <MetaMaskIcon />
-
-          {`${address.substring(0, 4)}...${address.substring(
-            address.length - 4
-          )}`}
-        </Button>
-      </Link>
+          {appState.polkamarkets.ethAddress
+            .match(/^\d\w{4}|\d\w{4}$/gm)
+            ?.join('...')}
+        </Link>
+        <Transak />
+      </div>
     </div>
   );
 }

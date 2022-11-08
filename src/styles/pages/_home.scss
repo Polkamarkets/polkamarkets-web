@@ -4,6 +4,25 @@
   width: 100%;
   margin: px-to-rem(0px) auto;
 
+  &__hero {
+    &__breadcrumb {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    &__heading {
+      margin-bottom: 16px;
+    }
+  }
+
+  &__navigation {
+    display: flex;
+
+    &__actions {
+      margin-right: 12px;
+    }
+  }
+
   &__mobile-info {
     @include flex-column(center, center);
     margin-top: px-to-rem(16px);

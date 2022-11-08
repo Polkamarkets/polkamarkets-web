@@ -36,7 +36,7 @@
     @include breakpoint-to('md') {
       grid-template-areas:
         'analytics analytics'
-        'market actions'
+        'market market'
         'view view'
         'charts stats'
         'source source'
@@ -54,14 +54,18 @@
 
     &__market {
       grid-area: market;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--size-16);
     }
 
     &__actions {
-      grid-area: actions;
       display: none;
 
       @include breakpoint-to('md') {
-        @include flex-row(flex-end, center);
+        @include flex-row(flex-end, center, var(--size-12));
       }
     }
 
@@ -71,6 +75,7 @@
 
     &__charts {
       grid-area: charts;
+      overflow: hidden;
     }
 
     &__stats {

@@ -11,14 +11,18 @@ $navbar-themes: (
     border-bottom-color: #e3e7f0,
     dropdown-menu-background-color: #f8faff,
     dropdown-menu-border-color: #e3e7f0,
-    divider-circle-color: #d7dce4
+    divider-circle-color: #d7dce4,
+    text: #a7b0bd,
+    text-active: #171b23
   ),
   dark: (
     background-color: #0e1016,
     border-bottom-color: #252c3b,
     dropdown-menu-background-color: #0e1016,
     dropdown-menu-border-color: #252c3b,
-    divider-circle-color: #38404d
+    divider-circle-color: #38404d,
+    text: #637084,
+    text-active: #f9fafb
   )
 ) !default;
 

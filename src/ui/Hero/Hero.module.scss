@@ -1,0 +1,15 @@
+.root {
+  padding: 40px calc(61.8% - 40px) 40px 40px;
+  border-radius: 16px;
+  background: linear-gradient(
+      90deg,
+      rgba(16, 65, 110, 0.8) 0%,
+      rgba(36, 56, 125, 0.664) 24.22%,
+      rgba(50, 90, 233, 0) 50%
+    ),
+    var(--background-image), #5d55fa;
+  background-clip: border-box;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}

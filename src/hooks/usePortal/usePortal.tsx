@@ -35,6 +35,7 @@ export default function usePortal({ root, ...outProps }: UsePortalProps) {
 
   return Object.assign(handlePortal, {
     mount: handleMount,
-    unmount: handleUnmount
+    unmount: handleUnmount,
+    didMount: mount
   });
 }

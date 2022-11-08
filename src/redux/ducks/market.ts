@@ -53,6 +53,7 @@ const initialState: MarketInitialState = {
     networkId: '',
     network: {} as Network,
     currency: {} as Currency,
+    votes: { up: 0, down: 0 },
     resolvedOutcomeId: -1,
     outcomes: [
       {
@@ -183,6 +184,13 @@ const marketSlice = createSlice({
         question: action.payload
       }
     }),
+    changeVotes: (state, action) => ({
+      ...state,
+      market: {
+        ...state.market,
+        votes: action.payload
+      }
+    }),
     changeData: (state, action) => ({
       ...state,
       market: {
@@ -222,6 +230,7 @@ const {
   clearMarket,
   changeOutcomeData,
   changeQuestion,
+  changeVotes,
   changeData,
   setChartViewType,
   priceChartsRequest,
@@ -234,6 +243,7 @@ export {
   clearMarket,
   changeOutcomeData,
   changeQuestion,
+  changeVotes,
   changeData,
   setChartViewType
 };

@@ -54,46 +54,6 @@ $alert-themes: (
 
 $alert-transitions: all 0.2s ease-in-out !default;
 
-$alert-inline-padding-y: 0.8rem !default;
-$alert-inline-padding-x: 1.2rem !default;
-
-$alert-inline-subtle-themes: (
-  light: (
-    background-colors: (
-      default: mix(#ffffff, #8a96a8, 85%),
-      info: mix(#ffffff, #5d55fa, 85%),
-      success: mix(#ffffff, #27ab83, 85%),
-      warning: mix(#ffffff, #f0b429, 85%),
-      danger: mix(#ffffff, #e12d39, 95%)
-    ),
-    text-colors: (
-      default: #8b96a7,
-      info: #5d55fa,
-      success: #27ab83,
-      warning: #f0b429,
-      danger: #e12d39
-    ),
-    remove-icon-color: #7a7a8a
-  ),
-  dark: (
-    background-colors: (
-      default: mix(#000000, #8a96a8, 80%),
-      info: mix(#000000, #5d55fa, 75%),
-      success: mix(#000000, #27ab83, 75%),
-      warning: mix(#000000, #f0b429, 85%),
-      danger: mix(#000000, #e12d39, 75%)
-    ),
-    text-colors: (
-      default: #8b96a7,
-      info: #5d55fa,
-      success: #27ab83,
-      warning: #f0b429,
-      danger: #e12d39
-    ),
-    remove-icon-color: #8d8e90
-  )
-) !default;
-
 $alert-minimal-padding-y: 1.2rem !default;
 $alert-minimal-padding-x: 1.2rem !default;
 $alert-minimal-border-width: 0.1rem !default;

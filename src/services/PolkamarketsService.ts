@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import * as realitioLib from '@reality.eth/reality-eth-lib/formatters/question';
 import environment, { NetworkConfig } from 'config/environment';
 import * as polkamarketsjs from 'polkamarkets-js';
@@ -23,6 +24,8 @@ export default class PolkamarketsService {
 
   public achievementsContractAddress: string | undefined;
 
+  public votingContractAddress: string | undefined;
+
   // util functions
   static bytes32ToInt(bytes32Str: string): number {
     return Number(realitioLib.bytes32ToString(bytes32Str, { type: 'int' }));
@@ -38,6 +41,7 @@ export default class PolkamarketsService {
       ERC20_CONTRACT_ADDRESS,
       REALITIO_ERC20_CONTRACT_ADDRESS,
       ACHIEVEMENTS_CONTRACT_ADDRESS,
+      VOTING_CONTRACT_ADDRESS,
       WEB3_PROVIDER,
       WEB3_EVENTS_PROVIDER
     }: NetworkConfig = environment.NETWORKS[environment.NETWORK_ID || 42]
@@ -46,6 +50,7 @@ export default class PolkamarketsService {
     this.erc20ContractAddress = ERC20_CONTRACT_ADDRESS;
     this.realitioErc20ContractAddress = REALITIO_ERC20_CONTRACT_ADDRESS;
     this.achievementsContractAddress = ACHIEVEMENTS_CONTRACT_ADDRESS;
+    this.votingContractAddress = VOTING_CONTRACT_ADDRESS;
 
     this.polkamarkets = new polkamarketsjs.Application({
       web3Provider: WEB3_PROVIDER,
@@ -62,6 +67,7 @@ export default class PolkamarketsService {
     this.getRealitioERC20Contract();
     this.getERC20Contract();
     this.getAchievementsContract();
+    this.getVotingContract();
   }
 
   public getPredictionMarketContract() {
@@ -85,6 +91,12 @@ export default class PolkamarketsService {
   public getAchievementsContract() {
     this.contracts.achievements = this.polkamarkets.getAchievementsContract({
       contractAddress: this.achievementsContractAddress
+    });
+  }
+
+  public getVotingContract() {
+    this.contracts.voting = this.polkamarkets.getVotingContract({
+      contractAddress: this.votingContractAddress
     });
   }
 
@@ -511,7 +523,6 @@ export default class PolkamarketsService {
 
   public async getAchievements(): Promise<Object> {
     // TODO improve this: contract might not be defined for network
-    // eslint-disable-next-line no-underscore-dangle
     if (!this.contracts.achievements.getContract()._address) return {};
 
     // ensuring user has wallet connected
@@ -531,6 +542,79 @@ export default class PolkamarketsService {
     const response = await this.contracts.achievements.claimAchievement({
       achievementId
     });
+
+    return response;
+  }
+
+  // Voting contract functions
+
+  public async getMinimumVotingRequiredBalance(): Promise<number> {
+    if (!this.contracts.voting.getContract()._address) return 0;
+
+    const requiredBalance =
+      await this.contracts.voting.getMinimumRequiredBalance();
+
+    return requiredBalance;
+  }
+
+  public async getUserVotes(): Promise<Object> {
+    // TODO improve this: contract might not be defined for network
+    if (!this.contracts.voting.getContract()._address) return {};
+
+    // ensuring user has wallet connected
+    if (!this.address) return {};
+
+    const response = await this.contracts.voting.getUserVotes({
+      user: this.address
+    });
+
+    return response;
+  }
+
+  public async upvoteItem(itemId) {
+    // ensuring user has wallet connected
+    await this.login();
+
+    // ensuring user has wallet connected
+    if (!this.address) return false;
+
+    const response = await this.contracts.voting.upvoteItem({ itemId });
+
+    return response;
+  }
+
+  public async downvoteItem(itemId) {
+    // ensuring user has wallet connected
+    await this.login();
+
+    // ensuring user has wallet connected
+    if (!this.address) return false;
+
+    const response = await this.contracts.voting.downvoteItem({ itemId });
+
+    return response;
+  }
+
+  public async removeUpvoteItem(itemId) {
+    // ensuring user has wallet connected
+    await this.login();
+
+    // ensuring user has wallet connected
+    if (!this.address) return false;
+
+    const response = await this.contracts.voting.removeUpvoteItem({ itemId });
+
+    return response;
+  }
+
+  public async removeDownvoteItem(itemId) {
+    // ensuring user has wallet connected
+    await this.login();
+
+    // ensuring user has wallet connected
+    if (!this.address) return false;
+
+    const response = await this.contracts.voting.removeDownvoteItem({ itemId });
 
     return response;
   }

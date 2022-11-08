@@ -1,0 +1,12 @@
+.root {
+  height: 44px;
+  padding-left: 16px;
+  padding-right: 16px;
+  display: flex;
+  align-items: center;
+  color: var(--color-text-primary);
+
+  &:not(:last-child) {
+    border-bottom: 1px solid var(--color-border);
+  }
+}

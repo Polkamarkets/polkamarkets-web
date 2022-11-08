@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 
 import dayjs from 'dayjs';
@@ -24,11 +24,22 @@ type LineChartProps = {
 };
 
 function LineChart({ series, ticker, height = 200 }: LineChartProps) {
+  const [width, setWidth] = useState('99%');
+
   const { theme } = useTheme();
+
   const customOptions = useMemo(
     () => generateCustomOptions(theme, ticker),
     [theme, ticker]
   );
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setWidth('100%');
+    }, 100);
+
+    return () => clearTimeout(timeout);
+  }, []);
 
   return (
     <ReactApexChart
@@ -36,6 +47,7 @@ function LineChart({ series, ticker, height = 200 }: LineChartProps) {
       series={series}
       type="line"
       height={height}
+      width={width}
     />
   );
 }

@@ -12,6 +12,8 @@ export type Action = {
   transactionHash: string;
 };
 
+export type Votes = { [key: string]: { upvoted: boolean; downvoted: boolean } };
+
 export type PolkamarketsInitialState = {
   isLoggedIn: boolean;
   networkId: string;
@@ -25,10 +27,12 @@ export type PolkamarketsInitialState = {
   bonds: any;
   marketsWithBonds: string[];
   bondActions: any[];
+  votes: Votes;
   isLoading: {
     portfolio: boolean;
     bonds: boolean;
     actions: boolean;
+    votes: boolean;
   };
 };
 
@@ -45,10 +49,12 @@ const initialState: PolkamarketsInitialState = {
   bonds: {},
   marketsWithBonds: [],
   bondActions: [],
+  votes: {},
   isLoading: {
     portfolio: false,
     bonds: false,
-    actions: false
+    actions: false,
+    votes: false
   }
 };
 
@@ -111,6 +117,26 @@ const polkamarketsSlice = createSlice({
       ...state,
       bondActions: action.payload
     }),
+    changeVotes: (state, action: PayloadAction<Votes>) => ({
+      ...state,
+      votes: action.payload
+    }),
+    changeVoteByMarketId: (
+      state,
+      action: PayloadAction<{
+        marketId: string;
+        vote: { upvoted: boolean; downvoted: boolean };
+      }>
+    ) => {
+      const { marketId, vote } = action.payload;
+      return {
+        ...state,
+        votes: {
+          ...state.votes,
+          [marketId]: vote
+        }
+      };
+    },
     changeLoading: (
       state,
       action: PayloadAction<{ key: string; value: boolean }>
@@ -139,6 +165,8 @@ const {
   changeBonds,
   changeMarketsWithBonds,
   changeBondActions,
+  changeVotes,
+  changeVoteByMarketId,
   changeLoading
 } = polkamarketsSlice.actions;
 
@@ -197,8 +225,18 @@ function fetchAditionalData(networkConfig: NetworkConfig) {
         })
       );
 
+      dispatch(
+        changeLoading({
+          key: 'votes',
+          value: true
+        })
+      );
+
       const portfolio = await polkamarketsService.getPortfolio();
       dispatch(changePortfolio(portfolio));
+
+      const votes = (await polkamarketsService.getUserVotes()) as Votes;
+      dispatch(changeVotes(votes));
 
       const bonds = await polkamarketsService.getBonds();
       dispatch(changeBonds(bonds));
@@ -216,6 +254,13 @@ function fetchAditionalData(networkConfig: NetworkConfig) {
       dispatch(
         changeLoading({
           key: 'bonds',
+          value: false
+        })
+      );
+
+      dispatch(
+        changeLoading({
+          key: 'votes',
           value: false
         })
       );
@@ -248,6 +293,7 @@ export {
   changeActions,
   changeBonds,
   changeBondActions,
+  changeVoteByMarketId,
   login,
   fetchAditionalData
 };

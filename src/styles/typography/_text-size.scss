@@ -8,6 +8,9 @@
   --font-size-body-2: 1.4rem;
   --font-size-body-3: 1.2rem;
   --font-size-body-4: 1.2rem;
+  --font-size-caption-1: 3rem;
+  --font-size-caption-2: 1.6rem;
+  --font-size-caption-3: 1.3rem;
 }
 
 $font-sizes: (
@@ -17,7 +20,10 @@ $font-sizes: (
   'body-1': calc(var(--font-scale-heading) * var(--font-size-body-1)),
   'body-2': calc(var(--font-scale-heading) * var(--font-size-body-2)),
   'body-3': calc(var(--font-scale-heading) * var(--font-size-body-3)),
-  'body-4': calc(var(--font-scale-heading) * var(--font-size-body-4))
+  'body-4': calc(var(--font-scale-heading) * var(--font-size-body-4)),
+  'caption-1': calc(var(--font-scale-heading) * var(--font-size-caption-1)),
+  'caption-2': calc(var(--font-scale-heading) * var(--font-size-caption-2)),
+  'caption-3': calc(var(--font-scale-heading) * var(--font-size-caption-3))
 );
 
 $line-heights: (
@@ -27,7 +33,10 @@ $line-heights: (
   'body-1': 1.52,
   'body-2': 1.5,
   'body-3': 1.5,
-  'body-4': 1.19
+  'body-4': 1.19,
+  'caption-1': 1.83,
+  'caption-2': 1.225,
+  'caption-3': 1.225
 );
 
 $letter-spacings: (
@@ -37,7 +46,10 @@ $letter-spacings: (
   'body-1': -0.01em,
   'body-2': -0.01em,
   'body-3': normal,
-  'body-4': 0.08em
+  'body-4': 0.08em,
+  'caption-1': 0.08em,
+  'caption-2': 0.08em,
+  'caption-3': 0.08em
 );
 
 @each $name, $value in $font-sizes {

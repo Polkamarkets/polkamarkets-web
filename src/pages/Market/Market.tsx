@@ -9,7 +9,9 @@ import { closeRightSidebar, openTradeForm } from 'redux/ducks/ui';
 
 import { ArrowLeftIcon } from 'assets/icons';
 
-import { Tabs, Table, Text, Button, SEO } from 'components';
+import { Tabs, Table, Text, Button, SEO, VoteArrows } from 'components';
+
+import { VoteProvider } from 'contexts/vote';
 
 import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
 
@@ -143,17 +145,27 @@ const Market = () => {
           imageUrl={market.imageUrl}
           description={market.title}
         />
-      </div>
-      <div className="pm-p-market__actions">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => backToMarkets()}
-          aria-label="Back to Markets"
-        >
-          <ArrowLeftIcon />
-          Back to Markets
-        </Button>
+        <div className="pm-p-market__actions">
+          <VoteProvider>
+            <VoteArrows
+              key={market.slug}
+              size="md"
+              marketId={market.id}
+              marketNetworkId={market.networkId}
+              marketSlug={market.slug}
+              votes={market.votes}
+            />
+          </VoteProvider>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => backToMarkets()}
+            aria-label="Back to Markets"
+          >
+            <ArrowLeftIcon />
+            Back to Markets
+          </Button>
+        </div>
       </div>
       <div className="pm-p-market__view">
         {market.tradingViewSymbol ? <MarketChartViewSelector /> : null}

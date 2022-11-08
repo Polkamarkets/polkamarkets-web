@@ -16,6 +16,7 @@
 // 2. Vendors
 @import 'vendors/apex-charts';
 @import 'vendors/rc-slider';
+@import 'vendors/transak';
 
 // 3. Base stuff
 @import 'base/reset';
@@ -30,7 +31,6 @@
 
 // 5. Components
 @import 'components/alert';
-@import 'components/alert-notification';
 @import 'components/amount-input';
 @import 'components/badge';
 @import 'components/modal';

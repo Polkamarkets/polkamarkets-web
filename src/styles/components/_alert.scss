@@ -293,62 +293,6 @@
   }
 }
 
-.pm-c-alert-inline {
-  @include themes($alert-inline-subtle-themes) {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.8rem;
-
-    width: 100%;
-    padding: $alert-inline-padding-y $alert-inline-padding-x;
-
-    > svg {
-      height: 1.2rem;
-      width: 1.2rem;
-
-      flex-shrink: 0;
-    }
-
-    &__actions {
-      margin-left: auto;
-
-      button > svg {
-        height: 0.788rem;
-        width: 0.788rem;
-
-        flex-shrink: 0;
-
-        fill: themed('remove-icon-color');
-      }
-    }
-
-    &--left-align {
-      @extend .pm-c-alert-inline;
-      justify-content: flex-start;
-    }
-
-    &--center-align {
-      @extend .pm-c-alert-inline;
-      justify-content: center;
-    }
-
-    &--right-align {
-      @extend .pm-c-alert-inline;
-      justify-content: flex-end;
-    }
-
-    @each $color, $color-map in themed('background-colors') {
-      &-subtle--#{$color} {
-        @extend .pm-c-alert-inline;
-        @include alert-inline-subtle-color(
-          map-get(themed('background-colors'), $color),
-          map-get(themed('text-colors'), $color)
-        );
-      }
-    }
-  }
-}
-
 .pm-c-alert-minimal {
   @include themes($alert-minimal-themes) {
     @include flex-column(center, center);

@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+import { roundNumber } from 'helpers/math';
+
 import { TwarningIcon } from 'assets/icons';
 
 import { Text, ProgressBar, Button } from 'components';
@@ -47,7 +49,7 @@ function CreateMarketBuyPolk({
               fontWeight="semibold"
               className="pm-p-create-market-buy-polk__amount"
             >
-              {`${requiredPolkBalance - polkBalance} POLK`}
+              {`${roundNumber(requiredPolkBalance - polkBalance, 2)} POLK`}
             </Text>
             {` to create markets.`}
           </>

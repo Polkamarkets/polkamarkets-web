@@ -1,8 +1,11 @@
 /* eslint-disable import-helpers/order-imports */
 require('dotenv').config();
 const express = require('express');
+const helmet = require('helmet');
 
 const app = express();
+app.use(helmet.frameguard({ action: 'deny' }));
+
 const port = process.env.PORT || 5000;
 const fs = require('fs');
 const path = require('path');

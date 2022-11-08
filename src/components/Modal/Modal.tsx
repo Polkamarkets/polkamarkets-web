@@ -3,10 +3,6 @@ import React, { useEffect, useRef } from 'react';
 import cn from 'classnames';
 import { AnimatePresence, motion } from 'framer-motion';
 
-import { RemoveOutlinedIcon } from 'assets/icons';
-
-import { Button } from 'components/Button';
-
 import {
   useClickaway,
   usePortal,
@@ -21,10 +17,12 @@ import type { ModalProps } from './Modal.type';
 import { modalTrappersId } from './Modal.util';
 
 export default function Modal({
-  children,
   onHide,
   show,
   className,
+  backdrop,
+  centered,
+  size,
   ...props
 }: ModalProps) {
   const { current: didMount } = useMount();
@@ -69,31 +67,35 @@ export default function Modal({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             role="presentation"
-            className={cn(ModalClasses.root, className?.root)}
+            className={cn(
+              ModalClasses.root,
+              {
+                [ModalClasses.backdrop]: backdrop,
+                [ModalClasses.flex]: centered
+              },
+              className?.root
+            )}
             onKeyDown={handleKeyDown}
           >
             <motion.div
               ref={ref}
-              initial={{ y: 16 }}
+              initial={{ y: 8 }}
               animate={{ y: 0 }}
-              exit={{ y: 16 }}
+              exit={{ y: 8 }}
               role="dialog"
               aria-modal="true"
-              className={cn(ModalClasses.dialog, className?.dialog)}
-              {...props}
-            >
-              {onHide && (
-                <Button
-                  variant="ghost"
-                  onClick={onHide}
-                  className={cn(ModalClasses.hide, className?.hide)}
-                  aria-label="Hide"
-                >
-                  <RemoveOutlinedIcon />
-                </Button>
+              className={cn(
+                ModalClasses.dialog,
+                {
+                  [ModalClasses.center]: centered,
+                  [ModalClasses.sm]: size === 'sm',
+                  [ModalClasses.md]: size === 'md',
+                  [ModalClasses.lg]: size === 'lg'
+                },
+                className?.dialog
               )}
-              {children}
-            </motion.div>
+              {...props}
+            />
           </motion.div>
         )}
       </AnimatePresence>

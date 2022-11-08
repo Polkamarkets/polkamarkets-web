@@ -38,7 +38,7 @@ type TextFontSize =
   | 'body-3'
   | 'body-4';
 
-type TextFontWeight = 'regular' | 'medium' | 'semibold' | 'bold';
+type TextFontWeight = 'regular' | 'medium' | 'semibold' | 'bold' | 'extrabold';
 
 type TextColor =
   | '1'
@@ -46,7 +46,7 @@ type TextColor =
   | '3'
   | 'inverse'
   | 'warning'
-  | 'violetes-are-blue'
+  | 'violets-are-blue'
   | 'maximum-blue-green';
 
 type TextTransform = 'uppercase';

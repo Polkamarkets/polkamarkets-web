@@ -5,10 +5,10 @@
     max-width: 100%;
 
     grid-template-areas:
-      'nav header header'
-      'nav main aside'
-      'nav main aside';
-    grid-template-columns: auto minmax(0, 1fr) auto;
+      'header header'
+      'main aside'
+      'main aside';
+    grid-template-columns: minmax(0, 1fr) auto;
     grid-template-rows: auto 1fr auto;
 
     background-color: themed('background-color');
@@ -16,22 +16,8 @@
 
     &__header {
       grid-area: header;
-      z-index: 1000;
-
       background-color: themed('background-color');
       transition: background-color 0.2s ease-in-out 0s;
-    }
-
-    &__alert {
-      display: none;
-
-      @include breakpoint-to('md') {
-        display: inline;
-      }
-    }
-
-    &__nav {
-      grid-area: nav;
     }
 
     &__main {
@@ -39,21 +25,13 @@
 
       display: grid;
       grid-template-rows: 1fr auto;
-      padding: px-to-rem(8px) px-to-rem(24px) px-to-rem(12px) px-to-rem(24px);
+      padding: 24px 24px 12px 24px;
 
       height: 100%;
     }
 
     &__scrollable-area {
       height: calc(100vh - 6.8rem);
-
-      &--with-alert {
-        height: calc(100vh - 6.8rem);
-
-        @include breakpoint-to('md') {
-          height: calc(100vh - 11rem);
-        }
-      }
     }
 
     &__aside {

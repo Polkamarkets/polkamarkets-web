@@ -6,6 +6,7 @@ import { useAppSelector, useNetwork } from 'hooks';
 import networks from 'hooks/useNetwork/networks';
 
 import { Button } from '../Button';
+import NetworkSwitchClasses from './NetworkSwitch.module.scss';
 
 function toHex(value: string) {
   return `0x${Number(value).toString(16)}`;
@@ -15,14 +16,23 @@ function getNetworkById(id: string) {
   return networks[toHex(id)];
 }
 
-function NetworkSwitch() {
+type NetworkSwitchProps = {
+  targetNetworkId?: string;
+};
+
+function NetworkSwitch({ targetNetworkId }: NetworkSwitchProps) {
   const { setNetwork } = useNetwork();
   const [isChangingNetwork, setIsChangingNetwork] = useState(false);
 
   const walletConnected = useAppSelector(
     state => state.polkamarkets.isLoggedIn
   );
-  const networkId = useAppSelector(state => state.market.market.networkId);
+  const marketNetworkId = useAppSelector(
+    state => state.market.market.networkId
+  );
+
+  const networkId = targetNetworkId || marketNetworkId;
+
   const marketNetwork = getNetworkById(networkId);
 
   function changeLocalNetwork() {
@@ -80,13 +90,16 @@ function NetworkSwitch() {
 
   return (
     <Button
-      color="warning"
+      className={NetworkSwitchClasses.button}
+      variant="subtle"
+      color="default"
       fullwidth
       onClick={() => handleChangeNetwork()}
       loading={isChangingNetwork}
       disabled={isChangingNetwork}
     >
       Switch Network
+      {marketNetwork.currency.icon}
     </Button>
   );
 }

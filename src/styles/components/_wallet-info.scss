@@ -1,4 +1,27 @@
 .pm-c-wallet-info {
-  @include flex-row;
-  gap: 0.8rem;
+  @include themes($navbar-themes) {
+    @include flex-row;
+    gap: 0.8rem;
+    align-items: center;
+
+    &__currency {
+      padding: 4px 4px 4px 12px;
+      border: 1px solid themed('border-bottom-color');
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 1.4rem;
+      line-height: 1.5;
+      letter-spacing: -0.014rem;
+      color: themed('text-active');
+
+      &__ticker {
+        color: #b5d2fe;
+      }
+
+      &__button {
+        margin-left: 12px;
+        max-height: 32px;
+      }
+    }
+  }
 }

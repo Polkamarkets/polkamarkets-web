@@ -181,6 +181,17 @@ const marketsSlice = createSlice({
           : market
       )
     }),
+    changeMarketVotesById: (state, action) => ({
+      ...state,
+      markets: state.markets.map(market =>
+        market.id === action.payload.marketId
+          ? {
+              ...market,
+              votes: action.payload.votes
+            }
+          : market
+      )
+    }),
     changeMarketData: (state, action) => ({
       ...state,
       markets: state.markets.map(market =>
@@ -207,6 +218,7 @@ const {
   setSorter,
   changeMarketOutcomeData,
   changeMarketQuestion,
+  changeMarketVotesById,
   changeMarketData
 } = marketsSlice.actions;
 
@@ -217,6 +229,7 @@ export {
   setSorter,
   changeMarketOutcomeData,
   changeMarketQuestion,
+  changeMarketVotesById,
   changeMarketData
 };
 

@@ -1,6 +1,8 @@
 /* eslint-disable no-unused-vars */
 import { useState, ChangeEvent, FormEvent } from 'react';
 
+import cn from 'classnames';
+
 import { SearchIcon } from 'assets/icons';
 
 type SearchBarProps = {
@@ -16,12 +18,13 @@ type SearchBarProps = {
    * The callback function triggered when click or press Enter on search button
    */
   onSearch: (text: string) => void;
+  className?: string;
 };
 
 /**
  * A search bar with standard search input
  */
-function SearchBar({ name, placeholder, onSearch }: SearchBarProps) {
+function SearchBar({ name, placeholder, onSearch, className }: SearchBarProps) {
   const [searchText, setSearchText] = useState('');
 
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
@@ -37,7 +40,7 @@ function SearchBar({ name, placeholder, onSearch }: SearchBarProps) {
   }
 
   return (
-    <form className="pm-c-searchbar" onSubmit={handleSubmit}>
+    <form className={cn('pm-c-searchbar', className)} onSubmit={handleSubmit}>
       <input
         type="text"
         className="pm-c-searchbar__input"
