@@ -78,9 +78,14 @@ function calculateSharesBought(
   const fee = market.fee * ethAmount;
   const amount = ethAmount - fee;
 
-  // eslint-disable-next-line prettier/prettier
-  const newOutcomeShares =
-    market.liquidity ** 2 / (market.liquidity ** 2 / outcome.shares + amount);
+  // calculating product of all other outcome shares + amount
+  const product = market.outcomes.reduce((acc, cur) => {
+    if (cur.id === outcome.id) return acc;
+
+    return acc * (cur.shares + amount);
+  }, 1);
+
+  const newOutcomeShares = market.liquidity ** market.outcomes.length / product;
 
   const shares = outcome.shares - newOutcomeShares + amount || 0;
   const price = amount / shares || 0;
