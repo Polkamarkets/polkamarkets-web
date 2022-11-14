@@ -27,9 +27,11 @@ export default function NavBarActions() {
   const handleChangeNetwork = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       handleHide();
-      changeToNetwork(event.target.value);
+      changeToNetwork(
+        networks.filter(({ name }) => name === event.target.value)[0]
+      );
     },
-    [changeToNetwork, handleHide]
+    [changeToNetwork, handleHide, networks]
   );
 
   const isThemeDark = theme.theme === 'dark';
