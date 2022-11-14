@@ -79,6 +79,7 @@ export default function HomeNavFilter() {
       </Button>
       <Modal
         show={show}
+        onHide={handleHide}
         backdrop
         fullScreen
         initial={{ x: -304 }}
