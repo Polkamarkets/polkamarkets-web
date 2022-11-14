@@ -1,27 +1,24 @@
 import { useState, useRef, useEffect } from 'react';
 
 import classNames from 'classnames';
-import { environment } from 'config';
-import findKey from 'lodash/findKey';
 
 import { CaretDownFilledIcon } from 'assets/icons';
 
-import { useAppSelector, useNetwork } from 'hooks';
-import networks, { Network } from 'hooks/useNetwork/networks';
+import { useNetworks } from 'contexts/networks';
+
+import { Network } from 'hooks/useNetwork/networks';
 
 import Text from '../Text';
 
-const availableNetworks = Object.values(networks).filter(network =>
-  Object.keys(environment.NETWORKS).includes(network.id)
-);
-
 function Networks() {
-  const { network, setNetwork } = useNetwork();
+  const {
+    network: currentNetwork,
+    networks,
+    changeToNetwork,
+    isChangingNetwork
+  } = useNetworks();
+
   const [dropdownIsVisible, setDropdownIsVisible] = useState(false);
-  const [isChangingNetwork, setIsChangingNetwork] = useState(false);
-  const walletConnected = useAppSelector(
-    state => state.polkamarkets.isLoggedIn
-  );
 
   const ref = useRef<HTMLOListElement>(null);
 
@@ -39,59 +36,9 @@ function Networks() {
     }
   }
 
-  function changeLocalNetwork(newNetwork: Network) {
-    setNetwork(newNetwork.id);
-    handleCloseDropdown();
-  }
-
-  async function changeMetamaskNetwork(newNetwork: Network) {
-    setIsChangingNetwork(true);
-    try {
-      try {
-        await window.ethereum.request({
-          method: 'wallet_switchEthereumChain',
-          params: [
-            {
-              chainId: findKey(networks, newNetwork)
-            }
-          ]
-        });
-        setIsChangingNetwork(false);
-        handleCloseDropdown();
-      } catch (error: any) {
-        if (error.code === 4902) {
-          await window.ethereum.request({
-            method: 'wallet_addEthereumChain',
-            params: [
-              {
-                chainId: findKey(networks, newNetwork),
-                chainName: newNetwork.name,
-                nativeCurrency: {
-                  name: newNetwork.currency.ticker,
-                  symbol: newNetwork.currency.ticker,
-                  decimals: newNetwork.decimals
-                },
-                rpcUrls: newNetwork.rpcUrls,
-                blockExplorerUrls: [newNetwork.explorerURL]
-              }
-            ]
-          });
-        }
-        setIsChangingNetwork(false);
-        handleCloseDropdown();
-      }
-    } catch (error: any) {
-      setIsChangingNetwork(false);
-      handleCloseDropdown();
-    }
-  }
-
   async function handleChangeNetwork(newNetwork: Network) {
-    if (!window.ethereum || !walletConnected) {
-      changeLocalNetwork(newNetwork);
-    } else {
-      await changeMetamaskNetwork(newNetwork);
-    }
+    await changeToNetwork(newNetwork);
+    handleCloseDropdown();
   }
 
   useEffect(() => {
@@ -105,18 +52,18 @@ function Networks() {
     <div className="pm-c-networks">
       <button
         type="button"
-        className={`pm-c-button pm-c-networks__selected--${network.colorAccent}`}
+        className={`pm-c-button pm-c-networks__selected--${currentNetwork.colorAccent}`}
         onClick={handleToggleDropdownVisibility}
         disabled={isChangingNetwork}
       >
-        {network.currency.icon}
+        {currentNetwork.currency.icon}
         <Text
           as="span"
           scale="caption"
           fontWeight="semibold"
           className="pm-c-networks__selected-name"
         >
-          {network.name}
+          {currentNetwork.name}
         </Text>
         <CaretDownFilledIcon className="pm-c-networks__selected-caret-icon" />
       </button>
@@ -127,22 +74,22 @@ function Networks() {
           visible: dropdownIsVisible
         })}
       >
-        {availableNetworks.map(availableNetwork => (
-          <li key={availableNetwork.id}>
+        {networks.map(network => (
+          <li key={network.id}>
             <button
               type="button"
               className="pm-c-button-normal--noborder pm-c-networks__dropdown-item"
-              onClick={() => handleChangeNetwork(availableNetwork)}
-              disabled={isChangingNetwork || availableNetwork.id === network.id}
+              onClick={() => handleChangeNetwork(network)}
+              disabled={isChangingNetwork || network.id === currentNetwork.id}
             >
-              {availableNetwork.currency.icon}
+              {network.currency.icon}
               <Text
                 as="span"
                 scale="caption"
                 fontWeight="semibold"
                 className="pm-c-networks__dropdown-item-name"
               >
-                {availableNetwork.name}
+                {network.name}
               </Text>
             </button>
           </li>

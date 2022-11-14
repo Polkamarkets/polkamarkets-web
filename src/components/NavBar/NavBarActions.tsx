@@ -5,36 +5,43 @@ import { Adornment, List, ListItem, ListItemText, Toggle } from 'ui';
 import { Button } from 'components/Button';
 import ConnectMetamask from 'components/ConnectMetamask';
 import Icon from 'components/Icon';
-import type { IconProps } from 'components/Icon';
 import Modal from 'components/Modal';
 import WalletInfo from 'components/WalletInfo';
+
+import { useNetworks } from 'contexts/networks';
 
 import { useAppSelector, useTheme } from 'hooks';
 
 import NavbarClasses from './NavBar.module.scss';
 
-const arrChains = ['Ethereum', 'Binance', 'Moonriver'] as IconProps['name'][];
-
 export default function NavBarActions() {
   const theme = useTheme();
+  const { network: currentNetwork, networks, changeToNetwork } = useNetworks();
+
   const isLoggedIn = useAppSelector(state => state.polkamarkets.isLoggedIn);
+
   const [show, setShow] = useState(false);
-  const [appChain, setAppChain] = useState('Ethereum');
+
   const handleHide = useCallback(() => setShow(false), []);
-  const handleAppChain = useCallback(
+
+  const handleChangeNetwork = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       handleHide();
-      setAppChain(event.target.value);
+      changeToNetwork(
+        networks.filter(({ name }) => name === event.target.value)[0]
+      );
     },
-    [handleHide]
+    [changeToNetwork, handleHide, networks]
   );
+
   const isThemeDark = theme.theme === 'dark';
   const themeAnti = isThemeDark ? 'light' : 'dark';
 
   function handleTheme() {
     theme.setTheme(themeAnti);
   }
-  function handleChains() {
+
+  function handleNetworks() {
     setShow(true);
   }
 
@@ -54,9 +61,9 @@ export default function NavBarActions() {
           variant="outline"
           color="default"
           aria-label="Switch chain"
-          onClick={handleChains}
+          onClick={handleNetworks}
         >
-          <Icon name={appChain as IconProps['name']} />
+          <Icon name={currentNetwork.currency.iconName} />
         </Button>
       </div>
       <Modal
@@ -67,18 +74,18 @@ export default function NavBarActions() {
         }}
       >
         <List $rounded>
-          {arrChains.map(chain => (
-            <ListItem key={chain}>
+          {networks.map(network => (
+            <ListItem key={network.name}>
               <Adornment edge="start">
-                <Icon name={chain} />
+                <Icon name={network.currency.iconName} />
               </Adornment>
-              <ListItemText>{chain}</ListItemText>
+              <ListItemText>{network.name}</ListItemText>
               <Adornment edge="end">
                 <Toggle
                   type="radio"
-                  value={chain}
-                  checked={chain === appChain}
-                  onChange={handleAppChain}
+                  value={network.name}
+                  checked={network.name === currentNetwork.name}
+                  onChange={handleChangeNetwork}
                 />
               </Adornment>
             </ListItem>

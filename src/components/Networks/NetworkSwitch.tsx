@@ -1,8 +1,6 @@
-import { useState } from 'react';
+import { useNetworks } from 'contexts/networks';
 
-import findKey from 'lodash/findKey';
-
-import { useAppSelector, useNetwork } from 'hooks';
+import { useAppSelector } from 'hooks';
 import networks from 'hooks/useNetwork/networks';
 
 import { Button } from '../Button';
@@ -21,12 +19,8 @@ type NetworkSwitchProps = {
 };
 
 function NetworkSwitch({ targetNetworkId }: NetworkSwitchProps) {
-  const { setNetwork } = useNetwork();
-  const [isChangingNetwork, setIsChangingNetwork] = useState(false);
+  const { changeToNetwork, isChangingNetwork } = useNetworks();
 
-  const walletConnected = useAppSelector(
-    state => state.polkamarkets.isLoggedIn
-  );
   const marketNetworkId = useAppSelector(
     state => state.market.market.networkId
   );
@@ -35,55 +29,8 @@ function NetworkSwitch({ targetNetworkId }: NetworkSwitchProps) {
 
   const marketNetwork = getNetworkById(networkId);
 
-  function changeLocalNetwork() {
-    setNetwork(marketNetwork.id);
-  }
-
-  async function changeMetamaskNetwork() {
-    setIsChangingNetwork(true);
-    try {
-      try {
-        await window.ethereum.request({
-          method: 'wallet_switchEthereumChain',
-          params: [
-            {
-              chainId: findKey(networks, marketNetwork)
-            }
-          ]
-        });
-        setIsChangingNetwork(false);
-      } catch (error: any) {
-        if (error.code === 4902) {
-          await window.ethereum.request({
-            method: 'wallet_addEthereumChain',
-            params: [
-              {
-                chainId: findKey(networks, marketNetwork),
-                chainName: marketNetwork.name,
-                nativeCurrency: {
-                  name: marketNetwork.currency.ticker,
-                  symbol: marketNetwork.currency.ticker,
-                  decimals: marketNetwork.decimals
-                },
-                rpcUrls: marketNetwork.rpcUrls,
-                blockExplorerUrls: [marketNetwork.explorerURL]
-              }
-            ]
-          });
-        }
-        setIsChangingNetwork(false);
-      }
-    } catch (error: any) {
-      setIsChangingNetwork(false);
-    }
-  }
-
   async function handleChangeNetwork() {
-    if (!window.ethereum || !walletConnected) {
-      changeLocalNetwork();
-    } else {
-      await changeMetamaskNetwork();
-    }
+    await changeToNetwork(marketNetwork);
   }
 
   if (!marketNetwork) return null;

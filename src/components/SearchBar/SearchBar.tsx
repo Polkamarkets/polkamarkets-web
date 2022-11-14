@@ -1,58 +1,46 @@
-/* eslint-disable no-unused-vars */
-import { useState, ChangeEvent, FormEvent } from 'react';
+import { useCallback, useRef, FormEvent } from 'react';
 
 import cn from 'classnames';
 
 import { SearchIcon } from 'assets/icons';
 
-type SearchBarProps = {
-  /**
-   * Name of the component
-   */
-  name: string;
-  /**
-   * Placeholder of the input field
-   */
-  placeholder?: string;
-  /**
-   * The callback function triggered when click or press Enter on search button
-   */
-  onSearch: (text: string) => void;
-  className?: string;
-};
+import { SearchBarProps } from './SearchBar.type';
 
 /**
  * A search bar with standard search input
  */
-function SearchBar({ name, placeholder, onSearch, className }: SearchBarProps) {
-  const [searchText, setSearchText] = useState('');
+function SearchBar({ className, onSearch, ...props }: SearchBarProps) {
+  const inputElementRef = useRef<HTMLInputElement>(null);
 
-  function handleChange(event: ChangeEvent<HTMLInputElement>) {
-    const { value } = event.currentTarget;
+  const handleFormSubmit = useCallback(
+    (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
 
-    setSearchText(value);
-  }
-
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
-    onSearch(searchText);
-  }
+      if (inputElementRef.current) {
+        onSearch(inputElementRef.current.value);
+      }
+    },
+    [onSearch]
+  );
 
   return (
-    <form className={cn('pm-c-searchbar', className)} onSubmit={handleSubmit}>
+    <form
+      role="search"
+      className={cn('pm-c-searchbar', className?.form)}
+      onSubmit={handleFormSubmit}
+    >
       <input
+        ref={inputElementRef}
         type="text"
-        className="pm-c-searchbar__input"
-        id={name}
-        name={name}
-        placeholder={placeholder}
-        onChange={handleChange}
+        role="searchbox"
+        autoComplete="off"
+        className={cn('pm-c-searchbar__input', className?.input)}
+        {...props}
       />
       <button
-        className="pm-c-searchbar__icon"
         type="submit"
         aria-label="Search"
+        className={cn('pm-c-searchbar__icon', className?.button)}
       >
         <SearchIcon />
       </button>

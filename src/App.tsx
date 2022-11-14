@@ -8,6 +8,7 @@ import Routes from 'routes';
 import { SEO } from 'components';
 
 import FavoriteMarketsProvider from 'contexts/favoriteMarkets';
+import { NetworksProvider } from 'contexts/networks';
 
 import { useAppDispatch, useNetwork, usePrevious, useTheme } from 'hooks';
 
@@ -33,14 +34,16 @@ const App = () => {
 
   return (
     <MuiPickersUtilsProvider utils={DayjsUtils}>
-      <FavoriteMarketsProvider>
-        <SEO
-          title="Polkamarkets - Autonomous Prediction Market Protocol"
-          description="Polkamarkets is a DeFi-Powered Prediction Market built for cross-chain information exchange, based on Polkadot."
-          imageUrl={POLKAMARKETS_DEFAULT_BANNER}
-        />
-        <Routes />
-      </FavoriteMarketsProvider>
+      <NetworksProvider>
+        <FavoriteMarketsProvider>
+          <SEO
+            title="Polkamarkets - Autonomous Prediction Market Protocol"
+            description="Polkamarkets is a DeFi-Powered Prediction Market built for cross-chain information exchange, based on Polkadot."
+            imageUrl={POLKAMARKETS_DEFAULT_BANNER}
+          />
+          <Routes />
+        </FavoriteMarketsProvider>
+      </NetworksProvider>
     </MuiPickersUtilsProvider>
   );
 };

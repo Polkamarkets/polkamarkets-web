@@ -1,6 +1,12 @@
 import { useCallback } from 'react';
+import { useHistory } from 'react-router-dom';
 
-import { setSorter, setSorterByEndingSoon } from 'redux/ducks/markets';
+import {
+  setSearchQuery,
+  setSorter,
+  setSorterByEndingSoon
+} from 'redux/ducks/markets';
+import { closeRightSidebar } from 'redux/ducks/ui';
 
 import { Button, Filter, SearchBar } from 'components';
 
@@ -10,6 +16,8 @@ import HomeNavFilter from './HomeNavFilter';
 import { filters } from './utils';
 
 export default function HomeNav() {
+  const history = useHistory();
+
   const dispatch = useAppDispatch();
   const handleTouchedFilter = useCallback(
     (touched: boolean) => {
@@ -27,14 +35,27 @@ export default function HomeNav() {
     );
   }
 
+  const handleSearch = useCallback(
+    (text: string) => {
+      dispatch(setSearchQuery(text));
+    },
+    [dispatch]
+  );
+
+  const handleNavigateToCreateMarket = useCallback(() => {
+    dispatch(closeRightSidebar());
+
+    history.push('/market/create');
+  }, [dispatch, history]);
+
   return (
     <div className="pm-p-home__navigation">
       <HomeNavFilter />
       <SearchBar
         name="Search Markets"
         placeholder="Search markets"
-        onSearch={() => {}}
-        className="pm-p-home__navigation__actions"
+        onSearch={handleSearch}
+        className={{ form: 'pm-p-home__navigation__actions' }}
       />
       <Filter
         description="Sort by"
@@ -44,7 +65,7 @@ export default function HomeNav() {
         onTouch={handleTouchedFilter}
         className="pm-p-home__navigation__actions"
       />
-      <Button color="primary" size="sm">
+      <Button color="primary" size="sm" onClick={handleNavigateToCreateMarket}>
         Create Market
       </Button>
     </div>

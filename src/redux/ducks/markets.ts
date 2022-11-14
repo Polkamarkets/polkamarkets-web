@@ -38,7 +38,7 @@ export interface MarketsIntialState {
     resolved: any;
     favorites: any;
   };
-  filter: string;
+  searchQuery: string;
   filterByVerified: boolean;
   sorterByEndingSoon: boolean;
   sorter: {
@@ -61,7 +61,7 @@ const initialState: MarketsIntialState = {
     resolved: null,
     favorites: null
   },
-  filter: '',
+  searchQuery: '',
   filterByVerified: true,
   sorterByEndingSoon: true,
   sorter: {
@@ -136,9 +136,9 @@ const marketsSlice = createSlice({
         [action.payload.type]: action.payload.error
       }
     }),
-    setFilter: (state, action: PayloadAction<string>) => ({
+    setSearchQuery: (state, action: PayloadAction<string>) => ({
       ...state,
-      filter: action.payload
+      searchQuery: action.payload
     }),
     setFilterByVerified: (state, action: PayloadAction<boolean>) => ({
       ...state,
@@ -212,9 +212,9 @@ const {
   request,
   success,
   error,
-  setFilter,
   setFilterByVerified,
   setSorterByEndingSoon,
+  setSearchQuery,
   setSorter,
   changeMarketOutcomeData,
   changeMarketQuestion,
@@ -223,9 +223,9 @@ const {
 } = marketsSlice.actions;
 
 export {
-  setFilter,
   setFilterByVerified,
   setSorterByEndingSoon,
+  setSearchQuery,
   setSorter,
   changeMarketOutcomeData,
   changeMarketQuestion,
@@ -237,8 +237,8 @@ export const filteredMarketsSelector = (
   state: MarketsIntialState,
   categories: Category[]
 ) => {
-  const regExpFromFilter = new RegExp(state.filter, 'i');
-  const regExpFullFilter = new RegExp(`^${state.filter}$`, 'i');
+  const regExpFromSearchQuery = new RegExp(state.searchQuery, 'i');
+  const regExpFullSearchQuery = new RegExp(`^${state.searchQuery}$`, 'i');
   const verifiedFilter = verified =>
     state.filterByVerified ? state.filterByVerified && verified : true;
   const isEndingSoonFilter = expiresAt =>
@@ -263,16 +263,16 @@ export const filteredMarketsSelector = (
   }
 
   return sorted(
-    categories.some(category => category.title.match(regExpFullFilter))
+    categories.some(category => category.title.match(regExpFullSearchQuery))
       ? state.markets.filter(
           ({ category, verified }) =>
-            category.match(regExpFullFilter) && verifiedFilter(verified)
+            category.match(regExpFullSearchQuery) && verifiedFilter(verified)
         )
       : state.markets.filter(
           ({ category, subcategory, title, verified }) =>
-            (category.match(regExpFromFilter) ||
-              subcategory.match(regExpFromFilter) ||
-              title.match(regExpFromFilter)) &&
+            (category.match(regExpFromSearchQuery) ||
+              subcategory.match(regExpFromSearchQuery) ||
+              title.match(regExpFromSearchQuery)) &&
             verifiedFilter(verified)
         )
   );

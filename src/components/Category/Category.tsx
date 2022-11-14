@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 import classnames from 'classnames';
 import dayjs from 'dayjs';
-import { setFilter } from 'redux/ducks/markets';
+import { setSearchQuery } from 'redux/ducks/markets';
 import { useAppDispatch } from 'redux/store';
 
 // import { CaretDownIcon, CaretUpIcon } from 'assets/icons';
@@ -35,20 +35,20 @@ function Category({
 }: CategoryProps) {
   const dispatch = useAppDispatch();
   const categories = useCategories();
-  const filter = useAppSelector(state => state.markets.filter);
+  const searchQuery = useAppSelector(state => state.markets.searchQuery);
 
-  const filterMatchesWithTitle = (categoryTitle: string) =>
-    categoryTitle.match(new RegExp(`^${filter}$`, 'i'));
+  const searchQueryMatchesWithTitle = (categoryTitle: string) =>
+    categoryTitle.match(new RegExp(`^${searchQuery}$`, 'i'));
 
-  const filterMatchesSomeCategory = categories
+  const searchQueryMatchesSomeCategory = categories
     .map(category => category.title)
-    .some(filterMatchesWithTitle);
+    .some(searchQueryMatchesWithTitle);
 
   function handleCategorySelected() {
-    if (title === filter) {
-      dispatch(setFilter(''));
+    if (title === searchQuery) {
+      dispatch(setSearchQuery(''));
     } else {
-      dispatch(setFilter(title));
+      dispatch(setSearchQuery(title));
     }
   }
 
@@ -57,7 +57,7 @@ function Category({
       className={classnames({
         [`pm-c-category--${backgroundColor}`]: true,
         'pm-c-category--outfocus':
-          filterMatchesSomeCategory && !filterMatchesWithTitle(title)
+          searchQueryMatchesSomeCategory && !searchQueryMatchesWithTitle(title)
       })}
       role="button"
       tabIndex={0}
