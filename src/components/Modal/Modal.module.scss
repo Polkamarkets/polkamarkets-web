@@ -1,6 +1,6 @@
 .root {
   position: fixed;
-  z-index: 9999;
+  z-index: 1200;
   inset: 0;
 }
 
@@ -36,4 +36,9 @@
 
 .lg {
   width: 1200px;
+}
+
+.fullScreen {
+  height: 100%;
+  display: inline-block;
 }

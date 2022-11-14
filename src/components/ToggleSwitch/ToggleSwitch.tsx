@@ -1,15 +1,14 @@
-type ToggleSwitchProps = {
+interface ToggleSwitchProps extends React.ComponentPropsWithoutRef<'input'> {
   name: string;
   checked?: boolean;
   disabled?: boolean;
-  handleChange: any;
-};
+}
 
 const ToggleSwitch = ({
   name,
   checked,
   disabled = false,
-  handleChange
+  ...props
 }: ToggleSwitchProps) => {
   return (
     <label className="toggle-switch" htmlFor={name}>
@@ -18,7 +17,7 @@ const ToggleSwitch = ({
         id={name}
         checked={checked}
         disabled={disabled}
-        onChange={event => handleChange(event)}
+        {...props}
       />
       <span className="slider" />
     </label>

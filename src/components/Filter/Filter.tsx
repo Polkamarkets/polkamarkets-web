@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
+import cn from 'classnames';
+
 import { ArrowDownSmallIcon } from 'assets/icons';
 
 import Text from '../Text';
@@ -22,6 +24,7 @@ type FilterProps = {
   options: Option[];
   onChange: any;
   onTouch?: (_touched: boolean) => void;
+  className?: string;
 };
 
 function Filter({
@@ -29,7 +32,8 @@ function Filter({
   defaultOption,
   options,
   onChange,
-  onTouch
+  onTouch,
+  className
 }: FilterProps) {
   const [selectedOption, setSelectedOption] = useState<Option | undefined>();
   const [selectedOptionalTrigger, setSelectedOptionalTrigger] = useState<
@@ -90,7 +94,7 @@ function Filter({
   if (!selectedOption) return null;
 
   return (
-    <div className="pm-c-filter">
+    <div className={cn('pm-c-filter', className)}>
       <div className="pm-c-filter__header">
         <Text
           className="pm-c-filter__label"

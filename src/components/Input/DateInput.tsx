@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import 'react-datepicker/dist/react-datepicker.css';
-import { DateTimePicker } from '@material-ui/pickers';
+import { DateTimePickerProps, DateTimePicker } from '@material-ui/pickers';
 import { useField, useFormikContext } from 'formik';
 import styled from 'styled-components';
 
@@ -8,7 +8,7 @@ import { useTheme } from 'hooks';
 
 import InputErrorMessage from './InputErrorMessage';
 
-const StyledDateTimePicker = styled(DateTimePicker)`
+const StyledDateTimePicker = styled(DateTimePicker)<{ $hasError: boolean }>`
   .MuiOutlinedInput-input {
     padding: 1.2rem;
 
@@ -61,13 +61,14 @@ const StyledDateTimePicker = styled(DateTimePicker)`
   }
 `;
 
-type DateInputProps = {
-  label: string;
+interface DateInputProps
+  extends Omit<DateTimePickerProps, 'value' | 'onChange'> {
+  label?: string;
   name: string;
   description?: string;
-};
+}
 
-function DateInput({ label, name, description }: DateInputProps) {
+function DateInput({ label, name, description, ...props }: DateInputProps) {
   const { theme } = useTheme();
   const [field, meta] = useField(name);
   const { setFieldValue } = useFormikContext();
@@ -80,15 +81,19 @@ function DateInput({ label, name, description }: DateInputProps) {
 
   return (
     <div className="pm-c-date-input__group">
-      <label
-        htmlFor={name}
-        className={`pm-c-date-input__label--${hasError ? 'error' : 'default'}`}
-      >
-        {label}
-      </label>
+      {!!label && (
+        <label
+          htmlFor={name}
+          className={`pm-c-date-input__label--${
+            hasError ? 'error' : 'default'
+          }`}
+        >
+          {label}
+        </label>
+      )}
       <StyledDateTimePicker
         theme={theme}
-        $hasError={hasError}
+        $hasError={!!hasError}
         inputVariant="outlined"
         disablePast
         error={false}
@@ -98,6 +103,7 @@ function DateInput({ label, name, description }: DateInputProps) {
         emptyLabel="DD/MM/YYYY, --:-- --"
         value={field.value}
         onChange={date => handleChange(date)}
+        {...props}
       />
       {hasError && meta.error ? (
         <InputErrorMessage message={meta.error} />

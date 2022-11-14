@@ -1,22 +1,39 @@
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { setSearchQuery } from 'redux/ducks/markets';
+import {
+  setSearchQuery,
+  setSorter,
+  setSorterByEndingSoon
+} from 'redux/ducks/markets';
 import { closeRightSidebar } from 'redux/ducks/ui';
-import { ButtonGroup } from 'ui';
 
-import { Button, Icon, IconProps, SearchBar } from 'components';
+import { Button, Filter, SearchBar } from 'components';
 
 import { useAppDispatch } from 'hooks';
 
-const filters = ['List', 'Grid'] as Array<IconProps['name']>;
+import HomeNavFilter from './HomeNavFilter';
+import { filters } from './utils';
 
 export default function HomeNav() {
-  const dispatch = useAppDispatch();
   const history = useHistory();
 
-  const [filter, setFilter] = useState(0);
-  const handleFilter = useCallback(index => () => setFilter(index), []);
+  const dispatch = useAppDispatch();
+  const handleTouchedFilter = useCallback(
+    (touched: boolean) => {
+      dispatch(setSorterByEndingSoon(!touched));
+    },
+    [dispatch]
+  );
+
+  function handleSelectedFilter(filter: {
+    value: string | number;
+    optionalTrigger?: string;
+  }) {
+    dispatch(
+      setSorter({ value: filter.value, sortBy: filter.optionalTrigger })
+    );
+  }
 
   const handleSearch = useCallback(
     (text: string) => {
@@ -33,41 +50,21 @@ export default function HomeNav() {
 
   return (
     <div className="pm-p-home__navigation">
-      <Button
-        variant="outline"
-        size="sm"
-        className="pm-p-home__navigation__actions"
-      >
-        <Icon name="Filter" />
-        Filter
-      </Button>
+      <HomeNavFilter />
       <SearchBar
         name="Search Markets"
         placeholder="Search markets"
         onSearch={handleSearch}
         className={{ form: 'pm-p-home__navigation__actions' }}
       />
-      <ButtonGroup actived={filter} className="pm-p-home__navigation__actions">
-        {filters.map((button, index) => (
-          <Button
-            key={button}
-            variant="outline"
-            color="default"
-            aria-label={`Show by ${button}`}
-            onClick={handleFilter(index)}
-          >
-            <Icon name={button} />
-          </Button>
-        ))}
-      </ButtonGroup>
-      <Button
-        variant="outline"
-        size="xs"
+      <Filter
+        description="Sort by"
+        defaultOption="volumeEur"
+        options={filters}
+        onChange={handleSelectedFilter}
+        onTouch={handleTouchedFilter}
         className="pm-p-home__navigation__actions"
-      >
-        SORT: LIQUIDITY
-        <Icon name="Chevron" dir="down" size="lg" />
-      </Button>
+      />
       <Button color="primary" size="sm" onClick={handleNavigateToCreateMarket}>
         Create Market
       </Button>

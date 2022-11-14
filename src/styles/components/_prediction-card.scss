@@ -2,7 +2,6 @@
   @include flex-column;
   @include themes($prediction-card-themes) {
     background-color: themed('body-background-color');
-    box-shadow: themed('shadow');
 
     border: 0.1rem solid themed('border-color');
     border-radius: 0.4rem 0.4rem 0.4rem 0.4rem;

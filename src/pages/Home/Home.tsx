@@ -5,7 +5,6 @@ import { VoteProvider } from 'contexts/vote';
 import { useAppSelector, useFavoriteMarkets } from 'hooks';
 import useCategories from 'hooks/useCategories';
 
-import HomeHero from './HomeHero';
 import HomeNav from './HomeNav';
 import HomeTabs from './HomeTabs';
 
@@ -26,7 +25,6 @@ export default function Home() {
 
   return (
     <div className="pm-p-home">
-      <HomeHero />
       <HomeNav />
       <VoteProvider>
         <HomeTabs
