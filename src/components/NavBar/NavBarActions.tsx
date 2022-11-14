@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 
-import { Adornment, List, ListItem, ListItemText } from 'ui';
+import { Adornment, List, ListItem, ListItemText, Toggle } from 'ui';
 
 import { Button } from 'components/Button';
 import ConnectMetamask from 'components/ConnectMetamask';
@@ -13,20 +13,18 @@ import { useAppSelector, useTheme } from 'hooks';
 
 import NavbarClasses from './NavBar.module.scss';
 
-const arrChains = ['Ethereum', 'Binance', 'Moonriver'] as Array<
-  IconProps['name']
->;
+const arrChains = ['Ethereum', 'Binance', 'Moonriver'] as IconProps['name'][];
 
 export default function NavBarActions() {
   const theme = useTheme();
   const isLoggedIn = useAppSelector(state => state.polkamarkets.isLoggedIn);
   const [show, setShow] = useState(false);
-  const [appChain, setAppChain] = useState<IconProps['name']>('Ethereum');
+  const [appChain, setAppChain] = useState('Ethereum');
   const handleHide = useCallback(() => setShow(false), []);
   const handleAppChain = useCallback(
-    _chain => () => {
+    (event: React.ChangeEvent<HTMLInputElement>) => {
       handleHide();
-      setAppChain(_chain);
+      setAppChain(event.target.value);
     },
     [handleHide]
   );
@@ -58,7 +56,7 @@ export default function NavBarActions() {
           aria-label="Switch chain"
           onClick={handleChains}
         >
-          <Icon name={appChain} />
+          <Icon name={appChain as IconProps['name']} />
         </Button>
       </div>
       <Modal
@@ -68,18 +66,21 @@ export default function NavBarActions() {
           dialog: NavbarClasses.widget
         }}
       >
-        <List>
+        <List $rounded>
           {arrChains.map(chain => (
-            <ListItem
-              key={chain}
-              onClick={handleAppChain(chain)}
-              role="button"
-              tabIndex={0}
-            >
+            <ListItem key={chain}>
               <Adornment edge="start">
                 <Icon name={chain} />
               </Adornment>
               <ListItemText>{chain}</ListItemText>
+              <Adornment edge="end">
+                <Toggle
+                  type="radio"
+                  value={chain}
+                  checked={chain === appChain}
+                  onChange={handleAppChain}
+                />
+              </Adornment>
             </ListItem>
           ))}
         </List>

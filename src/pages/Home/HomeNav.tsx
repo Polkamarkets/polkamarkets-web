@@ -1,52 +1,49 @@
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 
-import { ButtonGroup } from 'ui';
+import { setSorter, setSorterByEndingSoon } from 'redux/ducks/markets';
 
-import { Button, Icon, IconProps, SearchBar } from 'components';
+import { Button, Filter, SearchBar } from 'components';
 
-const filters = ['List', 'Grid'] as Array<IconProps['name']>;
+import { useAppDispatch } from 'hooks';
+
+import HomeNavFilter from './HomeNavFilter';
+import { filters } from './utils';
 
 export default function HomeNav() {
-  const [filter, setFilter] = useState(0);
-  const handleFilter = useCallback(index => () => setFilter(index), []);
+  const dispatch = useAppDispatch();
+  const handleTouchedFilter = useCallback(
+    (touched: boolean) => {
+      dispatch(setSorterByEndingSoon(!touched));
+    },
+    [dispatch]
+  );
+
+  function handleSelectedFilter(filter: {
+    value: string | number;
+    optionalTrigger?: string;
+  }) {
+    dispatch(
+      setSorter({ value: filter.value, sortBy: filter.optionalTrigger })
+    );
+  }
 
   return (
     <div className="pm-p-home__navigation">
-      <Button
-        variant="outline"
-        size="sm"
-        className="pm-p-home__navigation__actions"
-      >
-        <Icon name="Filter" />
-        Filter
-      </Button>
+      <HomeNavFilter />
       <SearchBar
         name="Search Markets"
         placeholder="Search markets"
         onSearch={() => {}}
         className="pm-p-home__navigation__actions"
       />
-      <ButtonGroup actived={filter} className="pm-p-home__navigation__actions">
-        {filters.map((button, index) => (
-          <Button
-            key={button}
-            variant="outline"
-            color="default"
-            aria-label={`Show by ${button}`}
-            onClick={handleFilter(index)}
-          >
-            <Icon name={button} />
-          </Button>
-        ))}
-      </ButtonGroup>
-      <Button
-        variant="outline"
-        size="xs"
+      <Filter
+        description="Sort by"
+        defaultOption="volumeEur"
+        options={filters}
+        onChange={handleSelectedFilter}
+        onTouch={handleTouchedFilter}
         className="pm-p-home__navigation__actions"
-      >
-        SORT: LIQUIDITY
-        <Icon name="Chevron" dir="down" size="lg" />
-      </Button>
+      />
       <Button color="primary" size="sm">
         Create Market
       </Button>

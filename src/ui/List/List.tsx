@@ -1,19 +1,23 @@
-import type React from 'react';
-import { forwardRef } from 'react';
-
 import cn from 'classnames';
 
 import ListClasses from './List.module.scss';
 
-export default forwardRef<HTMLUListElement, React.ComponentPropsWithRef<'ul'>>(
-  function List({ className, ...props }, ref) {
-    return (
-      <ul
-        ref={ref}
-        role="listbox"
-        className={cn(ListClasses.root, className)}
-        {...props}
-      />
-    );
-  }
-);
+interface ListProps extends React.ComponentPropsWithoutRef<'ul'> {
+  $rounded?: boolean;
+}
+
+export default function List({ className, $rounded, ...props }: ListProps) {
+  return (
+    <ul
+      role="listbox"
+      className={cn(
+        ListClasses.root,
+        {
+          [ListClasses.rounded]: $rounded
+        },
+        className
+      )}
+      {...props}
+    />
+  );
+}

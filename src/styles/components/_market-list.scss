@@ -1,9 +1,8 @@
 .pm-c-market-list {
   height: 100%;
-  margin-top: px-to-rem(10px);
 
   &__item {
-    padding-bottom: px-to-rem(20px);
+    margin-bottom: px-to-rem(20px);
   }
 }
 

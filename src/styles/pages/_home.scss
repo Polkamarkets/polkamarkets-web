@@ -5,6 +5,8 @@
   margin: px-to-rem(0px) auto;
 
   &__hero {
+    margin-bottom: 20px;
+
     &__breadcrumb {
       display: flex;
       gap: 8px;
@@ -20,6 +22,33 @@
 
     &__actions {
       margin-right: 12px;
+    }
+  }
+
+  &__filter {
+    &-list {
+      width: 304px;
+      height: 100%;
+      overflow-y: auto;
+      border-right: 1px solid var(--color-border);
+      background-color: var(--color-surface);
+
+      &-sublist {
+        background-color: var(--color-background-primary);
+
+        &-inputs {
+          display: flex;
+          gap: 12px;
+          align-items: center;
+          margin-bottom: 12px;
+          margin-right: -12px;
+          margin-left: -12px;
+
+          &-input {
+            width: 100%;
+          }
+        }
+      }
     }
   }
 

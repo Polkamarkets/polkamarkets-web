@@ -23,6 +23,7 @@ export default function Modal({
   backdrop,
   centered,
   size,
+  fullScreen,
   ...props
 }: ModalProps) {
   const { current: didMount } = useMount();
@@ -90,7 +91,8 @@ export default function Modal({
                   [ModalClasses.center]: centered,
                   [ModalClasses.sm]: size === 'sm',
                   [ModalClasses.md]: size === 'md',
-                  [ModalClasses.lg]: size === 'lg'
+                  [ModalClasses.lg]: size === 'lg',
+                  [ModalClasses.fullScreen]: fullScreen
                 },
                 className?.dialog
               )}
