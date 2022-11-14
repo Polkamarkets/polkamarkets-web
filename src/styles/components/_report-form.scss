@@ -8,14 +8,22 @@
   height: 100%;
   width: 32rem;
 
-  &__group {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
+  &__view,
+  &__actions {
+    @include flex-column;
     align-items: center;
     gap: 1.6rem;
 
     width: 100%;
+    height: 100%;
+  }
+
+  &__view {
+    justify-content: flex-start;
+  }
+
+  &__actions {
+    justify-content: flex-end;
   }
 
   @media only screen and (max-height: 870px) {
@@ -28,9 +36,21 @@
 .pm-c-report-form-outcome-select {
   display: flex;
   flex-direction: column;
-  gap: 1.6rem;
-
   width: 100%;
+
+  &--binary {
+    @extend .pm-c-report-form-outcome-select;
+    height: min(334px, 100%);
+  }
+
+  &--multiple {
+    @extend .pm-c-report-form-outcome-select;
+    height: min(459px, 100%);
+  }
+
+  &__item {
+    padding-bottom: 16px;
+  }
 }
 
 .pm-c-report-form-input {
