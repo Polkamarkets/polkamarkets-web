@@ -3,6 +3,8 @@ require('dotenv').config();
 const express = require('express');
 const helmet = require('helmet');
 
+const { createProxyMiddleware } = require('http-proxy-middleware');
+
 const app = express();
 app.use(helmet.frameguard({ action: 'deny' }));
 
@@ -141,6 +143,18 @@ app.get('/markets/:slug', async (request, response) => {
     }
   });
 });
+
+const { REACT_APP_NOTAKU_URL } = process.env;
+
+if (REACT_APP_NOTAKU_URL) {
+  app.use(
+    '/docs',
+    createProxyMiddleware({
+      target: `${REACT_APP_NOTAKU_URL}`,
+      changeOrigin: true
+    })
+  );
+}
 
 app.use(express.static(path.resolve(__dirname, '..', 'build')));
 
