@@ -41,6 +41,7 @@
     "framer-motion": "^3.10.5",
     "geoip-country": "^4.0.76",
     "helmet": "^6.0.0",
+    "http-proxy-middleware": "^2.0.6",
     "humps": "^2.0.1",
     "lodash": "^4.17.21",
     "mockdate": "^3.0.5",
