@@ -4,11 +4,11 @@
     align-items: center;
     border-bottom: 1px solid themed('border-bottom-color');
     width: 100%;
-    padding-left: 24px;
-    padding-right: 24px;
+    padding-left: var(--grid-margin);
+    padding-right: var(--grid-margin);
     background-color: themed('background-color');
     transition: $navbar-transitions;
-    min-height: 76px;
+    min-height: var(--header-y);
 
     &__logos {
       display: inherit;
