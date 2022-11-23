@@ -2,7 +2,6 @@
   @include themes($layout-themes) {
     display: grid;
     height: 100%;
-    max-width: 100%;
 
     grid-template-areas:
       'header header'
@@ -21,12 +20,7 @@
     }
 
     &__main {
-      grid-area: main;
-
-      display: grid;
-      grid-template-rows: 1fr auto;
-      padding: 24px 24px 12px 24px;
-
+      padding-top: var(--grid-margin);
       height: 100%;
     }
 

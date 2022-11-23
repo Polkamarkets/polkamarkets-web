@@ -3,7 +3,6 @@ import Icon from 'components/Icon';
 
 import { useTheme } from 'hooks';
 
-
 export default function NavBarActionsTheme() {
   const theme = useTheme();
   const isThemeDark = theme.theme === 'dark';

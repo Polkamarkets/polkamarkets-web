@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-import { useMedia } from 'ui';
+import { Container, useMedia } from 'ui';
 
 import { PolkamarketsLogo } from 'assets/icons';
 
@@ -13,7 +13,7 @@ export default function NavBar() {
   const isDesktop = useMedia('(min-width: 1024px)');
 
   return (
-    <header className="pm-l-layout__header">
+    <Container as="header" className="pm-l-layout__header">
       <Link to="/" aria-label="Homepage" className="pm-l-layout__header__logos">
         <PolkamarketsLogo />
       </Link>
@@ -22,7 +22,7 @@ export default function NavBar() {
         <NavBarActionsTheme />
         {isDesktop && <NavBarActionsNetwork />}
       </NavBarActions>
-    </header>
+    </Container>
   );
 }
 

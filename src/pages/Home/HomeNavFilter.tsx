@@ -68,12 +68,7 @@ export default function HomeNavFilter() {
 
   return (
     <>
-      <Button
-        variant="outline"
-        size="sm"
-        className="pm-p-home__navigation__actions"
-        onClick={handleShow}
-      >
+      <Button variant="outline" size="sm" onClick={handleShow}>
         <Icon name="Filter" />
         Filter
       </Button>
@@ -82,9 +77,9 @@ export default function HomeNavFilter() {
         onHide={handleHide}
         backdrop
         fullScreen
-        initial={{ x: -304 }}
-        animate={{ x: 0 }}
-        exit={{ x: -304 }}
+        initial={{ x: '100vw' }}
+        animate={{ x: 'calc(100vw - 304px)' }}
+        exit={{ x: '100vw' }}
       >
         <Formik
           onSubmit={() => {}}

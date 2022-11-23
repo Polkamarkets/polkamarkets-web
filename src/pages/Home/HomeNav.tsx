@@ -50,7 +50,14 @@ export default function HomeNav() {
 
   return (
     <div className="pm-p-home__navigation">
-      <HomeNavFilter />
+      <Button
+        className="pm-p-home__navigation__actions"
+        color="primary"
+        size="sm"
+        onClick={handleNavigateToCreateMarket}
+      >
+        Create Market
+      </Button>
       <SearchBar
         name="Search Markets"
         placeholder="Search markets"
@@ -58,16 +65,14 @@ export default function HomeNav() {
         className={{ form: 'pm-p-home__navigation__actions' }}
       />
       <Filter
+        className="pm-p-home__navigation__actions"
         description="Sort by"
         defaultOption="volumeEur"
         options={filters}
         onChange={handleSelectedFilter}
         onTouch={handleTouchedFilter}
-        className="pm-p-home__navigation__actions"
       />
-      <Button color="primary" size="sm" onClick={handleNavigateToCreateMarket}>
-        Create Market
-      </Button>
+      <HomeNavFilter />
     </div>
   );
 }
