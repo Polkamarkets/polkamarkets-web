@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { createContext, useContext, useMemo, ReactNode, Children } from 'react';
 
 import classNames from 'classnames';

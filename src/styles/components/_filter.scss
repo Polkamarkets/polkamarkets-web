@@ -3,9 +3,9 @@
 
   @include themes($filter-themes) {
     &__button {
-      @extend .pm-c-button-normal--noborder, .pm-c-button--sm;
-      @extend .caption, .semibold;
-      color: themed('filter-current-selected-item-color');
+      @extend .pm-c-button-normal--noborder;
+      gap: 0.4rem;
+      color: themed('filter-label-color');
       height: 100%;
       padding-left: 12px;
       padding-right: 12px;
@@ -14,18 +14,7 @@
     }
 
     &__label {
-      @include flex-row;
-      gap: 0.4rem;
-
-      svg {
-        margin-left: 4px;
-        align-self: center;
-        fill: themed('filter-current-selected-item-color');
-      }
-
-      &-text {
-        color: themed('filter-label-color');
-      }
+      color: themed('filter-current-selected-item-color');
     }
 
     &__content {

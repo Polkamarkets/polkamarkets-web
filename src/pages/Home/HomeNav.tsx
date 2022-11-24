@@ -66,7 +66,7 @@ export default function HomeNav() {
       />
       <Filter
         className="pm-p-home__navigation__actions"
-        description="Sort by"
+        description="Sort:"
         defaultOption="volumeEur"
         options={filters}
         onChange={handleSelectedFilter}

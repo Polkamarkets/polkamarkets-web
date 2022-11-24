@@ -99,26 +99,24 @@ function Filter({
 
   return (
     <div className={cn('pm-c-filter', className)}>
-      <button type="button" className="pm-c-filter__button">
+      <Text
+        className="pm-c-filter__button"
+        /* @ts-ignore */
+        as="button"
+        scale="tiny-uppercase"
+        fontWeight="bold"
+        type="button"
+      >
         {isDesktop ? (
           <>
-            <Text
-              className="pm-c-filter__label-text"
-              as="span"
-              scale="caption"
-              fontWeight="semibold"
-            >
-              {description}
-            </Text>
-            <span className="pm-c-filter__label pm-c-filter__label">
-              {selectedOption.name}
-              <ArrowDownSmallIcon />
-            </span>
+            <span className="pm-c-filter__label">{description}</span>
+            {selectedOption.name}
+            <ArrowDownSmallIcon />
           </>
         ) : (
           <Icon name="Sort" size="lg" />
         )}
-      </button>
+      </Text>
       <div className="pm-c-filter__content">
         {options.map(option => (
           <div key={option.value} className="pm-c-filter__group">
