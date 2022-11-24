@@ -13,7 +13,7 @@ import {
   ToggleSwitch
 } from 'components';
 
-export default function HomeNavFilter() {
+export default function HomeNavFilter({ isDesktop }: { isDesktop: boolean }) {
   const [show, setShow] = useState(false);
   const [expand, setExpand] = useState({
     network: false,
@@ -68,9 +68,15 @@ export default function HomeNavFilter() {
 
   return (
     <>
-      <Button variant="outline" size="sm" onClick={handleShow}>
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={handleShow}
+        style={{ display: 'inherit', height: 'auto' }}
+        {...(!isDesktop && { 'aria-label': 'Filter' })}
+      >
         <Icon name="Filter" />
-        Filter
+        {isDesktop && 'Filter'}
       </Button>
       <Modal
         show={show}

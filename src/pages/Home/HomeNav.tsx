@@ -7,6 +7,7 @@ import {
   setSorterByEndingSoon
 } from 'redux/ducks/markets';
 import { closeRightSidebar } from 'redux/ducks/ui';
+import { useMedia } from 'ui';
 
 import { Button, Filter, SearchBar } from 'components';
 
@@ -17,7 +18,7 @@ import { filters } from './utils';
 
 export default function HomeNav() {
   const history = useHistory();
-
+  const isDesktop = useMedia('(min-width: 1024px)');
   const dispatch = useAppDispatch();
   const handleTouchedFilter = useCallback(
     (touched: boolean) => {
@@ -50,14 +51,16 @@ export default function HomeNav() {
 
   return (
     <div className="pm-p-home__navigation">
-      <Button
-        className="pm-p-home__navigation__actions"
-        color="primary"
-        size="sm"
-        onClick={handleNavigateToCreateMarket}
-      >
-        Create Market
-      </Button>
+      {isDesktop && (
+        <Button
+          className="pm-p-home__navigation__actions"
+          color="primary"
+          size="sm"
+          onClick={handleNavigateToCreateMarket}
+        >
+          Create Market
+        </Button>
+      )}
       <SearchBar
         name="Search Markets"
         placeholder="Search markets"
@@ -72,7 +75,7 @@ export default function HomeNav() {
         onChange={handleSelectedFilter}
         onTouch={handleTouchedFilter}
       />
-      <HomeNavFilter />
+      <HomeNavFilter isDesktop={isDesktop} />
     </div>
   );
 }
