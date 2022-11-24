@@ -16,13 +16,37 @@ import { useAppDispatch } from 'hooks';
 import HomeNavFilter from './HomeNavFilter';
 import { filters } from './utils';
 
-export default function HomeNav() {
+function CreateMarket() {
+  const dispatch = useAppDispatch();
   const history = useHistory();
+  const handleNavigateToCreateMarket = useCallback(() => {
+    dispatch(closeRightSidebar());
+    history.push('/market/create');
+  }, [dispatch, history]);
+
+  return (
+    <Button
+      className="pm-p-home__navigation__actions"
+      color="primary"
+      size="sm"
+      onClick={handleNavigateToCreateMarket}
+    >
+      Create Market
+    </Button>
+  );
+}
+export default function HomeNav() {
   const isDesktop = useMedia('(min-width: 1024px)');
   const dispatch = useAppDispatch();
   const handleTouchedFilter = useCallback(
     (touched: boolean) => {
       dispatch(setSorterByEndingSoon(!touched));
+    },
+    [dispatch]
+  );
+  const handleSearch = useCallback(
+    (text: string) => {
+      dispatch(setSearchQuery(text));
     },
     [dispatch]
   );
@@ -36,31 +60,9 @@ export default function HomeNav() {
     );
   }
 
-  const handleSearch = useCallback(
-    (text: string) => {
-      dispatch(setSearchQuery(text));
-    },
-    [dispatch]
-  );
-
-  const handleNavigateToCreateMarket = useCallback(() => {
-    dispatch(closeRightSidebar());
-
-    history.push('/market/create');
-  }, [dispatch, history]);
-
   return (
     <div className="pm-p-home__navigation">
-      {isDesktop && (
-        <Button
-          className="pm-p-home__navigation__actions"
-          color="primary"
-          size="sm"
-          onClick={handleNavigateToCreateMarket}
-        >
-          Create Market
-        </Button>
-      )}
+      {isDesktop && <CreateMarket />}
       <SearchBar
         name="Search Markets"
         placeholder="Search markets"
