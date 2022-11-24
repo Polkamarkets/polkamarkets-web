@@ -71,6 +71,7 @@ export default function HomeNavFilter({ isDesktop }: { isDesktop: boolean }) {
       <Button
         variant="outline"
         size="sm"
+        className="pm-p-home__navigation__actions"
         onClick={handleShow}
         style={{ display: 'inherit', height: 'auto' }}
         {...(!isDesktop && { 'aria-label': 'Filter' })}
@@ -83,9 +84,9 @@ export default function HomeNavFilter({ isDesktop }: { isDesktop: boolean }) {
         onHide={handleHide}
         backdrop
         fullScreen
-        initial={{ x: '100vw' }}
-        animate={{ x: 'calc(100vw - 304px)' }}
-        exit={{ x: '100vw' }}
+        initial={{ x: -304 }}
+        animate={{ x: 0 }}
+        exit={{ x: -304 }}
       >
         <Formik
           onSubmit={() => {}}

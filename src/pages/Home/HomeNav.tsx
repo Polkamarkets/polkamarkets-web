@@ -25,12 +25,7 @@ function CreateMarket() {
   }, [dispatch, history]);
 
   return (
-    <Button
-      className="pm-p-home__navigation__actions"
-      color="primary"
-      size="sm"
-      onClick={handleNavigateToCreateMarket}
-    >
+    <Button color="primary" size="sm" onClick={handleNavigateToCreateMarket}>
       Create Market
     </Button>
   );
@@ -62,7 +57,7 @@ export default function HomeNav() {
 
   return (
     <div className="pm-p-home__navigation">
-      {isDesktop && <CreateMarket />}
+      <HomeNavFilter isDesktop={isDesktop} />
       <SearchBar
         name="Search Markets"
         placeholder="Search markets"
@@ -77,7 +72,7 @@ export default function HomeNav() {
         onChange={handleSelectedFilter}
         onTouch={handleTouchedFilter}
       />
-      <HomeNavFilter isDesktop={isDesktop} />
+      {isDesktop && <CreateMarket />}
     </div>
   );
 }
