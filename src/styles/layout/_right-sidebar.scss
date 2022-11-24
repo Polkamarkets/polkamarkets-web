@@ -1,7 +1,17 @@
 .pm-l-right-sidebar {
-  overflow-y: auto;
-  width: 368px;
-  height: 100%;
-  background-color: var(--color-surface);
-  padding: 24px;
+  display: none;
+
+  @include breakpoint-to('md') {
+    @include flex-column;
+  }
+
+  position: sticky;
+  top: $navbar-height;
+
+  flex-shrink: 0;
+
+  width: fit-content;
+  height: calc(100vh - var(--header-y));
+
+  padding: 2.4rem;
 }

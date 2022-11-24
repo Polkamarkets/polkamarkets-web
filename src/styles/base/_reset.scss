@@ -65,20 +65,16 @@ video {
 }
 
 html {
+  height: 100%;
   font-size: 62.5%;
   scroll-behavior: smooth;
 }
 
 body {
+  min-height: 100%;
   font-size: 1.6rem;
   line-height: 1;
   overflow: hidden;
-}
-
-html,
-body,
-#root {
-  height: 100vh;
 }
 
 footer,
