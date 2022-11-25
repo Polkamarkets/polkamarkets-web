@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { closeRightSidebar } from 'redux/ducks/ui';
 import { useGetLeaderboardByTimeframeQuery } from 'services/Polkamarkets';
+import { useMedia } from 'ui';
 
 import { Tabs } from 'components';
 import { Dropdown } from 'components/new';
@@ -100,7 +101,7 @@ const columns: LeaderboardTableColumn[] = [
 type Timeframe = '1w' | '1m' | 'at';
 
 function Leaderboard() {
-  // Redux selectors
+  const isDesktop = useMedia('(min-width: 1024px)');
   const walletConnected = useAppSelector(
     state => state.polkamarkets.isLoggedIn
   );
@@ -108,32 +109,24 @@ function Leaderboard() {
   const rightSidebarIsVisible = useAppSelector(
     state => state.ui.rightSidebar.visible
   );
-
-  // Custom hooks
   const dispatch = useAppDispatch();
   const { network } = useNetwork();
   const { currency } = network;
-
-  // Local state
   const [activeTab, setActiveTab] = useState('netVolume');
   const [timeframe, setTimeframe] = useState<Timeframe>('1w');
-
-  // Query hooks
   const { data, isLoading, isFetching } = useGetLeaderboardByTimeframeQuery({
     timeframe,
     networkId: network.id
   });
+  const userEthAddress = walletConnected ? ethAddress : undefined;
+  const isLoadingQuery = isLoading || isFetching;
+  const ticker = currency.symbol || currency.ticker;
 
   useEffect(() => {
     if (rightSidebarIsVisible) {
       dispatch(closeRightSidebar());
     }
   }, [rightSidebarIsVisible, dispatch]);
-
-  const userEthAddress = walletConnected ? ethAddress : undefined;
-
-  const isLoadingQuery = isLoading || isFetching;
-  const ticker = currency.symbol || currency.ticker;
 
   return (
     <div className="pm-p-leaderboard">
@@ -167,22 +160,24 @@ function Leaderboard() {
                 ticker={ticker}
                 isLoading={isLoadingQuery}
               />
-              <div className="flex-column gap-6 justify-start align-start">
-                {walletConnected ? (
-                  <LeaderboardYourStats
-                    loggedInUser={userEthAddress}
+              {isDesktop && (
+                <div className="flex-column gap-6 justify-start align-start">
+                  {walletConnected && (
+                    <LeaderboardYourStats
+                      loggedInUser={userEthAddress}
+                      rows={data}
+                      sortBy={tab.sortBy}
+                      ticker={ticker}
+                      isLoading={isLoadingQuery}
+                    />
+                  )}
+                  <LeaderboardTopWallets
                     rows={data}
                     sortBy={tab.sortBy}
-                    ticker={ticker}
                     isLoading={isLoadingQuery}
                   />
-                ) : null}
-                <LeaderboardTopWallets
-                  rows={data}
-                  sortBy={tab.sortBy}
-                  isLoading={isLoadingQuery}
-                />
-              </div>
+                </div>
+              )}
             </div>
           </Tabs.TabPane>
         ))}
