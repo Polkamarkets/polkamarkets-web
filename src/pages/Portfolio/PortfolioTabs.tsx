@@ -29,7 +29,7 @@ function TabsFilter() {
 
   return (
     <Filter
-      description="Filter by"
+      description="Filter:"
       defaultOption="open"
       options={[
         { value: 'open', name: 'Open' },
