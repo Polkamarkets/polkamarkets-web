@@ -154,7 +154,14 @@ function Leaderboard() {
             <div className="flex-row gap-6 justify-space-between align-start width-full">
               <LeaderboardTable
                 loggedInUser={userEthAddress}
-                columns={columns}
+                columns={
+                  isDesktop
+                    ? columns
+                    : columns.filter(
+                        column =>
+                          column.key === activeTab || column.key === 'wallet'
+                      )
+                }
                 rows={data}
                 sortBy={tab.sortBy}
                 ticker={ticker}
