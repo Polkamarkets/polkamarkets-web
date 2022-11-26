@@ -3,6 +3,7 @@ import { useState, useMemo, memo } from 'react';
 import { isEmpty } from 'lodash';
 import { setFilter } from 'redux/ducks/portfolio';
 import { useGetMarketsByIdsQuery } from 'services/Polkamarkets';
+import { useMedia } from 'ui';
 
 import {
   ButtonGroup,
@@ -45,7 +46,7 @@ const PortfolioTabsFilter = memo(TabsFilter);
 function PortfolioTabs() {
   const { network } = useNetwork();
   const [currentTab, setCurrentTab] = useState('marketPositions');
-
+  const isDesktop = useMedia('(min-width: 1024px)');
   const {
     bonds,
     portfolio,
@@ -120,7 +121,16 @@ function PortfolioTabs() {
         {currentTab === 'marketPositions' ? (
           <PortfolioMarketTable
             rows={marketPositions.rows}
-            headers={marketPositions.headers}
+            headers={
+              isDesktop
+                ? marketPositions.headers
+                : marketPositions.headers.filter(
+                    header =>
+                      header.key === 'market' ||
+                      header.key === 'outcome' ||
+                      header.key === 'profit'
+                  )
+            }
             isLoadingData={
               isLoadingMarkets || isLoadingPortfolio || isLoadingActions
             }
@@ -129,7 +139,16 @@ function PortfolioTabs() {
         {currentTab === 'liquidityPositions' ? (
           <PortfolioLiquidityTable
             rows={liquidityPositions.rows}
-            headers={liquidityPositions.headers}
+            headers={
+              isDesktop
+                ? liquidityPositions.headers
+                : liquidityPositions.headers.filter(
+                    header =>
+                      header.key === 'market' ||
+                      header.key === 'value' ||
+                      header.key === 'status'
+                  )
+            }
             isLoadingData={isLoadingMarkets || isLoadingPortfolio}
           />
         ) : null}
