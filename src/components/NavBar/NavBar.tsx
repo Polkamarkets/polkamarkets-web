@@ -23,9 +23,13 @@ export default function NavBar() {
       <div
         className={cn('pm-l-layout__header__actions', NavBarClasses.actions)}
       >
-        {isDesktop && <NavBarActionsInfo />}
+        {isDesktop && (
+          <>
+            <NavBarActionsInfo />
+            <NavBarActionsNetwork />
+          </>
+        )}
         <NavBarActionsTheme />
-        {isDesktop && <NavBarActionsNetwork />}
       </div>
     </Container>
   );
