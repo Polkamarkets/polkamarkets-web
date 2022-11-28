@@ -17,11 +17,7 @@ export default function Layout({ children }: React.PropsWithChildren<{}>) {
           </footer>
         </main>
       </ScrollableArea>
-      <ScrollableArea>
-        <aside className="pm-l-layout__aside">
-          <RightSidebar />
-        </aside>
-      </ScrollableArea>
+      <RightSidebar />
       <div id="toast-notification-portal" />
     </div>
   );

@@ -1,3 +1,5 @@
+import ScrollableArea from 'components/ScrollableArea';
+
 import { useAppSelector } from 'hooks';
 
 import LiquidityForm from '../LiquidityForm';
@@ -22,23 +24,35 @@ function RightSidebar() {
 
   if (tradeFormIsVisible)
     return (
-      <div className="pm-l-right-sidebar">
-        <TradeForm />
-      </div>
+      <ScrollableArea>
+        <aside className="pm-l-layout__aside">
+          <div className="pm-l-right-sidebar">
+            <TradeForm />
+          </div>
+        </aside>
+      </ScrollableArea>
     );
 
   if (liquidityFormIsVisible)
     return (
-      <div className="pm-l-right-sidebar">
-        <LiquidityForm />
-      </div>
+      <ScrollableArea>
+        <aside className="pm-l-layout__aside">
+          <div className="pm-l-right-sidebar">
+            <LiquidityForm />
+          </div>
+        </aside>
+      </ScrollableArea>
     );
 
   if (reportFormIsVisible)
     return (
-      <div className="pm-l-right-sidebar">
-        <ReportForm />
-      </div>
+      <ScrollableArea>
+        <aside className="pm-l-layout__aside">
+          <div className="pm-l-right-sidebar">
+            <ReportForm />
+          </div>
+        </aside>
+      </ScrollableArea>
     );
 
   return null;
