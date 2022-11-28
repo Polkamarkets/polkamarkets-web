@@ -18,7 +18,7 @@
     margin-bottom: var(--grid-margin);
     display: flex;
 
-    &__actions {
+    &__actions:not(:last-child) {
       margin-right: 12px;
     }
   }

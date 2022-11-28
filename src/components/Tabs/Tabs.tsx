@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { createContext, useContext, useMemo, ReactNode, Children } from 'react';
 
 import classNames from 'classnames';
@@ -77,7 +76,7 @@ function Tabs({
 
   return (
     <div className={classNames({ 'pm-c-tabs': true, 'width-full': fullwidth })}>
-      {/*  <div className="pm-c-tabs__header">
+      <div className="pm-c-tabs__header">
         <ul className={`pm-c-tabs__list--${direction}`}>
           {tabs?.map((tab, index) => (
             <li
@@ -109,7 +108,7 @@ function Tabs({
             ))}
           </ul>
         ) : null}
-      </div> */}
+      </div>
 
       <ActiveTabContext.Provider value={value}>
         <div className="pm-c-tabs__content">{children}</div>
