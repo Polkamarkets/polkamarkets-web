@@ -2,7 +2,6 @@
   position: fixed;
   z-index: 1200;
   inset: 0;
-  padding: var(--grid-margin);
 }
 
 .backdrop {
@@ -42,4 +41,8 @@
 .fullScreen {
   height: 100%;
   display: inline-block;
+}
+
+.gutters {
+  padding: var(--grid-margin);
 }

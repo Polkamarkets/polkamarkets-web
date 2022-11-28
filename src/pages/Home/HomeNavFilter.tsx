@@ -84,6 +84,7 @@ export default function HomeNavFilter({ isDesktop }: { isDesktop: boolean }) {
         onHide={handleHide}
         backdrop
         fullScreen
+        disableGutters
         initial={{ x: -304 }}
         animate={{ x: 0 }}
         exit={{ x: -304 }}
