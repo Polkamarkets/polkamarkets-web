@@ -26,6 +26,7 @@
       display: grid;
       grid-template-rows: 1fr auto;
       height: 100%;
+      width: calc(100% + 7px);
     }
 
     &__scrollable-area {
