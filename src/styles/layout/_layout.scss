@@ -21,12 +21,10 @@
     }
 
     &__main {
+      margin-top: var(--grid-margin);
       grid-area: main;
-
       display: grid;
       grid-template-rows: 1fr auto;
-      padding: var(--grid-margin);
-
       height: 100%;
     }
 

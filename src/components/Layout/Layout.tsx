@@ -1,3 +1,5 @@
+import { Container } from 'ui';
+
 import BetaWarning from '../BetaWarning';
 import Footer from '../Footer';
 import NavBar from '../NavBar';
@@ -10,12 +12,12 @@ export default function Layout({ children }: React.PropsWithChildren<{}>) {
       <BetaWarning />
       <NavBar />
       <ScrollableArea className="pm-l-layout__scrollable-area">
-        <main className="pm-l-layout__main">
+        <Container className="pm-l-layout__main">
           {children}
           <footer className="pm-l-layout__footer">
             <Footer />
           </footer>
-        </main>
+        </Container>
       </ScrollableArea>
       <RightSidebar />
       <div id="toast-notification-portal" />
