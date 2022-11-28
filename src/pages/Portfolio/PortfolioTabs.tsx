@@ -37,6 +37,7 @@ function TabsFilter() {
         { value: 'resolved', name: 'Resolved' }
       ]}
       onChange={handleChangeFilter}
+      className="portfolio-tabs__header-filter"
     />
   );
 }
@@ -55,7 +56,7 @@ function PortfolioTabs() {
     marketsWithBonds,
     isLoading
   } = useAppSelector(state => state.polkamarkets);
-
+  const positionsTypo = isDesktop ? ' Positions' : '';
   const {
     portfolio: isLoadingPortfolio,
     bonds: isLoadingBonds,
@@ -98,12 +99,12 @@ function PortfolioTabs() {
           buttons={[
             {
               id: 'marketPositions',
-              name: 'Market Positions',
+              name: `Market${positionsTypo}`,
               color: 'default'
             },
             {
               id: 'liquidityPositions',
-              name: 'Liquidity Positions',
+              name: `Liquidity${positionsTypo}`,
               color: 'default'
             },
             {

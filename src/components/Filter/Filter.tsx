@@ -114,7 +114,7 @@ function Filter({
             <ArrowDownSmallIcon />
           </>
         ) : (
-          <Icon name="Sort" size="lg" />
+          <Icon name="Sort" />
         )}
       </Text>
       <div className="pm-c-filter__content">
