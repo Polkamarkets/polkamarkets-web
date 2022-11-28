@@ -6,6 +6,15 @@ import LiquidityForm from '../LiquidityForm';
 import ReportForm from '../ReportForm';
 import TradeForm from '../TradeForm';
 
+function RightSidebarWrapper({ children }: React.PropsWithChildren<{}>) {
+  return (
+    <ScrollableArea>
+      <aside className="pm-l-layout__aside">
+        <div className="pm-l-right-sidebar">{children}</div>
+      </aside>
+    </ScrollableArea>
+  );
+}
 function RightSidebar() {
   const rightSidebarIsVisible = useAppSelector(
     state => state.ui.rightSidebar.visible
@@ -24,35 +33,23 @@ function RightSidebar() {
 
   if (tradeFormIsVisible)
     return (
-      <ScrollableArea>
-        <aside className="pm-l-layout__aside">
-          <div className="pm-l-right-sidebar">
-            <TradeForm />
-          </div>
-        </aside>
-      </ScrollableArea>
+      <RightSidebarWrapper>
+        <TradeForm />
+      </RightSidebarWrapper>
     );
 
   if (liquidityFormIsVisible)
     return (
-      <ScrollableArea>
-        <aside className="pm-l-layout__aside">
-          <div className="pm-l-right-sidebar">
-            <LiquidityForm />
-          </div>
-        </aside>
-      </ScrollableArea>
+      <RightSidebarWrapper>
+        <LiquidityForm />
+      </RightSidebarWrapper>
     );
 
   if (reportFormIsVisible)
     return (
-      <ScrollableArea>
-        <aside className="pm-l-layout__aside">
-          <div className="pm-l-right-sidebar">
-            <ReportForm />
-          </div>
-        </aside>
-      </ScrollableArea>
+      <RightSidebarWrapper>
+        <ReportForm />
+      </RightSidebarWrapper>
     );
 
   return null;
