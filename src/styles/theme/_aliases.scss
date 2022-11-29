@@ -31,4 +31,12 @@
     --color-text-primary: var(--neutral-100);
     --color-text-secondary: var(--neutral-600);
   }
+
+  --grid-margin: var(--size-12);
+  --header-y: var(--size-60);
+
+  @media (min-width: 1024px) {
+    --grid-margin: var(--size-24);
+    --header-y: var(--size-76);
+  }
 }

@@ -72,7 +72,15 @@
   gap: 1rem;
 
   &__header {
-    @include flex-row(space-between, center);
+    display: flex;
+
+    &-filter {
+      margin-left: auto;
+
+      & .pm-c-filter__button {
+        height: 36px;
+      }
+    }
   }
 
   &__content {

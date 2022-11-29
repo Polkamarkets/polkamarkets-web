@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
 import cn from 'classnames';
+import { useMedia } from 'ui';
 
 import { ArrowDownSmallIcon } from 'assets/icons';
+
+import Icon from 'components/Icon';
 
 import Text from '../Text';
 
@@ -35,6 +38,7 @@ function Filter({
   onTouch,
   className
 }: FilterProps) {
+  const isDesktop = useMedia('(min-width: 1024px)');
   const [selectedOption, setSelectedOption] = useState<Option | undefined>();
   const [selectedOptionalTrigger, setSelectedOptionalTrigger] = useState<
     Trigger | undefined
@@ -95,21 +99,24 @@ function Filter({
 
   return (
     <div className={cn('pm-c-filter', className)}>
-      <div className="pm-c-filter__header">
-        <Text
-          className="pm-c-filter__label"
-          as="label"
-          scale="caption"
-          fontWeight="semibold"
-        >
-          {description}
-        </Text>
-        <button type="button" className="pm-c-filter__button">
-          {selectedOption.name}
-          <ArrowDownSmallIcon />
-        </button>
-      </div>
-
+      <Text
+        className="pm-c-filter__button"
+        /* @ts-ignore */
+        as="button"
+        scale="tiny-uppercase"
+        fontWeight="bold"
+        type="button"
+      >
+        {isDesktop ? (
+          <>
+            <span className="pm-c-filter__label">{description}</span>
+            {selectedOption.name}
+            <ArrowDownSmallIcon />
+          </>
+        ) : (
+          <Icon name="Sort" />
+        )}
+      </Text>
       <div className="pm-c-filter__content">
         {options.map(option => (
           <div key={option.value} className="pm-c-filter__group">

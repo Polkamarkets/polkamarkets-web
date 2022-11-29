@@ -1,45 +1,32 @@
 .pm-c-filter {
+  position: relative;
+
   @include themes($filter-themes) {
-    position: relative;
-    display: flex;
-    flex-shrink: 0;
-    align-items: center;
-    padding-left: 12px;
-    padding-right: 12px;
-    border: 1px solid var(--color-border);
-    border-radius: 4px;
+    &__button {
+      @extend .pm-c-button-normal--noborder;
+      gap: 0.4rem;
+      color: themed('filter-label-color');
+      height: 44px;
+      padding-left: 12px;
+      padding-right: 12px;
+      border: 1px solid var(--color-border);
+      border-radius: 4px;
+    }
 
     &__label {
-      color: themed('filter-label-color');
-    }
-
-    &__button {
-      @extend .pm-c-button-normal--noborder, .pm-c-button--sm;
-      @extend .caption, .semibold;
       color: themed('filter-current-selected-item-color');
-
-      svg {
-        margin-top: 0.2rem;
-        fill: themed('filter-current-selected-item-color');
-      }
-    }
-
-    &__header {
-      @include flex-row;
-      gap: 0.4rem;
     }
 
     &__content {
       display: none;
       position: absolute;
       z-index: 1;
-
-      @include breakpoint-to('sm') {
-        right: 0;
-      }
+      right: 0px;
+      top: 52px;
 
       padding: $filter-content-padding-y $filter-content-padding-x;
-      background-color: themed('filter-content-background-color');
+      background-color: var(--color-surface);
+      border: 1px solid var(--color-border);
 
       border-radius: $filter-content-border-radius;
     }
