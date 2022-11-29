@@ -3,3 +3,9 @@
   right: 24px;
   top: 68px;
 }
+
+@media (max-width: 1024px) {
+  .actions {
+    margin-left: auto;
+  }
+}

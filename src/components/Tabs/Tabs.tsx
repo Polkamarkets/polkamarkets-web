@@ -76,7 +76,7 @@ function Tabs({
 
   return (
     <div className={classNames({ 'pm-c-tabs': true, 'width-full': fullwidth })}>
-      {/*  <div className="pm-c-tabs__header">
+      <div className="pm-c-tabs__header">
         <ul className={`pm-c-tabs__list--${direction}`}>
           {tabs?.map((tab, index) => (
             <li
@@ -108,7 +108,7 @@ function Tabs({
             ))}
           </ul>
         ) : null}
-      </div> */}
+      </div>
 
       <ActiveTabContext.Provider value={value}>
         <div className="pm-c-tabs__content">{children}</div>
