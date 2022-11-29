@@ -21,17 +21,16 @@
     }
 
     &__main {
+      margin-top: var(--grid-margin);
       grid-area: main;
-
       display: grid;
       grid-template-rows: 1fr auto;
-      padding: 24px 24px 12px 24px;
-
       height: 100%;
+      width: calc(100% + 7px);
     }
 
     &__scrollable-area {
-      height: calc(100vh - 6.8rem);
+      height: calc(100vh - var(--header-y));
     }
 
     &__aside {

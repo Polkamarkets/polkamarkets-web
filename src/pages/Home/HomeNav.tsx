@@ -7,6 +7,7 @@ import {
   setSorterByEndingSoon
 } from 'redux/ducks/markets';
 import { closeRightSidebar } from 'redux/ducks/ui';
+import { useMedia } from 'ui';
 
 import { Button, Filter, SearchBar } from 'components';
 
@@ -15,13 +16,32 @@ import { useAppDispatch } from 'hooks';
 import HomeNavFilter from './HomeNavFilter';
 import { filters } from './utils';
 
-export default function HomeNav() {
+function CreateMarket() {
+  const dispatch = useAppDispatch();
   const history = useHistory();
+  const handleNavigateToCreateMarket = useCallback(() => {
+    dispatch(closeRightSidebar());
+    history.push('/market/create');
+  }, [dispatch, history]);
 
+  return (
+    <Button color="primary" size="sm" onClick={handleNavigateToCreateMarket}>
+      Create Market
+    </Button>
+  );
+}
+export default function HomeNav() {
+  const isDesktop = useMedia('(min-width: 1024px)');
   const dispatch = useAppDispatch();
   const handleTouchedFilter = useCallback(
     (touched: boolean) => {
       dispatch(setSorterByEndingSoon(!touched));
+    },
+    [dispatch]
+  );
+  const handleSearch = useCallback(
+    (text: string) => {
+      dispatch(setSearchQuery(text));
     },
     [dispatch]
   );
@@ -35,22 +55,9 @@ export default function HomeNav() {
     );
   }
 
-  const handleSearch = useCallback(
-    (text: string) => {
-      dispatch(setSearchQuery(text));
-    },
-    [dispatch]
-  );
-
-  const handleNavigateToCreateMarket = useCallback(() => {
-    dispatch(closeRightSidebar());
-
-    history.push('/market/create');
-  }, [dispatch, history]);
-
   return (
     <div className="pm-p-home__navigation">
-      <HomeNavFilter />
+      <HomeNavFilter isDesktop={isDesktop} />
       <SearchBar
         name="Search Markets"
         placeholder="Search markets"
@@ -58,16 +65,14 @@ export default function HomeNav() {
         className={{ form: 'pm-p-home__navigation__actions' }}
       />
       <Filter
-        description="Sort by"
+        className="pm-p-home__navigation__actions"
+        description="Sort:"
         defaultOption="volumeEur"
         options={filters}
         onChange={handleSelectedFilter}
         onTouch={handleTouchedFilter}
-        className="pm-p-home__navigation__actions"
       />
-      <Button color="primary" size="sm" onClick={handleNavigateToCreateMarket}>
-        Create Market
-      </Button>
+      {isDesktop && <CreateMarket />}
     </div>
   );
 }

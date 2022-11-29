@@ -3,12 +3,9 @@
     display: flex;
     align-items: center;
     border-bottom: 1px solid themed('border-bottom-color');
-    width: 100%;
-    padding-left: 24px;
-    padding-right: 24px;
     background-color: themed('background-color');
     transition: $navbar-transitions;
-    min-height: 76px;
+    min-height: var(--header-y);
 
     &__logos {
       display: inherit;
@@ -34,15 +31,6 @@
       }
     }
 
-    &__search {
-      display: none;
-      flex-grow: 1;
-
-      @include breakpoint-to('sm') {
-        display: inline;
-      }
-    }
-
     &__menu {
       display: none;
 
@@ -63,12 +51,8 @@
     }
 
     &__actions {
-      display: none;
-
-      @include breakpoint-to('lg') {
-        display: flex;
-        gap: 1.6rem;
-      }
+      display: flex;
+      gap: 1.6rem;
 
       &-create-market {
         height: 100%;

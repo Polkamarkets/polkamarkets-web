@@ -3,6 +3,7 @@ import { useState, useMemo, memo } from 'react';
 import { isEmpty } from 'lodash';
 import { setFilter } from 'redux/ducks/portfolio';
 import { useGetMarketsByIdsQuery } from 'services/Polkamarkets';
+import { useMedia } from 'ui';
 
 import {
   ButtonGroup,
@@ -29,13 +30,14 @@ function TabsFilter() {
 
   return (
     <Filter
-      description="Filter by"
+      description="Filter:"
       defaultOption="open"
       options={[
         { value: 'open', name: 'Open' },
         { value: 'resolved', name: 'Resolved' }
       ]}
       onChange={handleChangeFilter}
+      className="portfolio-tabs__header-filter"
     />
   );
 }
@@ -45,7 +47,7 @@ const PortfolioTabsFilter = memo(TabsFilter);
 function PortfolioTabs() {
   const { network } = useNetwork();
   const [currentTab, setCurrentTab] = useState('marketPositions');
-
+  const isDesktop = useMedia('(min-width: 1024px)');
   const {
     bonds,
     portfolio,
@@ -54,7 +56,7 @@ function PortfolioTabs() {
     marketsWithBonds,
     isLoading
   } = useAppSelector(state => state.polkamarkets);
-
+  const positionsTypo = isDesktop ? ' Positions' : '';
   const {
     portfolio: isLoadingPortfolio,
     bonds: isLoadingBonds,
@@ -97,12 +99,12 @@ function PortfolioTabs() {
           buttons={[
             {
               id: 'marketPositions',
-              name: 'Market Positions',
+              name: `Market${positionsTypo}`,
               color: 'default'
             },
             {
               id: 'liquidityPositions',
-              name: 'Liquidity Positions',
+              name: `Liquidity${positionsTypo}`,
               color: 'default'
             },
             {
@@ -120,7 +122,16 @@ function PortfolioTabs() {
         {currentTab === 'marketPositions' ? (
           <PortfolioMarketTable
             rows={marketPositions.rows}
-            headers={marketPositions.headers}
+            headers={
+              isDesktop
+                ? marketPositions.headers
+                : marketPositions.headers.filter(
+                    header =>
+                      header.key === 'market' ||
+                      header.key === 'outcome' ||
+                      header.key === 'profit'
+                  )
+            }
             isLoadingData={
               isLoadingMarkets || isLoadingPortfolio || isLoadingActions
             }
@@ -129,7 +140,16 @@ function PortfolioTabs() {
         {currentTab === 'liquidityPositions' ? (
           <PortfolioLiquidityTable
             rows={liquidityPositions.rows}
-            headers={liquidityPositions.headers}
+            headers={
+              isDesktop
+                ? liquidityPositions.headers
+                : liquidityPositions.headers.filter(
+                    header =>
+                      header.key === 'market' ||
+                      header.key === 'value' ||
+                      header.key === 'status'
+                  )
+            }
             isLoadingData={isLoadingMarkets || isLoadingPortfolio}
           />
         ) : null}

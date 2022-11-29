@@ -24,6 +24,7 @@ export default function Modal({
   centered,
   size,
   fullScreen,
+  disableGutters,
   ...props
 }: ModalProps) {
   const { current: didMount } = useMount();
@@ -72,7 +73,8 @@ export default function Modal({
               ModalClasses.root,
               {
                 [ModalClasses.backdrop]: backdrop,
-                [ModalClasses.flex]: centered
+                [ModalClasses.flex]: centered,
+                [ModalClasses.gutters]: !disableGutters
               },
               className?.root
             )}

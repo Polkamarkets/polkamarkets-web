@@ -23,6 +23,7 @@ export { ReactComponent as Moonriver } from './Moonriver.svg';
 export { ReactComponent as Radio } from './Radio.svg';
 export { ReactComponent as RadioFilled } from './RadioFilled.svg';
 export { ReactComponent as Share } from './Share.svg';
+export { ReactComponent as Sort } from './Sort.svg';
 export { ReactComponent as Sparkles } from './Sparkles.svg';
 export { ReactComponent as Star } from './Star.svg';
 export { ReactComponent as Sun } from './Sun.svg';
