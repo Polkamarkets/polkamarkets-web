@@ -13,7 +13,7 @@ import {
   ToggleSwitch
 } from 'components';
 
-export default function HomeNavFilter({ isDesktop }: { isDesktop: boolean }) {
+export default function HomeNavFilter() {
   const [show, setShow] = useState(false);
   const [expand, setExpand] = useState({
     network: false,
@@ -73,18 +73,15 @@ export default function HomeNavFilter({ isDesktop }: { isDesktop: boolean }) {
         size="sm"
         className="pm-p-home__navigation__actions"
         onClick={handleShow}
-        style={{ display: 'inherit', height: 'auto' }}
-        {...(!isDesktop && { 'aria-label': 'Filter' })}
       >
         <Icon name="Filter" />
-        {isDesktop && 'Filter'}
+        Filter
       </Button>
       <Modal
         show={show}
         onHide={handleHide}
         backdrop
         fullScreen
-        disableGutters
         initial={{ x: -304 }}
         animate={{ x: 0 }}
         exit={{ x: -304 }}

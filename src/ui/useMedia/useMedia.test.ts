@@ -2,12 +2,14 @@ import { renderHook } from '@testing-library/react-hooks';
 
 import useMedia from './useMedia';
 
+const query = '(min-width: 1024px)';
+
 function mockMatchMedia({ matches }: { matches: boolean }) {
   Object.defineProperty(window, 'matchMedia', {
     writable: true,
-    value: jest.fn().mockImplementation(media => ({
+    value: jest.fn().mockImplementation(_query => ({
       matches,
-      media,
+      media: _query,
       onchange: null,
       addEventListener: jest.fn(),
       removeEventListener: jest.fn(),
@@ -18,15 +20,25 @@ function mockMatchMedia({ matches }: { matches: boolean }) {
 function renderMedia() {
   return renderHook(initialProps => useMedia(initialProps.query), {
     initialProps: {
-      query: '(min-width: 1024px)'
+      query
     }
   });
 }
-it('returns true if the provided query does matches', () => {
-  mockMatchMedia({ matches: true });
-  expect(renderMedia().result.current).toBe(true);
-});
-it('returns false if the provided query does not matches', () => {
-  mockMatchMedia({ matches: false });
-  expect(renderMedia().result.current).toBe(false);
+
+describe('useMedia', () => {
+  it('returns true if the provided query does matches', () => {
+    mockMatchMedia({ matches: true });
+
+    const { result } = renderMedia();
+
+    expect(result.current).toBeTruthy();
+  });
+
+  it('returns false if the provided query does not matches', () => {
+    mockMatchMedia({ matches: false });
+
+    const { result } = renderMedia();
+
+    expect(result.current).toBeFalsy();
+  });
 });

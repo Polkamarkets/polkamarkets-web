@@ -1,20 +1,9 @@
-import ScrollableArea from 'components/ScrollableArea';
-
 import { useAppSelector } from 'hooks';
 
 import LiquidityForm from '../LiquidityForm';
 import ReportForm from '../ReportForm';
 import TradeForm from '../TradeForm';
 
-function RightSidebarWrapper({ children }: React.PropsWithChildren<{}>) {
-  return (
-    <ScrollableArea>
-      <aside className="pm-l-layout__aside">
-        <div className="pm-l-right-sidebar">{children}</div>
-      </aside>
-    </ScrollableArea>
-  );
-}
 function RightSidebar() {
   const rightSidebarIsVisible = useAppSelector(
     state => state.ui.rightSidebar.visible
@@ -33,23 +22,23 @@ function RightSidebar() {
 
   if (tradeFormIsVisible)
     return (
-      <RightSidebarWrapper>
+      <div className="pm-l-right-sidebar">
         <TradeForm />
-      </RightSidebarWrapper>
+      </div>
     );
 
   if (liquidityFormIsVisible)
     return (
-      <RightSidebarWrapper>
+      <div className="pm-l-right-sidebar">
         <LiquidityForm />
-      </RightSidebarWrapper>
+      </div>
     );
 
   if (reportFormIsVisible)
     return (
-      <RightSidebarWrapper>
+      <div className="pm-l-right-sidebar">
         <ReportForm />
-      </RightSidebarWrapper>
+      </div>
     );
 
   return null;

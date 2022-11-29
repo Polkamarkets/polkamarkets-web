@@ -6,16 +6,10 @@
     height: 100%;
 
     &__header {
-      @include flex-row(flex-end, center);
+      @include flex-row(space-between, center);
       flex-wrap: wrap;
 
       gap: 1rem;
-
-      @media (min-width: 1024px) {
-        & {
-          @include flex-row(space-between, center);
-        }
-      }
     }
 
     &__filters {
