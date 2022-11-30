@@ -12,10 +12,12 @@ export default function Layout({ children }: React.PropsWithChildren<{}>) {
       <BetaWarning />
       <NavBar />
       <ScrollableArea className="pm-l-layout__scrollable-area">
-        <Container className="pm-l-layout__main">{children}</Container>
-        <footer className="pm-l-layout__footer">
-          <Footer />
-        </footer>
+        <Container className="pm-l-layout__main">
+          {children}
+          <footer className="pm-l-layout__footer">
+            <Footer />
+          </footer>
+        </Container>
       </ScrollableArea>
       <RightSidebar />
       <div id="toast-notification-portal" />
