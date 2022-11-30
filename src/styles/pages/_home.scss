@@ -1,4 +1,8 @@
 .pm-p-home {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-24);
+
   height: 100%;
 
   &__hero {
@@ -15,7 +19,6 @@
   }
 
   &__navigation {
-    margin-bottom: var(--grid-margin);
     display: flex;
 
     &__actions:not(:last-child) {
