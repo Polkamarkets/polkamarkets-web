@@ -21,12 +21,15 @@
     }
 
     &__main {
-      margin-top: var(--grid-margin);
       grid-area: main;
+
       display: grid;
       grid-template-rows: 1fr auto;
+
       height: 100%;
       width: calc(100% + 7px);
+
+      padding-top: var(--grid-margin);
     }
 
     &__scrollable-area {
