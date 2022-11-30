@@ -3,16 +3,56 @@ import { useEffect, memo, useCallback } from 'react';
 import isEmpty from 'lodash/isEmpty';
 import { Market } from 'models/market';
 import { useAppDispatch } from 'redux/store';
+import { Hero, useMedia } from 'ui';
 
 import { InfoIcon } from 'assets/icons';
 
-import { Button } from 'components/Button';
-
 import { useAppSelector, useFooterVisibility } from 'hooks';
 
+import Breadcrumb from '../Breadcrumb';
+import { Button } from '../Button';
+import Icon from '../Icon';
 import PredictionCard from '../PredictionCard';
 import Text from '../Text';
 import VirtualizedList from '../VirtualizedList';
+
+function MarketListHeader() {
+  return (
+    <Hero
+      className="pm-p-home__hero"
+      image="https://polkamarkets.infura-ipfs.io/ipfs/QmVk9KtoD8bhGCcviDYLjeVth9JBbjYpzSbyoVrg4j89FZ"
+    >
+      <div className="pm-p-home__hero__breadcrumb">
+        <Icon name="Moonriver" />
+        <Text
+          as="span"
+          scale="tiny-uppercase"
+          fontWeight="semibold"
+          style={{
+            color: '#F4B731'
+          }}
+        >
+          DAI
+        </Text>
+        <span className="pm-c-divider--circle" />
+        <Breadcrumb>
+          <Breadcrumb.Item>Sports</Breadcrumb.Item>
+          <Breadcrumb.Item>Soccer</Breadcrumb.Item>
+        </Breadcrumb>
+      </div>
+      <Text
+        as="h2"
+        fontWeight="bold"
+        scale="heading-large"
+        color="light"
+        className="pm-p-home__hero__heading"
+      >
+        What will be the result of Man. Utd vs Man. City on 21st December 2021
+      </Text>
+      <Button size="sm">View Market</Button>
+    </Hero>
+  );
+}
 
 type MarketListAsyncProps = {
   id: string;
@@ -28,6 +68,8 @@ const MarketListAsync = ({
   markets
 }: MarketListAsyncProps) => {
   const dispatch = useAppDispatch();
+  const isDesktop = useMedia('(min-width: 1024px)');
+
   const { show, hide } = useFooterVisibility();
   const { isLoading, error } = useAppSelector(state => state.markets);
 
@@ -108,6 +150,7 @@ const MarketListAsync = ({
   return (
     <div className="pm-c-market-list">
       <VirtualizedList
+        components={{ Header: isDesktop ? MarketListHeader : undefined }}
         height="100%"
         data={markets}
         itemContent={(_index, market) => (
