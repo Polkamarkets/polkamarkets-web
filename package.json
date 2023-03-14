@@ -61,6 +61,7 @@
     "react-redux": "^7.2.3",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.3",
+    "react-ts-tradingview-widgets": "^1.0.14",
     "react-uuid": "^2.0.0",
     "react-virtuoso": "^2.18.0",
     "recharts": "^2.1.9",

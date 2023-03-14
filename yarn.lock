@@ -16556,6 +16556,11 @@ react-transition-group@^4.0.0, react-transition-group@^4.4.0:
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
 
+react-ts-tradingview-widgets@^1.0.14:
+  version "1.0.14"
+  resolved "https://registry.yarnpkg.com/react-ts-tradingview-widgets/-/react-ts-tradingview-widgets-1.0.14.tgz#bb82be565e721e0f535821f1095dfdaa72a0d3d8"
+  integrity sha512-gnpW/p2pi428nm5JshCjT69pJETT0eNJC7pI1juRwwNGNT67x8ZETTszK6vHgMnye3LUGiMJNXQSllzSbxTx/Q==
+
 react-uuid@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/react-uuid/-/react-uuid-2.0.0.tgz#e3c97e190db9eef53cb9dacfcc7314d913a411fa"
