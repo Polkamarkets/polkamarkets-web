@@ -62,7 +62,7 @@ function ImageCroppper({ image, onCrop, onCancel }: ImageCropperProps) {
           min={1}
           max={3}
           step={0.01}
-          onChange={value => setZoom(value)}
+          onChange={value => setZoom(value as number)}
           trackStyle={{
             backgroundColor: currentTheme.trackBackgroundColor
           }}
