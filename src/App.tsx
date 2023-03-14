@@ -1,3 +1,4 @@
+import { HelmetProvider } from 'react-helmet-async';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 
@@ -17,26 +18,28 @@ import { PolkamarketsServiceProvider } from 'hooks/usePolkamarketsService';
 
 export default function App() {
   return (
-    <ThemeProvider>
-      <Provider store={store}>
-        <Router>
-          <MuiPickersUtilsProvider utils={DayjsUtils}>
-            <NetworkProvider>
-              <PolkamarketsServiceProvider>
-                <NetworksProvider>
-                  <FiltersProvider>
-                    <FavoriteMarketsProvider>
-                      <VoteProvider>
-                        <Routes />
-                      </VoteProvider>
-                    </FavoriteMarketsProvider>
-                  </FiltersProvider>
-                </NetworksProvider>
-              </PolkamarketsServiceProvider>
-            </NetworkProvider>
-          </MuiPickersUtilsProvider>
-        </Router>
-      </Provider>
-    </ThemeProvider>
+    <HelmetProvider>
+      <ThemeProvider>
+        <Provider store={store}>
+          <Router>
+            <MuiPickersUtilsProvider utils={DayjsUtils}>
+              <NetworkProvider>
+                <PolkamarketsServiceProvider>
+                  <NetworksProvider>
+                    <FiltersProvider>
+                      <FavoriteMarketsProvider>
+                        <VoteProvider>
+                          <Routes />
+                        </VoteProvider>
+                      </FavoriteMarketsProvider>
+                    </FiltersProvider>
+                  </NetworksProvider>
+                </PolkamarketsServiceProvider>
+              </NetworkProvider>
+            </MuiPickersUtilsProvider>
+          </Router>
+        </Provider>
+      </ThemeProvider>
+    </HelmetProvider>
   );
 }
