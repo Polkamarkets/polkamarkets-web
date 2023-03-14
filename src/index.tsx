@@ -1,5 +1,6 @@
 import { StrictMode } from 'react';
 import { render } from 'react-dom';
+import { HelmetProvider } from 'react-helmet-async';
 
 import type { ReportHandler } from 'web-vitals';
 
@@ -9,7 +10,9 @@ import 'styles/main.scss';
 
 render(
   <StrictMode>
-    <App />
+    <HelmetProvider>
+      <App />
+    </HelmetProvider>
   </StrictMode>,
   document.getElementById('root')
 );
