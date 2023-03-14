@@ -163,18 +163,26 @@ function Table({
           },
           EmptyPlaceholder: () => {
             return (
-              <div className="absolute flex-row justify-center align-center width-full margin-top-12 padding-y-12 padding-x-4">
+              <tbody className="absolute flex-row justify-center align-center width-full margin-top-12 padding-y-12 padding-x-4">
                 {!isLoadingData ? (
-                  <AlertMini
-                    style={{ border: 'none' }}
-                    styles="outline"
-                    variant="information"
-                    description={emptyDataDescription}
-                  />
+                  <tr>
+                    <td>
+                      <AlertMini
+                        style={{ border: 'none' }}
+                        styles="outline"
+                        variant="information"
+                        description={emptyDataDescription}
+                      />
+                    </td>
+                  </tr>
                 ) : (
-                  <div className="spinner--primary" />
+                  <tr>
+                    <td>
+                      <div className="spinner--primary" />
+                    </td>
+                  </tr>
                 )}
-              </div>
+              </tbody>
             );
           }
         }}
