@@ -69,7 +69,7 @@ function StepSlider({
         min={0}
         max={100}
         marks={marks}
-        onChange={value => onChange(value)}
+        onChange={value => onChange(value as number)}
         disabled={disabled}
         trackStyle={{ backgroundColor: currentTheme.trackBackgroundColor }}
         railStyle={{ backgroundColor: currentTheme.railBackgroundColor }}
