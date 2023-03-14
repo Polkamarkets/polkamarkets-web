@@ -9,6 +9,8 @@ import { ArrowUpSmallestIcon, ArrowDownSmallestIcom } from 'assets/icons';
 
 import { AlertMini } from 'components';
 
+import TableHead from './TableHead';
+
 export type TableColumnAlign = 'left' | 'center' | 'right';
 
 export type TableColumn = {
@@ -140,12 +142,7 @@ function Table({
               }}
             />
           ),
-          TableHead: props => (
-            <thead
-              {...props}
-              style={{ position: 'sticky', zIndex: 10, top: '0px' }}
-            />
-          ),
+          TableHead,
           TableRow: props => {
             const index = props['data-index'];
             const row = rows[index];
