@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import TradingViewWidget, { Themes } from 'react-tradingview-widget';
+import { AdvancedRealTimeChart } from 'react-ts-tradingview-widgets';
+import type { ColorTheme } from 'react-ts-tradingview-widgets';
 
 import sortOutcomes from 'helpers/sortOutcomes';
 
@@ -76,17 +77,25 @@ export default function MarketChart() {
     state => state.market.market.tradingViewSymbol
   );
 
+  const chartTheme = theme.theme as ColorTheme;
+
   return (
     <div className="market-chart__view">
       {
         {
           marketOverview: <MarketOverview />,
           tradingView: (
-            <TradingViewWidget
-              theme={Themes[theme.theme === 'dark' ? 'DARK' : 'LIGHT']}
+            <AdvancedRealTimeChart
+              container_id="tradingview_18110"
+              theme={chartTheme}
               width="100%"
               height={454}
               symbol={tradingViewSymbol}
+              copyrightStyles={{
+                parent: {
+                  display: 'none'
+                }
+              }}
             />
           )
         }[chartViewType]
