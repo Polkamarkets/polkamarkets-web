@@ -1,5 +1,3 @@
-import { relativeTimeFromNow } from 'helpers/date';
-
 function generateCustomOptions(
   theme: string,
   ticker: string,
@@ -23,7 +21,7 @@ function generateCustomOptions(
       },
       x: {
         show: true,
-        formatter: value => `${relativeTimeFromNow(value)}`
+        format: 'MMM dd, yyyy HH:mm'
       },
       y: {
         show: true,
