@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 
 import dayjs from 'dayjs';
+import isEmpty from 'lodash/isEmpty';
 
 import { useTheme } from 'hooks';
 
@@ -28,9 +29,21 @@ function LineChart({ series, ticker, height = 200 }: LineChartProps) {
 
   const { theme } = useTheme();
 
+  const moreThan24h = useMemo(
+    () =>
+      !isEmpty(series[0].data)
+        ? dayjs(series[0].data[series[0].data.length - 1].x).diff(
+            series[0].data[0].x,
+            'hour'
+          ) > 24
+        : false,
+    [series]
+  );
+
   const customOptions = useMemo(
-    () => generateCustomOptions(theme, ticker),
-    [theme, ticker]
+    () =>
+      generateCustomOptions(theme, ticker, moreThan24h ? 'MMM, dd' : 'HH:mm'),
+    [moreThan24h, theme, ticker]
   );
 
   useEffect(() => {

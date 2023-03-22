@@ -1,6 +1,10 @@
 import { relativeTimeFromNow } from 'helpers/date';
 
-function generateCustomOptions(theme: string, ticker: string) {
+function generateCustomOptions(
+  theme: string,
+  ticker: string,
+  xAxisFormat: string
+) {
   return {
     chart: {
       type: 'line' as const,
@@ -80,6 +84,7 @@ function generateCustomOptions(theme: string, ticker: string) {
       labels: {
         show: true,
         datetimeUTC: false,
+        format: xAxisFormat,
         style: {
           cssClass: 'apexcharts-xaxis-label'
         }
