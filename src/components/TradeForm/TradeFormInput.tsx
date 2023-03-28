@@ -64,7 +64,7 @@ function TradeFormInput() {
   const { balance: erc20Balance, isLoadingBalance } = useERC20Balance(address);
   const ethBalance = useAppSelector(state => state.polkamarkets.ethBalance);
 
-  const balance = wrapped ? erc20Balance : ethBalance;
+  const balance = wrapped || !tokenWrapped ? erc20Balance : ethBalance;
 
   const roundDown = (value: number) => Math.floor(value * 1e5) / 1e5;
 
