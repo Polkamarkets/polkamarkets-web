@@ -113,6 +113,16 @@ const networks: {
     explorerURL: 'https://polygonscan.com/',
     rpcUrls: ['https://polygon-rpc.com']
   },
+  '0x44d': {
+    id: '1101',
+    name: 'Polygon zkEVM',
+    key: 'zkevm',
+    colorAccent: 'purple',
+    currency: ETH,
+    decimals: 18,
+    explorerURL: 'https://zkevm.polygonscan.com',
+    rpcUrls: ['https://zkevm-rpc.com']
+  },
   '0x539': {
     id: '1337',
     name: 'Local Testnet',
@@ -123,6 +133,16 @@ const networks: {
     explorerURL: 'https://etherscan.io',
     rpcUrls: ['http://localhost:8545'],
     buyEc20Url: `//app.uniswap.org/#/swap?outputCurrency=${ERC20_CONTRACT_ADDRESS}&inputCurrency=ETH`
+  },
+  '0x5a2': {
+    id: '1442',
+    name: 'zkEVM Testnet',
+    key: 'zkevm-testnet',
+    colorAccent: 'blue',
+    currency: ETH,
+    decimals: 18,
+    explorerURL: 'https://testnet-zkevm.polygonscan.com',
+    rpcUrls: ['https://rpc.public.zkevm-test.net']
   },
   '0x270f': {
     id: '9999',
