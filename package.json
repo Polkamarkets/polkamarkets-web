@@ -45,7 +45,7 @@
     "jest-canvas-mock": "^2.4.0",
     "lodash": "^4.17.21",
     "mockdate": "^3.0.5",
-    "polkamarkets-js": "https://github.com/Polkamarkets/polkamarkets-js#feature/v2",
+    "polkamarkets-js": "https://github.com/Polkamarkets/polkamarkets-js#feature/v2-realitio-upgrade",
     "prop-types": "^15.7.2",
     "public-ip": "^4.0.4",
     "rc-progress": "^3.1.4",
