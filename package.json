@@ -147,6 +147,7 @@
   "resolutions": {
     "babel-loader": "8.1.0",
     "webpack": "4.44.2",
-    "styled-components": "^5"
+    "styled-components": "^5",
+    "html-to-text": "^7.1.1"
   }
 }
