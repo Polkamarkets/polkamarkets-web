@@ -93,7 +93,7 @@ const pages = {
     enabled: true,
     pages: {
       create: {
-        pathname: '/markets/create',
+        pathname: '/market/create',
         Component: lazy(() => import('pages/CreateMarket')),
         exact: false,
         navigation: false,
