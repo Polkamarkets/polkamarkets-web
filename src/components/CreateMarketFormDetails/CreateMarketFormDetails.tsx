@@ -2,6 +2,8 @@ import { useMemo } from 'react';
 
 import { useField } from 'formik';
 
+import Feature from 'components/Feature';
+
 import { useFilters } from 'hooks';
 
 import {
@@ -63,12 +65,14 @@ function CreateMarketFormDetails() {
           required
         />
       </div>
-      <Input
-        name="resolutionSource"
-        label="Resolution Source"
-        placeholder="https://www.google.com/"
-        required
-      />
+      <Feature name="regular">
+        <Input
+          name="resolutionSource"
+          label="Resolution Source"
+          placeholder="https://www.google.com/"
+          required
+        />
+      </Feature>
       <div className={CreateMarketFormDetailsClasses.groupRow}>
         <DateInput label="Closing Date - Local Time" name="closingDate" />
         <ImageUploadInput

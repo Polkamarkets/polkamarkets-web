@@ -17,6 +17,7 @@ import useToastNotification from 'hooks/useToastNotification';
 
 import ApproveToken from '../ApproveToken';
 import { Button, ButtonLoading } from '../Button';
+import Feature from '../Feature';
 import NetworkSwitch from '../Networks/NetworkSwitch';
 import Toast from '../Toast';
 import ToastNotification from '../ToastNotification';
@@ -185,15 +186,17 @@ function LiquidityFormActions() {
             description="Your transaction is completed!"
           >
             <Toast.Actions>
-              <a
-                target="_blank"
-                href={`${network.explorerURL}/tx/${transactionSuccessHash}`}
-                rel="noreferrer"
-              >
-                <Button size="sm" color="success">
-                  View on Explorer
-                </Button>
-              </a>
+              <Feature name="regular">
+                <a
+                  target="_blank"
+                  href={`${network.explorerURL}/tx/${transactionSuccessHash}`}
+                  rel="noreferrer"
+                >
+                  <Button size="sm" color="success">
+                    View on Explorer
+                  </Button>
+                </a>
+              </Feature>
               <Button
                 size="sm"
                 variant="ghost"

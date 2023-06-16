@@ -15,7 +15,7 @@ export type LeaderboardTableRow = {
     isLoggedInUser: boolean;
     address: string;
     place: number;
-  };
+  } & Record<'username' | 'userImageUrl', string | null>;
   volumeEur?: {
     volume: number;
     ticker: string;

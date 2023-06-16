@@ -23,7 +23,14 @@
 
 .pm-c-leaderboard-table {
   &__wallet {
-    @include flex-row($gap: 4);
+    display: flex;
+    gap: 12px;
+    align-items: center;
+
+    &__avatar {
+      outline: 2px solid #5d55fa;
+      outline-offset: 2px;
+    }
 
     svg {
       flex-shrink: 0;

@@ -25,6 +25,10 @@ function Steps({ current, currentStepFields, steps, onChange }: StepsProps) {
     state => state.polkamarkets.createMarketToken
   );
 
+  const walletConnected = useAppSelector(
+    state => state.polkamarkets.isLoggedIn
+  );
+
   let address = '';
 
   const token = createMarketToken || network.currency;
@@ -89,7 +93,9 @@ function Steps({ current, currentStepFields, steps, onChange }: StepsProps) {
                 variant="normal"
                 color="success"
                 loading={isSubmitting}
-                disabled={!isCurrentStepValid || isSubmitting}
+                disabled={
+                  !walletConnected || !isCurrentStepValid || isSubmitting
+                }
               >
                 Create Market
               </ButtonLoading>

@@ -6,7 +6,7 @@ import { PolkamarketsService } from 'services';
 import { useGetAchievementsQuery } from 'services/Polkamarkets';
 import { Container } from 'ui';
 
-import { Button, Toast, ToastNotification } from 'components';
+import { Button, Toast, ToastNotification, Feature } from 'components';
 import {
   Achievement,
   AchievementFilter,
@@ -170,15 +170,17 @@ function Achievements() {
             description="Your transaction is completed!"
           >
             <Toast.Actions>
-              <a
-                target="_blank"
-                href={`${network.explorerURL}/tx/${claimedAchievement.transactionHash}`}
-                rel="noreferrer"
-              >
-                <Button size="sm" color="success">
-                  View on Explorer
-                </Button>
-              </a>
+              <Feature name="regular">
+                <a
+                  target="_blank"
+                  href={`${network.explorerURL}/tx/${claimedAchievement.transactionHash}`}
+                  rel="noreferrer"
+                >
+                  <Button size="sm" color="success">
+                    View on Explorer
+                  </Button>
+                </a>
+              </Feature>
               <Button
                 size="sm"
                 variant="ghost"

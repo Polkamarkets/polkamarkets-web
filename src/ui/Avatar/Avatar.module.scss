@@ -13,6 +13,11 @@
 }
 
 .size {
+  &X2s {
+    width: var(--size-24);
+    height: var(--size-24);
+  }
+
   &Sm {
     width: var(--size-48);
     height: var(--size-48);

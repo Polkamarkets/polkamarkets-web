@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
+import { features } from 'config';
 import { Formik, Form } from 'formik';
 import { fetchAditionalData, login } from 'redux/ducks/polkamarkets';
 import * as marketService from 'services/Polkamarkets/market';
@@ -74,7 +75,9 @@ function CreateMarketForm() {
     const odds = values.outcomes.map(outcome => outcome.probability);
 
     // data format: "category;subcategory;resolutionSource"
-    const data = `${values.category};${values.subcategory};${values.resolutionSource}`;
+    const data = `${values.category};${values.subcategory};${
+      features.regular.enabled ? values.resolutionSource : ''
+    }`;
 
     const response = await polkamarketsService.createMarket(
       values.question,

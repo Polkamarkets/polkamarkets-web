@@ -25,7 +25,10 @@ export const defaultLeaderboardColumns = [
   'netLiquidity'
 ];
 
-const emptyLeaderboardRowWithoutUser: Omit<GetLeaderboardBaseData, 'user'> = {
+const emptyLeaderboardRowWithoutUser: Omit<
+  GetLeaderboardBaseData,
+  'user' | 'username' | 'userImageUrl'
+> = {
   marketsCreated: 0,
   volumeEur: 0,
   tvlVolumeEur: 0,

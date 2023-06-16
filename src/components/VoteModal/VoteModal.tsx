@@ -29,6 +29,7 @@ import { useVote } from 'contexts/vote';
 import { useAppDispatch } from 'hooks';
 import useToastNotification from 'hooks/useToastNotification';
 
+import Feature from '../Feature';
 import Link from '../Link';
 import Text from '../new/Text';
 import VoteModalClasses from './VoteModal.module.scss';
@@ -212,15 +213,17 @@ function VoteModal({
             description="Your transaction is completed!"
           >
             <Toast.Actions>
-              <a
-                target="_blank"
-                href={`${network.explorerURL}/tx/${transaction.successHash}`}
-                rel="noreferrer"
-              >
-                <Button size="sm" color="success">
-                  View on Explorer
-                </Button>
-              </a>
+              <Feature name="regular">
+                <a
+                  target="_blank"
+                  href={`${network.explorerURL}/tx/${transaction.successHash}`}
+                  rel="noreferrer"
+                >
+                  <Button size="sm" color="success">
+                    View on Explorer
+                  </Button>
+                </a>
+              </Feature>
               <Button
                 size="sm"
                 variant="ghost"

@@ -103,7 +103,7 @@ function calculateSharesBought(
 
   const shares = outcome.shares - newOutcomeShares + amount || 0;
   const price = amount / shares || 0;
-  const maxROI = shares > 0 ? (1 / price - 1) * 100 : 0;
+  const maxROI = shares > 1e-6 ? (1 / price - 1) * 100 : 0;
   const totalStake = ethAmount;
   const maxStake = shares - amount;
 

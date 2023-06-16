@@ -19,7 +19,8 @@ import {
   Modal,
   Button,
   VoteArrows,
-  Icon
+  Icon,
+  Feature
 } from 'components';
 
 import {
@@ -171,27 +172,29 @@ function MarketUI() {
             </div>
           )}
           <MarketChart />
-          {market.resolutionSource && (
-            <div className="pm-p-market__source">
-              <Text
-                as="p"
-                scale="tiny"
-                fontWeight="semibold"
-                style={{ margin: '0.8rem 0rem' }}
-                color="lighter-gray"
-              >
-                Resolution source:{' '}
-                <a
-                  href={market.resolutionSource}
-                  target="_blank"
-                  className="tiny semibold text-primary"
-                  rel="noreferrer"
+          <Feature name="regular">
+            {market.resolutionSource && (
+              <div className="pm-p-market__source">
+                <Text
+                  as="p"
+                  scale="tiny"
+                  fontWeight="semibold"
+                  style={{ margin: '0.8rem 0rem' }}
+                  color="lighter-gray"
                 >
-                  {market.resolutionSource}
-                </a>
-              </Text>
-            </div>
-          )}
+                  Resolution source:{' '}
+                  <a
+                    href={market.resolutionSource}
+                    target="_blank"
+                    className="tiny semibold text-primary"
+                    rel="noreferrer"
+                  >
+                    {market.resolutionSource}
+                  </a>
+                </Text>
+              </div>
+            )}
+          </Feature>
           {!theme.device.isDesktop && <MarketAnalytics />}
           {market.description && (
             <MarketAbout>{market.description}</MarketAbout>

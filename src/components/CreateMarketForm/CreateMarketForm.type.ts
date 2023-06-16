@@ -20,5 +20,5 @@ export type CreateMarketFormData = {
   liquidity: number;
   fee: number;
   treasuryFee: number;
-  resolutionSource: string;
+  resolutionSource?: string;
 };

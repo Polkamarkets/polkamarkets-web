@@ -21,6 +21,7 @@ import useToastNotification from 'hooks/useToastNotification';
 
 import ApproveToken from '../ApproveToken';
 import { Button, ButtonLoading } from '../Button';
+import Feature from '../Feature';
 import NetworkSwitch from '../Networks/NetworkSwitch';
 import Text from '../Text';
 import Toast from '../Toast';
@@ -319,15 +320,17 @@ function TradeFormActions() {
             description="Your transaction is completed!"
           >
             <Toast.Actions>
-              <a
-                target="_blank"
-                href={`${network.explorerURL}/tx/${transactionSuccessHash}`}
-                rel="noreferrer"
-              >
-                <Button size="sm" color="success">
-                  View on Explorer
-                </Button>
-              </a>
+              <Feature name="regular">
+                <a
+                  target="_blank"
+                  href={`${network.explorerURL}/tx/${transactionSuccessHash}`}
+                  rel="noreferrer"
+                >
+                  <Button size="sm" color="success">
+                    View on Explorer
+                  </Button>
+                </a>
+              </Feature>
               <Button size="sm" variant="ghost" onClick={() => close(type)}>
                 Dismiss
               </Button>

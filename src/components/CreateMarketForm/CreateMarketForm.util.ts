@@ -1,5 +1,6 @@
 import uuid from 'react-uuid';
 
+import { features } from 'config';
 import dayjs from 'dayjs';
 import { almost } from 'helpers/math';
 import sum from 'lodash/sum';
@@ -26,7 +27,9 @@ const initialValues: CreateMarketFormData = {
   liquidity: 0,
   fee: 2,
   treasuryFee: 1,
-  resolutionSource: ''
+  ...(features.regular.enabled && {
+    resolutionSource: ''
+  })
 };
 
 const validationSchema = [
@@ -37,9 +40,11 @@ const validationSchema = [
       .required('Market Description is required.'),
     category: Yup.string().required('Category is required.'),
     subcategory: Yup.string().required('Subcategory is required.'),
-    resolutionSource: Yup.string()
-      .url('Please enter a valid url.')
-      .required('Resolution source is required.'),
+    ...(features.regular.enabled && {
+      resolutionSource: Yup.string()
+        .url('Please enter a valid url.')
+        .required('Resolution source is required.')
+    }),
     closingDate: Yup.date()
       .min(
         dayjs().format('MM/DD/YYYY HH:mm'),

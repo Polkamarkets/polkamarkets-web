@@ -10,8 +10,7 @@ import { selectOutcome } from 'redux/ducks/trade';
 import { closeReportForm, openTradeForm } from 'redux/ducks/ui';
 import { PolkamarketsService, PolkamarketsApiService } from 'services';
 
-import { QuestionIcon } from 'assets/icons';
-
+import ApproveToken from 'components/ApproveToken';
 import NetworkSwitch from 'components/Networks/NetworkSwitch';
 
 import {
@@ -24,10 +23,10 @@ import useToastNotification from 'hooks/useToastNotification';
 
 import { Alert, AlertMinimal } from '../Alert';
 import { Button, ButtonLoading } from '../Button';
+import Feature from '../Feature';
 import Link from '../Link';
 import Toast from '../Toast';
 import ToastNotification from '../ToastNotification';
-import Tooltip from '../Tooltip';
 
 type ReportFormActionsProps = {
   marketQuestionFinalized: boolean;
@@ -41,7 +40,7 @@ function ReportFormActions({
   const dispatch = useAppDispatch();
   const { show, close } = useToastNotification();
   const { errors } = useFormikContext();
-  const { network } = useNetwork();
+  const { network, networkConfig } = useNetwork();
   const polkamarketsService = usePolkamarketsService();
 
   // Form state
@@ -49,14 +48,6 @@ function ReportFormActions({
   const [bond] = useField('bond');
 
   // Loading state
-  const [isApprovingPolk, setIsApprovingPolk] = useState(false);
-  const [approvePolkTransactionSuccess, setApprovePolkTransactionSuccess] =
-    useState(false);
-  const [
-    approvePolkTransactionSuccessHash,
-    setApprovePolkTransactionSuccessHash
-  ] = useState(undefined);
-
   const [isBonding, setIsBonding] = useState(false);
   const [bondTransactionSuccess, setBondTransactionSuccess] = useState(false);
   const [bondTransactionSuccessHash, setBondTransactionSuccessHash] =
@@ -71,10 +62,12 @@ function ReportFormActions({
   ] = useState(undefined);
 
   // Selectors
-  const marketSlug = useAppSelector(state => state.market.market.slug);
-  const isPolkApproved = useAppSelector(
-    state => state.polkamarkets.polkApproved
+  const walletConnected = useAppSelector(
+    state => state.polkamarkets.isLoggedIn
   );
+
+  const marketSlug = useAppSelector(state => state.market.market.slug);
+
   const { id, questionId, networkId } = useAppSelector(
     state => state.market.market
   );
@@ -96,26 +89,6 @@ function ReportFormActions({
     isWinningOutcome(outcome.value) &&
     bond.value > 0 &&
     questionBond > 0;
-
-  async function handleApprovePolk() {
-    setIsApprovingPolk(true);
-
-    try {
-      const response = await polkamarketsService.approveRealitioERC20();
-      const { status, transactionHash } = response;
-
-      if (status && transactionHash) {
-        setApprovePolkTransactionSuccess(status);
-        setApprovePolkTransactionSuccessHash(transactionHash);
-        show('approvePolk');
-      }
-
-      await dispatch(login(polkamarketsService));
-      setIsApprovingPolk(false);
-    } catch (error) {
-      setIsApprovingPolk(false);
-    }
-  }
 
   function handleCancel() {
     dispatch(selectOutcome('', '', ''));
@@ -198,55 +171,6 @@ function ReportFormActions({
         </div>
       ) : (
         <div className="pm-c-report-form-details__actions-group--column">
-          {!isPolkApproved && !marketQuestionFinalized ? (
-            <ButtonLoading
-              color="primary"
-              size="sm"
-              fullwidth
-              style={{
-                justifyContent: isApprovingPolk ? 'center' : 'space-between'
-              }}
-              onClick={handleApprovePolk}
-              loading={isApprovingPolk}
-              disabled={isApprovingPolk}
-            >
-              Allow Polkamarkets to use your POLK
-              <Tooltip text="You only have to do this once.">
-                <QuestionIcon
-                  style={{ width: '1.4rem', height: '1.4rem', opacity: 0.35 }}
-                />
-              </Tooltip>
-            </ButtonLoading>
-          ) : null}
-          {approvePolkTransactionSuccess &&
-          approvePolkTransactionSuccessHash ? (
-            <ToastNotification id="approvePolk" duration={10000}>
-              <Toast
-                variant="success"
-                title="Success"
-                description="Your transaction is completed!"
-              >
-                <Toast.Actions>
-                  <a
-                    target="_blank"
-                    href={`${network.explorerURL}/tx/${approvePolkTransactionSuccessHash}`}
-                    rel="noreferrer"
-                  >
-                    <Button size="sm" color="success">
-                      View on Explorer
-                    </Button>
-                  </a>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => close('approvePolk')}
-                  >
-                    Dismiss
-                  </Button>
-                </Toast.Actions>
-              </Toast>
-            </ToastNotification>
-          ) : null}
           {showCurrentOutcomeBondWarning ? (
             <AlertMinimal
               variant="warning"
@@ -291,15 +215,17 @@ function ReportFormActions({
                 description="Your transaction is completed!"
               >
                 <Toast.Actions>
-                  <a
-                    target="_blank"
-                    href={`${network.explorerURL}/tx/${marketResolveTransactionSuccessHash}`}
-                    rel="noreferrer"
-                  >
-                    <Button size="sm" color="success">
-                      View on Explorer
-                    </Button>
-                  </a>
+                  <Feature name="regular">
+                    <a
+                      target="_blank"
+                      href={`${network.explorerURL}/tx/${marketResolveTransactionSuccessHash}`}
+                      rel="noreferrer"
+                    >
+                      <Button size="sm" color="success">
+                        View on Explorer
+                      </Button>
+                    </a>
+                  </Feature>
                   <Button
                     size="sm"
                     variant="ghost"
@@ -323,29 +249,35 @@ function ReportFormActions({
                 color="success"
                 fullwidth
                 onClick={handleResolve}
-                disabled={isResolvingMarket}
+                disabled={!walletConnected || isResolvingMarket}
                 loading={isResolvingMarket}
               >
                 Resolve
               </ButtonLoading>
             ) : (
-              <ButtonLoading
-                type="submit"
-                color={showCurrentOutcomeBondWarning ? 'warning' : 'primary'}
+              <ApproveToken
                 fullwidth
-                onClick={handleBond}
-                disabled={
-                  !isPolkApproved ||
-                  bond.value === 0 ||
-                  isBonding ||
-                  has(errors, 'bond')
-                }
-                loading={isBonding}
+                address={networkConfig.ERC20_CONTRACT_ADDRESS}
+                spenderAddress={networkConfig.REALITIO_ERC20_CONTRACT_ADDRESS}
+                ticker="POLK"
               >
-                Bond
-              </ButtonLoading>
+                <ButtonLoading
+                  type="submit"
+                  color={showCurrentOutcomeBondWarning ? 'warning' : 'primary'}
+                  fullwidth
+                  onClick={handleBond}
+                  disabled={
+                    !walletConnected ||
+                    bond.value === 0 ||
+                    isBonding ||
+                    has(errors, 'bond')
+                  }
+                  loading={isBonding}
+                >
+                  Bond
+                </ButtonLoading>
+              </ApproveToken>
             )}
-
             {/* TODO: Create notifications by type (ex: Transaction completed) */}
             {bondTransactionSuccess && bondTransactionSuccessHash ? (
               <ToastNotification id="bond" duration={10000}>
@@ -355,15 +287,17 @@ function ReportFormActions({
                   description="Your transaction is completed!"
                 >
                   <Toast.Actions>
-                    <a
-                      target="_blank"
-                      href={`${network.explorerURL}/tx/${bondTransactionSuccessHash}`}
-                      rel="noreferrer"
-                    >
-                      <Button size="sm" color="success">
-                        View on Explorer
-                      </Button>
-                    </a>
+                    <Feature name="regular">
+                      <a
+                        target="_blank"
+                        href={`${network.explorerURL}/tx/${bondTransactionSuccessHash}`}
+                        rel="noreferrer"
+                      >
+                        <Button size="sm" color="success">
+                          View on Explorer
+                        </Button>
+                      </a>
+                    </Feature>
                     <Button
                       size="sm"
                       variant="ghost"

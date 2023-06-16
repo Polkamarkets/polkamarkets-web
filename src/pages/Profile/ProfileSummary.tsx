@@ -3,7 +3,7 @@ import { Skeleton } from 'ui';
 
 import { ShareIcon } from 'assets/icons';
 
-import { AlertMini, Tooltip } from 'components';
+import { AlertMini, Tooltip, Feature } from 'components';
 import { Text } from 'components/new';
 
 import type { ProfileSummaryProps } from './types';
@@ -45,15 +45,17 @@ export default function ProfileSummary({
               color="1"
             >
               {address}
-              <Tooltip position="bottom-start" text="View on Explorer">
-                <a
-                  target="_blank"
-                  href={`${network.explorerURL}/address/${address}`}
-                  rel="noreferrer"
-                >
-                  <ShareIcon className="pm-p-profile-summary__explorer-icon" />
-                </a>
-              </Tooltip>
+              <Feature name="regular">
+                <Tooltip position="bottom-start" text="View on Explorer">
+                  <a
+                    target="_blank"
+                    href={`${network.explorerURL}/address/${address}`}
+                    rel="noreferrer"
+                  >
+                    <ShareIcon className="pm-p-profile-summary__explorer-icon" />
+                  </a>
+                </Tooltip>
+              </Feature>
             </Text>
             <Text
               fontSize="body-4"

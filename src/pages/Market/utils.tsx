@@ -1,10 +1,12 @@
 import React from 'react';
 
+import { features } from 'config';
 import dayjs from 'dayjs';
 import { colorByOutcomeId } from 'helpers/color';
 import { fromTimestampToDate, toUTC } from 'helpers/date';
 import { roundNumber } from 'helpers/math';
 import { capitalize } from 'helpers/string';
+import omit from 'lodash/omit';
 import reverse from 'lodash/reverse';
 import times from 'lodash/times';
 import { PolkamarketsService } from 'services';
@@ -70,7 +72,9 @@ function formatMarketPositions<A, O>(
     { title: 'Total Value', key: 'value', align: 'right' },
     { title: 'Trade Type', key: 'tradeType', align: 'center' },
     { title: 'TX', key: 'transactionHash', align: 'right' }
-  ];
+  ].filter(column =>
+    features.fantasy.enabled ? column.key !== 'transactionHash' : true
+  ) as Column[];
 
   const actionColorReducer = action => {
     switch (action) {
@@ -128,79 +132,82 @@ function formatMarketPositions<A, O>(
       const tradeType = action.action;
       const { transactionHash } = action;
 
-      return {
-        key,
-        outcome: {
-          value: outcome && (
-            <Badge
-              variant="filled"
-              style={{
-                backgroundColor: `rgb(var(--color-${colorByOutcomeId(
-                  outcomeId
-                )}--rgb) / 0.6)`
-              }}
-              label={outcome}
-            />
-          ),
-          align: 'left'
+      return omit(
+        {
+          key,
+          outcome: {
+            value: outcome && (
+              <Badge
+                variant="filled"
+                style={{
+                  backgroundColor: `rgb(var(--color-${colorByOutcomeId(
+                    outcomeId
+                  )}--rgb) / 0.6)`
+                }}
+                label={outcome}
+              />
+            ),
+            align: 'left'
+          },
+          date: {
+            value: (
+              <Text
+                as="span"
+                scale="caption"
+                fontWeight="semibold"
+                style={{ display: 'flex', flexDirection: 'column' }}
+              >
+                {date}
+                <strong>{utcTime}</strong>
+              </Text>
+            ),
+            align: 'right'
+          },
+          price: {
+            value: (
+              <Text as="span" scale="caption" fontWeight="semibold">
+                {price}
+                {price ? <strong>{` ${ticker}`}</strong> : null}
+              </Text>
+            ),
+            align: 'right'
+          },
+          shares: {
+            value: shares,
+            align: 'right'
+          },
+          value: {
+            value: (
+              <Text as="span" scale="caption" fontWeight="semibold">
+                {value}{' '}
+                <strong>{action.action === 'Bond' ? 'POLK' : ticker}</strong>
+              </Text>
+            ),
+            align: 'right'
+          },
+          tradeType: {
+            value: (
+              <Pill color={actionColor.color} variant={actionColor.variant}>
+                {tradeType}
+              </Pill>
+            ),
+            align: 'center'
+          },
+          transactionHash: {
+            value: (
+              <a
+                target="_blank"
+                href={`${network.explorerURL}/tx/${transactionHash}`}
+                rel="noreferrer"
+              >
+                <ShareIcon />
+              </a>
+            ),
+            align: 'right'
+          }
         },
-        date: {
-          value: (
-            <Text
-              as="span"
-              scale="caption"
-              fontWeight="semibold"
-              style={{ display: 'flex', flexDirection: 'column' }}
-            >
-              {date}
-              <strong>{utcTime}</strong>
-            </Text>
-          ),
-          align: 'right'
-        },
-        price: {
-          value: (
-            <Text as="span" scale="caption" fontWeight="semibold">
-              {price}
-              {price ? <strong>{` ${ticker}`}</strong> : null}
-            </Text>
-          ),
-          align: 'right'
-        },
-        shares: {
-          value: shares,
-          align: 'right'
-        },
-        value: {
-          value: (
-            <Text as="span" scale="caption" fontWeight="semibold">
-              {value}{' '}
-              <strong>{action.action === 'Bond' ? 'POLK' : ticker}</strong>
-            </Text>
-          ),
-          align: 'right'
-        },
-        tradeType: {
-          value: (
-            <Pill color={actionColor.color} variant={actionColor.variant}>
-              {tradeType}
-            </Pill>
-          ),
-          align: 'center'
-        },
-        transactionHash: {
-          value: (
-            <a
-              target="_blank"
-              href={`${network.explorerURL}/tx/${transactionHash}`}
-              rel="noreferrer"
-            >
-              <ShareIcon />
-            </a>
-          ),
-          align: 'right'
-        }
-      };
+        features.fantasy.enabled ? ['transactionHash'] : []
+      ) as Row;
     });
 
   return { columns, rows };

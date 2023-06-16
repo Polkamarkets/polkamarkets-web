@@ -1,10 +1,13 @@
 import { Link } from 'react-router-dom';
 
+import cn from 'classnames';
 import { ui } from 'config';
+import shortenAddress from 'helpers/shortenAddress';
 import isEmpty from 'lodash/isEmpty';
 import orderBy from 'lodash/orderBy';
 import pick from 'lodash/pick';
 import { GetLeaderboardByTimeframeData } from 'services/Polkamarkets/types';
+import { Avatar } from 'ui';
 
 import {
   FirstPlaceIcon,
@@ -82,13 +85,15 @@ type WalletColumnRenderArgs = {
   place: number;
   explorerURL: string;
   achievements: Achievement[];
-};
+} & Record<'username' | 'userImageUrl', string | null>;
 
 function walletColumnRender({
   isLoggedInUser,
   address,
   place,
-  achievements
+  achievements,
+  username,
+  userImageUrl
 }: WalletColumnRenderArgs) {
   const walletPlace = WALLET_PLACES[place] || {
     icon: null,
@@ -96,28 +101,36 @@ function walletColumnRender({
   };
 
   return (
-    <div className="pm-c-leaderboard-table__wallet">
+    <Link to={`/user/${address}`} className="pm-c-leaderboard-table__wallet">
       {walletPlace.icon}
-      {isLoggedInUser ? <MyPlaceIcon /> : null}
-      <Link
-        className={`caption semibold text-${
-          isLoggedInUser ? '1' : walletPlace.textColor
-        }`}
-        to={`/user/${address}`}
-      >
-        {`${address.substring(0, 6)}...${address.substring(
-          address.length - 4
-        )}`}
-        {isLoggedInUser ? (
-          <span className="caption semibold text-3">{` (You)`}</span>
-        ) : null}
-      </Link>
+      {(() => {
+        if (userImageUrl)
+          return (
+            <Avatar
+              $radius="lg"
+              $size="x2s"
+              alt="Avatar"
+              src={userImageUrl}
+              className={cn({
+                'pm-c-leaderboard-table__wallet__avatar': isLoggedInUser
+              })}
+            />
+          );
+        if (isLoggedInUser) return <MyPlaceIcon />;
+        return null;
+      })()}
+      <p className={cn('caption semibold', `text-${walletPlace.textColor}`)}>
+        {username || shortenAddress(address)}
+        {isLoggedInUser && (
+          <span className="caption semibold text-3"> (You)</span>
+        )}
+      </p>
       {achievementsColumnRender(
         achievements,
         'medium',
         5 + 20 * Math.min(achievements.length, 4)
       )}
-    </div>
+    </Link>
   );
 }
 
@@ -222,7 +235,9 @@ function prepareLeaderboardTableRows({
           isLoggedInUser,
           address: row.user,
           place: index + 1,
-          achievements: row.achievements
+          achievements: row.achievements,
+          username: row.username,
+          userImageUrl: row.userImageUrl
         },
         volumeEur: {
           volume: row.volumeEur,
