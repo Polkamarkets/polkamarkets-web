@@ -1,27 +1,23 @@
-import React from 'react';
-
-type ItemProps = {
-  children: React.ReactNode;
-};
-
-function Item({ children }: ItemProps) {
+function Item({
+  children,
+  className
+}: Pick<React.ComponentPropsWithoutRef<'span'>, 'children' | 'className'>) {
   return (
     <>
       <span className="breadcrumb__separator">/</span>
-      <span className="breadcrumb__item">{children}</span>
+      <span className={`breadcrumb__item ${className}`}>{children}</span>
     </>
   );
 }
 
-type BreadcrumbProps = {
-  children: React.ReactNode;
-};
-
 /**
  * A breadcrumb displays the current location within a hierarchy
  */
-function Breadcrumb({ children }: BreadcrumbProps) {
-  return <div className="breadcrumb">{children}</div>;
+function Breadcrumb({
+  children,
+  className
+}: Pick<React.ComponentPropsWithoutRef<'div'>, 'children' | 'className'>) {
+  return <div className={`breadcrumb ${className}`}>{children}</div>;
 }
 
 Breadcrumb.Item = Item;
