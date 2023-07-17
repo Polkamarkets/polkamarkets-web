@@ -16,6 +16,7 @@
 
       @include breakpoint-to('lg') {
         @include flex-row(space-between, center);
+        gap: 24px;
       }
     }
 
