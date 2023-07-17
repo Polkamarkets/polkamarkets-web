@@ -5,6 +5,6 @@
   border-radius: 0.4rem;
   box-shadow: 0rem 0.4rem 2.4rem var(--color-shadow);
 
-  max-height: 100vh;
+  max-height: calc(100vh - var(--grid-margin) * 2);
   overflow-y: auto;
 }
