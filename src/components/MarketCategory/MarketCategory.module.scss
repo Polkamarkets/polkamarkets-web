@@ -16,3 +16,13 @@
   background: var(--color-main-quinary);
   color: var(--color-main-primary);
 }
+
+.fill {
+  width: 100%;
+}
+
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
