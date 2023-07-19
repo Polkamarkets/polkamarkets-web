@@ -1,9 +1,7 @@
 .back {
   &Root {
     text-align: center;
-    padding-right: var(--grid-margin);
     padding-top: var(--grid-margin);
-    padding-left: var(--grid-margin);
     background: linear-gradient(
       180deg,
       transparent 0%,
@@ -13,4 +11,8 @@
     width: 100%;
     z-index: 1;
   }
+}
+
+.virtuoso {
+  min-height: var(--min-height);
 }

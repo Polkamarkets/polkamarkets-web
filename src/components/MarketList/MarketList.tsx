@@ -29,10 +29,11 @@ type VirtuosoProps = Omit<
 function Virtuoso({ data }: VirtuosoProps) {
   const theme = useTheme();
   const [back, backRect] = useRect();
-  const HEIGHT = theme.device.isDesktop
+  const RELATIVE_VIEWPORT_Y = theme.device.isDesktop
     ? `${backRect.height}px`
     : `calc(${backRect.height}px + var(--header-y))`;
   const virtuoso = useRef<VirtuosoHandle>(null);
+  const [virtuosoY, setVirtuosoY] = useState('');
   const [renderBack, setRenderBack] = useState(false);
   const handleItemContent = useCallback(
     (index: number, market: Market) => (
@@ -60,6 +61,27 @@ function Virtuoso({ data }: VirtuosoProps) {
     []
   );
 
+  useEffect(() => {
+    function handleVirtuosoY() {
+      const virtuosoScrollerNode = document.querySelector(
+        "[data-virtuoso-scroller='true']"
+      ) as HTMLDivElement | null;
+
+      const computedVirtuosoY = virtuosoScrollerNode?.style.height || '0px';
+
+      setVirtuosoY(
+        `calc(${computedVirtuosoY} ${
+          theme.device.isDesktop ? `+ ${backRect.height}px` : ''
+        } + var(--grid-margin))`
+      );
+    }
+
+    window.addEventListener('scroll', handleVirtuosoY);
+
+    return () => {
+      window.removeEventListener('scroll', handleVirtuosoY);
+    };
+  }, [backRect.height, theme.device.isDesktop]);
   useEffect(() => {
     (async function handleMarketColors() {
       if (data) {
@@ -89,7 +111,7 @@ function Virtuoso({ data }: VirtuosoProps) {
             className={marketListClasses.backRoot}
             initial={{ top: window.innerHeight }}
             animate={{
-              top: `calc(${window.innerHeight}px - ${HEIGHT})`
+              top: `calc(${window.innerHeight}px - ${RELATIVE_VIEWPORT_Y})`
             }}
             exit={{ top: window.innerHeight }}
           >
@@ -100,12 +122,17 @@ function Virtuoso({ data }: VirtuosoProps) {
         )}
       </AnimatePresence>
       <ReactVirtuoso
-        ref={virtuoso}
         useWindowScroll
+        className={marketListClasses.virtuoso}
+        ref={virtuoso}
         itemContent={handleItemContent}
         rangeChanged={handleRangeChange}
         data={data}
-        style={{ top: renderBack ? -backRect.height : undefined }}
+        style={{
+          top: renderBack ? -backRect.height : undefined,
+          // @ts-expect-error No need to assert CSS.Properties here
+          '--min-height': virtuosoY
+        }}
       />
     </>
   );
