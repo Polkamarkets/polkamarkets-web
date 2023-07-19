@@ -1,7 +1,7 @@
 function Item({
   children,
   className
-}: Pick<React.ComponentPropsWithoutRef<'span'>, 'children' | 'className'>) {
+}: React.PickFrom<'span', 'children' | 'className'>) {
   return (
     <>
       <span className="breadcrumb__separator">/</span>
@@ -16,7 +16,7 @@ function Item({
 function Breadcrumb({
   children,
   className
-}: Pick<React.ComponentPropsWithoutRef<'div'>, 'children' | 'className'>) {
+}: React.PickFrom<'div', 'children' | 'className'>) {
   return <div className={`breadcrumb ${className}`}>{children}</div>;
 }
 
