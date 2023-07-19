@@ -1,4 +1,10 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState
+} from 'react';
 import type {
   VirtuosoProps as ReactVirtuosoProps,
   VirtuosoHandle,
@@ -61,27 +67,27 @@ function Virtuoso({ data }: VirtuosoProps) {
     []
   );
 
-  useEffect(() => {
-    function handleVirtuosoY() {
-      const virtuosoScroller = document.querySelector(
-        "[data-virtuoso-scroller='true']"
-      ) as HTMLDivElement | null;
-      const computedVirtuosoY = virtuosoScroller?.style.height || '0px';
+  useLayoutEffect(() => {
+    let timer = 0;
 
-      setVirtuosoY(
-        `calc(${computedVirtuosoY} ${
-          theme.device.isDesktop ? `+ ${backRect.height}px` : ''
-        } + var(--grid-margin))`
-      );
+    function handleVirtuosoY() {
+      timer = window.setTimeout(() => {
+        const virtuosoScrollerY = document.querySelector<HTMLDivElement>(
+          "[data-virtuoso-scroller='true']"
+        )?.style.height;
+
+        setVirtuosoY(virtuosoScrollerY || '0px');
+      }, 100);
     }
 
     handleVirtuosoY();
     window.addEventListener('scroll', handleVirtuosoY);
 
     return () => {
+      window.clearTimeout(timer);
       window.removeEventListener('scroll', handleVirtuosoY);
     };
-  }, [backRect.height, theme.device.isDesktop]);
+  }, [backRect.height, theme.device.isDesktop, data]);
   useEffect(() => {
     (async function handleMarketColors() {
       if (data) {
@@ -131,7 +137,9 @@ function Virtuoso({ data }: VirtuosoProps) {
         style={{
           top: renderBack ? -backRect.height : undefined,
           // @ts-expect-error No need to assert CSS.Properties here
-          '--min-height': virtuosoY
+          '--min-height': `calc(${virtuosoY} ${
+            renderBack && theme.device.isDesktop ? `+ ${backRect.height}px` : ''
+          } + var(--grid-margin))`
         }}
       />
     </>
