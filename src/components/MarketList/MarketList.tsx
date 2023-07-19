@@ -63,11 +63,10 @@ function Virtuoso({ data }: VirtuosoProps) {
 
   useEffect(() => {
     function handleVirtuosoY() {
-      const virtuosoScrollerNode = document.querySelector(
+      const virtuosoScroller = document.querySelector(
         "[data-virtuoso-scroller='true']"
       ) as HTMLDivElement | null;
-
-      const computedVirtuosoY = virtuosoScrollerNode?.style.height || '0px';
+      const computedVirtuosoY = virtuosoScroller?.style.height || '0px';
 
       setVirtuosoY(
         `calc(${computedVirtuosoY} ${
@@ -76,6 +75,7 @@ function Virtuoso({ data }: VirtuosoProps) {
       );
     }
 
+    handleVirtuosoY();
     window.addEventListener('scroll', handleVirtuosoY);
 
     return () => {
