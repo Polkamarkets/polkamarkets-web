@@ -34,10 +34,7 @@ type VirtuosoProps = Omit<
 
 function Virtuoso({ data }: VirtuosoProps) {
   const theme = useTheme();
-  const [back, backRect] = useRect();
-  const RELATIVE_VIEWPORT_Y = theme.device.isDesktop
-    ? `${backRect.height}px`
-    : `calc(${backRect.height}px + var(--header-y))`;
+  const [backRef, backRect] = useRect<HTMLDivElement>();
   const virtuoso = useRef<VirtuosoHandle>(null);
   const [virtuosoY, setVirtuosoY] = useState('');
   const [renderBack, setRenderBack] = useState(false);
@@ -66,17 +63,18 @@ function Virtuoso({ data }: VirtuosoProps) {
       }),
     []
   );
+  const backY = Math.floor(backRect.height);
 
   useLayoutEffect(() => {
     let timer = 0;
 
     function handleVirtuosoY() {
       timer = window.setTimeout(() => {
-        const virtuosoScrollerY = document.querySelector<HTMLDivElement>(
+        const virtuosoScroller = document.querySelector<HTMLDivElement>(
           "[data-virtuoso-scroller='true']"
-        )?.style.height;
+        );
 
-        setVirtuosoY(virtuosoScrollerY || '0px');
+        setVirtuosoY(virtuosoScroller?.style.height || '0px');
       }, 100);
     }
 
@@ -87,7 +85,7 @@ function Virtuoso({ data }: VirtuosoProps) {
       window.clearTimeout(timer);
       window.removeEventListener('scroll', handleVirtuosoY);
     };
-  }, [backRect.height, theme.device.isDesktop, data]);
+  }, [theme.device.isDesktop, data]);
   useEffect(() => {
     (async function handleMarketColors() {
       if (data) {
@@ -113,11 +111,15 @@ function Virtuoso({ data }: VirtuosoProps) {
       <AnimatePresence>
         {renderBack && (
           <motion.div
-            ref={back}
+            ref={backRef}
             className={marketListClasses.backRoot}
             initial={{ top: window.innerHeight }}
             animate={{
-              top: `calc(${window.innerHeight}px - ${RELATIVE_VIEWPORT_Y})`
+              top: `calc(${window.innerHeight}px - ${
+                theme.device.isDesktop
+                  ? `${backY}px`
+                  : `calc(${backY}px + var(--header-y))`
+              })`
             }}
             exit={{ top: window.innerHeight }}
           >
@@ -129,16 +131,14 @@ function Virtuoso({ data }: VirtuosoProps) {
       </AnimatePresence>
       <ReactVirtuoso
         useWindowScroll
-        className={marketListClasses.virtuoso}
         ref={virtuoso}
         itemContent={handleItemContent}
         rangeChanged={handleRangeChange}
         data={data}
         style={{
-          top: renderBack ? -backRect.height : undefined,
-          // @ts-expect-error No need to assert CSS.Properties here
-          '--min-height': `calc(${virtuosoY} ${
-            renderBack && theme.device.isDesktop ? `+ ${backRect.height}px` : ''
+          top: renderBack ? -backY : undefined,
+          minHeight: `calc(${virtuosoY} ${
+            renderBack && theme.device.isDesktop ? `+ ${backY}px` : ''
           } + var(--grid-margin))`
         }}
       />
