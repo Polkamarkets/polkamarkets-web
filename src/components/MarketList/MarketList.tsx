@@ -19,6 +19,7 @@ import { useRect, useTheme } from 'ui';
 
 import { InfoIcon } from 'assets/icons';
 
+import Icon from 'components/Icon';
 import PredictionCard from 'components/PredictionCard';
 
 import { useMarkets } from 'hooks';
@@ -115,16 +116,15 @@ function Virtuoso({ data }: VirtuosoProps) {
             className={marketListClasses.backRoot}
             initial={{ top: window.innerHeight }}
             animate={{
-              top: `calc(${window.innerHeight}px - ${
-                theme.device.isDesktop
-                  ? `${backY}px`
-                  : `calc(${backY}px + var(--header-y))`
+              top: `calc(${window.innerHeight}px - ${backY}px${
+                theme.device.isDesktop ? '' : ' - var(--header-y)'
               })`
             }}
             exit={{ top: window.innerHeight }}
           >
-            <Button variant="ghost" size="xs" onClick={handleBackClick}>
+            <Button variant="subtle" size="xs" onClick={handleBackClick}>
               Back to Top
+              <Icon name="Arrow" dir="up" />
             </Button>
           </motion.div>
         )}
@@ -137,9 +137,11 @@ function Virtuoso({ data }: VirtuosoProps) {
         data={data}
         style={{
           top: renderBack ? -backY : undefined,
-          minHeight: `calc(${virtuosoY} ${
-            renderBack && theme.device.isDesktop ? `+ ${backY}px` : ''
-          } + var(--grid-margin))`
+          minHeight: `calc(${virtuosoY}${
+            renderBack && theme.device.isDesktop
+              ? ` + ${backY}px`
+              : ' + var(--grid-margin)'
+          })`
         }}
       />
     </>
