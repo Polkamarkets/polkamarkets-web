@@ -3,21 +3,6 @@
   align-items: center;
   justify-content: center;
 
-  height: var(--height);
-  padding-left: var(--padding-inline);
-  padding-right: var(--padding-inline);
-  min-width: var(--min-width);
-  border-radius: var(--border-radius);
-
-  color: rgb(var(--color-text--rgb) / var(--color-alpha, 1));
-  background-color: rgb(
-    var(--channel, transparent) / var(--background-alpha, 1)
-  );
-  border-color: rgb(var(--channel, transparent) / var(--border-alpha, 1));
-  border-width: var(--border-width, 0px);
-  border-style: var(--border-style, none);
-  border-image: none;
-
   cursor: pointer;
 
   font-size: 12px;
@@ -25,38 +10,61 @@
   letter-spacing: 1.04px;
   text-transform: uppercase;
 
-  transition-property: var(--transition-property);
+  transition-property: background-color, color, border-color;
   transition-duration: 200ms;
   transition-timing-function: ease-in;
 
+  height: var(--height);
+  padding-left: var(--padding-inline);
+  padding-right: var(--padding-inline);
+  min-width: var(--min-width);
+  border-radius: var(--border-radius);
+
+  color: rgb(var(--color-channel) / var(--color-alpha, 1));
+  background-color: rgb(
+    var(--background-color, transparent) / var(--background-alpha, 1)
+  );
+  border-color: rgb(var(--border-color, transparent) / var(--border-alpha, 1));
+  border-width: var(--border-width, 0px);
+  border-style: solid;
+  border-image: none;
+
+  &:focus {
+    --alpha: 1;
+    outline: 4px solid rgb(var(--channel, transparent) / 0.4);
+  }
   &:hover {
-    --border-alpha: 0.4;
+    --alpha: 0.8;
   }
   &:disabled {
     pointer-events: none;
-    cursor: not-allowed;
+    cursor: default;
+    --alpha: 0.2;
     --color-alpha: 0.4;
-    --background-alpha: 0.2;
   }
 }
 
 .variant {
+  &Text {
+  }
   &Fill {
-    --transition-property: background-color;
-    --channel: rgb(var(--channel) / var(--background-alpha, 1));
+    --color-channel: var(--color-text--rgb);
+    --background-color: var(--channel);
+    --background-alpha: var(--alpha);
   }
   &Outline {
-    --transition-property: border-color;
-    --border-style: solid;
+    --color-color: var(--channel);
+    --border-color: var(--channel);
     --border-width: 1px;
+    --border-alpha: 0.4;
   }
 }
 
 .color {
   &Text {
-    --border-channel: 165 190 228;
+    --channel: var(--color-text--rgb);
   }
-  &Warning {
+  &Warn {
     --channel: var(--color-warning--rgb);
   }
   &Info {

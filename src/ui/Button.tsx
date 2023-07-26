@@ -8,7 +8,7 @@ export interface ButtonProps
     'aria-label' | 'className' | 'children' | 'onClick' | 'disabled'
   > {
   $variant?: 'fill' | 'outline' | 'text';
-  $color?: 'warning' | 'text';
+  $color?: 'warn' | 'text';
   $size?: 'sm' | 'md';
   $fill?: boolean;
 }
@@ -30,7 +30,7 @@ export default function Button({
           [buttonClasses.variantOutline]: $variant === 'outline',
           [buttonClasses.variantFill]: $variant === 'fill',
           [buttonClasses.variantText]: $variant === 'text',
-          [buttonClasses.colorWarning]: $color === 'warning',
+          [buttonClasses.colorWarn]: $color === 'warn',
           [buttonClasses.colorText]: $color === 'text',
           [buttonClasses.sizeSm]: $size === 'sm',
           [buttonClasses.sizeMd]: $size === 'md',
