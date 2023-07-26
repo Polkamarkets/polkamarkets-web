@@ -7,11 +7,8 @@ export const adornmentProps = {
 } as const;
 
 export interface AdornmentProps
-  extends Pick<
-    React.ComponentPropsWithoutRef<'span'>,
-    'children' | 'className'
-  > {
-  $edge: typeof adornmentProps.$edge[number];
+  extends React.PickFrom<'span', 'children' | 'className'> {
+  $edge?: 'start' | 'end';
   $size?: 'sm' | 'md';
 }
 
