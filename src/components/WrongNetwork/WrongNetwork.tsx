@@ -15,14 +15,7 @@ export default function WrongNetwork({ network }: WrongNetworkProps) {
     <Banner
       $type="warning"
       $variant="subtle"
-      actions={
-        <NetworkSelector
-          size="xs"
-          color="warning"
-          variant="ghost"
-          className={wrongNetworkClasses.change}
-        />
-      }
+      actions={<NetworkSelector $color="warn" $size="sm" />}
     >
       The selected network <strong>{network.name}</strong> does not match
       Polkamarkets&apos; networks. <strong>Change</strong> the App network or

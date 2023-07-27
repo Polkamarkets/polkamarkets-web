@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { Button } from 'components/Button';
+import Button from 'ui/Button';
+
 import Checkbox from 'components/Checkbox';
 import Icon from 'components/Icon';
 import Link from 'components/Link';
@@ -83,9 +84,10 @@ export default function BetaWarning() {
         </ModalSection>
         <ModalFooter className="pm-c-beta-warning__footer">
           <Button
-            variant="normal"
-            color="warning"
-            fullwidth
+            $size="md"
+            $variant="fill"
+            $color="warn"
+            $fill
             disabled={!agreed}
             onClick={handleProceed}
           >

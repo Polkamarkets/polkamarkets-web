@@ -2,8 +2,9 @@ import { Fragment, useCallback, useState } from 'react';
 
 import cn from 'classnames';
 import { Adornment, List, ListItem, Popover, useTheme } from 'ui';
+import Button from 'ui/Button';
+import type { ButtonProps } from 'ui/Button';
 
-import { Button, ButtonProps } from 'components/Button';
 import Icon from 'components/Icon';
 import Text from 'components/Text';
 
@@ -42,32 +43,28 @@ export default function NetworkSelector({
   );
   const isDesktop = !responsive || theme.device.isDesktop;
   const isTv = !responsive || theme.device.isTv;
-  const isSmall = props.size === 'xs';
 
   return (
     <>
       <Button
+        $size="md"
+        $color="text"
+        $variant="outline"
         aria-label="Switch network"
-        variant="outline"
         onClick={handleShow}
-        className={cn(
-          networSelectorClasses.root,
-          {
-            [networSelectorClasses.sizeXs]: isSmall
-          },
-          className
-        )}
+        className={cn(networSelectorClasses.root, className)}
         {...props}
       >
-        {!isSmall && (
+        {props.$color !== 'warn' && (
           <Icon name={networks.network.currency.iconName} size="lg" />
         )}
         {isDesktop && (
           <>
-            {isTv && (isSmall ? 'Change' : networks.network.name)}
-            <span className={networSelectorClasses.rootIcon}>
+            {isTv &&
+              (props.$color === 'warn' ? 'Change' : networks.network.name)}
+            <Adornment $edge="end" $size={props.$size}>
               <Icon name="Chevron" size="lg" dir={show ? 'up' : 'down'} />
-            </span>
+            </Adornment>
           </>
         )}
       </Button>
@@ -81,11 +78,10 @@ export default function NetworkSelector({
             >
               Select Network
             </Text>
-            <Adornment $edge="end">
+            <Adornment $edge="end" $size="md">
               <Button
-                size="xs"
-                variant="ghost"
-                color="default"
+                $variant="text"
+                $color="text"
                 aria-label="Hide"
                 onClick={handleHide}
               >

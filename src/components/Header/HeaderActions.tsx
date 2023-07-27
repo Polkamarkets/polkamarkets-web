@@ -41,7 +41,6 @@ export default function HeaderActions() {
       >
         {ui.layout.header.networkSelector.enabled && theme.device.isDesktop && (
           <NetworkSelector
-            size="sm"
             responsive
             className={headerActionsClasses.network}
           />

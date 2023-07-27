@@ -5,11 +5,11 @@ import type ReactRouterDom from 'react-router-dom';
 import { pages, socials, ui } from 'config';
 import { shiftSlash } from 'helpers/string';
 import { useTheme } from 'ui';
+import Button from 'ui/Button';
 
 import { PolkamarketsLogo } from 'assets/icons';
 import { ReactComponent as V2Badge } from 'assets/icons/svgs/v2-badge.svg';
 
-import { Button } from 'components/Button';
 import CreateMarket from 'components/CreateMarket';
 import Feature from 'components/Feature';
 import Icon from 'components/Icon';
@@ -29,7 +29,7 @@ function HeaderNavModal({
 
   return (
     <>
-      <Button size="xs" variant="ghost" onClick={() => setShow(true)}>
+      <Button $color="text" $variant="text" onClick={() => setShow(true)}>
         <Icon name="Menu" size="lg" />
       </Button>
       <Modal
@@ -42,8 +42,8 @@ function HeaderNavModal({
       >
         <header className={headerNavClasses.header}>
           <Button
-            size="xs"
-            variant="ghost"
+            $color="text"
+            $variant="text"
             onClick={handleHide}
             className={headerNavClasses.hide}
           >
@@ -164,7 +164,8 @@ export default function HeaderNav() {
           <>
             {ui.layout.header.networkSelector.enabled ? (
               <NetworkSelector
-                size="sm"
+                $color="text"
+                $variant="outline"
                 responsive
                 className={headerNavClasses.network}
               />
