@@ -35,6 +35,7 @@ function formatTradeDetails({
   priceTo,
   maxStake,
   maxROI,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   shares,
   ticker,
   totalStake
