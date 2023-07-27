@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { Fragment } from 'react';
 
 import cn from 'classnames';
 import { ui } from 'config';
@@ -9,19 +9,22 @@ import Text from 'components/Text';
 import styles from './Footer.module.scss';
 import { defaultFooterText, getFooterItems } from './Footer.utils';
 
-export interface FooterProps
-  extends Pick<React.ComponentPropsWithoutRef<'footer'>, 'className'> {
+export interface FooterProps extends React.PickFrom<'footer', 'className'> {
   $gutterTop?: boolean;
 }
 
+const items = getFooterItems(ui.layout.footer.text || defaultFooterText);
+
 export default function Footer({ className, $gutterTop }: FooterProps) {
-  const text = ui.layout.footer.text || defaultFooterText;
-
-  const items = useMemo(() => getFooterItems(text), [text]);
-
   return (
     <footer
-      className={cn(styles.root, { [styles.gutterTop]: $gutterTop }, className)}
+      className={cn(
+        styles.root,
+        {
+          [styles.gutterTop]: $gutterTop
+        },
+        className
+      )}
     >
       <Container className={styles.container}>
         <Text
@@ -30,25 +33,27 @@ export default function Footer({ className, $gutterTop }: FooterProps) {
           fontWeight="medium"
           className="pm-l-footer__terms-text-secondary"
         >
-          {items.map(item =>
-            item.isLink ? (
-              <a
-                className={cn('caption medium', {
-                  [styles.itemLinkDefault]:
-                    !item.color || item.color === 'default',
-                  [styles.itemLinkPrimary]: item.color === 'primary',
-                  [styles.itemLinkUnderline]: item.underline
-                })}
-                href={item.url!}
-                target="_blank"
-                rel="noreferrer"
-              >
-                {item.text}
-              </a>
-            ) : (
-              item.text
-            )
-          )}
+          {items.map(item => (
+            <Fragment key={item.text}>
+              {item.isLink ? (
+                <a
+                  className={cn('caption medium', {
+                    [styles.itemLinkDefault]:
+                      !item.color || item.color === 'default',
+                    [styles.itemLinkPrimary]: item.color === 'primary',
+                    [styles.itemLinkUnderline]: item.underline
+                  })}
+                  href={item.url!}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {item.text}
+                </a>
+              ) : (
+                item.text
+              )}
+            </Fragment>
+          ))}
         </Text>
       </Container>
     </footer>
