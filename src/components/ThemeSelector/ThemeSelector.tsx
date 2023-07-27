@@ -69,7 +69,7 @@ export default function NetworkSelector() {
             >
               Select Theme Mode
             </Text>
-            <Adornment $edge="end">
+            <Adornment $edge="end" $size="md">
               <Button
                 size="xs"
                 variant="ghost"

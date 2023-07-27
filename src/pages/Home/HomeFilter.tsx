@@ -130,7 +130,7 @@ function ListItemNested({
         }}
       >
         <ListItemText>{subitems.title}</ListItemText>
-        <Adornment $edge="end">
+        <Adornment $edge="end" $size="sm">
           <Icon name="Chevron" size="lg" dir={expand ? 'up' : 'down'} />
         </Adornment>
       </ListItem>
@@ -146,7 +146,7 @@ function ListItemNested({
               {subitems.options.map(option => (
                 <ListItem key={option.value}>
                   <ListItemText>{option.label}</ListItemText>
-                  <Adornment $edge="end">
+                  <Adornment $edge="end" $size="sm">
                     <Toggle
                       type={multiple ? 'checkbox' : 'radio'}
                       value={option.value}
@@ -240,14 +240,14 @@ export default function HomeFilter({
               }}
             >
               <ListItemText>Filter</ListItemText>
-              <Adornment $edge="end">
+              <Adornment $edge="end" $size="sm">
                 <Icon name="Cross" />
               </Adornment>
             </ListItem>
           )}
           <ListItem>
             <ListItemText>{filters.toggles.favorites.title}</ListItemText>
-            <Adornment $edge="end">
+            <Adornment $edge="end" $size="sm">
               <ToggleSwitch id="favorites" {...register('favorites')} />
             </Adornment>
           </ListItem>

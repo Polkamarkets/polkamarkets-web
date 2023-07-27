@@ -62,7 +62,7 @@ export default function Banner({
         {actions}
       </div>
       {onHide && (
-        <Adornment $edge="end" className={bannerClasses.actions}>
+        <Adornment $edge="end" $size="md" className={bannerClasses.actions}>
           <Button size="xs" variant="ghost" onClick={onHide}>
             <Icon name="Cross" />
           </Button>

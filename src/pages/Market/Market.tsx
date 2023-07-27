@@ -78,7 +78,7 @@ function SidebarWrapper({
           >
             Select Outcome
           </Text>
-          <Adornment $edge="end">
+          <Adornment $edge="end" $size="md">
             <Button
               size="xs"
               variant="ghost"

@@ -188,7 +188,7 @@ export default function SelectTokenModal({ network }: SelectTokenModalProps) {
             >
               Select a token
             </Text>
-            <Adornment $edge="end">
+            <Adornment $edge="end" $size="md">
               <Button
                 size="xs"
                 variant="ghost"
