@@ -37,7 +37,8 @@ const environmentConfigVariables = [
   'UI_TOKEN_BLACKLIST',
   'UI_LOGO',
   'UI_FOOTER_TEXT',
-  'UI_HELP_URL'
+  'UI_HELP_URL',
+  'LOCALIZE_CONFIG'
 ] as const;
 
 export type EnvironmentConfigVariable =
