@@ -1,12 +1,8 @@
 import { useEffect } from 'react';
 
-type LocalizeProps = {
-  watermark?: boolean;
-};
-
-function Localize({ watermark = true }: LocalizeProps) {
+function Localize() {
   useEffect(() => {
-    function removeWatermarkElement() {
+    function removeWatermark() {
       const watermarkElement = document.querySelector('#localize-powered-by');
 
       if (watermarkElement) {
@@ -14,10 +10,21 @@ function Localize({ watermark = true }: LocalizeProps) {
       }
     }
 
-    if (!watermark) {
-      removeWatermarkElement();
-    }
-  }, [watermark]);
+    const langObserver = new MutationObserver(() => {
+      setTimeout(removeWatermark, 4);
+    });
+
+    langObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['lang']
+    });
+
+    removeWatermark();
+
+    return () => {
+      langObserver.disconnect();
+    };
+  }, []);
 
   return null;
 }
