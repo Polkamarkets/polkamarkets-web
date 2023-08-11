@@ -32,7 +32,7 @@ export default function Layout({ children }: React.PropsWithChildren<{}>) {
 
   return (
     <>
-      {ui.layout.localize.config && <Localize watermark={false} />}
+      {ui.layout.localize.config && <Localize />}
       {page?.meta && <SEO {...page.meta} />}
       {ui.layout.disclaimer.enabled && <BetaWarning />}
       {ui.layout.alert.enabled && <BetaTesting network={network} />}
