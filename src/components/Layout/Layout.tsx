@@ -7,6 +7,7 @@ import BetaTesting from 'components/BetaTesting';
 import BetaWarning from 'components/BetaWarning';
 import Footer from 'components/Footer';
 import Header from 'components/Header';
+import Localize from 'components/Localize';
 import SEO from 'components/SEO';
 import WrongNetwork from 'components/WrongNetwork';
 
@@ -31,6 +32,7 @@ export default function Layout({ children }: React.PropsWithChildren<{}>) {
 
   return (
     <>
+      {ui.layout.localize.config && <Localize watermark={false} />}
       {page?.meta && <SEO {...page.meta} />}
       {ui.layout.disclaimer.enabled && <BetaWarning />}
       {ui.layout.alert.enabled && <BetaTesting network={network} />}
