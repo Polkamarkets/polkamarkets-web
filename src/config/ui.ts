@@ -36,6 +36,9 @@ const ui = {
     },
     footer: {
       text: environment.UI_FOOTER_TEXT
+    },
+    localize: {
+      config: environment.LOCALIZE_CONFIG
     }
   },
   hero: {
