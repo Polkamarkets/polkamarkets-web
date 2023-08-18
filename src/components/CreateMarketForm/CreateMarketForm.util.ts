@@ -88,7 +88,7 @@ const validationSchema = [
         })
       )
       .test('images-required', 'All outcomes must have an image', value => {
-        const outcomes = value as unknown as CreateMarketFormData['outcomes'];
+        const outcomes = value as CreateMarketFormData['outcomes'];
 
         const hasImage = outcomes.some(
           outcome => outcome.image && outcome.image.hash

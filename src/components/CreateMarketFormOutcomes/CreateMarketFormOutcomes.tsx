@@ -2,6 +2,7 @@ import { useCallback, useState, Fragment, useMemo, useEffect } from 'react';
 import uuid from 'react-uuid';
 
 import cn from 'classnames';
+import { features } from 'config';
 import { useFormikContext, getIn } from 'formik';
 import { almost, roundNumber } from 'helpers/math';
 import sum from 'lodash/sum';

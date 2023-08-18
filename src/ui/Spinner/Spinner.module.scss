@@ -6,12 +6,3 @@
 .element {
   display: inline-block;
 }
-
-.size {
-  display: inherit;
-  padding: 0px;
-
-  &Md {
-    --size: 24px;
-  }
-}
