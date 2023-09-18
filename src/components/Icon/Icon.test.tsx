@@ -2,7 +2,9 @@ import { render, screen } from '@testing-library/react';
 
 import Icon from './Icon';
 import IconClasses from './Icon.module.scss';
-import { dirs, sizes } from './Icon.util';
+
+const sizes = ['sm', 'md', 'lg', 'xl'] as const;
+const dirs = ['left', 'up', 'right', 'down'] as const;
 
 describe('Icon', () => {
   it('renders its injected props', () => {

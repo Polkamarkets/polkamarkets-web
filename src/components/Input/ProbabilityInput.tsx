@@ -2,12 +2,11 @@ import {
   ChangeEvent,
   InputHTMLAttributes,
   forwardRef,
-  useCallback,
-  useMemo
+  useCallback
 } from 'react';
 
 import cn from 'classnames';
-import { useField, useFormikContext, getIn } from 'formik';
+import { useField, useFormikContext } from 'formik';
 import { roundNumber } from 'helpers/math';
 import omit from 'lodash/omit';
 
@@ -15,25 +14,16 @@ import Text from '../Text';
 import InputErrorMessage from './InputErrorMessage';
 
 type ProbabilityInputProps = {
-  outcomeId: string;
+  name: string;
 };
 
 const ProbabilityInput = forwardRef<
   HTMLInputElement,
   ProbabilityInputProps & InputHTMLAttributes<HTMLInputElement>
->(({ outcomeId, ...props }, ref) => {
-  const { values, setFieldValue } = useFormikContext();
+>(({ name, ...props }, ref) => {
+  const { setFieldValue } = useFormikContext();
 
-  const outcomes = getIn(values, 'outcomes');
-
-  const outcomeIndex = useMemo(
-    () => outcomes.indexOf(outcomes.find(outcome => outcome.id === outcomeId)),
-    [outcomes, outcomeId]
-  );
-
-  const fieldByOutcomeIndex = `outcomes[${outcomeIndex}].probability`;
-
-  const [field, meta] = useField(fieldByOutcomeIndex);
+  const [field, meta] = useField(name);
 
   const handleChangeProbability = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
@@ -44,9 +34,9 @@ const ProbabilityInput = forwardRef<
         ? roundNumber(parseFloat(value), 2)
         : undefined;
 
-      setFieldValue(fieldByOutcomeIndex, newProbability);
+      setFieldValue(name, newProbability);
     },
-    [fieldByOutcomeIndex, setFieldValue]
+    [name, setFieldValue]
   );
 
   const hasError = meta.touched && meta.error;
@@ -60,7 +50,7 @@ const ProbabilityInput = forwardRef<
         })}
       >
         <input
-          id={fieldByOutcomeIndex}
+          id={name}
           ref={ref}
           type="number"
           min={0}

@@ -75,10 +75,12 @@ export type GetLeaderboardBaseData = {
   user: string;
   ens?: any;
   marketsCreated: number;
+  malicious?: boolean;
   volumeEur: number;
   tvlVolumeEur: number;
   liquidityEur: number;
   tvlLiquidityEur: number;
+  earningsEur: number;
   claimWinningsCount: number;
   transactions: number;
   erc20Balance: number;
@@ -101,6 +103,7 @@ export type GetLeaderboardByAddressData = GetLeaderboardBaseData & {
     volumeEur: number;
     tvlVolumeEur: number;
     tvlLiquidityEur: number;
+    earningsEur: number;
     claimWinningsCount: number;
   };
 };

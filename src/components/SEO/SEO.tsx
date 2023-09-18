@@ -10,7 +10,6 @@ export default function SEO({ title, description, image }: SEOProps) {
   return (
     <Helmet
       title={title}
-      htmlAttributes={{ lang: 'en' }}
       meta={[
         {
           name: 'description',

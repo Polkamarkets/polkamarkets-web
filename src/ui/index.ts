@@ -2,7 +2,7 @@ export { default as Adornment } from './Adornment';
 
 export { default as Banner } from './Banner';
 
-export { default as Avatar, getAvatarClasses } from './Avatar';
+export { default as Avatar } from './Avatar';
 export type { AvatarProps } from './Avatar';
 
 export { default as ButtonGroup } from './ButtonGroup';
@@ -38,6 +38,8 @@ export { default as Spinner } from './Spinner';
 export { default as Tag } from './Tag';
 
 export { default as Toggle } from './Toggle';
+
+export { default as useEnhancedRef } from './useEnhancedRef';
 
 export { default as useImage } from './useImage';
 

@@ -1,9 +1,15 @@
 .root {
+  margin-left: auto;
+  color: var(--color-text-primary) !important;
+}
+.finger {
   height: 44px !important;
   width: 44px;
-  padding: 0px !important;
   background-color: unset !important;
-  margin-left: auto;
+  padding: 0px !important;
+}
+.icon {
+  fill: var(--color-text-secondary) !important;
 }
 .dialog {
   border-radius: 20px 20px 0px 0px;
@@ -33,6 +39,13 @@
   padding-right: 8px;
 
   &Item {
-    border-radius: 8px;
+    &:not(:first-of-type, :last-of-type) {
+      margin-top: var(--size-4);
+      margin-bottom: var(--size-4);
+    }
+
+    &Button {
+      border-radius: 8px;
+    }
   }
 }

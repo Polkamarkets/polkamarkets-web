@@ -135,7 +135,7 @@ const filters: Filters = {
         }
       ],
       multiple: true,
-      enabled: true
+      enabled: features.regular.enabled
     },
     volume: {
       title: 'Volume',
@@ -184,7 +184,7 @@ const filtersInitialState: FiltersState = {
     favorites: false
   },
   dropdowns: {
-    states: [],
+    states: ['open'],
     networks: [],
     tokens: [],
     volume: 'any',

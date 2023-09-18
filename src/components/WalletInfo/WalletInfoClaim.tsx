@@ -8,7 +8,6 @@ import ToastNotification from 'components/ToastNotification';
 
 import {
   useAppDispatch,
-  useAppSelector,
   useFantasyTokenTicker,
   usePolkamarketsService
 } from 'hooks';
@@ -16,41 +15,30 @@ import useToastNotification from 'hooks/useToastNotification';
 
 import { Button, ButtonLoading } from '../Button';
 
-function WalletInfoClaim() {
+export default function WalletInfoClaim() {
   const dispatch = useAppDispatch();
   const polkamarketsService = usePolkamarketsService();
-  const { show: showToastNotification, close: closeToastNotification } =
-    useToastNotification();
-
+  const toastNotification = useToastNotification();
   const fantasyTokenTicker = useFantasyTokenTicker();
-
   const [transaction, setTransaction] = useState<Transaction>({
     state: 'not_started'
   });
-
-  const isPolkClaimed = useAppSelector(state => state.polkamarkets.polkClaimed);
-
-  const [isClaiming, setIsClaiming] = useState(false);
-
   const handleClaim = useCallback(async () => {
     try {
       setTransaction({ state: 'request' });
-      setIsClaiming(true);
 
       // performing claim action on smart contract
       await polkamarketsService.claimPolk();
       setTransaction({ state: 'success' });
-      setIsClaiming(false);
 
-      showToastNotification('claim-success');
+      toastNotification.show('claim-success');
 
-      // updating wallet
-      await dispatch(login(polkamarketsService));
+      dispatch(login(polkamarketsService));
     } catch (error) {
-      setIsClaiming(false);
       setTransaction({ state: 'failure' });
     }
-  }, [dispatch, polkamarketsService, showToastNotification]);
+  }, [dispatch, polkamarketsService, toastNotification]);
+  const isRequesting = transaction.state === 'request';
 
   return (
     <>
@@ -65,7 +53,7 @@ function WalletInfoClaim() {
               <Button
                 size="sm"
                 variant="ghost"
-                onClick={() => closeToastNotification('claim-success')}
+                onClick={() => toastNotification.close('claim-success')}
               >
                 Dismiss
               </Button>
@@ -73,18 +61,14 @@ function WalletInfoClaim() {
           </Toast>
         </ToastNotification>
       ) : null}
-      {!isPolkClaimed ? (
-        <ButtonLoading
-          className="pm-c-button-normal--primary pm-c-button--sm pm-c-wallet-info__currency__button pm-c-wallet-info__currency__transak"
-          loading={isClaiming}
-          disabled={isClaiming}
-          onClick={handleClaim}
-        >
-          {`Claim $${fantasyTokenTicker || 'POLK'}`}
-        </ButtonLoading>
-      ) : null}
+      <ButtonLoading
+        className="pm-c-button-normal--primary pm-c-button--sm pm-c-wallet-info__currency__button pm-c-wallet-info__currency__transak"
+        loading={isRequesting}
+        disabled={isRequesting}
+        onClick={handleClaim}
+      >
+        {`Claim $${fantasyTokenTicker || 'POLK'}`}
+      </ButtonLoading>
     </>
   );
 }
-
-export default WalletInfoClaim;

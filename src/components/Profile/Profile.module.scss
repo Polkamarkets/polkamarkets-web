@@ -1,0 +1,20 @@
+.signout {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-direction: row-reverse;
+  flex: 1 0 auto;
+
+  @media (min-width: 1024px) {
+    flex-direction: unset;
+    margin-right: unset;
+  }
+
+  &Button {
+    margin-left: auto;
+
+    @media (min-width: 1024px) {
+      margin-left: unset;
+    }
+  }
+}

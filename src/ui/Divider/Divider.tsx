@@ -1,10 +1,27 @@
 import cn from 'classnames';
 
-import DividerClasses from './Divider.module.scss';
+import dividerClasses from './Divider.module.scss';
+
+interface DividerProps
+  extends Pick<React.ComponentPropsWithoutRef<'hr'>, 'className'> {
+  enableGutters?: boolean;
+}
 
 export default function Divider({
   className,
+  enableGutters,
   ...props
-}: React.ComponentPropsWithoutRef<'hr'>) {
-  return <hr className={cn(DividerClasses.root, className)} {...props} />;
+}: DividerProps) {
+  return (
+    <hr
+      className={cn(
+        dividerClasses.root,
+        {
+          [dividerClasses.gutters]: enableGutters
+        },
+        className
+      )}
+      {...props}
+    />
+  );
 }

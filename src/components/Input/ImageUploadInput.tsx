@@ -9,7 +9,9 @@ import ImageCropper from 'components/ImageCropper';
 import Modal from 'components/Modal';
 import ModalContent from 'components/ModalContent';
 
+import Icon from '../Icon';
 import Text from '../Text';
+import styles from './ImageUploadInput.module.scss';
 import InputErrorMessage from './InputErrorMessage';
 
 type FileUploadButtonProps = {
@@ -70,6 +72,7 @@ type ImageContext = {
 };
 
 type ImageUploadInputProps = {
+  as?: 'button' | 'icon';
   label?: string;
   name: string;
   initialImagePreviewURL?: string;
@@ -79,6 +82,7 @@ type ImageUploadInputProps = {
 };
 
 function ImageUploadInput({
+  as = 'button',
   label,
   name,
   initialImagePreviewURL,
@@ -204,27 +208,55 @@ function ImageUploadInput({
           hidden
         />
         <div className="pm-c-file-upload-input__actions">
-          {croppedImagePreviewURL || initialImagePreviewURL ? (
-            <img
-              className="pm-c-file-upload-input__thumbnail"
-              alt="Thumbnail"
-              src={croppedImagePreviewURL || initialImagePreviewURL}
-              width={64}
-              height={64}
-            />
-          ) : null}
-          <ImageUploadButton name={name} loading={isUploading}>
-            {uploadActionLabel}
-          </ImageUploadButton>
-          {field.value.isUploaded ? null : (
-            <Text
-              as="span"
-              scale="caption"
-              fontWeight="medium"
-              className="pm-c-file-upload-input__status"
-            >
-              No file chosen
-            </Text>
+          {as === 'button' ? (
+            <>
+              {croppedImagePreviewURL || initialImagePreviewURL ? (
+                <img
+                  className="pm-c-file-upload-input__thumbnail"
+                  alt="Thumbnail"
+                  src={croppedImagePreviewURL || initialImagePreviewURL}
+                  width={64}
+                  height={64}
+                />
+              ) : null}
+              <ImageUploadButton name={name} loading={isUploading}>
+                {uploadActionLabel}
+              </ImageUploadButton>
+              {field.value.isUploaded ? null : (
+                <Text
+                  as="span"
+                  scale="caption"
+                  fontWeight="medium"
+                  className="pm-c-file-upload-input__status"
+                >
+                  No file chosen
+                </Text>
+              )}
+            </>
+          ) : (
+            <>
+              {croppedImagePreviewURL || initialImagePreviewURL ? (
+                <label
+                  htmlFor={name}
+                  className={styles.reuploadButtonContainer}
+                >
+                  <img
+                    alt="Thumbnail"
+                    src={croppedImagePreviewURL || initialImagePreviewURL}
+                    width={52}
+                    height={52}
+                    className={styles.reuploadButtonImage}
+                  />
+                  <div className={styles.reuploadButtonOverlay}>
+                    <Icon name="Camera" className={styles.buttonIcon} />
+                  </div>
+                </label>
+              ) : (
+                <label htmlFor={name} className={styles.button}>
+                  <Icon name="Camera" className={styles.buttonIcon} />
+                </label>
+              )}
+            </>
           )}
         </div>
         {!isUploading && meta.touched && (meta.error || invalidImageError) ? (

@@ -46,6 +46,10 @@ const columns: TableMiniColumn[] = [
   {
     key: 'netLiquidity',
     title: 'Net Liquidity'
+  },
+  {
+    key: 'earnings',
+    title: 'Earnings'
   }
 ].filter(column =>
   ['rank', ...ui.leaderboard.columns].includes(column.key)

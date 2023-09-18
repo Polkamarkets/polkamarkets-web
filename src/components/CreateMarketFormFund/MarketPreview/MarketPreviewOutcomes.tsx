@@ -51,7 +51,7 @@ function MarketPreviewOutcomes({
                   as="p"
                   scale="tiny"
                   fontWeight="semibold"
-                  className="pm-c-market-outcomes__item-odd"
+                  className="pm-c-market-outcomes__item-odd notranslate"
                 >
                   <Text
                     as="span"

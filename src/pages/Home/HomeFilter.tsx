@@ -27,8 +27,7 @@ import {
   DropdownMultipleState,
   ToggleState,
   Toggles,
-  Dropdowns,
-  filtersInitialState
+  Dropdowns
 } from 'contexts/filters';
 import type { UpdateDropdownPayload } from 'contexts/filters/filters.type';
 
@@ -187,7 +186,7 @@ export default function HomeFilter({
   show: boolean;
 }) {
   const theme = useTheme();
-  const { filters, controls } = useFilters();
+  const { filters, state, controls } = useFilters();
   const { updateToggle, updateDropdown } = controls;
 
   const ModalFilterRoot = theme.device.isDesktop
@@ -196,8 +195,8 @@ export default function HomeFilter({
 
   const { register, watch, setValue } = useForm<FormFields>({
     defaultValues: {
-      ...filtersInitialState.toggles,
-      ...filtersInitialState.dropdowns
+      ...state.toggles,
+      ...state.dropdowns
     }
   });
 

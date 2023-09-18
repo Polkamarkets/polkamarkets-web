@@ -21,6 +21,7 @@ export type PolkamarketsInitialState = {
   ethBalance: number;
   polkBalance: number;
   polkApproved: boolean;
+  socialLoginInfo: any;
   polkClaimed: boolean;
   portfolio: any;
   actions: Action[];
@@ -34,6 +35,7 @@ export type PolkamarketsInitialState = {
     bonds: boolean;
     actions: boolean;
     votes: boolean;
+    login: boolean;
   };
   createMarketToken: Token | Currency | null;
 };
@@ -44,6 +46,7 @@ const initialState: PolkamarketsInitialState = {
   ethBalance: 0,
   polkBalance: 0,
   polkApproved: false,
+  socialLoginInfo: null,
   polkClaimed: false,
   portfolio: {},
   actions: [],
@@ -56,7 +59,8 @@ const initialState: PolkamarketsInitialState = {
     portfolio: false,
     bonds: false,
     actions: false,
-    votes: false
+    votes: false,
+    login: true
   },
   createMarketToken: null
 };
@@ -84,6 +88,10 @@ const polkamarketsSlice = createSlice({
     changePolkApproved: (state, action: PayloadAction<boolean>) => ({
       ...state,
       polkApproved: action.payload
+    }),
+    changeSocialLoginInfo: (state, action: PayloadAction<any>) => ({
+      ...state,
+      socialLoginInfo: action.payload
     }),
     changePolkClaimed: (state, action: PayloadAction<boolean>) => ({
       ...state,
@@ -169,6 +177,7 @@ const {
   changePolkBalance,
   changePolkApproved,
   changePolkClaimed,
+  changeSocialLoginInfo,
   changePortfolio,
   changeActions,
   changeMarketsWithActions,
@@ -185,6 +194,13 @@ const {
 function login(polkamarketsService: PolkamarketsService) {
   return async dispatch => {
     const isLoggedIn = await polkamarketsService.isLoggedIn();
+
+    dispatch(
+      changeLoading({
+        key: 'login',
+        value: true
+      })
+    );
     dispatch(changeIsLoggedIn(isLoggedIn));
 
     if (isLoggedIn) {
@@ -210,7 +226,28 @@ function login(polkamarketsService: PolkamarketsService) {
       polkamarketsService
         .isPolkClaimed()
         .then(polkClaimed => {
+          if (!polkClaimed) {
+            polkamarketsService
+              .claimPolk()
+              .then(_polkClaimed => {
+                // balance is updated after claim
+                polkamarketsService
+                  .getPolkBalance()
+                  .then(polkBalance => {
+                    dispatch(changePolkBalance(polkBalance));
+                  })
+                  .catch(() => {});
+              })
+              .catch(() => {});
+          }
+
           dispatch(changePolkClaimed(polkClaimed));
+          dispatch(
+            changeLoading({
+              key: 'login',
+              value: false
+            })
+          );
         })
         .catch(() => {});
 
@@ -220,7 +257,33 @@ function login(polkamarketsService: PolkamarketsService) {
           dispatch(changePolkApproved(polkApproved));
         })
         .catch(() => {});
+
+      polkamarketsService
+        .getSocialLoginUserInfo()
+        .then(userInfo => {
+          dispatch(changeSocialLoginInfo(userInfo));
+        })
+        .catch(() => {});
+    } else {
+      dispatch(
+        changeLoading({
+          key: 'login',
+          value: false
+        })
+      );
     }
+  };
+}
+
+function logout() {
+  return async dispatch => {
+    dispatch(changeIsLoggedIn(false));
+    dispatch(changeEthAddress(''));
+    dispatch(changeEthBalance(0));
+    dispatch(changePolkBalance(0));
+    dispatch(changePolkClaimed(false));
+    dispatch(changePolkApproved(false));
+    dispatch(changeSocialLoginInfo(null));
   };
 }
 
@@ -337,6 +400,7 @@ export {
   changeEthBalance,
   changePolkBalance,
   changePolkApproved,
+  changeSocialLoginInfo,
   changePolkClaimed,
   changePortfolio,
   changeActions,
@@ -345,5 +409,6 @@ export {
   changeVoteByMarketId,
   changeCreateMarketToken,
   login,
+  logout,
   fetchAditionalData
 };

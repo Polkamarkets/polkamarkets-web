@@ -11,7 +11,12 @@ import { usePrevious } from 'hooks';
 import { Button } from '../Button';
 import ButtonGroup from '../ButtonGroup';
 import Icon from '../Icon';
-import { InputErrorMessage, OutcomeInput, ProbabilityInput } from '../Input';
+import {
+  ImageUploadInput,
+  InputErrorMessage,
+  OutcomeInput,
+  ProbabilityInput
+} from '../Input';
 import CreateMarketFormOutcomesClasses from './CreateMarketFormOutcomes.module.scss';
 import { ProbabilityDistribution } from './CreateMarketFormOutcomes.type';
 
@@ -30,15 +35,41 @@ function CreateMarketFormOutcomes() {
     setFieldTouched('outcomes', true);
   }, [setFieldTouched]);
 
+  const updateOutcomes = useCallback(
+    (newOutcomes: any) => {
+      setFieldTouched('outcomes', true);
+      setFieldValue('outcomes', newOutcomes);
+    },
+    [setFieldTouched, setFieldValue]
+  );
+
   useEffect(() => {
     if (answerType === 'binary' && previousAnswerType === 'multiple') {
       setProbabilityDistribution('uniform');
-      setFieldValue('outcomes', [
-        { id: uuid(), name: 'Yes', probability: 50 },
-        { id: uuid(), name: 'No', probability: 50 }
+      updateOutcomes([
+        {
+          id: uuid(),
+          image: {
+            file: undefined,
+            hash: '',
+            isUploaded: false
+          },
+          name: 'Yes',
+          probability: 50
+        },
+        {
+          id: uuid(),
+          image: {
+            file: undefined,
+            hash: '',
+            isUploaded: false
+          },
+          name: 'No',
+          probability: 50
+        }
       ]);
     }
-  }, [answerType, outcomes, previousAnswerType, setFieldValue]);
+  }, [answerType, previousAnswerType, updateOutcomes]);
 
   const validProbabilities = useMemo(() => {
     const probabilities = outcomes.map(outcome => outcome.probability);
@@ -46,6 +77,18 @@ function CreateMarketFormOutcomes() {
     return almost(sumOfProbabilities, 100, 0.1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [outcomes, probabilityDistribution]);
+
+  const imagesRequired = useMemo(() => {
+    const hasImage = outcomes.some(
+      outcome => outcome.image && outcome.image.hash
+    );
+
+    if (!hasImage) {
+      return false;
+    }
+
+    return !outcomes.every(outcome => outcome.image && outcome.image.hash);
+  }, [outcomes]);
 
   const toggleProbabilityDistribution = useCallback(() => {
     if (probabilityDistribution === 'uniform') {
@@ -59,17 +102,28 @@ function CreateMarketFormOutcomes() {
         outcomes[outcomeIndex].probability = probability;
       });
 
-      setFieldValue('outcomes', outcomes);
+      const newOutcomes = [...outcomes];
+
+      updateOutcomes(newOutcomes);
     }
-  }, [outcomes, probabilityDistribution, setFieldValue]);
+  }, [outcomes, probabilityDistribution, updateOutcomes]);
 
   const handleAddOutcome = useCallback(() => {
     if (probabilityDistribution === 'manual') {
       const newOutcomes = [
         ...outcomes,
-        { id: uuid(), name: '', probability: 0.1 }
+        {
+          id: uuid(),
+          image: {
+            file: undefined,
+            hash: '',
+            isUploaded: false
+          },
+          name: '',
+          probability: 0.1
+        }
       ];
-      setFieldValue('outcomes', newOutcomes);
+      updateOutcomes(newOutcomes);
     } else {
       const probability = roundNumber(100 / (outcomes.length + 1), 2);
 
@@ -77,10 +131,22 @@ function CreateMarketFormOutcomes() {
         outcomes[outcomeIndex].probability = probability;
       });
 
-      const newOutcomes = [...outcomes, { id: uuid(), name: '', probability }];
-      setFieldValue('outcomes', newOutcomes);
+      const newOutcomes = [
+        ...outcomes,
+        {
+          id: uuid(),
+          image: {
+            file: undefined,
+            hash: '',
+            isUploaded: false
+          },
+          name: '',
+          probability
+        }
+      ];
+      updateOutcomes(newOutcomes);
     }
-  }, [outcomes, probabilityDistribution, setFieldValue]);
+  }, [outcomes, probabilityDistribution, updateOutcomes]);
 
   const handleRemoveOutcome = useCallback(
     (outcomeId: number) => {
@@ -100,9 +166,9 @@ function CreateMarketFormOutcomes() {
 
       const newOutcomes = [...outcomes];
 
-      setFieldValue('outcomes', newOutcomes);
+      updateOutcomes(newOutcomes);
     },
-    [outcomes, probabilityDistribution, setFieldValue]
+    [outcomes, probabilityDistribution, updateOutcomes]
   );
 
   const hasMoreThanTwoOutcomes = outcomes.length > 2;
@@ -143,33 +209,52 @@ function CreateMarketFormOutcomes() {
               : 'Set uniformly'}
           </button>
         </div>
-        <div className={CreateMarketFormOutcomesClasses.outcomes}>
-          {outcomes.map(outcome => (
-            <Fragment key={outcome.id}>
-              <OutcomeInput
-                key={`${outcome.id}[0]`}
-                outcomeId={outcome.id}
-                placeholder="Outcome"
-              />
-              <ProbabilityInput
-                key={`${outcome.id}[1]`}
-                outcomeId={outcome.id}
-              />
-              <Button
-                key={`${outcome.id}[2]`}
-                variant="subtle"
-                color="default"
-                size="normal"
-                className={CreateMarketFormOutcomesClasses.remove}
-                onClick={() => handleRemoveOutcome(outcome.id)}
-                disabled={!hasMoreThanTwoOutcomes}
-              >
-                <Icon name="Minus" size="md" />
-              </Button>
-            </Fragment>
-          ))}
+        <div
+          className={cn(CreateMarketFormOutcomesClasses.outcomes, {
+            [CreateMarketFormOutcomesClasses.outcomesWithImages]: true
+          })}
+        >
+          {outcomes.map((outcome, index) => {
+            const field = `outcomes.${index}`;
+
+            return (
+              <Fragment key={outcome.id}>
+                <ImageUploadInput
+                  key={`${outcome.id}[image]`}
+                  as="icon"
+                  name={`${field}.image`}
+                  notUploadedActionLabel="Upload Image"
+                  uploadedActionLabel="Re-Upload"
+                />
+                <OutcomeInput
+                  key={`${outcome.id}[name]`}
+                  index={index}
+                  name={`${field}.name`}
+                  placeholder="Outcome"
+                />
+                <ProbabilityInput
+                  key={`${outcome.id}[probability]`}
+                  name={`${field}.probability`}
+                />
+                <Button
+                  key={`${outcome.id}[action]`}
+                  variant="subtle"
+                  color="default"
+                  size="normal"
+                  className={CreateMarketFormOutcomesClasses.remove}
+                  onClick={() => handleRemoveOutcome(outcome.id)}
+                  disabled={!hasMoreThanTwoOutcomes}
+                >
+                  <Icon name="Minus" size="md" />
+                </Button>
+              </Fragment>
+            );
+          })}
         </div>
         <div className={CreateMarketFormOutcomesClasses.error}>
+          {imagesRequired ? (
+            <InputErrorMessage message="All outcomes must have an image" />
+          ) : null}
           {!validProbabilities ? (
             <InputErrorMessage message="Sum of probabilities must be 100%" />
           ) : null}

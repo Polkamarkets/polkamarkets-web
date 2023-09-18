@@ -1,0 +1,9 @@
+.wallet {
+  &WarningFlag {
+    &Icon {
+      cursor: pointer;
+      margin-bottom: 3px;
+      fill: $danger-500;
+    }
+  }
+}

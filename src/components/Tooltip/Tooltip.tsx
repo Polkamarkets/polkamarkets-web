@@ -1,5 +1,5 @@
 import React from 'react';
-import { usePopperTooltip } from 'react-popper-tooltip';
+import { Config, usePopperTooltip } from 'react-popper-tooltip';
 
 import classNames from 'classnames';
 
@@ -21,14 +21,13 @@ type TooltipPosition =
   | 'left-end';
 
 type TooltipProps = {
+  interactive?: Config['interactive'];
+  delayHide?: Config['delayHide'];
   /**
    * The position of the tooltip relative to the target
    */
   position?: TooltipPosition;
-  /**
-   * The helper text shown in the tooltip
-   */
-  text: string;
+  text: React.ReactNode;
   children: React.ReactNode;
   className?: string;
   /**
@@ -41,6 +40,8 @@ type TooltipProps = {
  * A Tooltip is a small piece of contextual information about an element on the screen
  */
 function Tooltip({
+  interactive,
+  delayHide,
   position = 'top',
   text,
   children,
@@ -53,7 +54,11 @@ function Tooltip({
     setTooltipRef,
     setTriggerRef,
     visible
-  } = usePopperTooltip({ placement: position });
+  } = usePopperTooltip({
+    placement: position,
+    delayHide,
+    interactive
+  });
   return (
     <>
       <div ref={setTriggerRef} className="pm-c-tooltip__wrapper">

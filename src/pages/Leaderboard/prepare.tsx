@@ -4,6 +4,7 @@ import cn from 'classnames';
 import { ui } from 'config';
 import shortenAddress from 'helpers/shortenAddress';
 import isEmpty from 'lodash/isEmpty';
+import isUndefined from 'lodash/isUndefined';
 import orderBy from 'lodash/orderBy';
 import pick from 'lodash/pick';
 import { GetLeaderboardByTimeframeData } from 'services/Polkamarkets/types';
@@ -17,6 +18,9 @@ import {
   RankStableIcon
 } from 'assets/icons/pages/leaderboard';
 
+import { Icon, Tooltip } from 'components';
+
+import LeaderboardClasses from './Leaderboard.module.scss';
 import { Achievement, LeaderboardTableRow } from './types';
 
 const WALLET_PLACES = {
@@ -85,6 +89,7 @@ type WalletColumnRenderArgs = {
   place: number;
   explorerURL: string;
   achievements: Achievement[];
+  malicious?: boolean;
 } & Record<'username' | 'userImageUrl', string | null>;
 
 function walletColumnRender({
@@ -93,7 +98,8 @@ function walletColumnRender({
   place,
   achievements,
   username,
-  userImageUrl
+  userImageUrl,
+  malicious
 }: WalletColumnRenderArgs) {
   const walletPlace = WALLET_PLACES[place] || {
     icon: null,
@@ -101,36 +107,96 @@ function walletColumnRender({
   };
 
   return (
-    <Link to={`/user/${address}`} className="pm-c-leaderboard-table__wallet">
-      {walletPlace.icon}
-      {(() => {
-        if (userImageUrl)
-          return (
-            <Avatar
-              $radius="lg"
-              $size="x2s"
-              alt="Avatar"
-              src={userImageUrl}
-              className={cn({
-                'pm-c-leaderboard-table__wallet__avatar': isLoggedInUser
-              })}
-            />
-          );
-        if (isLoggedInUser) return <MyPlaceIcon />;
-        return null;
-      })()}
-      <p className={cn('caption semibold', `text-${walletPlace.textColor}`)}>
-        {username || shortenAddress(address)}
-        {isLoggedInUser && (
-          <span className="caption semibold text-3"> (You)</span>
-        )}
-      </p>
-      {achievementsColumnRender(
-        achievements,
-        'medium',
-        5 + 20 * Math.min(achievements.length, 4)
-      )}
-    </Link>
+    <div className="flex-row gap-3 align-center">
+      <Link
+        to={`/user/${username || address}`}
+        className="pm-c-leaderboard-table__wallet"
+      >
+        {walletPlace.icon}
+        {(() => {
+          if (userImageUrl)
+            return (
+              <Avatar
+                $radius="lg"
+                $size="x2s"
+                alt="Avatar"
+                src={userImageUrl}
+                className={cn({
+                  'pm-c-leaderboard-table__wallet__avatar': isLoggedInUser
+                })}
+              />
+            );
+          if (isLoggedInUser) return <MyPlaceIcon />;
+          return null;
+        })()}
+        <p className={cn('caption semibold', `text-${walletPlace.textColor}`)}>
+          {username || shortenAddress(address)}
+          {isLoggedInUser && (
+            <span className="caption semibold text-3"> (You)</span>
+          )}
+        </p>
+        {!isEmpty(achievements)
+          ? achievementsColumnRender(
+              achievements,
+              'medium',
+              5 + 20 * Math.min(achievements.length, 4)
+            )
+          : null}
+      </Link>
+      {!isUndefined(ui.leaderboard.wallet.suspiciousActivityUrl) &&
+      !isUndefined(malicious) &&
+      malicious ? (
+        <Tooltip
+          interactive
+          delayHide={250}
+          text={
+            isLoggedInUser ? (
+              <>
+                <p className="pm-c-tooltip__text">
+                  Your account was flagged for suspicious activity.
+                </p>
+                <p className="pm-c-tooltip__text">
+                  {`Reset it `}
+                  <a
+                    href="/reset"
+                    rel="noreferrer"
+                    className="pm-c-tooltip__link"
+                  >
+                    here
+                  </a>
+                  {` you're the account owner. `}
+                  <a
+                    href={ui.leaderboard.wallet.suspiciousActivityUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="pm-c-tooltip__link"
+                  >
+                    More info
+                  </a>
+                </p>
+              </>
+            ) : (
+              <p className="pm-c-tooltip__text">
+                {`This account is flagged for suspicious activity. `}
+                <a
+                  href={ui.leaderboard.wallet.suspiciousActivityUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="pm-c-tooltip__link"
+                >
+                  More info
+                </a>
+              </p>
+            )
+          }
+        >
+          <Icon
+            name="Warning"
+            className={LeaderboardClasses.walletWarningFlagIcon}
+          />
+        </Tooltip>
+      ) : null}
+    </div>
   );
 }
 
@@ -141,8 +207,8 @@ type VolumeColumnRenderArgs = {
 
 function volumeColumnRender({ volume, ticker }: VolumeColumnRenderArgs) {
   return (
-    <span className="pm-c-leaderboard-table__volume caption semibold text-1">
-      {`${volume.toFixed(1)} `}
+    <span className="pm-c-leaderboard-table__volume caption semibold text-1 notranslate">
+      {`${volume?.toFixed(1)} `}
       <strong className="caption semibold text-3">{ticker}</strong>
     </span>
   );
@@ -158,8 +224,22 @@ function liquidityColumnRender({
   ticker
 }: LiquidityColumnRenderArgs) {
   return (
-    <span className="pm-c-leaderboard-table__liquidity caption semibold text-1">
-      {`${liquidity.toFixed(1)} `}
+    <span className="pm-c-leaderboard-table__liquidity caption semibold text-1 notranslate">
+      {`${liquidity?.toFixed(1)} `}
+      <strong className="caption semibold text-3">{ticker}</strong>
+    </span>
+  );
+}
+
+type EarningsColumnRenderArgs = {
+  earnings: number;
+  ticker: string;
+};
+
+function earningsColumnRender({ earnings, ticker }: EarningsColumnRenderArgs) {
+  return (
+    <span className="pm-c-leaderboard-table__liquidity caption semibold text-1 notranslate">
+      {`${earnings?.toFixed(1)} `}
       <strong className="caption semibold text-3">{ticker}</strong>
     </span>
   );
@@ -172,8 +252,8 @@ type BalanceColumnRenderArgs = {
 
 function balanceColumnRender({ balance, ticker }: BalanceColumnRenderArgs) {
   return (
-    <span className="pm-c-leaderboard-table__balance caption semibold text-1">
-      {`${balance.toFixed(1)} `}
+    <span className="pm-c-leaderboard-table__balance caption semibold text-1 notranslate">
+      {`${balance?.toFixed(1)} `}
       <strong className="caption semibold text-3">{ticker}</strong>
     </span>
   );
@@ -202,7 +282,8 @@ export {
   achievementsColumnRender,
   liquidityColumnRender,
   balanceColumnRender,
-  rankColumnRender
+  rankColumnRender,
+  earningsColumnRender
 };
 
 // Rows
@@ -236,6 +317,7 @@ function prepareLeaderboardTableRows({
           address: row.user,
           place: index + 1,
           achievements: row.achievements,
+          malicious: row.malicious,
           username: row.username,
           userImageUrl: row.userImageUrl
         },
@@ -251,6 +333,10 @@ function prepareLeaderboardTableRows({
         },
         netLiquidity: {
           liquidity: row.tvlLiquidityEur,
+          ticker: fantasyTokenTicker || '€'
+        },
+        earnings: {
+          earnings: row.earningsEur,
           ticker: fantasyTokenTicker || '€'
         },
         transactions: row.transactions,
@@ -323,6 +409,16 @@ function prepareLeaderboardYourStatsRow(rows: LeaderboardTableRow[]) {
             : null,
         render: liquidityColumnRender
       },
+      earnings: {
+        value:
+          yourStats && yourStats.earnings
+            ? {
+                earnings: yourStats.earnings.earnings,
+                ticker: yourStats.earnings.ticker
+              }
+            : null,
+        render: earningsColumnRender
+      },
       transactions: {
         value: yourStats ? yourStats.transactions : null
       },
@@ -361,15 +457,17 @@ function topWalletColumnRender({ address, place }: TopWalletRenderArgs) {
   };
 
   return (
-    <div className="pm-c-leaderboard-top-wallets__wallet">
+    <div className="pm-c-leaderboard-top-wallets__wallet notranslate">
       {walletPlace.icon}
       <Link
         className={`caption semibold text-${walletPlace.textColor}`}
         to={`/user/${address}`}
       >
-        {`${address.substring(0, 6)}...${address.substring(
-          address.length - 4
-        )}`}
+        {address.startsWith('0x')
+          ? `${address.substring(0, 6)}...${address.substring(
+              address.length - 4
+            )}`
+          : address}
       </Link>
     </div>
   );
@@ -414,7 +512,7 @@ function prepareLeaderboardTopWalletsRow({
     firstPlace: {
       value: firstPlace
         ? {
-            address: firstPlace.user,
+            address: firstPlace.username || firstPlace.user,
             place: 1,
             change: 'stable'
           }
@@ -424,7 +522,7 @@ function prepareLeaderboardTopWalletsRow({
     secondPlace: {
       value: secondPlace
         ? {
-            address: secondPlace.user,
+            address: secondPlace.username || secondPlace.user,
             place: 2,
             change: 'stable'
           }
@@ -434,7 +532,7 @@ function prepareLeaderboardTopWalletsRow({
     thirdPlace: {
       value: thirdPlace
         ? {
-            address: thirdPlace.user,
+            address: thirdPlace.username || thirdPlace.user,
             place: 3,
             change: 'stable'
           }

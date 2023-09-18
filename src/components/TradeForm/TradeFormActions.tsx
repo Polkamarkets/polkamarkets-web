@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
+import { ui } from 'config';
 import { changeOutcomeData, changeData } from 'redux/ducks/market';
 import { changeMarketOutcomeData, changeMarketData } from 'redux/ducks/markets';
 import { login, fetchAditionalData } from 'redux/ducks/polkamarkets';
@@ -54,7 +55,8 @@ function TradeFormActions() {
 
   // Derivated state
   const isMarketPage = location.pathname === `/markets/${marketSlug}`;
-  const isWrongNetwork = network.id !== `${marketNetworkId}`;
+  const isWrongNetwork =
+    !ui.socialLogin.enabled && network.id !== `${marketNetworkId}`;
 
   // Local state
   const [isLoading, setIsLoading] = useState(false);

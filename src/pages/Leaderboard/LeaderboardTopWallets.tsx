@@ -42,7 +42,7 @@ function LeaderboardTopWallets({
 
   return (
     <LeaderboardStats
-      title="Top Wallets"
+      title="Top Users"
       columns={columns}
       row={row}
       isLoading={isLoading}

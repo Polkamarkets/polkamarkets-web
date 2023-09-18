@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import cn from 'classnames';
+import { ui } from 'config';
 import { reset } from 'redux/ducks/liquidity';
 import { login, fetchAditionalData } from 'redux/ducks/polkamarkets';
 import { closeLiquidityForm } from 'redux/ducks/ui';
@@ -52,7 +53,8 @@ function LiquidityFormActions() {
   const { show, close } = useToastNotification();
   const { refreshBalance } = useERC20Balance(address);
 
-  const isWrongNetwork = network.id !== `${marketNetworkId}`;
+  const isWrongNetwork =
+    !ui.socialLogin.enabled && network.id !== `${marketNetworkId}`;
 
   function handleCancel() {
     dispatch(closeLiquidityForm());

@@ -78,7 +78,7 @@ export default function ProfileSummaryStat({
                 {stat.title}
               </Text>
               <Text
-                className="text-light"
+                className="text-light notranslate"
                 as="span"
                 fontSize="body-1"
                 fontWeight="semibold"

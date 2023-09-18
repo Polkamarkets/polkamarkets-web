@@ -30,6 +30,10 @@ export type LeaderboardTableRow = {
     liquidity: number;
     ticker: string;
   };
+  earnings?: {
+    earnings: number;
+    ticker: string;
+  };
   transactions?: number;
   balance?: {
     balance: number;

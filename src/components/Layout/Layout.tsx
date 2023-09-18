@@ -34,7 +34,9 @@ export default function Layout({ children }: React.PropsWithChildren<{}>) {
       {page?.meta && <SEO {...page.meta} />}
       {ui.layout.disclaimer.enabled && <BetaWarning />}
       {ui.layout.alert.enabled && <BetaTesting network={network} />}
-      {!isAllowedNetwork && <WrongNetwork network={network} />}
+      {!ui.socialLogin.enabled && !isAllowedNetwork && (
+        <WrongNetwork network={network} />
+      )}
       <Header $gutterBottom={!isHomePathname} />
       {children}
       <Footer $gutterTop={!isHomePathname} />

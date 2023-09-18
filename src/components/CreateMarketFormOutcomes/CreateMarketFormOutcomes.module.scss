@@ -51,6 +51,14 @@
   gap: var(--size-16);
   align-items: flex-start;
   margin-bottom: var(--size-16);
+
+  @media (max-width: 576px) {
+    overflow-x: scroll;
+  }
+
+  &WithImages {
+    grid-template-columns: auto 7fr 3fr auto;
+  }
 }
 
 .remove {

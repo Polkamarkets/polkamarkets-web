@@ -2,111 +2,87 @@ import { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 
 import cn from 'classnames';
-import { features } from 'config';
 import { formatNumberToString } from 'helpers/math';
 import shortenAddress from 'helpers/shortenAddress';
 import { useTheme } from 'ui';
 
 import { MetaMaskIcon as MetaMaskIconUI } from 'assets/icons';
 
-import { Button } from 'components/Button';
-import Feature from 'components/Feature';
-import Icon from 'components/Icon';
-
-import { useAppSelector, useFantasyTokenTicker, useNetwork } from 'hooks';
+import { useAppSelector, useNetwork } from 'hooks';
 
 import { Transak } from '../integrations';
+import walletInfoClasses from './WalletInfo.module.scss';
 import WalletInfoClaim from './WalletInfoClaim';
 
 function MetaMaskIcon() {
   return (
-    <span style={{ marginRight: 4, display: 'flex' }}>
+    <span className={walletInfoClasses.metamask}>
       <MetaMaskIconUI />
     </span>
   );
 }
-function MetaMaskWallet(props: React.PropsWithChildren<{}>) {
-  return (
-    <div
-      className={cn({
-        'pm-c-wallet-info__currency': features.regular.enabled,
-        'pm-c-wallet-info__currency--no-border': features.fantasy.enabled
-      })}
-      {...props}
-    />
-  );
+function MetaMaskWallet(
+  props: React.PropsWithChildren<Record<string, unknown>>
+) {
+  return <div className={walletInfoClasses.action} {...props} />;
 }
 export default function WalletInfo() {
   const theme = useTheme();
   const { network } = useNetwork();
-  const fantasyTokenTicker = useFantasyTokenTicker();
   const polkBalance = useAppSelector(state => state.polkamarkets.polkBalance);
   const ethBalance = useAppSelector(state => state.polkamarkets.ethBalance);
   const ethAddress = useAppSelector(state => state.polkamarkets.ethAddress);
+  const isPolkClaimed = useAppSelector(state => state.polkamarkets.polkClaimed);
   const MetaMaskWalletComponent = theme.device.isDesktop
     ? MetaMaskWallet
     : Fragment;
 
   return (
-    <div className="pm-c-wallet-info">
-      <div className="pm-c-wallet-info__currency pm-c-wallet-info__profile">
+    <div className={walletInfoClasses.root}>
+      <div className={cn(walletInfoClasses.action, walletInfoClasses.polk)}>
         {formatNumberToString(polkBalance)}
-        <span className="pm-c-wallet-info__currency__ticker">
-          {fantasyTokenTicker || 'POLK'}
-        </span>
+        <span className={walletInfoClasses.actionTicker}>POLK</span>
         {theme.device.isDesktop && (
           <>
-            <Feature name="fantasy">
-              <WalletInfoClaim />
-            </Feature>
+            {!isPolkClaimed && <WalletInfoClaim />}
             {network.buyEc20Url && (
-              <Feature name="regular">
-                <Button
-                  className="pm-c-button-normal--primary pm-c-button--sm pm-c-wallet-info__currency__button pm-c-wallet-info__currency__buy"
-                  style={{ padding: '0.5rem 1rem' }}
-                  onClick={() => window.open(network.buyEc20Url, '_blank')}
-                >
-                  Buy {theme.device.isDesktop && '$POLK'}
-                </Button>
-              </Feature>
+              <a
+                href={network.buyEc20Url}
+                rel="noreferrer"
+                target="_blank"
+                className={cn(
+                  'pm-c-button-normal--default pm-c-button--sm',
+                  walletInfoClasses.actionButton,
+                  walletInfoClasses.polkBuy
+                )}
+              >
+                Buy {theme.device.isDesktop && '$POLK'}
+              </a>
             )}
           </>
         )}
       </div>
       <MetaMaskWalletComponent>
         {theme.device.isDesktop && (
-          <Feature name="regular">
-            <>
-              <MetaMaskIcon />
-              {ethBalance.toFixed(4)}
-              <span className="pm-c-wallet-info__currency__ticker">
-                {' '}
-                {network.currency.ticker}
-              </span>
-            </>
-          </Feature>
+          <>
+            <MetaMaskIcon />
+            {ethBalance.toFixed(4)}
+            <span className={walletInfoClasses.actionTicker}>
+              {network.currency.ticker}
+            </span>
+          </>
         )}
         <Link
           to={`/user/${ethAddress}`}
           className={cn(
-            'pm-c-button-subtle--default pm-c-button--sm pm-c-wallet-info__currency__address',
-            {
-              'pm-c-wallet-info__currency__button': theme.device.isDesktop
-            }
+            walletInfoClasses.profile,
+            walletInfoClasses.actionButton,
+            walletInfoClasses.root,
+            'pm-c-button-subtle--default pm-c-button--sm'
           )}
         >
-          <Feature name="regular">
-            <>
-              {!theme.device.isDesktop && <MetaMaskIcon />}
-              {shortenAddress(ethAddress)}
-            </>
-          </Feature>
-          <Feature name="fantasy">
-            <>
-              <Icon name="User" />
-              Profile
-            </>
-          </Feature>
+          {!theme.device.isDesktop && <MetaMaskIcon />}
+          {shortenAddress(ethAddress)}
         </Link>
         {theme.device.isDesktop && <Transak />}
       </MetaMaskWalletComponent>

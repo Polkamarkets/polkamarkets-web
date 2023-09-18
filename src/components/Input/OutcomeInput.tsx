@@ -1,32 +1,22 @@
-import { forwardRef, InputHTMLAttributes, useMemo } from 'react';
+import { forwardRef, InputHTMLAttributes } from 'react';
 
 import cn from 'classnames';
-import { getIn, useField, useFormikContext } from 'formik';
+import { useField } from 'formik';
 import { colorByOutcomeId } from 'helpers/color';
 
 import Badge from '../Badge';
 import InputErrorMessage from './InputErrorMessage';
 
 type OutcomeInputProps = {
-  outcomeId: string;
+  index: number;
+  name: string;
 };
 
 const OutcomeInput = forwardRef<
   HTMLInputElement,
   OutcomeInputProps & InputHTMLAttributes<HTMLInputElement>
->(({ outcomeId, ...props }, ref) => {
-  const { values } = useFormikContext();
-
-  const outcomes = getIn(values, 'outcomes');
-
-  const outcomeIndex = useMemo(
-    () => outcomes.indexOf(outcomes.find(outcome => outcome.id === outcomeId)),
-    [outcomes, outcomeId]
-  );
-
-  const fieldByOutcomeIndex = `outcomes[${outcomeIndex}].name`;
-
-  const [field, meta] = useField(fieldByOutcomeIndex);
+>(({ index, name, ...props }, ref) => {
+  const [field, meta] = useField(name);
 
   const hasError = meta.touched && meta.error;
 
@@ -38,9 +28,9 @@ const OutcomeInput = forwardRef<
           'pm-c-outcome-input--default__wrapper': !hasError
         })}
       >
-        <Badge color={colorByOutcomeId(outcomeIndex)} />
+        <Badge color={colorByOutcomeId(index)} />
         <input
-          id={fieldByOutcomeIndex}
+          id={name}
           ref={ref}
           className={cn({
             'pm-c-outcome-input--error': hasError,

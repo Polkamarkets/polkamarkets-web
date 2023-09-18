@@ -1,0 +1,29 @@
+.root {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-direction: row-reverse;
+  flex: 1 0 auto;
+
+  @media (min-width: 1024px) {
+    flex-direction: unset;
+    margin-right: unset;
+  }
+}
+
+.signout {
+  margin-left: auto;
+  color: var(--color-text-primary) !important;
+
+  @media (min-width: 1024px) {
+    margin-left: unset;
+  }
+
+  &Icon {
+    fill: var(--color-text-secondary) !important;
+  }
+}
+
+.username {
+  color: var(--color-text-primary);
+}

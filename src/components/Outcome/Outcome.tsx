@@ -87,14 +87,14 @@ function Outcome({
       !isUndefined(shares)
         ? {
             key: 'myShares',
-            title: 'My Shares',
+            title: 'Your  Shares',
             value: roundNumber(shares, 3)
           }
         : shares,
       !isUndefined(bond)
         ? {
             key: 'myBond',
-            title: 'My Bond',
+            title: 'Your Bond',
             value: `${roundNumber(bond, 3)} ${ticker}`
           }
         : bond

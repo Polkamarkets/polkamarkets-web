@@ -164,7 +164,7 @@ function Transak() {
   return (
     <ButtonLoading
       size="sm"
-      style={{ padding: '0.5rem 1rem' }}
+      style={{ padding: '0.5rem 12px' }}
       color="primary"
       onClick={openWidget}
       loading={transakState.loading}

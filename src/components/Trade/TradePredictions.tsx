@@ -126,7 +126,7 @@ function TradePredictions({
               setVisiblePredictions(off.length > 0 ? predictions.length : 3)
             }
           >
-            {off.length > 0 ? `Show More (${off.length})` : 'Undo'}
+            {off.length > 0 ? `Show More (${off.length})` : 'Show Less'}
           </button>
         ) : null}
       </div>

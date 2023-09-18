@@ -9,8 +9,7 @@ import {
   getAchievementsTransformResponse,
   getLeaderboardByAddressTransformResponse,
   getLeaderboardByTimeframeTransformResponse,
-  getPortfolioByAddressTransformResponse,
-  getPortfolioFeedByAddressTransformResponse
+  getPortfolioByAddressTransformResponse
 } from './functions';
 import {
   GetMarketBySlugArgs,
@@ -229,7 +228,7 @@ const polkamarketsApi = createApi({
       query: ({ address, networkId }) =>
         `/portfolios/${address}/feed?network_id=${networkId}`,
       transformResponse: (response: GetPortfolioFeedByAddressData) =>
-        getPortfolioFeedByAddressTransformResponse(camelize(response))
+        camelize(response)
     })
   })
 });

@@ -5,6 +5,8 @@ import { FeedActivity } from 'types/portfolio';
 
 import { Text } from 'components/new';
 
+import { useLanguage } from 'hooks';
+
 type ProfileActivityProps = {
   activity: FeedActivity;
   backgroundColor: '2' | '3';
@@ -40,7 +42,7 @@ function ProfileActivity({ activity, backgroundColor }: ProfileActivityProps) {
           fontSize="body-4"
           fontWeight="semibold"
           transform="uppercase"
-          className={`pm-c-activity__action-title--${accentColor}`}
+          className={`pm-c-activity__action-title--${accentColor} notranslate`}
         >
           {actionTitle}
         </Text>
@@ -59,8 +61,9 @@ function ProfileActivity({ activity, backgroundColor }: ProfileActivityProps) {
           fontWeight="semibold"
           transform="uppercase"
           color="3"
+          className="notranslate"
         >
-          {relativeTimeFromNow(timestamp * 1000)}
+          {relativeTimeFromNow(timestamp * 1000, useLanguage())}
         </Text>
       </div>
     </Link>

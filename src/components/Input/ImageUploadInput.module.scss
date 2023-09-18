@@ -1,0 +1,84 @@
+.button {
+  &Icon {
+    height: var(--size-24);
+    width: var(--size-24);
+  }
+
+  cursor: pointer;
+  user-select: none;
+  padding: 14px;
+
+  background-color: var(--color-input-background-color);
+  color: var(--color-text-secondary);
+
+  border-radius: var(--size-4);
+  border-width: 1.5px;
+  border-style: solid;
+  border-color: var(--color-input-border-default-color);
+
+  transition-property: background-color, border-color;
+  transition-duration: 0.2s;
+  transition-timing-function: ease-in-out;
+
+  &:hover,
+  &:focus {
+    background-color: var(--color-input-background-focus-color);
+    border-color: var(--color-input-border-default-focus-color);
+  }
+}
+
+.reuploadButton {
+  &Container {
+    @extend .button;
+    position: relative;
+
+    padding: 0;
+    max-height: 55px;
+
+    &:hover,
+    &:focus {
+      border-color: var(--color-image-input-icon-border-color);
+
+      .reuploadButtonOverlay {
+        opacity: 1;
+      }
+
+      .reuploadButtonImage {
+        opacity: 0.1;
+      }
+    }
+  }
+
+  &Image {
+    object-fit: cover;
+
+    height: 52px;
+    width: 52px;
+    aspect-ratio: 1 / 1;
+
+    border-radius: var(--size-4);
+
+    transition: opacity, 0.2s ease-in-out;
+  }
+
+  &Overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    transition: 0.2s ease-in-out;
+
+    .buttonIcon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+      text-align: center;
+    }
+  }
+}

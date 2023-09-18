@@ -23,6 +23,10 @@ const columns: LeaderboardRanksColumn[] = [
   {
     key: 'rankByLiquidityAdded',
     title: 'Rank (By Liquidity Added)'
+  },
+  {
+    key: 'rankByEarnings',
+    title: 'Rank (By Earnings)'
   }
 ];
 

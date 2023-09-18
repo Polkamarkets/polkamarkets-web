@@ -50,6 +50,17 @@
   }
 }
 
+.pm-c-tooltip__text {
+  @extend .caption, .semibold;
+  @include themes($tooltip-themes) {
+    color: themed('tooltip-text-color');
+  }
+}
+
+.pm-c-tooltip__link {
+  text-decoration: underline;
+}
+
 .pm-c-tooltip {
   &[data-popper-placement*='bottom'] .pm-c-tooltip__arrow {
     left: 0;

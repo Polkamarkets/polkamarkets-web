@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 
+import { ui } from 'config';
 import { changeOutcomeData, changeData } from 'redux/ducks/market';
 import { changeMarketOutcomeData, changeMarketData } from 'redux/ducks/markets';
 import { login, fetchAditionalData } from 'redux/ducks/polkamarkets';
@@ -24,7 +25,11 @@ import Text from '../Text';
 import Toast from '../Toast';
 import ToastNotification from '../ToastNotification';
 
-function TradeActions() {
+type TradeActionsProps = {
+  onTradeFinished: () => void;
+};
+
+function TradeActions({ onTradeFinished }: TradeActionsProps) {
   // Helpers
   const dispatch = useAppDispatch();
   const { network, networkConfig } = useNetwork();
@@ -49,7 +54,8 @@ function TradeActions() {
   const { wrapped: tokenWrapped, address } = token;
 
   // Derivated state
-  const isWrongNetwork = network.id !== `${marketNetworkId}`;
+  const isWrongNetwork =
+    !ui.socialLogin.enabled && network.id !== `${marketNetworkId}`;
 
   // Local state
   const [isLoading, setIsLoading] = useState(false);
@@ -151,6 +157,7 @@ function TradeActions() {
       // updating wallet
       await updateWallet();
       await refreshBalance();
+      setTimeout(() => onTradeFinished(), 1000);
     } catch (error) {
       setIsLoading(false);
     }
@@ -214,6 +221,7 @@ function TradeActions() {
       // updating wallet
       await updateWallet();
       await refreshBalance();
+      setTimeout(() => onTradeFinished(), 1000);
     } catch (error) {
       setIsLoading(false);
     }

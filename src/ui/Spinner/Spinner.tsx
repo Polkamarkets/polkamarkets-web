@@ -1,8 +1,19 @@
+import classNames from 'classnames';
+
 import spinnerClasses from './Spinner.module.scss';
 
-export default function Spinner() {
+type SpinnerProps = {
+  $size?: 'md';
+};
+
+export default function Spinner({ $size }: SpinnerProps) {
   return (
-    <div className={spinnerClasses.root}>
+    <div
+      className={classNames(spinnerClasses.root, {
+        [spinnerClasses.size]: $size,
+        [spinnerClasses.sizeMd]: $size === 'md'
+      })}
+    >
       <span className={`spinner--primary ${spinnerClasses.element}`} />
     </div>
   );

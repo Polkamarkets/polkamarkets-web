@@ -55,7 +55,8 @@ function ProfileYourStats({
                   rankByVolume: data.rank.volumeEur,
                   rankByMarketsCreated: data.rank.marketsCreated,
                   rankByWonPredictions: data.rank.claimWinningsCount,
-                  rankByLiquidityAdded: data.rank.tvlLiquidityEur
+                  rankByLiquidityAdded: data.rank.tvlLiquidityEur,
+                  rankByEarnings: data.rank.earningsEur
                 }}
                 isLoading={false}
               />
@@ -64,7 +65,8 @@ function ProfileYourStats({
                   volume: data.volumeEur,
                   marketsCreated: data.marketsCreated,
                   wonPredictions: data.claimWinningsCount,
-                  liquidityAdded: data.liquidityEur
+                  liquidityAdded: data.liquidityEur,
+                  earnings: data.earningsEur
                 }}
                 ticker={ticker}
                 isLoading={false}

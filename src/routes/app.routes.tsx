@@ -33,24 +33,36 @@ export default function AppRoutes() {
   if (isRestricted) return <RestrictedCountry />;
 
   return (
-    <Layout>
-      <Suspense fallback={<Spinner />}>
-        <Switch>
-          {Object.values(pages)
-            .filter(page => page.enabled)
-            .map(page => (
-              <Route
-                key={page.name}
-                exact={page.exact}
-                path={page.pathname}
-                component={page.Component}
-              />
-            ))}
-          {ui.clubs.enabled && (
-            <Redirect from="/leaderboard/:slug" to="/clubs/:slug" />
+    <Suspense fallback={<Spinner />}>
+      <Switch>
+        <Route
+          exact={pages.restrictedCountry.exact}
+          path={pages.restrictedCountry.pathname}
+          component={pages.restrictedCountry.Component}
+        />
+        <Route
+          path="/"
+          render={() => (
+            <Layout>
+              <Switch>
+                {Object.values(pages)
+                  .filter(page => page.enabled)
+                  .map(page => (
+                    <Route
+                      key={page.name}
+                      exact={page.exact}
+                      path={page.pathname}
+                      component={page.Component}
+                    />
+                  ))}
+                {ui.clubs.enabled && (
+                  <Redirect from="/leaderboard/:slug" to="/clubs/:slug" />
+                )}
+              </Switch>
+            </Layout>
           )}
-        </Switch>
-      </Suspense>
-    </Layout>
+        />
+      </Switch>
+    </Suspense>
   );
 }

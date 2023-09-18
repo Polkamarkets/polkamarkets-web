@@ -49,7 +49,7 @@ export default function MarketFooterStats({ market }: MarketFooterStatsProps) {
             as="span"
             scale="tiny-uppercase"
             fontWeight="semibold"
-            className={marketClasses.footerStatsText}
+            className={`${marketClasses.footerStatsText} notranslate`}
           >
             <Tooltip
               className={marketClasses.footerStatsTooltip}

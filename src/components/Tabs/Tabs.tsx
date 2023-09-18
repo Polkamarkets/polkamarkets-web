@@ -79,12 +79,10 @@ function Tabs({
     <div className={classNames({ 'pm-c-tabs': true, 'width-full': fullwidth })}>
       <div className="pm-c-tabs__header">
         <ul className={`pm-c-tabs__list--${direction}`}>
-          {tabs?.map((tab, index) => (
+          {tabs?.map(tab => (
             <li
               key={tab.id}
-              tabIndex={index}
-              className={classNames({
-                'pm-c-tabs__item': true,
+              className={classNames('pm-c-tabs__item', {
                 active: value === tab.id
               })}
             >

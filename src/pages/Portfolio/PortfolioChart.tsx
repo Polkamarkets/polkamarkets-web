@@ -40,7 +40,13 @@ export default function PortfolioChart({ isLoading }: PortfolioAsyncProps) {
     <div className="portfolio-chart">
       <div className="portfolio-chart__header">
         <div className="portfolio-chart__header-balance">
-          <Text as="h4" scale="heading" fontWeight="semibold" color="light">
+          <Text
+            as="h4"
+            scale="heading"
+            fontWeight="semibold"
+            color="light"
+            className="notranslate"
+          >
             {roundNumber(holdingsValue, 2)} {fantasyTokenTicker || '€'}
           </Text>
           <Text as="span" scale="tiny" fontWeight="medium" color="dark-gray">
@@ -48,7 +54,7 @@ export default function PortfolioChart({ isLoading }: PortfolioAsyncProps) {
           </Text>
         </div>
         <div
-          className={`portfolio-chart__header-change--${balance.change.type}`}
+          className={`portfolio-chart__header-change--${balance.change.type} notranslate`}
         >
           <Label color={holdingsPerformanceColor}>
             {hasHoldingsPerformance ? <CaretUpIcon /> : <CaretDownIcon />}
@@ -65,7 +71,7 @@ export default function PortfolioChart({ isLoading }: PortfolioAsyncProps) {
           </Text>
         </div>
       </div>
-      <div className="portfolio-chart__view">
+      <div className="portfolio-chart__view notranslate">
         <AreaChart
           serie={holdingsChartData}
           ticker={fantasyTokenTicker || '€'}

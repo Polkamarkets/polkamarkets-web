@@ -17,11 +17,20 @@ import { MarketState } from 'types/market';
 
 import type { FavoriteMarketsByNetwork } from 'contexts/favoriteMarkets';
 
+import { useFantasyTokenTicker } from 'hooks';
+
 import { getCurrencyByTicker, getNetworkById } from './market';
 
 dayjs.extend(isBetween);
 
 const AVAILABLE_NETWORKS_IDS = Object.keys(environment.NETWORKS);
+
+// eslint-disable-next-line react-hooks/rules-of-hooks
+const fantasyTokenTicker = useFantasyTokenTicker();
+
+const isMarketTokenFantasy = (market: Market) => {
+  return !fantasyTokenTicker || market.token.symbol === fantasyTokenTicker;
+};
 
 const isMarketFromAvailableNetwork = (market: Market) =>
   AVAILABLE_NETWORKS_IDS.includes(`${market.networkId}`);
@@ -109,23 +118,26 @@ const marketsSlice = createSlice({
         return {
           payload: {
             type,
-            data: data.filter(isMarketFromAvailableNetwork).map(market => {
-              const network = getNetworkById(market.networkId);
-              const currencyByTokenSymbol = getCurrencyByTicker(
-                market.token.symbol
-              );
+            data: data
+              .filter(isMarketFromAvailableNetwork)
+              .filter(isMarketTokenFantasy)
+              .map(market => {
+                const network = getNetworkById(market.networkId);
+                const currencyByTokenSymbol = getCurrencyByTicker(
+                  market.token.symbol
+                );
 
-              return {
-                ...market,
-                network,
-                currency: network.currency,
-                token: {
-                  ...market.token,
-                  ticker: market.token.symbol,
-                  iconName: currencyByTokenSymbol.iconName
-                }
-              } as Market;
-            })
+                return {
+                  ...market,
+                  network,
+                  currency: network.currency,
+                  token: {
+                    ...market.token,
+                    ticker: market.token.symbol,
+                    iconName: currencyByTokenSymbol.iconName
+                  }
+                } as Market;
+              })
           },
           type
         };

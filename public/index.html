@@ -2,11 +2,18 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <script type="text/javascript">
+      '%REACT_APP_FAVICON_URL%'.includes('https')
+        ? document.write(
+            '<link rel="icon" href="%REACT_APP_FAVICON_URL%" \/><link rel="apple-touch-icon" href="%REACT_APP_FAVICON_URL%" />'
+          )
+        : document.write(
+            '<link rel="icon" href="%PUBLIC_URL%/favicon.ico" \/><link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" \/>'
+          );
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
 
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
 
     <!-- Primary Meta Tags -->
@@ -59,6 +66,12 @@
       type="font/woff2"
       crossorigin="anonymous"
     />
+    <script type="text/javascript">
+      '%REACT_APP_LOCALIZE_CONFIG%'.includes('key') &&
+        document.write(
+          '<script src="/js/localize.js"><\/script><script>!function(a){if(!a.Localize){a.Localize={};for(var e=["translate","untranslate","phrase","initialize","translatePage","setLanguage","getLanguage","getSourceLanguage","detectLanguage","getAvailableLanguages","untranslatePage","bootstrap","prefetch","on","off","hideWidget","showWidget"],t=0;t<e.length;t++)a.Localize[e[t]]=function(){}}}(window);<\/script><script>Localize.initialize(%REACT_APP_LOCALIZE_CONFIG%);<\/script><style>body #localize-powered-by,body #localize-widget.show #localize-powered-by,body #localize-widget:hover #localize-powered-by{display:none!important}</style>'
+        );
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

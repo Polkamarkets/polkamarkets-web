@@ -202,6 +202,14 @@ export { default as NumberInput } from './NumberInput';
 
 export { default as OutcomeItem } from './OutcomeItem';
 
+export { default as Profile } from './Profile';
+
+export { default as ProfileSignin } from './ProfileSignin';
+
+export { default as ProfileSigninEmail } from './ProfileSigninEmail';
+
+export { default as ProfileSignout } from './ProfileSignout';
+
 export { default as SelectTokenModal } from './SelectTokenModal';
 
 export { default as Steps } from './Steps';
@@ -211,5 +219,7 @@ export { default as ThemeSelector } from './ThemeSelector';
 export { default as Trade } from './Trade';
 
 export { default as VirtualizedList } from './VirtualizedList';
+
+export { default as Wallet } from './Wallet';
 
 export { default as WrongNetwork } from './WrongNetwork';

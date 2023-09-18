@@ -1,0 +1,60 @@
+.root {
+  display: flex;
+  gap: var(--size-8);
+  align-items: center;
+}
+
+.action {
+  display: inherit;
+  align-items: center;
+  height: 44px;
+  grid-gap: 4px;
+  gap: 4px;
+  padding-left: 12px;
+  padding-right: 4px;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 1.4rem;
+  line-height: 1.5;
+  letter-spacing: -0.014rem;
+  color: var(--color-text-primary);
+
+  &Ticker {
+    color: var(--color-text-secondary);
+    margin-right: var(--size-8);
+  }
+
+  &Button {
+    padding-left: 12px;
+    padding-right: 12px;
+    border: unset !important;
+
+    @media (min-width: 1024px) {
+      max-height: 32px;
+    }
+  }
+}
+
+.polk {
+  background-color: rgba(93, 85, 250, 0.1);
+  border: 1px solid rgba(93, 85, 250, 0.5) !important;
+
+  &Buy {
+    background: linear-gradient(
+      90deg,
+      rgba(93, 85, 250, 0.5),
+      rgba(177, 85, 250, 0.5)
+    ) !important;
+  }
+}
+
+.metamask {
+  margin-right: var(--size-4);
+  display: flex;
+}
+
+.profile {
+  color: var(--color-text-secondary);
+  background-color: rgba(92, 116, 153, 0.12) !important;
+}

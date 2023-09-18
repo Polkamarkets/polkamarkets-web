@@ -54,7 +54,12 @@ function MiniTable({ rows, color = 'default', style }: MiniTableProps) {
           {item.render ? (
             item.render(item.value)
           ) : (
-            <Text as="strong" scale="caption" fontWeight="bold">
+            <Text
+              as="strong"
+              scale="caption"
+              fontWeight="bold"
+              className="notranslate"
+            >
               {item.value}
             </Text>
           )}

@@ -94,12 +94,13 @@ export default function NetworkSelector({
           {networks.networks.map(network => (
             <Fragment key={network.id}>
               <ListItem
+                className={networSelectorClasses.listItem}
+                $actived={network.id === networks.network.id}
                 ButtonProps={{
                   name: network.name,
-                  className: networSelectorClasses.listItem,
+                  className: networSelectorClasses.listItemButton,
                   onClick: handleNetworkClick
                 }}
-                $actived={network.id === networks.network.id}
               >
                 <Adornment
                   $edge="start"

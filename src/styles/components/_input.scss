@@ -124,6 +124,7 @@
     padding: 0px $input-padding-x;
 
     width: 100%;
+    min-width: 120px;
 
     font-size: 1.5rem;
     font-weight: 500;
@@ -185,6 +186,7 @@
 
 .pm-c-probability-input--default {
   @extend .pm-c-outcome-input--default;
+  min-width: 50px !important;
 
   &__group {
     @extend .pm-c-input__group;

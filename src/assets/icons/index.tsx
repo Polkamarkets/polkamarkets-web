@@ -19,6 +19,7 @@ import ChartGrowthIcon from './ChartGrowthIcon';
 import CheckIcon from './CheckIcon';
 import CloseIcon from './CloseIcon';
 import CrownIcon from './CrownIcon';
+import DamatTweenLogo from './DamatTweenLogo';
 import EthereumIcon from './EthereumIcon';
 import ExploreIcon from './ExploreIcon';
 import FavoriteIcon from './FavoriteIcon';
@@ -88,6 +89,7 @@ export {
   CheckIcon,
   CloseIcon,
   CrownIcon,
+  DamatTweenLogo,
   EthereumIcon,
   ExploreIcon,
   FavoriteIcon,

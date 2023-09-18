@@ -29,6 +29,7 @@
   }
 
   &:disabled {
+    color: rgba($text-color, 0.7);
     background-color: map-get(
       $background-colors-map,
       'background-color-disabled'

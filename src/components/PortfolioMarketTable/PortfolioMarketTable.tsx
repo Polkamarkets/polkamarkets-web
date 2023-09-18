@@ -198,7 +198,7 @@ const PortfolioMarketTable = ({
                 {price && (
                   <td
                     id="price"
-                    className="pm-c-table__row-item pm-c-table__item--right"
+                    className="pm-c-table__row-item pm-c-table__item--right notranslate"
                   >
                     <div className="market-table__row-item__group">
                       <Text
@@ -235,7 +235,7 @@ const PortfolioMarketTable = ({
                 {profit && (
                   <td
                     id="profit"
-                    className="pm-c-table__row-item pm-c-table__item--right"
+                    className="pm-c-table__row-item pm-c-table__item--right notranslate"
                   >
                     <div className="market-table__row-item__group">
                       <Text
@@ -280,7 +280,7 @@ const PortfolioMarketTable = ({
                 {value && (
                   <td
                     id="value"
-                    className="pm-c-table__row-item pm-c-table__item--right"
+                    className="pm-c-table__row-item pm-c-table__item--right notranslate"
                   >
                     <Text
                       as="span"
@@ -302,7 +302,7 @@ const PortfolioMarketTable = ({
                 {maxPayout && (
                   <td
                     id="maxPayout"
-                    className="pm-c-table__row-item pm-c-table__item--right"
+                    className="pm-c-table__row-item pm-c-table__item--right notranslate"
                   >
                     <Text
                       as="span"

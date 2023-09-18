@@ -14,6 +14,9 @@ const isTournamentsEnabled =
 const isAchievementsEnabled =
   process.env.REACT_APP_FEATURE_ACHIEVEMENTS?.toLowerCase() === 'true';
 
+const isFantasyEnabled =
+  process.env.REACT_APP_FEATURE_FANTASY?.toLowerCase() === 'true';
+
 const fs = require('fs');
 const path = require('path');
 
@@ -27,42 +30,67 @@ const {
 
 const indexPath = path.resolve(__dirname, '..', 'build', 'index.html');
 
+// fetching available metadata from env variables
 const defaultMetadata = {
-  title: 'Polkamarkets - Autonomous Prediction Markets',
+  title:
+    process.env.REACT_APP_METADATA_TITLE ||
+    'Polkamarkets - Autonomous Prediction Markets',
   description:
+    process.env.REACT_APP_METADATA_DESCRIPTION ||
     'Polkamarkets is a DeFi-Powered Prediction Market built for cross-chain information exchange.',
-  image: '/metadata-homepage.png'
+  image: process.env.REACT_APP_METADATA_IMAGE || '/metadata-homepage.png'
 };
 
 const metadataByPage = {
   achievements: {
-    title: 'Achievements - Polkamarkets',
+    title:
+      process.env.REACT_APP_METADATA_ACHIEVEMENTS_TITLE ||
+      'Achievements - Polkamarkets',
     description:
+      process.env.REACT_APP_METADATA_ACHIEVEMENTS_DESCRIPTION ||
       'Place predictions in the Polkamarkets app and grab your exclusive NFT Achievements.',
-    image: '/metadata-homepage.png'
+    image:
+      process.env.REACT_APP_METADATA_ACHIEVEMENTS_IMAGE ||
+      '/metadata-homepage.png'
   },
   clubs: {
-    title: 'Clubs - Polkamarkets',
+    title: process.env.REACT_APP_METADATA_CLUBS_TITLE || 'Clubs - Polkamarkets',
     description:
+      process.env.REACT_APP_METADATA_CLUBS_DESCRIPTION ||
       "Build your own Club, league and leaderboard with your friends, against colleagues or around communities. Wear your own logo, tease your clubmates and let all fight to climb the Club's leaderboard.",
-    image: '/metadata-homepage.png'
+    image:
+      process.env.REACT_APP_METADATA_CLUBS_IMAGE || '/metadata-homepage.png'
   },
   tournaments: {
-    title: 'Tournaments - Polkamarkets',
-    description: '',
-    image: '/metadata-homepage.png'
+    title:
+      process.env.REACT_APP_METADATA_TOURNAMENTS_TITLE ||
+      'Tournaments - Polkamarkets',
+    description: process.env.REACT_APP_METADATA_TOURNAMENTS_DESCRIPTION || '',
+    image:
+      process.env.REACT_APP_METADATA_TOURNAMENTS_IMAGE ||
+      '/metadata-homepage.png'
   },
   leaderboard: {
-    title: 'Leaderboard - Polkamarkets',
+    title:
+      process.env.REACT_APP_METADATA_LEADERBOARD_TITLE ||
+      'Leaderboard - Polkamarkets',
     description:
+      process.env.REACT_APP_METADATA_LEADERBOARD_DESCRIPTION ||
       'Rank up higher on the leaderboard and be the #1 forecaster of Polkamarkets.',
-    image: '/metadata-leaderboard.png'
+    image:
+      process.env.REACT_APP_METADATA_LEADERBOARD_IMAGE ||
+      '/metadata-leaderboard.png'
   },
   portfolio: {
-    title: 'Portfolio - Polkamarkets',
+    title:
+      process.env.REACT_APP_METADATA_PORTFOLIO_TITLE ||
+      'Portfolio - Polkamarkets',
     description:
+      process.env.REACT_APP_METADATA_PORTFOLIO_DESCRIPTION ||
       'Participate in the Polkamarkets app and compete with your friends, coworkers or other community members.',
-    image: '/metadata-portfolio.png'
+    image:
+      process.env.REACT_APP_METADATA_PORTFOLIO_IMAGE ||
+      '/metadata-portfolio.png'
   }
 };
 
@@ -74,9 +102,11 @@ const defaultMetadataTemplate = (request, htmlData) => {
     }${request.url}`,
     title: defaultMetadata.title,
     description: defaultMetadata.description,
-    image: `${request.headers['x-forwarded-proto'] || 'http'}://${
-      request.headers.host
-    }${defaultMetadata.image}`
+    image: defaultMetadata.image.startsWith('http')
+      ? defaultMetadata.image
+      : `${request.headers['x-forwarded-proto'] || 'http'}://${
+          request.headers.host
+        }${defaultMetadata.image}`
   });
 };
 
@@ -90,13 +120,40 @@ const metadataByPageTemplate = (page, request, htmlData) => {
     }${request.url}`,
     title: metadata.title,
     description: metadata.description,
-    image: `${request.headers['x-forwarded-proto'] || 'http'}://${
-      request.headers.host
-    }${metadata.image}`
+    image: metadata.image.startsWith('http')
+      ? metadata.image
+      : `${request.headers['x-forwarded-proto'] || 'http'}://${
+          request.headers.host
+        }${metadata.image}`
   });
 };
 
 app.get('/', (request, response) => {
+  fs.readFile(indexPath, 'utf8', async (error, htmlData) => {
+    if (error) {
+      return response.status(404).end();
+    }
+
+    return response.send(defaultMetadataTemplate(request, htmlData));
+  });
+});
+
+app.get('/blocked', (request, response) => {
+  fs.readFile(indexPath, 'utf8', async (error, htmlData) => {
+    if (error) {
+      return response.status(404).end();
+    }
+
+    return response.send(defaultMetadataTemplate(request, htmlData));
+  });
+});
+
+app.get('/reset', (request, response) => {
+  if (!isFantasyEnabled) {
+    next();
+    return;
+  }
+
   fs.readFile(indexPath, 'utf8', async (error, htmlData) => {
     if (error) {
       return response.status(404).end();

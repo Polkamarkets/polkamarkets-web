@@ -14,7 +14,8 @@ export const leaderboardColumns = [
   'balance',
   'wonPredictions',
   'netVolume',
-  'netLiquidity'
+  'netLiquidity',
+  'earnings'
 ];
 
 export const defaultLeaderboardColumns = [
@@ -22,7 +23,8 @@ export const defaultLeaderboardColumns = [
   'marketsCreated',
   'wonPredictions',
   'netVolume',
-  'netLiquidity'
+  'netLiquidity',
+  'earnings'
 ];
 
 const emptyLeaderboardRowWithoutUser: Omit<
@@ -35,6 +37,7 @@ const emptyLeaderboardRowWithoutUser: Omit<
   liquidityEur: 0,
   tvlLiquidityEur: 0,
   claimWinningsCount: 0,
+  earningsEur: 0,
   transactions: 0,
   erc20Balance: 0,
   achievements: []

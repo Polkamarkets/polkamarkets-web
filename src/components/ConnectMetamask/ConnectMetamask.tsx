@@ -1,10 +1,10 @@
 import { useCallback, useState } from 'react';
 
-import { login } from 'redux/ducks/polkamarkets';
-
-import { MetaMaskIcon, WarningOutlinedIcon } from 'assets/icons';
+import { WarningOutlinedIcon } from 'assets/icons';
 
 import { Button } from 'components/Button';
+import type { ButtonProps } from 'components/Button';
+import Icon from 'components/Icon';
 import Modal from 'components/Modal';
 import ModalContent from 'components/ModalContent';
 import ModalFooter from 'components/ModalFooter';
@@ -17,12 +17,29 @@ import Pill from 'components/Pill';
 
 import { useAppDispatch, usePolkamarketsService } from 'hooks';
 
-import { connectMetamaskProps } from './ConnectMetamask.util';
+const connectMetamaskProps = {
+  'aria-labelledby': 'connect-metamask-modal-name',
+  'aria-describedby': 'connect-metamask-modal-description'
+};
 
-export default function ConnectMetamask() {
+export default function ConnectMetamask({
+  children = (
+    <>
+      <Icon name="MetaMask" size="lg" />
+      Connect MetaMask
+    </>
+  ),
+  ...props
+}: ButtonProps) {
   const dispatch = useAppDispatch();
   const polkamarketsService = usePolkamarketsService();
   const [show, setShow] = useState(false);
+  const handleMetamaskLogin = useCallback(async () => {
+    const { login } = await import('redux/ducks/polkamarkets');
+
+    await polkamarketsService.login();
+    dispatch(login(polkamarketsService));
+  }, [dispatch, polkamarketsService]);
   const handleHide = useCallback(() => {
     setShow(false);
   }, []);
@@ -33,10 +50,6 @@ export default function ConnectMetamask() {
   function handleMetamaskModal() {
     setShow(true);
   }
-  const handleMetamaskLogin = useCallback(async () => {
-    await polkamarketsService.login();
-    dispatch(login(polkamarketsService));
-  }, [dispatch, polkamarketsService]);
 
   return (
     <>
@@ -51,7 +64,7 @@ export default function ConnectMetamask() {
           <ModalHeader>
             <ModalHeaderHide onClick={handleHide} />
             <div className="pm-l-navbar__actions-metamask__status">
-              <MetaMaskIcon size={40} />
+              <Icon name="MetaMask" size="lg" />
               <Pill variant="normal" color="danger">
                 <WarningOutlinedIcon />
               </Pill>
@@ -91,9 +104,9 @@ export default function ConnectMetamask() {
         color="default"
         size="sm"
         onClick={!window.ethereum ? handleMetamaskModal : handleMetamaskLogin}
+        {...props}
       >
-        <MetaMaskIcon />
-        Connect MetaMask
+        {children}
       </Button>
     </>
   );

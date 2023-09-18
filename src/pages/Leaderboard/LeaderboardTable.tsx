@@ -67,6 +67,7 @@ function LeaderboardTable({
           ? { description: 'See your rank', index: userIndex }
           : undefined
       }
+      rowClasses={['notranslate']}
     />
   );
 }

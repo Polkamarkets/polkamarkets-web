@@ -1,5 +1,12 @@
+export type Image = {
+  file: any;
+  hash: string;
+  isUploaded: boolean;
+};
+
 export type Outcome = {
   id: string;
+  image?: Image;
   name: string;
   probability: number;
 };
@@ -9,11 +16,7 @@ export type CreateMarketFormData = {
   description: string;
   answerType: 'binary' | 'multiple';
   outcomes: Outcome[];
-  image: {
-    file: any;
-    hash: string;
-    isUploaded: boolean;
-  };
+  image: Image;
   category: string;
   subcategory: string;
   closingDate: string;

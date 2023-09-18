@@ -156,6 +156,7 @@ function formatMarketPositions<A, O>(
                 scale="caption"
                 fontWeight="semibold"
                 style={{ display: 'flex', flexDirection: 'column' }}
+                className="notranslate"
               >
                 {date}
                 <strong>{utcTime}</strong>
@@ -165,7 +166,12 @@ function formatMarketPositions<A, O>(
           },
           price: {
             value: (
-              <Text as="span" scale="caption" fontWeight="semibold">
+              <Text
+                as="span"
+                scale="caption"
+                fontWeight="semibold"
+                className="notranslate"
+              >
                 {price}
                 {price ? <strong>{` ${ticker}`}</strong> : null}
               </Text>
@@ -178,7 +184,12 @@ function formatMarketPositions<A, O>(
           },
           value: {
             value: (
-              <Text as="span" scale="caption" fontWeight="semibold">
+              <Text
+                as="span"
+                scale="caption"
+                fontWeight="semibold"
+                className="notranslate"
+              >
                 {value}{' '}
                 <strong>{action.action === 'Bond' ? 'POLK' : ticker}</strong>
               </Text>

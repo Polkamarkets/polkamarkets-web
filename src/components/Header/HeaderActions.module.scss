@@ -1,6 +1,6 @@
 .root {
   display: flex;
-  gap: 16px;
+  align-items: center;
   border-top: 1px solid var(--color-border);
   position: fixed;
   bottom: 0px;
@@ -8,6 +8,7 @@
   transition: background-color 200ms ease-in-out;
   background-color: var(--color-surface-primary);
   z-index: 1;
+
   @media (min-width: 1024px) {
     background-color: unset;
     transition: unset;
@@ -17,9 +18,31 @@
     width: unset;
   }
 }
+.gutterActions {
+  gap: 12px;
+}
+.reverse {
+  @media (min-width: 1024px) {
+    flex-direction: row-reverse;
+  }
+}
+.actions {
+  &Group {
+    display: inherit;
+    gap: inherit;
+  }
+}
 .high {
   z-index: 1300;
 }
 .network {
   margin-left: auto;
+}
+
+.help {
+  color: var(--color-text-primary) !important;
+
+  &Icon {
+    fill: var(--color-text-secondary) !important;
+  }
 }

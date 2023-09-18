@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 
+import { ui } from 'config';
 import { setTokenTicker } from 'redux/ducks/market';
 import {
   setTradeAmount,
@@ -50,7 +51,8 @@ function TradeFormInput() {
 
   const wrapped = useAppSelector(state => state.trade.wrapped);
 
-  const isWrongNetwork = network.id !== `${marketNetworkId}`;
+  const isWrongNetwork =
+    !ui.socialLogin.enabled && network.id !== `${marketNetworkId}`;
 
   // buy and sell have different maxes
 

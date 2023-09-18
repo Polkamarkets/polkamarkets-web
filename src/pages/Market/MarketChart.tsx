@@ -37,7 +37,7 @@ function MarketOverview() {
             as="h3"
             scale="heading-large"
             fontWeight="semibold"
-            className="market-chart__view-title"
+            className="market-chart__view-title notranslate"
           >
             {highOutcome.price} {ticker}
           </Text>
@@ -46,6 +46,7 @@ function MarketOverview() {
             scale="tiny-uppercase"
             color={highOutcome.isPriceUp ? 'success' : 'danger'}
             fontWeight="semibold"
+            className="notranslate"
           >
             {highOutcome.pricesDiff.value} {ticker} (
             {highOutcome.pricesDiff.pct})

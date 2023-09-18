@@ -44,7 +44,7 @@ function CategoryAnalytics({
           </Label>
         ) : null} */}
       </div>
-      <div className="pm-c-category__body">
+      <div className="pm-c-category__body notranslate">
         <Text
           as="span"
           scale="body"

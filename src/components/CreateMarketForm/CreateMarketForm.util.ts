@@ -13,8 +13,26 @@ const initialValues: CreateMarketFormData = {
   description: '',
   answerType: 'binary',
   outcomes: [
-    { id: uuid(), name: 'Yes', probability: 50 },
-    { id: uuid(), name: 'No', probability: 50 }
+    {
+      id: uuid(),
+      image: {
+        file: undefined,
+        hash: '',
+        isUploaded: false
+      },
+      name: 'Yes',
+      probability: 50
+    },
+    {
+      id: uuid(),
+      image: {
+        file: undefined,
+        hash: '',
+        isUploaded: false
+      },
+      name: 'No',
+      probability: 50
+    }
   ],
   image: {
     file: undefined,
@@ -25,8 +43,8 @@ const initialValues: CreateMarketFormData = {
   subcategory: '',
   closingDate: dayjs().toString(),
   liquidity: 0,
-  fee: 2,
-  treasuryFee: 1,
+  fee: features.fantasy.enabled ? 0 : 2,
+  treasuryFee: features.fantasy.enabled ? 0 : 1,
   ...(features.regular.enabled && {
     resolutionSource: ''
   })
@@ -59,6 +77,9 @@ const validationSchema = [
     outcomes: Yup.array()
       .of(
         Yup.object().shape({
+          image: Yup.object().shape({
+            hash: Yup.string()
+          }),
           name: Yup.string().required('Outcome name is required.'),
           probability: Yup.number()
             .moreThan(0, 'Probability must be greater than 0%.')
@@ -66,6 +87,19 @@ const validationSchema = [
             .required('Probability is required.')
         })
       )
+      .test('images-required', 'All outcomes must have an image', value => {
+        const outcomes = value as unknown as CreateMarketFormData['outcomes'];
+
+        const hasImage = outcomes.some(
+          outcome => outcome.image && outcome.image.hash
+        );
+
+        if (!hasImage) {
+          return true;
+        }
+
+        return outcomes.every(outcome => outcome.image && outcome.image.hash);
+      })
       .test('sum', 'Sum of probabilities must be 100%', (_value, context) => {
         const { outcomes } = context.parent;
         const probabilities = outcomes.map(outcome => outcome.probability);

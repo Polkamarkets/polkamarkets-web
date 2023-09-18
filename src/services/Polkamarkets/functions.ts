@@ -1,17 +1,13 @@
-/* eslint-disable import/prefer-default-export */
-import { roundNumber } from 'helpers/math';
 import pick from 'lodash/pick';
 import snakeCase from 'lodash/snakeCase';
 import { AchievementAction, AchievementRarity } from 'types/achievement';
 import { LeaderboardAchievement } from 'types/leaderboard';
-import { FeedActionAccentColor } from 'types/portfolio';
 
 import {
   GetAchievementsData,
   GetLeaderboardByAddressData,
   GetLeaderboardByTimeframeData,
-  GetPortfolioByAddressData,
-  GetPortfolioFeedByAddressData
+  GetPortfolioByAddressData
 } from './types';
 
 // getAchievements
@@ -108,44 +104,4 @@ export function getLeaderboardByAddressTransformResponse(
     ...response,
     achievements: transformLeaderboardAchievements(response.achievements)
   };
-}
-
-// getPortfolioFeedByAddress
-
-const feedActions = {
-  buy: (shares: number, outcomeTitle?: string) =>
-    `Bought ${shares} shares of outcome "${outcomeTitle}"`,
-  sell: (shares: number, outcomeTitle?: string) =>
-    `Sold ${shares} shares of outcome "${outcomeTitle}"`,
-  add_liquidity: (shares: number, _outcomeTitle?: string) =>
-    `Added ${shares} liquidity shares`,
-  remove_liquidity: (shares: number, _outcomeTitle?: string) =>
-    `Removed ${shares} liquidity shares`,
-  claim_winnings: (_shares: number, _outcomeTitle?: string) =>
-    'Won a prediction',
-  create_market: (_shares: number, _outcomeTitle?: string) => 'Created a market'
-};
-
-const feedAccentColors: { [key: string]: FeedActionAccentColor } = {
-  buy: 'success',
-  sell: 'danger',
-  add_liquidity: 'primary',
-  remove_liquidity: 'danger',
-  claim_winnings: 'success',
-  create_market: 'primary'
-};
-
-export function getPortfolioFeedByAddressTransformResponse(
-  response: GetPortfolioFeedByAddressData
-): GetPortfolioFeedByAddressData {
-  return response.map(feed => {
-    return {
-      ...feed,
-      actionTitle: feedActions[feed.action](
-        roundNumber(feed.shares, 3),
-        feed.outcomeTitle
-      ),
-      accentColor: feedAccentColors[feed.action]
-    };
-  });
 }

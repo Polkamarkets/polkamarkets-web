@@ -23,6 +23,10 @@ const columns: PredictionStatisticsColumn[] = [
   {
     key: 'liquidityAdded',
     title: 'Liquidity Added'
+  },
+  {
+    key: 'earnings',
+    title: 'Earnings'
   }
 ];
 

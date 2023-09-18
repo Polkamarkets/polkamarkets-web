@@ -118,7 +118,7 @@ export default function MarketOutcomes({ market }: MarketOutcomesProps) {
               Make your prediction
             </ModalHeaderTitle>
           </ModalHeader>
-          <Trade view="modal" />
+          <Trade view="modal" onTradeFinished={handleCloseTrade} />
         </ModalContent>
       </Modal>
       {(needExpandOutcomes ? expandableOutcomes.onseted : sortedOutcomes).map(

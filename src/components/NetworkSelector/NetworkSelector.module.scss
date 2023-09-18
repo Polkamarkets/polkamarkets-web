@@ -31,6 +31,13 @@
   padding-right: 8px;
 
   &Item {
-    border-radius: 8px;
+    &:not(:first-of-type, :last-of-type) {
+      margin-top: var(--size-4);
+      margin-bottom: var(--size-4);
+    }
+
+    &Button {
+      border-radius: 8px;
+    }
   }
 }

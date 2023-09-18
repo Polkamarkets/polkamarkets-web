@@ -1,0 +1,87 @@
+.providers {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.signin {
+  color: var(--color-text-primary) !important;
+
+  &Icon {
+    fill: var(--color-text-secondary) !important;
+  }
+}
+
+.modal {
+  width: 100%;
+  max-width: 304px;
+
+  &Header {
+    &Hide {
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 32px;
+      height: 32px !important;
+      padding: 0px !important;
+
+      svg {
+        fill: var(--color-text-secondary) !important;
+      }
+    }
+
+    &Title {
+      padding: 3px 0 3px 0;
+      font-size: 1.7rem !important;
+      font-weight: bold !important;
+      line-height: 1.5 !important;
+      letter-spacing: -0.01em !important;
+      color: var(--color-text-secondary) !important;
+    }
+  }
+}
+
+.subtitle {
+  margin-bottom: var(--size-16);
+
+  font-size: 1.2rem !important;
+  font-weight: 500 !important;
+  line-height: 1.5 !important;
+  color: var(--color-text-secondary) !important;
+}
+
+.social {
+  justify-content: space-between !important;
+
+  padding: var(--size-8) var(--size-12) !important;
+
+  background: linear-gradient(45deg, rgb(var(--channel) / 0.2), transparent);
+  color: var(--color-text-primary) !important;
+  font-weight: bold !important;
+
+  border-radius: 8px !important;
+  border-color: rgb(var(--channel) / var(--color-alpha, 0.4)) !important;
+
+  transition: border-color background-color 300ms ease;
+
+  &:is(:hover, :focus) {
+    --color-alpha: 1;
+    background-color: transparent !important;
+  }
+
+  &Google {
+    --channel: 66 133 244;
+  }
+  &Facebook {
+    --channel: 25 175 255;
+  }
+  &Discord {
+    --channel: 88 101 242;
+  }
+  &Twitter {
+    --channel: var(--color-text--rgb);
+  }
+  &MetaMask {
+    --channel: 246 133 27;
+  }
+}

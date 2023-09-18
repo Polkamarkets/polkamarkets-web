@@ -1,3 +1,4 @@
+import capitalize from 'helpers/capitalize';
 import isTrue from 'helpers/isTrue';
 import intersection from 'lodash/intersection';
 
@@ -9,11 +10,32 @@ import {
 import environment from './environment';
 import features from './features';
 
+const providers = [
+  'Google',
+  'Facebook',
+  'Discord',
+  'MetaMask',
+  'Twitter',
+  'Email'
+] as const;
+
+export type Providers = typeof providers[number];
+
 const ui = {
   layout: {
     header: {
       networkSelector: {
         enabled: features.regular.enabled
+      },
+      helpUrl: environment.UI_HELP_URL,
+      communityUrls: {
+        enabled: isTrue(environment.UI_COMMUNITY_URLS),
+        twitter: environment.UI_COMMUNITY_TWITTER_URL,
+        medium: environment.UI_COMMUNITY_MEDIUM_URL,
+        telegram: environment.UI_COMMUNITY_TELEGRAM_URL,
+        youtube: environment.UI_COMMUNITY_YOUTUBE_URL,
+        linkedin: environment.UI_COMMUNITY_LINKEDIN_URL,
+        github: environment.UI_COMMUNITY_GITHUB_URL
       }
     },
     disclaimer: {
@@ -37,6 +59,7 @@ const ui = {
       url: environment.UI_HERO_ACTION_URL
     }
   },
+  logo: environment.UI_LOGO,
   filters: {
     categories: environment.UI_FILTERS_CATEGORIES?.split(','),
     tokens: ['USDT', 'USDC', 'DAI', 'MATIC', 'GLMR', 'MOVR']
@@ -58,7 +81,10 @@ const ui = {
         defaultLeaderboardColumns,
       leaderboardColumns
     ),
-    default_column: environment.UI_LEADERBOARD_DEFAULT_COLUMN
+    default_column: environment.UI_LEADERBOARD_DEFAULT_COLUMN,
+    wallet: {
+      suspiciousActivityUrl: environment.UI_SUSPICIOUS_ACTIVITY_URL
+    }
   },
   clubs: {
     enabled: isTrue(environment.FEATURE_CLUBS)
@@ -101,6 +127,17 @@ const ui = {
     voting: {
       enabled: isTrue(environment.FEATURE_VOTING)
     }
+  },
+  socialLogin: {
+    enabled: isTrue(environment.FEATURE_SOCIAL_LOGIN),
+    networkId: environment.FEATURE_SOCIAL_LOGIN_NETWORK_ID,
+    isTestnet: isTrue(environment.FEATURE_SOCIAL_LOGIN_IS_TESTNET),
+    providers:
+      (
+        environment.FEATURE_SOCIAL_LOGIN_PROVIDERS?.split(
+          ','
+        ) as Array<Providers>
+      )?.map(capitalize) || providers
   }
 } as const;
 

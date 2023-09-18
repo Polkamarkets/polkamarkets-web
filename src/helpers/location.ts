@@ -21,4 +21,4 @@ async function getUserCountry() {
   }
 }
 
-export { getUserPublicIp, getUserCountry };
+export { getUserPublicIp, getUserCountry, undefinedCountry };

@@ -1,17 +1,22 @@
-import { forwardRef, useCallback } from 'react';
+import { forwardRef } from 'react';
 
 import cn from 'classnames';
 import { AnimatePresence, motion } from 'framer-motion';
-import type { AvatarProps } from 'ui/Avatar';
-import { getAvatarClasses } from 'ui/Avatar';
 import Skeleton from 'ui/Skeleton';
+import useEnhancedRef from 'ui/useEnhancedRef';
 import useImage from 'ui/useImage';
-
-import { Logos } from 'components';
 
 import imageClasses from './Image.module.scss';
 
-export type ImageProps = AvatarProps;
+export type ImageProps = React.PropsWithChildren<
+  Pick<
+    React.ComponentPropsWithRef<'img'>,
+    'src' | 'alt' | 'className' | 'ref'
+  > & {
+    $size?: 'x2s' | 'xs' | 'sm' | 'md' | 'lg';
+    $radius?: 'xs' | 'sm' | 'md' | 'lg';
+  }
+>;
 
 function Div(props: React.PropsWithChildren<{ className?: string }>) {
   return (
@@ -31,27 +36,32 @@ function Div(props: React.PropsWithChildren<{ className?: string }>) {
 }
 
 const Image = forwardRef<HTMLImageElement, ImageProps>(function Image(
-  { alt, className, ...props },
+  { alt, className, children, $radius, $size, ...props },
   ref
 ) {
   const [state, { ref: imageRef, ...imageProps }] = useImage();
 
   return (
-    <div className={cn(imageClasses.root, getAvatarClasses(props), className)}>
+    <div
+      className={cn(
+        imageClasses.root,
+        {
+          [imageClasses.radiusXs]: $radius === 'xs',
+          [imageClasses.radiusSm]: $radius === 'sm',
+          [imageClasses.radiusMd]: $radius === 'md',
+          [imageClasses.radiusLg]: $radius === 'lg',
+          [imageClasses.sizeX2s]: $size === 'x2s',
+          [imageClasses.sizeXs]: $size === 'xs',
+          [imageClasses.sizeSm]: $size === 'sm',
+          [imageClasses.sizeMd]: $size === 'md',
+          [imageClasses.sizeLg]: $size === 'lg'
+        },
+        className
+      )}
+    >
       <img
         alt={alt}
-        ref={useCallback(
-          (image: HTMLImageElement | null) => {
-            if (ref != null) {
-              if (typeof ref === 'function') ref(image);
-              if (typeof ref === 'object' && 'current' in ref)
-                // eslint-disable-next-line no-param-reassign
-                ref.current = image;
-            }
-            if (typeof imageRef === 'function') imageRef?.(image);
-          },
-          [imageRef, ref]
-        )}
+        ref={useEnhancedRef<HTMLImageElement>(ref, imageRef)}
         className={cn(imageClasses.element, {
           [imageClasses.elementHide]: state !== 'ok'
         })}
@@ -68,11 +78,7 @@ const Image = forwardRef<HTMLImageElement, ImageProps>(function Image(
       <AnimatePresence>
         {state === 'error' && (
           <Div className={imageClasses.fallback}>
-            <Logos
-              size="md"
-              standard="mono"
-              className={imageClasses.fallbackElement}
-            />
+            <div className={imageClasses.fallbackElement}>{children}</div>
           </Div>
         )}
       </AnimatePresence>

@@ -1,71 +1,20 @@
 .pm-c-wallet-info {
   @include themes($navbar-themes) {
     @include flex-row;
-    gap: 8px;
+    gap: 24px;
     align-items: center;
 
     &__profile {
-      background-color: rgba(93, 85, 250, 0.1);
-      border: 1px solid rgba(93, 85, 250, 0.5) !important;
-    }
-
-    &__currency {
       display: inherit;
+      gap: 12px;
       align-items: center;
-      height: 44px;
-      gap: 4px;
-      padding-left: 12px;
-      padding-right: 4px;
-      border: 1px solid themed('border-bottom-color');
-      border-radius: 4px;
-      font-weight: 600;
-      font-size: 1.4rem;
-      line-height: 1.5;
-      letter-spacing: -0.014rem;
-      color: themed('text-active');
-
-      &--no-border {
-        @extend .pm-c-wallet-info__currency;
-        gap: var(--size-8);
-
-        padding-left: var(--size-4);
-        border: unset;
-
-        .pm-c-wallet-info__currency__button {
-          height: 44px;
-          max-height: unset;
-        }
-      }
 
       &__ticker {
-        color: #b5d2fe;
-        margin-right: 8px;
-      }
+        color: var(--color-text-secondary);
 
-      &__button {
-        max-height: 32px;
-      }
-
-      &__transak {
-        color: var(--color-text-primary) !important;
-
-        &:disabled {
-          color: var(--color-text-quaternary) !important;
+        &_icon {
+          margin-left: 4px;
         }
-      }
-
-      &__address {
-        border: unset !important;
-        background-color: rgba(92, 116, 153, 0.12);
-      }
-
-      &__buy {
-        border: unset;
-        background: linear-gradient(
-          90deg,
-          rgba(93, 85, 250, 0.5) 0%,
-          rgba(177, 85, 250, 0.5) 100%
-        );
       }
     }
   }

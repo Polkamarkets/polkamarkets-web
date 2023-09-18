@@ -103,7 +103,7 @@ export default function OutcomeItem({
             as="p"
             scale="tiny"
             fontWeight="semibold"
-            className={`pm-c-market-outcomes__item-odd ${outcomeItemClasses.secondary}`}
+            className={`pm-c-market-outcomes__item-odd ${outcomeItemClasses.secondary} notranslate`}
           >
             {secondary.text || (
               <>
@@ -166,7 +166,7 @@ export default function OutcomeItem({
           rows={[
             {
               key: 'invested',
-              title: 'Invested',
+              title: 'Your Shares',
               value: invested || 0
             }
           ]}

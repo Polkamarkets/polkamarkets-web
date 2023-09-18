@@ -18,9 +18,10 @@ import TradePredictions from './TradePredictions';
 
 type TradeProps = {
   view?: View;
+  onTradeFinished: () => void;
 };
 
-function Trade({ view = 'default' }: TradeProps) {
+function Trade({ view = 'default', onTradeFinished }: TradeProps) {
   const theme = useTheme();
   const market = useAppSelector(state => state.market.market);
   const marketColors = getMarketColors({
@@ -74,7 +75,7 @@ function Trade({ view = 'default' }: TradeProps) {
         <TradeFormInput />
         <TradeDetails />
         <div className={styles.actionsGroup}>
-          <TradeActions />
+          <TradeActions onTradeFinished={onTradeFinished} />
           <p className={styles.terms}>
             By clicking you’re agreeing to our{' '}
             <a

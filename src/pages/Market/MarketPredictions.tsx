@@ -65,7 +65,7 @@ function MarketPredictions() {
                 Make your prediction
               </ModalHeaderTitle>
             </ModalHeader>
-            <Trade view="modal" />
+            <Trade view="modal" onTradeFinished={handleCloseTrade} />
           </ModalContent>
         </Modal>
       </div>
