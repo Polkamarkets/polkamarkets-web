@@ -1,3 +1,5 @@
+import cn from 'classnames';
+
 function Item({
   children,
   className
@@ -5,7 +7,7 @@ function Item({
   return (
     <>
       <span className="breadcrumb__separator">/</span>
-      <span className={`breadcrumb__item ${className}`}>{children}</span>
+      <span className={cn('breadcrumb__item', className)}>{children}</span>
     </>
   );
 }
@@ -17,7 +19,7 @@ function Breadcrumb({
   children,
   className
 }: React.PickFrom<'div', 'children' | 'className'>) {
-  return <div className={`breadcrumb ${className}`}>{children}</div>;
+  return <div className={cn('breadcrumb', className)}>{children}</div>;
 }
 
 Breadcrumb.Item = Item;
