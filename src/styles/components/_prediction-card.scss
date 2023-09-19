@@ -7,10 +7,6 @@
     border-radius: 0.4rem 0.4rem 0.4rem 0.4rem;
     transition: all 0.2s ease-in-out 0s;
 
-    &--gutter {
-      margin-bottom: var(--grid-margin);
-    }
-
     &__body {
       padding: 16px var(--grid-margin);
 

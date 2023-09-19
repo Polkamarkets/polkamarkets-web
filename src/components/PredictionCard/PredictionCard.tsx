@@ -12,20 +12,13 @@ import Market from '../Market';
 interface PredictionCardProps
   extends Pick<React.ComponentPropsWithoutRef<'div'>, 'className'> {
   market: MarketInterface;
-  $gutter?: boolean;
 }
 
-function PredictionCard({ market, $gutter, className }: PredictionCardProps) {
+function PredictionCard({ market, className }: PredictionCardProps) {
   const theme = useTheme();
 
   return (
-    <div
-      className={cn(
-        'prediction-card',
-        { 'prediction-card--gutter': $gutter },
-        className
-      )}
-    >
+    <div className={cn('prediction-card', className)}>
       <div className="prediction-card__body">
         <Market market={market} />
         <Market.Outcomes market={market} />
