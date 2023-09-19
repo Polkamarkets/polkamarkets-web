@@ -13,3 +13,8 @@
     z-index: 1;
   }
 }
+.gutter {
+  &Bottom {
+    padding-bottom: var(--grid-margin);
+  }
+}

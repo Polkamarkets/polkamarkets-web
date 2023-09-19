@@ -41,10 +41,13 @@ function Virtuoso({ data }: VirtuosoProps) {
   const [renderBack, setRenderBack] = useState(false);
   const handleItemContent = useCallback(
     (index: number, market: Market) => (
-      <PredictionCard
-        market={market}
-        $gutter={data && index !== data.length - 1}
-      />
+      <div
+        className={cn({
+          [marketListClasses.gutterBottom]: data && index !== data.length - 1
+        })}
+      >
+        <PredictionCard market={market} />
+      </div>
     ),
     [data]
   );
@@ -136,12 +139,7 @@ function Virtuoso({ data }: VirtuosoProps) {
         rangeChanged={handleRangeChange}
         data={data}
         style={{
-          top: renderBack ? -backY : undefined,
-          minHeight: `calc(${virtuosoY}${
-            renderBack && theme.device.isDesktop
-              ? ` + ${backY}px`
-              : ' + var(--grid-margin)'
-          })`
+          minHeight: `calc(${virtuosoY} + ${backY}px)`
         }}
       />
     </>
