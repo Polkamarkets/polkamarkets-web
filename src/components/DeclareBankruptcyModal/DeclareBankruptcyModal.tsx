@@ -1,12 +1,18 @@
 import { useCallback, useState } from 'react';
 
 import { ui } from 'config';
+import { fetchAditionalData, login } from 'redux/ducks/polkamarkets';
 
 import { PCLLogo } from 'assets/icons';
 
-import { useFantasyTokenTicker } from 'hooks';
+import {
+  useAppDispatch,
+  useAppSelector,
+  useFantasyTokenTicker,
+  usePolkamarketsService
+} from 'hooks';
 
-import { Button } from '../Button';
+import { ButtonLoading } from '../Button';
 import Link from '../Link';
 import Modal from '../Modal';
 import ModalContent from '../ModalContent';
@@ -21,10 +27,37 @@ import styles from './DeclareBankruptcyModal.module.scss';
 const BANKRUPTCY = 200;
 
 function DeclareBankruptcyModal() {
+  const dispatch = useAppDispatch();
+  const polkamarketsService = usePolkamarketsService();
   const fantasyTokenTicker = useFantasyTokenTicker();
+
   const [show, setShow] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const isLoadingLogin = useAppSelector(
+    state => state.polkamarkets.isLoading.login
+  );
 
   const handleHide = useCallback(() => setShow(false), []);
+
+  const updateWallet = useCallback(async () => {
+    await dispatch(login(polkamarketsService));
+    await dispatch(fetchAditionalData(polkamarketsService));
+  }, [dispatch, polkamarketsService]);
+
+  const handleDeclare = useCallback(async () => {
+    setIsLoading(true);
+
+    try {
+      // await polkamarketsService.declareBankruptcy();
+      await updateWallet();
+    } catch (error) {
+      setIsLoading(false);
+    } finally {
+      setIsLoading(false);
+      handleHide();
+    }
+  }, [handleHide, updateWallet]);
 
   if (!fantasyTokenTicker) return null;
 
@@ -64,15 +97,16 @@ function DeclareBankruptcyModal() {
           </ModalSectionText>
         </ModalSection>
         <ModalFooter>
-          <Button
+          <ButtonLoading
             size="sm"
             variant="normal"
             color="primary"
             fullwidth
-            onClick={() => setShow(false)}
+            loading={isLoading || isLoadingLogin}
+            onClick={handleDeclare}
           >
             Declare bankruptcy
-          </Button>
+          </ButtonLoading>
         </ModalFooter>
       </ModalContent>
     </Modal>
