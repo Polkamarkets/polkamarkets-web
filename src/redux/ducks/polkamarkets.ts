@@ -24,6 +24,7 @@ export type PolkamarketsInitialState = {
   polkApproved: boolean;
   socialLoginInfo: any;
   polkClaimed: boolean;
+  bankrupt: boolean;
   portfolio: any;
   actions: Action[];
   marketsWithActions: string[];
@@ -46,6 +47,7 @@ const initialState: PolkamarketsInitialState = {
   polkApproved: false,
   socialLoginInfo: null,
   polkClaimed: false,
+  bankrupt: false,
   portfolio: {},
   actions: [],
   marketsWithActions: [],
