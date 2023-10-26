@@ -54,6 +54,9 @@ const ui = {
     alert: {
       enabled: isTrue(environment.FEATURE_ALERT)
     },
+    bankruptcy: {
+      helpUrl: environment.UI_HELP_BANKRUPTCY_URL
+    },
     footer: {
       text: environment.UI_FOOTER_TEXT
     }
