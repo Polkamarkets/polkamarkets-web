@@ -55,7 +55,8 @@ const environmentConfigVariables = [
   'UI_FILTERS_END_DATE_DISABLED',
   'UI_FILTERS_FAVORITES_DISABLED',
   'UI_FILTERS_EXTRA_FILTERS',
-  'UI_TWITTER_SHARE_INTENT'
+  'UI_TWITTER_SHARE_INTENT',
+  'UI_HELP_BANKRUPTCY_URL'
 ] as const;
 
 export type EnvironmentConfigVariable =
