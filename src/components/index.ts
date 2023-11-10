@@ -13,6 +13,7 @@ import { Category, CategoryDisabled, CategoryAnalytics } from './Category';
 import ChartHeader from './ChartHeader';
 import Checkbox from './Checkbox';
 import CreateMarketForm from './CreateMarketForm';
+import DeclareBankruptcyModal from './DeclareBankruptcyModal';
 import Divider from './Divider';
 import FeaturedCard from './FeaturedCard';
 import { Filter, FilterInline } from './Filter';
@@ -88,6 +89,7 @@ export {
   ChartHeader,
   Checkbox,
   CreateMarketForm,
+  DeclareBankruptcyModal,
   Divider,
   DateInput,
   FeaturedCard,
