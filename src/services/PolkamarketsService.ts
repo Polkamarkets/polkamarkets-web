@@ -80,6 +80,9 @@ export default class PolkamarketsService {
         },
         web3AuthConfig: {
           clientId: process.env.REACT_APP_WEB3AUTH_CLIENT_ID,
+          jwt: {
+            customVerifier: process.env.REACT_APP_WEB3AUTH_JWT_CUSTOM_VERIFIER
+          },
           discord: {
             customVerifier:
               process.env.REACT_APP_WEB3AUTH_DISCORD_CUSTOM_VERIFIER,
