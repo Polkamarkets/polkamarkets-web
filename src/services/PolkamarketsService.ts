@@ -66,14 +66,17 @@ export default class PolkamarketsService {
       web3EventsProvider: WEB3_EVENTS_PROVIDER,
       isSocialLogin: ui.socialLogin.enabled,
       socialLoginParams: {
-        useCustomModal: true,
         isTestnet: ui.socialLogin.isTestnet,
-        urls: [],
         networkConfig: {
           chainId: Number(
             process.env.REACT_APP_FEATURE_SOCIAL_LOGIN_NETWORK_ID
           ),
-          dappAPIKey: process.env.REACT_APP_FEATURE_SOCIAL_LOGIN_DAPP
+          particleProjectId:
+            process.env.REACT_APP_FEATURE_SOCIAL_LOGIN_PARTICLE_PROJECT_ID,
+          particleClientKey:
+            process.env.REACT_APP_FEATURE_SOCIAL_LOGIN_PARTICLE_CLIENT_KEY,
+          particleAppId:
+            process.env.REACT_APP_FEATURE_SOCIAL_LOGIN_PARTICLE_APP_ID
         },
         web3AuthConfig: {
           clientId: process.env.REACT_APP_WEB3AUTH_CLIENT_ID,
