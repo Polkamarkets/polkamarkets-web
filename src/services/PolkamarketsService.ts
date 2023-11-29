@@ -192,6 +192,11 @@ export default class PolkamarketsService {
     return this.polkamarkets.socialLoginEmail(email);
   }
 
+  public async socialLoginWithJWT(jwtToken) {
+    await this.polkamarkets.socialLogin.init();
+    return this.polkamarkets.socialLoginWithJWT(jwtToken);
+  }
+
   public async socialLoginMetamask() {
     await this.polkamarkets.socialLogin.init();
     return this.polkamarkets.socialLoginMetamask();

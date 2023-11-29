@@ -49,7 +49,7 @@
     "lodash": "^4.17.21",
     "mockdate": "^3.0.5",
     "node-gyp": "^9.4.0",
-    "polkamarkets-js": "https://github.com/Polkamarkets/polkamarkets-js#feat/change-to-particle",
+    "polkamarkets-js": "https://github.com/Polkamarkets/polkamarkets-js#feat/login-with-jwt",
     "prop-types": "^15.7.2",
     "public-ip": "^4.0.4",
     "rc-progress": "^3.1.4",

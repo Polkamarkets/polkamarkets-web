@@ -17721,9 +17721,9 @@ polished@^4.2.2:
   dependencies:
     "@babel/runtime" "^7.17.8"
 
-"polkamarkets-js@https://github.com/Polkamarkets/polkamarkets-js#feat/change-to-particle":
+"polkamarkets-js@https://github.com/Polkamarkets/polkamarkets-js#feat/login-with-jwt":
   version "1.2.1"
-  resolved "https://github.com/Polkamarkets/polkamarkets-js#03f671fa6b1494588a35265a704b4711bd4b3ab2"
+  resolved "https://github.com/Polkamarkets/polkamarkets-js#a472bc575f3a6593d3fdaecb94788d342d08960e"
   dependencies:
     "@metamask/safe-event-emitter" "^2.0.0"
     "@openzeppelin/contracts" "^4.8.2"
