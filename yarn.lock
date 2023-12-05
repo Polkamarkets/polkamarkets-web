@@ -17723,7 +17723,7 @@ polished@^4.2.2:
 
 "polkamarkets-js@https://github.com/Polkamarkets/polkamarkets-js#feat/login-with-jwt":
   version "1.2.1"
-  resolved "https://github.com/Polkamarkets/polkamarkets-js#a472bc575f3a6593d3fdaecb94788d342d08960e"
+  resolved "https://github.com/Polkamarkets/polkamarkets-js#cbda41b65ce62c103d5a9eb0c2473d45e44c3285"
   dependencies:
     "@metamask/safe-event-emitter" "^2.0.0"
     "@openzeppelin/contracts" "^4.8.2"
