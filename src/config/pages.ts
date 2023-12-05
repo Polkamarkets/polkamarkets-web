@@ -187,6 +187,15 @@ const pages = {
     meta: metadataByPage.portfolio,
     enabled: false
   },
+  jwtlogin: {
+    pathname: '/jwtlogin',
+    Component: lazy(() => import('pages/JwtLogin')),
+    exact: false,
+    navigation: false,
+    name: '',
+    meta: defaultMetadata,
+    enabled: true
+  },
   home: {
     pathname:
       features.fantasy.enabled && ui.tournaments.enabled ? '/markets' : '/',

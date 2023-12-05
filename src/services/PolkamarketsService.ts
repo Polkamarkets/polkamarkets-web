@@ -206,6 +206,10 @@ export default class PolkamarketsService {
     return this.polkamarkets.getSocialLoginUserInfo();
   }
 
+  public async forceInit() {
+    await this.polkamarkets.forceInit();
+  }
+
   // returns wether wallet is connected to service or not
   public async isLoggedIn(): Promise<boolean> {
     return this.polkamarkets.isLoggedIn();

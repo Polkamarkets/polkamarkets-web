@@ -21,7 +21,6 @@ import Text from 'components/Text';
 
 import { useAppDispatch, usePolkamarketsService } from 'hooks';
 
-import { getJWTForUser } from '../../services/Polkamarkets/jwt';
 import profileSigninClasses from './ProfileSignin.module.scss';
 
 const hasSingleProvider = ui.socialLogin.providers.length === 1;
@@ -61,11 +60,8 @@ export default function ProfileSignin({ onClick, ...props }: ButtonProps) {
         try {
           setLoad('Email');
 
-          // call service to get jwt token
-          const jwtToken = await getJWTForUser(event.target[0].value);
-
-          const success = await polkamarketsService.socialLoginWithJWT(
-            jwtToken.data
+          const success = await polkamarketsService.socialLoginEmail(
+            event.target[0].value
           );
 
           if (success) {

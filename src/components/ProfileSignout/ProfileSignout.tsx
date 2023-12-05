@@ -65,6 +65,8 @@ export default function ProfileSignout() {
 
       if (hasUpdatedSocialLoginInfo) return;
 
+      if (!socialLoginInfo) return;
+
       // send data to backend
       const res = await updateSocialLoginInfo(
         socialLoginInfo.idToken,

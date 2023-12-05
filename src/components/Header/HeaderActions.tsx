@@ -1,7 +1,8 @@
-import { Fragment, useEffect } from 'react';
+import { Fragment, useEffect, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 
 import cn from 'classnames';
-import { features, ui } from 'config';
+import { features, ui, pages } from 'config';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Container, Skeleton, useTheme } from 'ui';
 
@@ -11,7 +12,12 @@ import Profile from 'components/Profile';
 import ThemeSelector from 'components/ThemeSelector';
 import Wallet from 'components/Wallet';
 
-import { useAppSelector, usePortal } from 'hooks';
+import {
+  useAppDispatch,
+  useAppSelector,
+  usePolkamarketsService,
+  usePortal
+} from 'hooks';
 
 import headerClasses from './Header.module.scss';
 import headerActionsClasses from './HeaderActions.module.scss';
@@ -126,6 +132,38 @@ export default function HeaderActions() {
     ? Fragment
     : HeaderActionsGroup;
 
+  const gridIframe = useRef<HTMLIFrameElement>(null);
+
+  const polkamarketsService = usePolkamarketsService();
+  const dispatch = useAppDispatch();
+  const location = useLocation();
+
+  const [page] = Object.values(pages).filter(
+    ({ pathname }) => pathname === location.pathname
+  );
+
+  useEffect(() => {
+    const handler = async (
+      ev: MessageEvent<{ type: string; message: string }>
+    ) => {
+      if (ev.data?.type === 'loginjwt') {
+        await polkamarketsService.forceInit();
+        const isLoggedInInternal = await polkamarketsService.isLoggedIn();
+
+        if (isLoggedInInternal) {
+          const { login } = await import('redux/ducks/polkamarkets');
+
+          dispatch(login(polkamarketsService));
+        }
+      }
+    };
+
+    window.addEventListener('message', handler);
+
+    // Don't forget to remove addEventListener
+    return () => window.removeEventListener('message', handler);
+  }, [dispatch, polkamarketsService]);
+
   return (
     <Root>
       <HeaderActionsAnimate show={!features.fantasy.enabled || isLoggedIn}>
@@ -148,12 +186,21 @@ export default function HeaderActions() {
                   className={headerActionsClasses.network}
                 />
               )}
-            {isLoading ? (
+            {!isLoggedIn ? (
               <ActionLoadingComponent />
             ) : (
               <HeaderActionComponent isLoggedIn={isLoggedIn} />
             )}
           </HeaderActionsGroupComponent>
+          {page?.pathname !== '/jwtlogin' && !isLoggedIn && (
+            <div style={{ display: 'none' }}>
+              <iframe
+                ref={gridIframe}
+                src="/jwtlogin"
+                title="JWT login iframe"
+              />
+            </div>
+          )}
           {!features.fantasy.enabled && <ThemeSelector />}
           {ui.layout.header.helpUrl && (
             <HelpButton
