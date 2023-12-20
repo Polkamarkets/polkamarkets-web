@@ -162,39 +162,8 @@ export default class PolkamarketsService {
     this.address = '';
   }
 
-  public async socialLoginGoogle() {
-    await this.polkamarkets.socialLogin.init();
-    return this.polkamarkets.socialLoginGoogle();
-  }
-
-  public async socialLoginFacebook() {
-    await this.polkamarkets.socialLogin.init();
-    return this.polkamarkets.socialLoginFacebook();
-  }
-
-  public async socialLoginTwitter() {
-    await this.polkamarkets.socialLogin.init();
-    return this.polkamarkets.socialLoginTwitter();
-  }
-
-  public async socialLoginGithub() {
-    await this.polkamarkets.socialLogin.init();
-    return this.polkamarkets.socialLoginGithub();
-  }
-
-  public async socialLoginDiscord() {
-    await this.polkamarkets.socialLogin.init();
-    return this.polkamarkets.socialLoginDiscord();
-  }
-
-  public async socialLoginEmail(email) {
-    await this.polkamarkets.socialLogin.init();
-    return this.polkamarkets.socialLoginEmail(email);
-  }
-
-  public async socialLoginWithJWT(jwtToken) {
-    await this.polkamarkets.socialLogin.init();
-    return this.polkamarkets.socialLoginWithJWT(jwtToken);
+  public async socialLoginWithJWT(id, jwtToken) {
+    return this.polkamarkets.socialLoginWithJWT(id, jwtToken);
   }
 
   public async socialLoginMetamask() {
@@ -204,10 +173,6 @@ export default class PolkamarketsService {
 
   public async getSocialLoginUserInfo() {
     return this.polkamarkets.getSocialLoginUserInfo();
-  }
-
-  public async forceInit() {
-    await this.polkamarkets.forceInit();
   }
 
   // returns wether wallet is connected to service or not

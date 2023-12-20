@@ -39,6 +39,7 @@ export { ReactComponent as Moon } from './Moon.svg';
 export { ReactComponent as Moonbeam } from './Moonbeam.svg';
 export { ReactComponent as MoonOutlined } from './MoonOutlined.svg';
 export { ReactComponent as Moonriver } from './Moonriver.svg';
+export { ReactComponent as Observador } from './Google.svg';
 export { ReactComponent as Plus } from './Plus.svg';
 export { ReactComponent as PlusOutlined } from './PlusOutlined.svg';
 export { ReactComponent as Polk } from './Polk.svg';

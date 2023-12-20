@@ -17,7 +17,8 @@ const providers = [
   'Discord',
   'MetaMask',
   'Twitter',
-  'Email'
+  'Email',
+  'Observador'
 ] as const;
 
 const categories = [

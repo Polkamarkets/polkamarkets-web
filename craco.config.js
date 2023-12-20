@@ -1,6 +1,8 @@
+/* eslint-disable no-param-reassign */
 const CopyPlugin = require('copy-webpack-plugin');
 const cracoPluginStyleResourcesLoader = require('craco-plugin-style-resources-loader');
 const path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
   plugins: [
@@ -36,8 +38,11 @@ module.exports = {
       '@babel/plugin-proposal-nullish-coalescing-operator',
       '@babel/plugin-proposal-optional-chaining',
       '@babel/plugin-proposal-private-methods',
-      '@babel/plugin-proposal-numeric-separator'
-    ]
+      '@babel/plugin-proposal-numeric-separator',
+      '@babel/plugin-transform-class-properties',
+      '@babel/plugin-transform-private-methods',
+      '@babel/plugin-transform-private-property-in-object',
+    ],
   },
   webpack: {
     plugins: [
@@ -61,6 +66,45 @@ module.exports = {
           }
         ]
       })
-    ]
+    ],
+
+    configure: (config) => {
+      const fallback = config.resolve.fallback || {};
+      Object.assign(fallback, {
+        crypto: false, // require.resolve("crypto-browserify") can be polyfilled here if needed
+        stream: false, // require.resolve("stream-browserify") can be polyfilled here if needed
+        assert: false, // require.resolve("assert") can be polyfilled here if needed
+        http: false, // require.resolve("stream-http") can be polyfilled here if needed
+        https: false, // require.resolve("https-browserify") can be polyfilled here if needed
+        os: false, // require.resolve("os-browserify") can be polyfilled here if needed
+        url: false, // require.resolve("url") can be polyfilled here if needed
+        zlib: false, // require.resolve("browserify-zlib") can be polyfilled here if needed
+        path: false,
+        fs: false,
+      });
+      config.resolve.fallback = fallback;
+      config.plugins = (config.plugins || []).concat([
+        new webpack.ProvidePlugin({
+          process: "process/browser",
+          Buffer: ["buffer", "Buffer"],
+        }),
+      ]);
+      config.ignoreWarnings = [/Failed to parse source map/];
+      config.module.rules.push({
+        test: /\.(js|mjs|jsx)$/,
+        enforce: "pre",
+        loader: require.resolve("source-map-loader"),
+        resolve: {
+          fullySpecified: false,
+        },
+      });
+      config.devServer = {
+        client: {
+          overlay: false,
+        },
+      };
+
+      return config;
+    }
   }
 };
