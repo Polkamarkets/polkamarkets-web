@@ -21,6 +21,7 @@ export type OutcomeProps = Pick<
 > &
   Partial<Record<'primary' | 'image' | 'activeColor', string>> &
   Partial<Record<'invested', number>> & {
+    isPredicted?: boolean;
     isActive?: boolean;
     data?: AreaDataPoint[];
     $variant?: 'dashed';
@@ -44,6 +45,7 @@ export default function OutcomeItem({
   primary,
   secondary,
   isActive,
+  isPredicted,
   invested,
   $size,
   data,
@@ -65,6 +67,7 @@ export default function OutcomeItem({
       className={cn(
         outcomeItemClasses.root,
         {
+          [outcomeItemClasses.rootPredicted]: isPredicted,
           'pm-c-market-outcomes__item--default': !image && !resolved,
           'pm-c-market-outcomes__item--success': !image && resolved === 'won',
           'pm-c-market-outcomes__item--danger': !image && resolved !== 'won',

@@ -1,76 +1,155 @@
-import classNames from 'classnames';
-import { ui } from 'config';
-import { Land } from 'types/land';
-import { Avatar, Container, Hero } from 'ui';
+import { CSSProperties, useCallback, useState } from 'react';
 
-import { Share, Text } from 'components';
+import classNames from 'classnames';
+import { Land } from 'types/land';
+import { Avatar, useTheme } from 'ui';
+
+import { InfoIcon } from 'assets/icons';
+
+import {
+  Button,
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalHeaderHide,
+  ModalHeaderTitle,
+  ModalSection,
+  ModalSectionText,
+  Share
+} from 'components';
 
 import styles from './LandHero.module.scss';
 
-type LandHeroProps = Pick<
-  Land,
-  'slug' | 'title' | 'description' | 'imageUrl' | 'bannerUrl'
->;
+type LandHeroProps = {
+  meta: Pick<Land, 'slug' | 'title' | 'description' | 'bannerUrl' | 'imageUrl'>;
+  stats: {
+    tournaments: number;
+    members: number;
+    // totalRewards: number;
+  };
+};
 
-export default function LandHero({
-  slug,
-  title,
-  description,
-  imageUrl,
-  bannerUrl
-}: LandHeroProps) {
+export default function LandHero({ meta, stats }: LandHeroProps) {
+  const theme = useTheme();
+
+  const [showAboutModal, setShowAboutModal] = useState(false);
+
+  const handleShowAboutModal = useCallback(() => setShowAboutModal(true), []);
+  const handleHideAboutModal = useCallback(() => setShowAboutModal(false), []);
+
   return (
-    <Container className={styles.header}>
-      <Hero
-        $backdrop="main"
-        $rounded
-        $image={bannerUrl || ui.hero.image}
-        className={classNames('pm-p-home__hero', styles.headerHero)}
-      >
-        <div className="pm-p-home__hero__content">
-          <div className={styles.meta}>
-            {imageUrl ? (
-              <Avatar
-                src={imageUrl}
-                alt={title}
-                $radius="md"
-                className={styles.metaAvatar}
-              />
-            ) : null}
-            <div className={styles.metaDetails}>
-              <Text
-                as="h2"
-                fontWeight="bold"
-                scale="heading-large"
-                color="light"
-                className={classNames(
-                  'pm-p-home__hero__heading',
-                  styles.metaDetailsTitle
-                )}
-              >
-                {title}
-              </Text>
-              <Text
-                as="span"
-                fontWeight="medium"
-                color="light"
-                className={styles.metaDetailsDescription}
-              >
-                {description}
-              </Text>
-              <div className={styles.headerHeroActions}>
-                <Share
-                  id={slug}
-                  size="xs"
-                  variant="normal"
-                  color="default"
-                  iconOnly={false}
-                />
-              </div>
-            </div>
-          </div>
+    <div className={classNames('max-width-screen-xl', styles.container)}>
+      <div className={styles.root}>
+        <div
+          className={styles.banner}
+          style={
+            { '--background-image': `url(${meta.bannerUrl})` } as CSSProperties
+          }
+        >
+          {meta.imageUrl ? (
+            <Avatar
+              src={meta.imageUrl}
+              alt={meta.title}
+              $radius="lg"
+              className={styles.bannerAvatar}
+            />
+          ) : null}
         </div>
-      </Hero>
-    </Container>
+        <div className={styles.content}>
+          <Modal show={showAboutModal} size="sm" centered>
+            <ModalContent>
+              <ModalHeader>
+                <ModalHeaderTitle>{meta.title}</ModalHeaderTitle>
+                <ModalHeaderHide onClick={handleHideAboutModal} />
+              </ModalHeader>
+              <ModalSection>
+                <ModalSectionText>{meta.description}</ModalSectionText>
+              </ModalSection>
+            </ModalContent>
+          </Modal>
+          {!theme.device.isDesktop ? (
+            <div className={styles.contentActions}>
+              <Button
+                size="sm"
+                color="noborder"
+                className={styles.contentActionsButton}
+                onClick={handleShowAboutModal}
+              >
+                <InfoIcon />
+                About
+              </Button>
+              <span
+                className={classNames(
+                  'pm-c-divider--circle',
+                  styles.footerStatsDivider
+                )}
+              />
+              <Share
+                id={`${meta.slug}--content`}
+                className={classNames(
+                  styles.contentActionsButton,
+                  styles.contentActionsButtonWithHover
+                )}
+              />
+            </div>
+          ) : null}
+          <h3 className={styles.contentTitle}>{meta.title}</h3>
+        </div>
+        <div className={styles.footer}>
+          <div className={styles.footerStats}>
+            <span className={styles.footerStatsItem}>
+              Tournaments:
+              <strong>{stats.tournaments}</strong>
+            </span>
+            <span
+              className={classNames(
+                'pm-c-divider--circle',
+                styles.footerStatsDivider
+              )}
+            />
+            <span className={styles.footerStatsItem}>
+              Members:
+              <strong>{stats.members}</strong>
+            </span>
+            {/* <span
+            className={classNames(
+              'pm-c-divider--circle',
+              styles.footerStatsDivider
+            )}
+          />
+          <span className={styles.footerStatsItem}>
+            Total Rewards:
+            <strong>{stats.totalRewards}</strong>
+          </span> */}
+          </div>
+          {theme.device.isDesktop ? (
+            <div className={styles.footerActions}>
+              <Button
+                size="sm"
+                color="noborder"
+                className={styles.contentActionsButton}
+                onClick={handleShowAboutModal}
+              >
+                <InfoIcon />
+                About
+              </Button>
+              <span
+                className={classNames(
+                  'pm-c-divider--circle',
+                  styles.footerStatsDivider
+                )}
+              />
+              <Share
+                id={`${meta.slug}--footer`}
+                className={classNames(
+                  styles.contentActionsButton,
+                  styles.contentActionsButtonWithHover
+                )}
+              />
+            </div>
+          ) : null}
+        </div>
+      </div>
+    </div>
   );
 }

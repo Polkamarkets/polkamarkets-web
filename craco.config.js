@@ -52,16 +52,20 @@ module.exports = {
             from: 'public/manifest.json',
             to: 'manifest.json',
             transform(content) {
-              return content
-                .toString()
-                .replace(
-                  /%REACT_APP_MANIFEST_SHORT_NAME%/g,
-                  m => process.env[m.slice(1, m.length - 1)] || 'Polkamarkets'
-                )
-                .replace(
-                  /%REACT_APP_MANIFEST_NAME%/g,
-                  m => process.env[m.slice(1, m.length - 1)] || 'Polkamarkets'
-                );
+              return content.toString().replace(/%\w+%/g, value => {
+                const envValue = process.env[value.slice(1, value.length - 1)];
+                const fallbacks = {
+                  '%REACT_APP_MANIFEST_SHORT_NAME%': 'Polkamarkets',
+                  '%REACT_APP_MANIFEST_NAME%': 'Polkamarkets',
+                  '%REACT_APP_MANIFEST_ICON_192_URL%': 'logo192.png',
+                  '%REACT_APP_MANIFEST_ICON_512_URL%': 'logo512.png',
+                  '%REACT_APP_FAVICON_URL%': 'favicon.ico'
+                };
+
+                return typeof envValue === 'undefined'
+                  ? fallbacks[value]
+                  : envValue;
+              });
             }
           }
         ]

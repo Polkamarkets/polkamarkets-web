@@ -125,6 +125,10 @@
     @extend .pm-c-button;
     @include text-color($color);
 
+    padding: 0;
+    background-color: transparent;
+    outline: 0;
+    border: none;
     transition: opacity 0.3s ease 0s;
 
     &:hover {

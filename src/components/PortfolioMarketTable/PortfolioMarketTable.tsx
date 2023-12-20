@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 import classnames from 'classnames';
 import { colorByOutcomeId } from 'helpers/color';
@@ -46,6 +46,7 @@ const PortfolioMarketTable = ({
 }: MarketTableProps) => {
   const dispatch = useAppDispatch();
   const history = useHistory();
+  const location = useLocation();
 
   const polkamarketsService = usePolkamarketsService();
   const fantasyTokenTicker = useFantasyTokenTicker();
@@ -105,7 +106,7 @@ const PortfolioMarketTable = ({
   }
 
   function redirectTo(marketSlug) {
-    return history.push(`/markets/${marketSlug}`);
+    return history.push(`/markets/${marketSlug}`, { from: location.pathname });
   }
 
   const resolvedMarket = row => row.market.state === 'resolved';
@@ -128,29 +129,36 @@ const PortfolioMarketTable = ({
       <table className="pm-c-table">
         <tbody>
           <tr className="pm-c-table__header">
-            {headers?.map(header => (
-              <th
-                id={header.key}
-                key={header.key}
-                className={classnames({
-                  'pm-c-table__header-item': true,
-                  [`pm-c-table__item--${header.align}`]: true,
-                  'pm-c-table__item--button': true,
-                  'pm-c-table__item--with-arrow': key && key === header.sortBy
-                })}
-                scope="col"
-                onClick={() => requestSort(header.sortBy)}
-              >
-                {sortDirectionArrow(header.sortBy)}
-                {header.title}
-              </th>
-            ))}
+            {headers
+              ?.filter(header =>
+                filter === 'resolved'
+                  ? !['maxPayout'].includes(header.key)
+                  : true
+              )
+              .map(header => (
+                <th
+                  id={header.key}
+                  key={header.key}
+                  className={classnames({
+                    'pm-c-table__header-item': true,
+                    [`pm-c-table__item--${header.align}`]: true,
+                    'pm-c-table__item--button': true,
+                    'pm-c-table__item--with-arrow': key && key === header.sortBy
+                  })}
+                  scope="col"
+                  onClick={() => requestSort(header.sortBy)}
+                >
+                  {sortDirectionArrow(header.sortBy)}
+                  {header.title}
+                </th>
+              ))}
           </tr>
           {sortedItems?.map(
             ({
               market,
               outcome,
               price,
+              buyPrice,
               profit,
               value,
               shares,
@@ -235,6 +243,81 @@ const PortfolioMarketTable = ({
                     </div>
                   </td>
                 )}
+                {buyPrice && (
+                  <td
+                    id="buyPrice"
+                    className="pm-c-table__row-item pm-c-table__item--right notranslate"
+                  >
+                    <div className="market-table__row-item__group">
+                      <Text
+                        as="span"
+                        scale="caption"
+                        fontWeight="semibold"
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'center',
+                          gap: '0.5rem'
+                        }}
+                      >
+                        {`${roundNumber(buyPrice.value, 3)} `}
+                        <Text as="strong" scale="caption" fontWeight="semibold">
+                          {` ${fantasyTokenTicker || market.token.symbol}`}
+                        </Text>
+                      </Text>
+                      <Text as="span" scale="caption" fontWeight="bold">
+                        {`${roundNumber(buyPrice.probability * 100, 2)}%`}
+                      </Text>
+                    </div>
+                  </td>
+                )}
+                {shares && (
+                  <td
+                    id="shares"
+                    className="pm-c-table__row-item pm-c-table__item--center"
+                  >
+                    {roundNumber(shares, 3)}
+                  </td>
+                )}
+                {value && (
+                  <td
+                    id="value"
+                    className="pm-c-table__row-item pm-c-table__item--right notranslate"
+                  >
+                    <div className="market-table__row-item__group">
+                      <Text
+                        as="span"
+                        scale="caption"
+                        fontWeight="semibold"
+                        style={{
+                          display: 'inline-flex',
+                          justifyContent: 'center',
+                          gap: '0.5rem'
+                        }}
+                      >
+                        {`${roundNumber(value.value, 3)} `}
+                        <Text as="strong" scale="caption" fontWeight="semibold">
+                          {` ${fantasyTokenTicker || market.token.symbol}`}
+                        </Text>
+                      </Text>
+                      <Text
+                        className={
+                          value.change.type !== 'stable'
+                            ? `market-table__row-item__change--${profit.change.type}`
+                            : undefined
+                        }
+                        as="span"
+                        scale="caption"
+                        fontWeight="bold"
+                      >
+                        {value.change.type === 'up' ? <ArrowUpIcon /> : null}
+                        {value.change.type === 'down' ? (
+                          <ArrowDownIcon />
+                        ) : null}
+                        {`${roundNumber(value.probability * 100, 2)}%`}
+                      </Text>
+                    </div>
+                  </td>
+                )}
                 {profit && (
                   <td
                     id="profit"
@@ -272,37 +355,7 @@ const PortfolioMarketTable = ({
                     </div>
                   </td>
                 )}
-                {shares && (
-                  <td
-                    id="shares"
-                    className="pm-c-table__row-item pm-c-table__item--center"
-                  >
-                    {roundNumber(shares, 3)}
-                  </td>
-                )}
-                {value && (
-                  <td
-                    id="value"
-                    className="pm-c-table__row-item pm-c-table__item--right notranslate"
-                  >
-                    <Text
-                      as="span"
-                      scale="caption"
-                      fontWeight="semibold"
-                      style={{
-                        display: 'inline-flex',
-                        justifyContent: 'center',
-                        gap: '0.5rem'
-                      }}
-                    >
-                      {`${roundNumber(value, 3)} `}
-                      <Text as="strong" scale="caption" fontWeight="semibold">
-                        {` ${fantasyTokenTicker || market.token.symbol}`}
-                      </Text>
-                    </Text>
-                  </td>
-                )}
-                {maxPayout && (
+                {filter !== 'resolved' && maxPayout && (
                   <td
                     id="maxPayout"
                     className="pm-c-table__row-item pm-c-table__item--right notranslate"

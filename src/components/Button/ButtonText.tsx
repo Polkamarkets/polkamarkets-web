@@ -53,9 +53,9 @@ const ButtonText = React.forwardRef<
       ref={ref}
       type="button"
       className={classNames(
-        `button-text--${color}`,
-        size && `button-${size}`,
-        fullwidth && 'button-fullwidth'
+        `pm-c-button-text--${color}`,
+        size && `pm-c-button--${size}`,
+        fullwidth && 'pm-c-button--fullwidth'
       )}
       onClick={onClick}
       {...props}

@@ -24,6 +24,7 @@ import EthereumIcon from './EthereumIcon';
 import ExploreIcon from './ExploreIcon';
 import FavoriteIcon from './FavoriteIcon';
 import ForelandLogo from './ForelandLogo';
+import ForelandMobileLogo from './ForelandMobileLogo';
 import GamingConsoleIcon from './GamingConsoleIcon';
 import GitHubIcon from './GitHubIcon';
 import HamburguerMenuIcon from './HamburguerMenuIcon';
@@ -39,6 +40,8 @@ import MoonbeamIcon from './MoonbeamIcon';
 import MoonIcon from './MoonIcon';
 import MoonriverIcon from './MoonriverIcon';
 import NetworkCommunicationIcon from './NetworkCommunicationIcon';
+import ObservadorLogo from './ObservadorLogo';
+import ObservadorMobileLogo from './ObservadorMobileLogo';
 import PCLLogo from './PCLLogo';
 import PolkadotIcon from './PolkadotIcon';
 import PolkamarketsIcon from './PolkamarketsIcon';
@@ -96,6 +99,7 @@ export {
   ExploreIcon,
   FavoriteIcon,
   ForelandLogo,
+  ForelandMobileLogo,
   GamingConsoleIcon,
   GitHubIcon,
   InfoIcon,
@@ -111,6 +115,8 @@ export {
   MoonriverIcon,
   MoonIcon,
   NetworkCommunicationIcon,
+  ObservadorLogo,
+  ObservadorMobileLogo,
   PCLLogo,
   PolkadotIcon,
   PolkamarketsIcon,

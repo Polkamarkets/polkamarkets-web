@@ -8,7 +8,7 @@
     transition: all 0.2s ease-in-out 0s;
 
     &--gutter {
-      margin-bottom: var(--grid-margin);
+      padding-bottom: var(--grid-margin);
     }
 
     &__body {

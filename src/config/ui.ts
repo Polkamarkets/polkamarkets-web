@@ -70,7 +70,7 @@ const ui = {
       url: environment.UI_HERO_ACTION_URL
     }
   },
-  logo: environment.UI_LOGO,
+  logo: { desktop: environment.UI_LOGO, mobile: environment.UI_LOGO_MOBILE },
   filters: {
     favorites: {
       enabled: !isTrue(environment.UI_FILTERS_FAVORITES_DISABLED)

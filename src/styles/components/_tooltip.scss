@@ -21,7 +21,8 @@
 }
 
 .pm-c-tooltip__wrapper {
-  display: inline;
+  display: inline-flex;
+  vertical-align: text-top;
 }
 
 .pm-c-tooltip__arrow {

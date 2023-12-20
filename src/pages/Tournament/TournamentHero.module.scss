@@ -1,5 +1,79 @@
-.header {
+.wrapper {
   margin-top: var(--size-24);
+}
+
+.root {
+  display: flex;
+  flex-direction: column;
+
+  padding: 0;
+
+  background-color: var(--color-bg-3);
+
+  border: 1px solid var(--color-border);
+  border-radius: var(--size-8);
+
+  &Header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--size-24);
+
+    padding: var(--size-12) var(--size-16);
+
+    &Navigation {
+      display: flex;
+      flex-direction: row;
+      gap: var(--size-12);
+
+      align-items: center;
+
+      &Button {
+        padding: var(--size-8) !important;
+
+        color: #ffffff !important;
+        background-color: transparent !important;
+
+        border-radius: var(--size-8) !important;
+        border: 1px solid rgba(99, 112, 132, 0.4) !important;
+
+        &:hover {
+          background-color: rgba(99, 112, 132, 0.16) !important;
+        }
+      }
+
+      &Text {
+        font-size: var(--size-12--rem);
+        font-weight: 500;
+        color: #ffffff;
+        letter-spacing: 0.03em;
+
+        text-transform: uppercase;
+      }
+    }
+
+    &Actions {
+      display: flex;
+      flex-direction: row;
+      gap: var(--size-12);
+
+      align-items: center;
+
+      &Button {
+        padding: var(--size-8);
+
+        color: #a5bee4;
+        background-color: rgba(99, 112, 132, 0.16);
+
+        border-radius: var(--size-6);
+
+        &:hover {
+          background-color: rgba(99, 112, 132, 0.32);
+        }
+      }
+    }
+  }
 
   &Hero {
     padding: 40px 12px 12px 12px;
@@ -7,6 +81,30 @@
 
     @media (min-width: 768px) {
       padding: 12px 12px 12px 40px;
+    }
+
+    width: calc(100% + 2px);
+
+    margin-left: -1px;
+    margin-right: -1px;
+
+    background: linear-gradient(
+        90deg,
+        rgba(0, 0, 0, 0.95) 0%,
+        rgba(16, 18, 24, 0.9) 58.33%,
+        rgba(16, 18, 24, 0.8) 100%
+      ),
+      var(--hero-image), #0e0d26 !important;
+
+    border: 1px solid var(--color-border);
+    border-radius: var(--size-8);
+
+    &Avatar {
+      height: 100px;
+      width: 100px;
+
+      aspect-ratio: 1 / 1;
+      flex-shrink: 0;
     }
 
     &Content {
@@ -22,25 +120,118 @@
         gap: var(--size-32);
       }
 
-      &Pill {
-        padding: 4px 10px !important;
-        background-color: #4d3df7 !important;
-
-        &Text {
-          text-transform: uppercase;
-          opacity: 0.8;
-        }
-      }
-    }
-
-    &Actions {
-      display: none;
-
-      @media (min-width: 768px) {
+      &Land {
         display: flex;
+        flex-direction: row;
+        gap: var(--size-8);
+
         align-items: center;
 
-        margin-top: var(--size-16);
+        margin-bottom: var(--size-8);
+
+        &Avatar {
+          height: 20px;
+          width: 20px;
+
+          aspect-ratio: 1 / 1;
+          flex-shrink: 0;
+        }
+
+        &Name {
+          color: #8b9cb7;
+          font-size: var(--size-14--rem);
+
+          font-weight: 500;
+          line-height: 1.15;
+        }
+      }
+
+      &Name {
+        color: var(--color-text-1);
+        font-size: var(--size-24--rem);
+        font-weight: 600;
+        line-height: normal;
+
+        align-self: stretch;
+
+        margin-bottom: var(--size-8);
+      }
+
+      &Description {
+        color: #ffffff;
+        font-size: var(--size-14--rem);
+        font-weight: 400;
+        line-height: normal;
+
+        align-self: stretch;
+      }
+    }
+  }
+
+  &Footer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    padding: var(--size-12) var(--size-16);
+
+    @media (min-width: 1024px) {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--size-8);
+      flex-wrap: wrap;
+    }
+
+    &Stats {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+
+      @media (min-width: 1024px) {
+        flex-direction: row;
+        align-items: center;
+      }
+
+      &Group {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+      }
+
+      &Divider {
+        margin: 0 var(--size-12);
+        flex-shrink: 0;
+      }
+
+      &Item {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        color: #637084;
+
+        font-size: var(--size-12--rem);
+        font-weight: 600;
+        line-height: normal;
+        letter-spacing: 0.012em;
+        text-transform: uppercase;
+
+        strong {
+          margin-left: 0.3rem;
+          color: #ffffff;
+          font-weight: 600;
+        }
+
+        &Icon {
+          margin-right: var(--size-4);
+        }
+      }
+
+      &Rewards {
+        margin: var(--size-8) 0;
+
+        display: inline;
       }
     }
   }

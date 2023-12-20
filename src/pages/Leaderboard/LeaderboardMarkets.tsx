@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 import cn from 'classnames';
 import { isNull, isEmpty } from 'lodash';
@@ -21,6 +21,7 @@ function LeaderboardMarkets({
   emptyDataDescription = 'No data to show.'
 }: LeaderboardMarketsProps) {
   const theme = useTheme();
+  const location = useLocation();
 
   const isEmptyData = isEmpty(data);
 
@@ -51,7 +52,15 @@ function LeaderboardMarkets({
         <ul className={styles.root}>
           {data?.map(market => (
             <li key={market.slug}>
-              <Link className={styles.market} to={`/markets/${market.slug}`}>
+              <Link
+                className={styles.market}
+                to={{
+                  pathname: `/markets/${market.slug}`,
+                  state: {
+                    from: location.pathname
+                  }
+                }}
+              >
                 {!isNull(market.imageUrl) && (
                   <Image
                     $size="x2s"

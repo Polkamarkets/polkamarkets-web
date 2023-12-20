@@ -9,4 +9,5 @@ export type Land = {
   bannerUrl: string | null;
   position: number;
   tournaments: Omit<Tournament, 'land'>[];
+  users: number;
 };

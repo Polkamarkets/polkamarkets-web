@@ -153,6 +153,7 @@ export type GetLeaderboardGroupsByUserArgs = { user: string };
 
 // getTournaments
 export type GetTournamentsData = Tournament[];
+export type GetTournamentsArgs = { token?: string };
 
 // getTournamentBySlug
 export type GetTournamentBySlugData = Tournament;

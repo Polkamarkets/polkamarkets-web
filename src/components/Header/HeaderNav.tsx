@@ -24,7 +24,9 @@ import useAppSelector from 'hooks/useAppSelector';
 
 import headerNavClasses from './HeaderNav.module.scss';
 
-const LogoComponent = ui.logo ? Logos[ui.logo] : null;
+const LogoDesktopComponent = ui.logo.desktop ? Logos[ui.logo.desktop] : null;
+const LogoMobileComponent = ui.logo.mobile ? Logos[ui.logo.mobile] : null;
+
 const headerNavMenu = Object.values(pages)
   .filter(page => page.enabled && page.navigation)
   .reverse();
@@ -39,7 +41,12 @@ function HeaderNavModal({
 
   return (
     <>
-      <Button size="xs" variant="ghost" onClick={() => setShow(true)}>
+      <Button
+        className={headerNavClasses.menu}
+        size="xs"
+        variant="ghost"
+        onClick={() => setShow(true)}
+      >
         <Icon name="Menu" size="lg" title="Open Menu" />
       </Button>
       <Modal
@@ -140,25 +147,15 @@ function HeaderNavMenuModal() {
     <HeaderNavModal>
       {handleHide => (
         <HeaderNavMenu onMenuItemClick={handleHide}>
-          {features.fantasy.enabled && !isLoggedIn && (
-            <>
-              <li className={headerNavClasses.item}>
-                <ProfileSignin fullwidth variant="normal" color="primary">
-                  <Icon name="LogIn" size="lg" />
-                  Login
-                </ProfileSignin>
-              </li>
-              {ui.layout.header.helpUrl && (
-                <li className={headerNavClasses.item}>
-                  <HelpButton
-                    $outline
-                    $fullWidth
-                    onClick={handleHide}
-                    href={ui.layout.header.helpUrl}
-                  />
-                </li>
-              )}
-            </>
+          {features.fantasy.enabled && !isLoggedIn && ui.layout.header.helpUrl && (
+            <li className={headerNavClasses.item}>
+              <HelpButton
+                $outline
+                $fullWidth
+                onClick={handleHide}
+                href={ui.layout.header.helpUrl}
+              />
+            </li>
           )}
         </HeaderNavMenu>
       )}
@@ -171,6 +168,27 @@ export default function HeaderNav() {
   const showLeftMenu =
     theme.device.isDesktop && !theme.device.isTv && !!headerNavMenu.length;
 
+  const headerLogo = () => {
+    if (LogoDesktopComponent && !LogoMobileComponent) {
+      return <LogoDesktopComponent />;
+    }
+
+    if (theme.device.isDesktop && LogoDesktopComponent) {
+      return <LogoDesktopComponent />;
+    }
+
+    if (!theme.device.isDesktop && LogoMobileComponent) {
+      return <LogoMobileComponent />;
+    }
+
+    return (
+      <>
+        <Logos.PolkamarketsLogo />
+        <V2Badge className={headerNavClasses.logosBadge} />
+      </>
+    );
+  };
+
   return (
     <nav className={headerNavClasses.root}>
       {showLeftMenu && <HeaderNavMenuModal />}
@@ -181,14 +199,7 @@ export default function HeaderNav() {
           [headerNavClasses.logosGutter]: showLeftMenu
         })}
       >
-        {LogoComponent ? (
-          <LogoComponent />
-        ) : (
-          <>
-            <Logos.PolkamarketsLogo />
-            <V2Badge className={headerNavClasses.logosBadge} />
-          </>
-        )}
+        {headerLogo()}
       </Link>
       {theme.device.isTv && <HeaderNavMenu />}
       {!theme.device.isDesktop && ui.layout.header.networkSelector.enabled && (
@@ -198,8 +209,16 @@ export default function HeaderNav() {
           className={headerNavClasses.network}
         />
       )}
+      {!theme.device.isDesktop && features.fantasy.enabled && !isLoggedIn && (
+        <ProfileSignin variant="normal" color="primary" size="xs">
+          <Icon name="Profile" size="md" />
+          <Text as="span" scale="caption">
+            Sign In
+          </Text>
+        </ProfileSignin>
+      )}
       {!theme.device.isDesktop &&
-        ((features.fantasy.enabled && !isLoggedIn) ||
+        ((features.fantasy.enabled && !!ui.layout.header.helpUrl) ||
           !!headerNavMenu.length) && <HeaderNavMenuModal />}
     </nav>
   );

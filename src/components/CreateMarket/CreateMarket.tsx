@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 import { closeRightSidebar } from 'redux/ducks/ui';
 
@@ -14,11 +14,13 @@ export default function CreateMarket({
 }: ButtonProps & { onCreateClick?(): void }) {
   const dispatch = useAppDispatch();
   const history = useHistory();
+  const location = useLocation();
+
   const handleCreateClick = useCallback(() => {
     dispatch(closeRightSidebar());
     onCreateClick?.();
-    history.push('/markets/create');
-  }, [dispatch, history, onCreateClick]);
+    history.push('/markets/create', { from: location.pathname });
+  }, [dispatch, history, location.pathname, onCreateClick]);
 
   return (
     <Button color="primary" size="sm" onClick={handleCreateClick} {...props}>

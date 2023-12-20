@@ -1,5 +1,6 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import ReactApexChart from 'react-apexcharts';
+import AutoSizer from 'react-virtualized-auto-sizer';
 
 import dayjs from 'dayjs';
 import isEmpty from 'lodash/isEmpty';
@@ -24,7 +25,6 @@ type LineChartProps = {
 };
 
 function LineChart({ series, ticker, height = 200 }: LineChartProps) {
-  const [width, setWidth] = useState('99%');
   const theme = useTheme();
 
   const moreThan24h = useMemo(
@@ -48,22 +48,20 @@ function LineChart({ series, ticker, height = 200 }: LineChartProps) {
     [moreThan24h, theme.device.mode, ticker]
   );
 
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setWidth('100%');
-    }, 100);
-
-    return () => clearTimeout(timeout);
-  }, []);
-
   return (
-    <ReactApexChart
-      options={customOptions}
-      series={series}
-      type="line"
-      height={height}
-      width={width}
-    />
+    <div style={{ width: '100%', height }}>
+      <AutoSizer disableHeight>
+        {({ width }) => (
+          <ReactApexChart
+            options={customOptions}
+            series={series}
+            type="line"
+            height={height}
+            width={width}
+          />
+        )}
+      </AutoSizer>
+    </div>
   );
 }
 

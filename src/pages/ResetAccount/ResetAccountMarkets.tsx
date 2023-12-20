@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 import cn from 'classnames';
 import isEmpty from 'lodash/isEmpty';
@@ -23,6 +23,7 @@ function ResetAccountMarkets({
   onChangeCanReset
 }: ResetAccountMarketsProps) {
   const { network } = useNetwork();
+  const location = useLocation();
 
   // fetching all marketIds from portfolio positions with outcome shares
   const { isLoggedIn, portfolio, actions, marketsWithActions, isLoading } =
@@ -97,7 +98,13 @@ function ResetAccountMarkets({
         <ul className={styles.markets}>
           {markets?.map(market => (
             <li key={market.slug}>
-              <Link className={styles.market} to={`/markets/${market.slug}`}>
+              <Link
+                className={styles.market}
+                to={{
+                  pathname: `/markets/${market.slug}`,
+                  state: { from: location.pathname }
+                }}
+              >
                 <img
                   className={styles.marketImage}
                   src={market.imageUrl}

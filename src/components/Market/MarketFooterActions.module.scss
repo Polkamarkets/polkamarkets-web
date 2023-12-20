@@ -1,0 +1,22 @@
+.predicted {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  color: #5751fc;
+
+  font-size: var(--size-12--rem);
+  font-weight: 600;
+  line-height: normal;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  &Icon {
+    width: 14px;
+    height: 14px;
+
+    flex-shrink: 0;
+
+    fill: #5751fc;
+  }
+}

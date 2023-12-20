@@ -54,7 +54,8 @@ import {
   GetMarketFeedBySlugArgs,
   GetMarketFeedBySlugData,
   GetLandBySlugData,
-  GetLandBySlugArgs
+  GetLandBySlugArgs,
+  GetTournamentsArgs
 } from './types';
 
 function camelize<T extends object>(response: T): T {
@@ -217,8 +218,8 @@ const polkamarketsApi = createApi({
       transformResponse: (response: GetLeaderboardGroupsByUserData) =>
         camelize(response)
     }),
-    getTournaments: builder.query<GetTournamentsData, void>({
-      query: () => `/tournaments`,
+    getTournaments: builder.query<GetTournamentsData, GetTournamentsArgs>({
+      query: ({ token }) => `/tournaments${token ? `?token=${token}` : ''}`,
       transformResponse: (response: GetTournamentsData) => camelize(response)
     }),
     getTournamentBySlug: builder.query<

@@ -1,6 +1,7 @@
 import { Currency, Token } from 'types/currency';
 import { News, Comment } from 'types/market';
 import { Network } from 'types/network';
+import { Tournament } from 'types/tournament';
 
 export interface PriceChartPoint {
   value: number;
@@ -84,4 +85,6 @@ export interface Market {
   token: Token;
   users: number;
   comments: Comment[];
+  tournaments: Tournament[];
+  relatedMarkets?: Market[];
 }

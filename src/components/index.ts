@@ -212,6 +212,8 @@ export { default as ProfileSigninEmail } from './ProfileSigninEmail';
 
 export { default as ProfileSignout } from './ProfileSignout';
 
+export { default as SeoIcons } from './SeoIcons';
+
 export { default as Share } from './Share';
 
 export { default as SelectTokenModal } from './SelectTokenModal';

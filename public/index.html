@@ -2,18 +2,18 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <script type="text/javascript">
-      '%REACT_APP_FAVICON_URL%'.includes('https')
-        ? document.write(
-            '<link rel="icon" href="%REACT_APP_FAVICON_URL%" \/><link rel="apple-touch-icon" href="%REACT_APP_FAVICON_URL%" />'
-          )
-        : document.write(
-            '<link rel="icon" href="%PUBLIC_URL%/favicon.ico" \/><link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" \/>'
-          );
-    </script>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-
+    <meta
+      name="theme-color"
+      media="(prefers-color-scheme: dark)"
+      content="#0E1016"
+    />
+    <meta
+      name="theme-color"
+      media="(prefers-color-scheme: light)"
+      content="#FDFCFC"
+    />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
 
     <!-- Primary Meta Tags -->
@@ -37,7 +37,6 @@
       content="__META_TWITTER_DESCRIPTION__"
     />
     <meta property="twitter:image" content="__META_TWITTER_IMAGE__" />
-
     <link
       rel="preload"
       href="/assets/fonts/Gilroy-Regular.woff2"
@@ -67,9 +66,27 @@
       crossorigin="anonymous"
     />
     <script type="text/javascript">
+      '%REACT_APP_EXTERNAL_CSS_URL%'.includes('http') &&
+        document.write(
+          '<link rel="stylesheet" type="text/css" href="%REACT_APP_EXTERNAL_CSS_URL%" />'
+        );
+    </script>
+    <script type="text/javascript">
+      '%REACT_APP_EXTERNAL_JS_URL%'.includes('http') &&
+        document.write(
+          '<script type="text/javascript" src="%REACT_APP_EXTERNAL_JS_URL%" async><\/script>'
+        );
+    </script>
+    <script type="text/javascript">
       '%REACT_APP_LOCALIZE_CONFIG%'.includes('key') &&
         document.write(
           '<script src="/js/localize.js"><\/script><script>!function(a){if(!a.Localize){a.Localize={};for(var e=["translate","untranslate","phrase","initialize","translatePage","setLanguage","getLanguage","getSourceLanguage","detectLanguage","getAvailableLanguages","untranslatePage","bootstrap","prefetch","on","off","hideWidget","showWidget"],t=0;t<e.length;t++)a.Localize[e[t]]=function(){}}}(window);<\/script><script>Localize.initialize(%REACT_APP_LOCALIZE_CONFIG%);<\/script><style>body #localize-powered-by,body #localize-widget.show #localize-powered-by,body #localize-widget:hover #localize-powered-by{display:none!important}</style>'
+        );
+    </script>
+    <script type="text/javascript">
+      /^[a-z0-9]+$/.test('%REACT_APP_CLARITY_PROJECT_ID%') &&
+        document.write(
+          '<script>(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, document, "clarity", "script", "%REACT_APP_CLARITY_PROJECT_ID%");<\/script>'
         );
     </script>
   </head>

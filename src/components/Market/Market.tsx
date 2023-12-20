@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 import { features } from 'config';
 import { isNull } from 'lodash';
@@ -17,11 +17,14 @@ import MarketOutcomes from './MarketOutcomes';
 
 type MarketCardProps = {
   market: MarketInterface;
+  showCategory?: boolean;
 };
 
-function Market({ market }: MarketCardProps) {
+function Market({ market, showCategory = true }: MarketCardProps) {
   const dispatch = useAppDispatch();
   const theme = useTheme();
+  const location = useLocation();
+
   const handleNavigation = useCallback(async () => {
     const { clearMarket } = await import('redux/ducks/market');
     const { openTradeForm } = await import('redux/ducks/ui');
@@ -43,7 +46,10 @@ function Market({ market }: MarketCardProps) {
   return (
     <Link
       className="pm-c-market__body"
-      to={`/markets/${market.slug}`}
+      to={{
+        pathname: `/markets/${market.slug}`,
+        state: { from: location.pathname }
+      }}
       onClick={handleNavigation}
     >
       {!isNull(market.imageUrl) && (
@@ -55,11 +61,13 @@ function Market({ market }: MarketCardProps) {
         />
       )}
       <div className="pm-c-market__body-details">
-        <MarketCategory
-          category={market.category}
-          subcategory={market.subcategory}
-          verified={theme.device.isDesktop && market.verified}
-        />
+        {showCategory ? (
+          <MarketCategory
+            category={market.category}
+            subcategory={market.subcategory}
+            verified={theme.device.isDesktop && market.verified}
+          />
+        ) : null}
         <Text as="p" scale="body" fontWeight="medium">
           {market.title}
         </Text>

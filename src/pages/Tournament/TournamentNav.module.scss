@@ -22,19 +22,4 @@
   @media (min-width: 1024px) {
     height: 88px;
   }
-
-  &Actions {
-    margin-top: 0;
-    display: flex;
-    justify-content: flex-end;
-
-    &Button {
-      height: 44px !important;
-      width: 44px !important;
-    }
-
-    @media (min-width: 768px) {
-      display: none;
-    }
-  }
 }

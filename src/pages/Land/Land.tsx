@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
@@ -73,33 +73,39 @@ function Land() {
       </div>
     );
 
-  const { title, description, imageUrl, bannerUrl, tournaments } = land;
+  const {
+    slug: landSlug,
+    title,
+    description,
+    bannerUrl,
+    imageUrl,
+    tournaments,
+    users
+  } = land;
 
   return (
-    <Container className={classNames('max-width-screen-xl', styles.root)}>
+    <>
       {land && (
         <SEO
           title={`${land.title} | Foreland Alpha`}
           description={`${land.description}\nStart now with $ALPHA`}
         />
       )}
-      <LandHero {...{ slug, title, description, imageUrl, bannerUrl }} />
-      <div className="width-full">
+      <LandHero
+        meta={{ slug: landSlug, title, description, bannerUrl, imageUrl }}
+        stats={{
+          tournaments: tournaments.length,
+          members: users
+          // totalRewards: 11
+        }}
+      />
+      <Container className={classNames('max-width-screen-xl', styles.root)}>
         <div className={styles.upcoming}>
-          <div className={styles.upcomingHeader}>
-            <h2 className={styles.upcomingTitle}>Upcoming</h2>
-            <Link
-              to="/markets"
-              className="pm-c-button-subtle--primary pm-c-button--xs"
-            >
-              See All
-            </Link>
-          </div>
           <TournamentsUpcomingMarkets markets={markets || []} />
         </div>
         <LandTournamentList tournaments={tournaments} />
-      </div>
-    </Container>
+      </Container>
+    </>
   );
 }
 

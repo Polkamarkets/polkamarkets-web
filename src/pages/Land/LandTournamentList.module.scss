@@ -3,7 +3,7 @@
   flex-direction: column;
   gap: var(--size-24);
 
-  margin-bottom: var(--size-32);
+  margin-bottom: var(--size-24);
 
   &Header {
     display: flex;
@@ -14,16 +14,171 @@
   }
 
   &Title {
-    font-size: 2.4rem;
+    font-size: var(--size-20--rem);
     font-weight: bold;
     color: var(--color-text-1);
+    line-height: normal;
+
+    @media (min-width: 768px) {
+      font-size: var(--size-24--rem);
+    }
   }
 }
 
 .list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--size-20);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--size-16);
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--size-24);
+  }
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
 
   width: 100%;
+}
+
+.tournament {
+  display: flex;
+  flex-direction: column;
+
+  background: #171b23;
+
+  border-radius: var(--size-8);
+  border: 1px solid var(--color-border);
+
+  height: 100%;
+
+  &Content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--size-16);
+
+    width: calc(100% + 2px);
+    height: 100%;
+
+    margin-left: -1px;
+    margin-right: -1px;
+
+    padding: var(--size-24);
+
+    background: linear-gradient(
+        0deg,
+        rgba(32, 41, 57, 0.95) 0%,
+        rgba(32, 41, 57, 0.95) 100%
+      ),
+      var(--background-image), transparent;
+    background-clip: border-box;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    transition: background-color 300ms ease-in;
+
+    border-radius: var(--size-8);
+    border: 1px solid var(--color-border);
+    border-top: none;
+
+    &Avatar {
+      flex-shrink: 0;
+
+      &Fallback {
+        background-color: #4e3df6;
+
+        strong {
+          font-size: var(--size-22--rem);
+          line-height: 1.4;
+          font-weight: 600;
+          color: #ffffff;
+        }
+      }
+    }
+
+    &Title {
+      font-size: var(--size-20--rem);
+      font-weight: 600;
+      line-height: normal;
+      color: #f9fafb;
+
+      margin-bottom: var(--size-12);
+
+      text-overflow: ellipsis;
+      overflow: hidden;
+
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      word-break: break-all;
+    }
+
+    &Stats {
+      :global(.pm-c-pill__badge) {
+        background-color: rgba(255, 255, 255, 0.8) !important;
+      }
+
+      &Item {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        color: #637084;
+
+        font-size: var(--size-12--rem);
+        font-weight: 600;
+        line-height: 1.33;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+
+        strong {
+          padding: 3px 0;
+          margin-left: 0.3rem;
+          color: #ffffff;
+          font-weight: 600;
+        }
+      }
+    }
+  }
+
+  &Footer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    height: 42px;
+    padding: 0 var(--size-16);
+
+    &Stats {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      &Divider {
+        margin: 0 var(--size-12);
+        flex-shrink: 0;
+      }
+
+      &Item {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        color: #637084;
+
+        font-size: var(--size-12--rem);
+        font-weight: 600;
+        line-height: normal;
+        letter-spacing: 0.012em;
+        text-transform: uppercase;
+
+        strong {
+          margin-left: 0.3rem;
+          color: #ffffff;
+          font-weight: 600;
+        }
+      }
+    }
+  }
 }

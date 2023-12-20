@@ -22,4 +22,7 @@ export type Tournament = {
   land: Omit<Land, 'tournaments'> | null;
   users: number;
   expiresAt: string;
+  rankBy: string;
+  rewards: string | null;
+  rules: string | null;
 };

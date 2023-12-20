@@ -13,9 +13,6 @@ const USER_PLACES = {
   },
   3: {
     textColor: 'maximum-blue-green'
-  },
-  4: {
-    textColor: 'tickle-me-pink'
   }
 };
 
@@ -75,7 +72,6 @@ function prepareTournamentTopUsersRow({
   const firstPlace = rows && rows[0];
   const secondPlace = rows && rows[1];
   const thirdPlace = rows && rows[2];
-  const fourthPlace = rows && rows[3];
 
   return {
     firstPlace: {
@@ -107,17 +103,6 @@ function prepareTournamentTopUsersRow({
             place: 3,
             change: 'stable',
             bankrupt: thirdPlace.bankrupt
-          }
-        : null,
-      render: topUserRowRender
-    },
-    fourthPlace: {
-      value: fourthPlace
-        ? {
-            address: fourthPlace.username || fourthPlace.user,
-            place: 4,
-            change: 'stable',
-            bankrupt: fourthPlace.bankrupt
           }
         : null,
       render: topUserRowRender

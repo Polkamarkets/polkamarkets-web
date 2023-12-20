@@ -12,7 +12,7 @@ export type MiniTableRow = {
   /**
    * Title of this row
    */
-  title: string;
+  title: React.ReactNode;
   /**
    * Value of this row
    */

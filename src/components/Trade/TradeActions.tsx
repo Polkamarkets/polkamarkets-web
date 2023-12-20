@@ -432,7 +432,7 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
                   color="primary"
                   onClick={handleLoginToPredict}
                 >
-                  Login to Predict
+                  Sign in to Predict
                 </ProfileSignin>
               )}
             </div>

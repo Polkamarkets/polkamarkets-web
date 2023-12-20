@@ -1,3 +1,22 @@
 .root {
   padding: var(--size-24) !important;
+
+  &Actions {
+    &Button {
+      height: 40px;
+      padding: var(--size-6) var(--size-16);
+
+      color: #f3f4f6;
+      background: linear-gradient(#1e2138, #1e2138) padding-box,
+        linear-gradient(
+            to right,
+            hsla(243, 94%, 66%, 0.5),
+            hsla(270, 94%, 66%, 0.5)
+          )
+          border-box;
+
+      border: 1px solid transparent;
+      border-radius: var(--size-6);
+    }
+  }
 }

@@ -47,3 +47,5 @@ export { default as useFilters } from './useFilters';
 export { default as useERC20Balance } from './useERC20Balance';
 
 export { default as useTrade } from './useTrade';
+
+export { default as useTruncatedText } from './useTrucatedText';

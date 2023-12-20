@@ -27,6 +27,7 @@ export default function useExpandableOutcomes({
           off.length
         ).toFixed(3)
       }
-    }
+    },
+    off
   } as const;
 }

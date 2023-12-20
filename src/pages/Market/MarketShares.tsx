@@ -62,6 +62,9 @@ function MarketShares({ onSellSelected }: MarketSharesProps) {
         title: outcome.title,
         imageUrl: outcome.imageUrl,
         shares: outcomeShares ? outcomeShares.shares : 0,
+        buyValue: outcomeShares
+          ? outcomeShares.shares * outcomeShares.price
+          : 0,
         value:
           outcomeShares && outcomeShares.shares > 0
             ? calculateTradeDetails(
@@ -110,8 +113,11 @@ function MarketShares({ onSellSelected }: MarketSharesProps) {
               </>
             ) : language === 'pt' ? (
               <>
-                Tens actualmente{' '}
-                <strong>{`${roundNumber(outcome.shares, 3)}`} ações</strong> de
+                Tens{' '}
+                <strong>
+                  {outcome.value.toFixed(1)} {token.symbol}{' '}
+                </strong>
+                de
                 <div className={styles.rootItemTitleGroup}>
                   {outcome.imageUrl ? (
                     <Image
@@ -124,15 +130,25 @@ function MarketShares({ onSellSelected }: MarketSharesProps) {
                   ) : null}
                   <strong>{outcome.title}</strong>
                 </div>
-                no valor de{' '}
+                com um desempenho de{' '}
                 <strong>
-                  {outcome.value.toFixed(3)} {token.symbol}
+                  {outcome.value > outcome.buyValue ? '+' : ''}
+                  {(outcome.value - outcome.buyValue).toFixed(1)} {token.symbol}{' '}
                 </strong>
+                ({outcome.value > outcome.buyValue ? '+' : ''}
+                {(
+                  ((outcome.value - outcome.buyValue) / outcome.buyValue) *
+                  100
+                ).toFixed(1)}
+                %)
               </>
             ) : (
               <>
-                You currently hold{' '}
-                <strong>{`${roundNumber(outcome.shares, 3)}`} Shares</strong> of
+                You hold{' '}
+                <strong>
+                  {outcome.value.toFixed(1)} {token.symbol}{' '}
+                </strong>
+                of
                 <div className={styles.rootItemTitleGroup}>
                   {outcome.imageUrl ? (
                     <Image
@@ -145,15 +161,22 @@ function MarketShares({ onSellSelected }: MarketSharesProps) {
                   ) : null}
                   <strong>{outcome.title}</strong>
                 </div>
-                worth{' '}
+                performing{' '}
                 <strong>
-                  {outcome.value.toFixed(3)} {token.symbol}
+                  {outcome.value > outcome.buyValue ? '+' : ''}
+                  {(outcome.value - outcome.buyValue).toFixed(1)} {token.symbol}{' '}
                 </strong>
+                ({outcome.value > outcome.buyValue ? '+' : ''}
+                {(
+                  ((outcome.value - outcome.buyValue) / outcome.buyValue) *
+                  100
+                ).toFixed(1)}
+                %)
               </>
             )}
           </p>
           <Button size="sm" onClick={() => handleSell(outcome.id)}>
-            Sell Shares
+            Sell Position
           </Button>
         </li>
       ))}

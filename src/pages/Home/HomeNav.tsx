@@ -85,8 +85,10 @@ export default function HomeNav({ onFilterClick }: HomeNavProps) {
       </Button>
       <SearchBar
         size="sm"
-        name="Search Markets"
-        placeholder="Search markets"
+        name={`Search ${features.fantasy.enabled ? 'Questions' : 'Markets'}`}
+        placeholder={`Search ${
+          features.fantasy.enabled ? 'questions' : 'markets'
+        }`}
         onSearch={handleSearch}
         onChange={handleSearchChange}
         value={searchValue}

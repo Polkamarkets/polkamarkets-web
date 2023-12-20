@@ -1,3 +1,5 @@
+import { useMemo } from 'react';
+
 import { features } from 'config';
 import dayjs from 'dayjs';
 import { roundNumber } from 'helpers/math';
@@ -16,9 +18,20 @@ import marketClasses from './Market.module.scss';
 
 type MarketFooterStatsProps = {
   market: Market;
+  visibility?: {
+    volume?: {
+      desktop?: boolean;
+      mobile?: boolean;
+    };
+  };
 };
 
-export default function MarketFooterStats({ market }: MarketFooterStatsProps) {
+export default function MarketFooterStats({
+  market,
+  visibility = { volume: { desktop: true, mobile: false } }
+}: MarketFooterStatsProps) {
+  const theme = useTheme();
+
   const {
     users,
     volume,
@@ -30,11 +43,32 @@ export default function MarketFooterStats({ market }: MarketFooterStatsProps) {
     token,
     network
   } = market;
-  const expiresAt = dayjs(market.expiresAt)
-    .utc(true)
-    .format('MMM D, YYYY H:mm');
-  const theme = useTheme();
+
+  const expiresAt = dayjs(market.expiresAt).utc(true);
+
+  const currentYear = dayjs().utc(true).year();
+  const showYear = currentYear !== expiresAt.year();
+  const showTime = currentYear === expiresAt.year();
+
+  const formatedExpiresAt = theme.device.isDesktop
+    ? expiresAt.format('MMM D, YYYY H:mm')
+    : expiresAt.format(
+        `MMM D,${showYear ? ' YYYY' : ''}${showTime ? ' H:mm' : ''}`
+      );
+
   const fantasyTokenTicker = useFantasyTokenTicker();
+
+  const statsVisibility = useMemo(() => {
+    return {
+      volume: theme.device.isDesktop
+        ? visibility?.volume?.desktop
+        : visibility?.volume?.mobile
+    };
+  }, [
+    theme.device.isDesktop,
+    visibility?.volume?.desktop,
+    visibility?.volume?.mobile
+  ]);
 
   return (
     <div className="pm-c-market-footer__stats">
@@ -57,7 +91,6 @@ export default function MarketFooterStats({ market }: MarketFooterStatsProps) {
             <Tooltip
               className={marketClasses.footerStatsTooltip}
               text={`Users: ${users}`}
-              disabled={features.fantasy.enabled}
             >
               <Icon
                 name="User"
@@ -77,7 +110,7 @@ export default function MarketFooterStats({ market }: MarketFooterStatsProps) {
           {theme.device.isDesktop && <span className="pm-c-divider--circle" />}
         </>
       )}
-      {theme.device.isDesktop && !!volume && (
+      {statsVisibility.volume && !!volume && (
         <>
           <Text
             as="span"
@@ -91,7 +124,6 @@ export default function MarketFooterStats({ market }: MarketFooterStatsProps) {
                 volumeEur,
                 features.fantasy.enabled ? 0 : 3
               )} EUR`}
-              disabled={features.fantasy.enabled}
             >
               <Icon
                 name="Stats"
@@ -192,7 +224,7 @@ export default function MarketFooterStats({ market }: MarketFooterStatsProps) {
         <Text as="span" scale="tiny-uppercase" fontWeight="semibold">
           <Tooltip
             className={marketClasses.footerStatsTooltip}
-            text={`Expires on ${expiresAt}`}
+            text={`Expires on ${formatedExpiresAt}`}
           >
             <Icon
               name="Calendar"
@@ -205,7 +237,7 @@ export default function MarketFooterStats({ market }: MarketFooterStatsProps) {
               fontWeight="semibold"
               className={marketClasses.footerStatsText}
             >
-              {expiresAt}
+              {formatedExpiresAt}
             </Text>
           </Tooltip>
         </Text>

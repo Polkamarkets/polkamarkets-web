@@ -1,37 +1,6 @@
 .predictionsWithImage {
   width: 100vw;
 
-  &Wrapper {
-    margin: 0 -12px;
-
-    @media (min-width: 1024px) {
-      margin: 0;
-    }
-
-    :global {
-      .react-horizontal-scrolling-menu--inner-wrapper {
-        margin: 0 16px !important;
-
-        @media (min-width: 1024px) {
-          margin: 0 !important;
-        }
-
-        @media (min-width: 1200px) {
-          margin: 0 -16px !important;
-        }
-      }
-
-      .react-horizontal-scrolling-menu--arrow-left,
-      .react-horizontal-scrolling-menu--arrow-right {
-        display: none !important;
-
-        @media (min-width: 768px) {
-          display: flex !important;
-        }
-      }
-    }
-  }
-
   &Scroll {
     &::-webkit-scrollbar {
       display: none;
@@ -39,15 +8,10 @@
 
     -ms-overflow-style: none;
     scrollbar-width: none;
-
-    padding: var(--size-16);
-    margin: 0 var(--size-8);
-    border: 1px solid var(--color-border);
-    border-radius: var(--size-16);
   }
 
   &Item {
-    margin: 0 11px;
+    margin: 0 var(--size-8);
 
     &:first-child {
       margin-left: 0;
@@ -69,6 +33,11 @@
 
     width: var(--size-32);
     height: var(--size-32);
+
+    svg {
+      height: 26px !important;
+      width: 26px !important;
+    }
 
     background-color: transparent;
     color: var(--color-text-1);
@@ -297,5 +266,65 @@
         display: none;
       }
     }
+  }
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--size-16);
+
+  padding: 0 var(--size-16);
+  margin-bottom: var(--size-16);
+
+  @media (min-width: 768px) {
+    margin-bottom: var(--size-24);
+  }
+
+  &Group {
+    display: flex;
+    flex-direction: row;
+    gap: var(--size-12);
+    align-items: center;
+  }
+
+  &Title {
+    font-size: var(--size-20--rem);
+    font-weight: bold;
+    line-height: normal;
+    color: var(--color-text-1);
+
+    @media (min-width: 768px) {
+      font-size: var(--size-24--rem);
+    }
+  }
+
+  &Button {
+    height: 30px;
+    padding: var(--size-6) var(--size-16);
+
+    font-size: var(--size-14--rem);
+    line-height: normal;
+
+    color: #ffffff;
+    background: linear-gradient(#18192f, #18192f) padding-box,
+      linear-gradient(
+          to right,
+          hsla(243, 94%, 66%, 0.5),
+          hsla(270, 94%, 66%, 0.5)
+        )
+        border-box;
+
+    border: 1px solid transparent;
+    border-radius: var(--size-6);
+  }
+
+  &Arrows {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--size-8);
   }
 }

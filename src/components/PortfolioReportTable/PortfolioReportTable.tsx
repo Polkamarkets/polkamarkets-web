@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 import classnames from 'classnames';
 import { roundNumber } from 'helpers/math';
@@ -38,6 +38,7 @@ const PortfolioReportTable = ({
 }: MarketTableProps) => {
   const dispatch = useAppDispatch();
   const history = useHistory();
+  const location = useLocation();
   const polkamarketsService = usePolkamarketsService();
   const filter = useAppSelector(state => state.portfolio.filter);
 
@@ -70,7 +71,7 @@ const PortfolioReportTable = ({
   }
 
   function redirectTo(marketSlug) {
-    return history.push(`/markets/${marketSlug}`);
+    return history.push(`/markets/${marketSlug}`, { from: location.pathname });
   }
 
   const resolvedMarket = row => row.market.state === 'resolved';

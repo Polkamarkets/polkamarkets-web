@@ -7,6 +7,7 @@ import type {
 import { Virtuoso as ReactVirtuoso } from 'react-virtuoso';
 
 import cn from 'classnames';
+import { features } from 'config';
 import { AnimatePresence, motion } from 'framer-motion';
 import type { Market } from 'models/market';
 import { useRect, useTheme } from 'ui';
@@ -15,7 +16,7 @@ import { InfoIcon } from 'assets/icons';
 
 import PredictionCard from 'components/PredictionCard';
 
-import { useMarkets } from 'hooks';
+import { useAppSelector, useMarkets } from 'hooks';
 
 import { Button } from '../Button';
 import Text from '../Text';
@@ -27,11 +28,15 @@ type VirtuosoProps = Omit<
 >;
 
 function Virtuoso({ data }: VirtuosoProps) {
+  const isLoggedIn = useAppSelector(state => state.polkamarkets.isLoggedIn);
   const theme = useTheme();
   const [back, backRect] = useRect();
+  const BACK_HEIGHT = `${backRect.height}px`;
   const HEIGHT = theme.device.isDesktop
-    ? `${backRect.height}px`
-    : `calc(${backRect.height}px + var(--header-y))`;
+    ? BACK_HEIGHT
+    : `calc(${BACK_HEIGHT} ${
+        !features.fantasy.enabled || isLoggedIn ? '+ var(--header-y)' : ''
+      })`;
   const virtuoso = useRef<VirtuosoHandle>(null);
   const [renderBack, setRenderBack] = useState(false);
   const handleItemContent = useCallback(

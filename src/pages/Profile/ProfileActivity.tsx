@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 import { relativeTimeFromNow } from 'helpers/date';
 import { FeedActivity } from 'types/portfolio';
@@ -13,6 +13,8 @@ type ProfileActivityProps = {
 };
 
 function ProfileActivity({ activity, backgroundColor }: ProfileActivityProps) {
+  const location = useLocation();
+
   const {
     accentColor,
     imageUrl,
@@ -25,7 +27,10 @@ function ProfileActivity({ activity, backgroundColor }: ProfileActivityProps) {
   return (
     <Link
       className={`pm-c-activity bg-${backgroundColor}`}
-      to={`/markets/${marketSlug}`}
+      to={{
+        pathname: `/markets/${marketSlug}`,
+        state: { from: location.pathname }
+      }}
     >
       <div className={`pm-c-activity__image--${accentColor} border-radius-50`}>
         <img

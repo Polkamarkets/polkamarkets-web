@@ -227,6 +227,24 @@ function Leaderboard() {
   const isLoadingTournamentBySlugQuery =
     isLoadingTournamentBySlug || isFetchingTournamentBySlug;
 
+  let tournamentCriteria: string | null = null;
+  if (tournamentBySlug?.rankBy) {
+    tournamentCriteria =
+      tournamentBySlug?.rankBy === 'claim_winnings_count,earnings_eur'
+        ? 'wonPredictions'
+        : 'earnings';
+
+    if (activeTab !== tournamentCriteria) setActiveTab(tournamentCriteria);
+    // moving column to 2nd place in the columns array
+    const index = columns.findIndex(
+      column => column.key === tournamentCriteria
+    );
+    if (index !== -1) {
+      const [column] = columns.splice(index, 1);
+      columns.splice(1, 0, column);
+    }
+  }
+
   // Default
 
   const {

@@ -1,6 +1,6 @@
 import { createContext, useCallback, useMemo, useReducer } from 'react';
 
-import { ui } from 'config';
+import { environment, ui } from 'config';
 import merge from 'lodash/merge';
 import pickBy from 'lodash/pickBy';
 import { useGetTournamentsQuery } from 'services/Polkamarkets';
@@ -27,9 +27,12 @@ const FiltersContext = createContext<FiltersContextState>(
 function FiltersProvider({ children }) {
   const { networks } = useNetworks();
 
-  const { data: tournaments } = useGetTournamentsQuery(undefined, {
-    skip: !ui.filters.tournaments.enabled
-  });
+  const { data: tournaments } = useGetTournamentsQuery(
+    { token: environment.FEATURE_FANTASY_TOKEN_TICKER },
+    {
+      skip: !ui.filters.tournaments.enabled
+    }
+  );
 
   const filtersWithNetworks = useMemo(() => addNetworks(networks), [networks]);
   const filtersWithTournaments = useMemo(

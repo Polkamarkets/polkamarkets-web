@@ -16,6 +16,11 @@
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center center;
+
+  &Predicted {
+    border-width: 2px !important;
+    border-color: $primary-500 !important;
+  }
 }
 
 .size {

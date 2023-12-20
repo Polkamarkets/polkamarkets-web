@@ -1,10 +1,130 @@
+import { CSSProperties, useCallback } from 'react';
+import { Link } from 'react-router-dom';
+
+import classNames from 'classnames';
+import dayjs from 'dayjs';
+import isNull from 'lodash/isNull';
 import type { Land } from 'types/land';
+import type { Tournament } from 'types/tournament';
+import { Avatar } from 'ui';
 
-import Tournament from 'pages/Tournaments/Tournament';
-
-import { AlertMini } from 'components';
+import { AlertMini, Pill } from 'components';
 
 import styles from './LandTournamentList.module.scss';
+
+type LandTournamentListItemProps = {
+  tournament: Omit<Tournament, 'land'>;
+};
+
+function LandTournamentListItem({ tournament }: LandTournamentListItemProps) {
+  const altFormatter = useCallback((alt?: string): string | null => {
+    if (!alt) return null;
+
+    const altWithoutSpecialChars = alt.replace(/[^\w\s]/g, ' ');
+
+    const words = altWithoutSpecialChars
+      .trim()
+      .split(' ')
+      .filter(word => word !== '');
+
+    const numberMatch = altWithoutSpecialChars.match(/\d+/);
+
+    if (numberMatch) {
+      const firstLetter = altWithoutSpecialChars[0];
+      const number = numberMatch[0];
+      return (firstLetter + number).toUpperCase();
+    }
+
+    if (words.length >= 2) {
+      const firstLetters = words[0][0] + words[1][0];
+      return firstLetters.toUpperCase();
+    }
+
+    return altWithoutSpecialChars.substring(0, 2).toUpperCase();
+  }, []);
+
+  const isTournamentEnded = dayjs()
+    .utc()
+    .isAfter(dayjs(tournament.expiresAt).utc());
+
+  return (
+    <Link to={`/tournaments/${tournament.slug}`} className={styles.tournament}>
+      <div
+        className={styles.tournamentContent}
+        style={
+          {
+            '--background-image': `url(${tournament.imageUrl})`
+          } as CSSProperties
+        }
+      >
+        <Avatar
+          $size="md"
+          $radius="sm"
+          src={!isNull(tournament.imageUrl) ? tournament.imageUrl : undefined}
+          alt={tournament.title}
+          altFormatter={altFormatter}
+          className={styles.tournamentContentAvatar}
+          fallbackClassName={styles.tournamentContentAvatarFallback}
+        />
+        <div>
+          <h4 className={styles.tournamentContentTitle}>{tournament.title}</h4>
+          <div className={styles.tournamentContentStats}>
+            {!isTournamentEnded ? (
+              <span className={styles.tournamentContentStatsItem}>
+                Ends At:
+                <strong className="notranslate">
+                  {dayjs(tournament.expiresAt).utc(true).format('MMM D, YYYY')}
+                </strong>
+              </span>
+            ) : (
+              <Pill badge color="primary">
+                Ended
+              </Pill>
+            )}
+          </div>
+        </div>
+      </div>
+      <div className={styles.tournamentFooter}>
+        <div className={styles.tournamentFooterStats}>
+          {tournament.markets ? (
+            <>
+              <span className={styles.tournamentFooterStatsItem}>
+                Questions:
+                <strong className="notranslate">
+                  {tournament.markets.length}
+                </strong>
+              </span>
+              <span
+                className={classNames(
+                  'pm-c-divider--circle',
+                  styles.tournamentFooterStatsDivider
+                )}
+              />
+            </>
+          ) : null}
+          <span className={styles.tournamentFooterStatsItem}>
+            Members:
+            <strong className="notranslate">{tournament.users}</strong>
+          </span>
+          {tournament.rewards ? (
+            <>
+              <span
+                className={classNames(
+                  'pm-c-divider--circle',
+                  styles.tournamentFooterStatsDivider
+                )}
+              />
+              <span className={styles.tournamentFooterStatsItem}>
+                Rewards:
+                <strong className="notranslate">{1}</strong>
+              </span>
+            </>
+          ) : null}
+        </div>
+      </div>
+    </Link>
+  );
+}
 
 type LandTournamentListProps = {
   tournaments: Land['tournaments'];
@@ -29,7 +149,7 @@ function LandTournamentList({ tournaments }: LandTournamentListProps) {
         <ul className={styles.list}>
           {tournaments.map(tournament => (
             <li key={tournament.id}>
-              <Tournament tournament={tournament} />
+              <LandTournamentListItem tournament={tournament} />
             </li>
           ))}
         </ul>

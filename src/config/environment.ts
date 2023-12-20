@@ -38,6 +38,7 @@ const environmentConfigVariables = [
   'UI_FILTERS_CATEGORIES',
   'UI_TOKEN_BLACKLIST',
   'UI_LOGO',
+  'UI_LOGO_MOBILE',
   'UI_FOOTER_TEXT',
   'UI_HELP_URL',
   'UI_FOOTER_TEXT',
@@ -58,7 +59,9 @@ const environmentConfigVariables = [
   'UI_TOURNAMENTS_UPCOMING_ENABLED',
   'UI_TOURNAMENTS_TABS_ENABLED',
   'UI_TWITTER_SHARE_INTENT',
-  'SENTRY_DSN'
+  'SENTRY_DSN',
+  'FAVICON_URL',
+  'TOUCHICON_URL'
 ] as const;
 
 export type EnvironmentConfigVariable =

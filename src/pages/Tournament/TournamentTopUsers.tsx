@@ -27,11 +27,6 @@ const columns: TournamentTopUsersColumn[] = [
     key: 'thirdPlace',
     title: 'Third place',
     render: topUserColumnRender
-  },
-  {
-    key: 'fourthPlace',
-    title: 'Fourth place',
-    render: topUserColumnRender
   }
 ];
 
@@ -55,8 +50,8 @@ function TournamentTopUsers({ rows, isLoading }: TournamentTopUsersProps) {
           to={`${location.pathname}/leaderboard`}
           className={cn(
             'pm-c-button--sm',
-            'pm-c-button-outline--primary',
-            'pm-c-button--fullwidth'
+            'pm-c-button--fullwidth',
+            styles.rootActionsButton
           )}
         >
           View Leaderboard

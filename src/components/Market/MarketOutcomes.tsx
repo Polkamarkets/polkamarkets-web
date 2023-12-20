@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 import { features } from 'config';
 import sortOutcomes from 'helpers/sortOutcomes';
@@ -26,14 +26,26 @@ import styles from './MarketOutcomes.module.scss';
 
 type MarketOutcomesProps = {
   market: Market;
+  readonly?: boolean;
 };
 
-export default function MarketOutcomes({ market }: MarketOutcomesProps) {
+export default function MarketOutcomes({
+  market,
+  readonly = false
+}: MarketOutcomesProps) {
   const history = useHistory();
+  const location = useLocation();
   const dispatch = useAppDispatch();
   const trade = useAppSelector(state => state.trade);
+  const portfolio = useAppSelector(state => state.polkamarkets.portfolio);
   const theme = useTheme();
   const { trade: tradeState, status } = useTrade();
+
+  const isPredictedOutcome = useCallback(
+    (outcomeId: string | number) =>
+      portfolio[market.id]?.outcomes[outcomeId]?.shares >= 0.0005,
+    [market.id, portfolio]
+  );
 
   const [tradeVisible, setTradeVisible] = useState(false);
 
@@ -74,32 +86,47 @@ export default function MarketOutcomes({ market }: MarketOutcomesProps) {
 
   const handleOutcomeClick = useCallback(
     async (event: React.MouseEvent<HTMLButtonElement>) => {
-      const { value } = event.currentTarget;
-      const isOutcomeActive = getOutcomeActive(value);
-
-      setOutcome(isOutcomeActive ? '' : value);
-
-      if (features.fantasy.enabled) {
-        setTradeVisible(true);
+      if (readonly) {
+        history.push(`/markets/${market.slug}`, { from: location.pathname });
+        window.location.reload();
       } else {
-        if (market.state === 'closed') {
-          const { openReportForm } = await import('redux/ducks/ui');
+        const { value } = event.currentTarget;
 
-          dispatch(openReportForm());
+        const isOutcomeActive = getOutcomeActive(value);
+
+        setOutcome(isOutcomeActive ? '' : value);
+
+        if (features.fantasy.enabled) {
+          setTradeVisible(true);
         } else {
-          const { openTradeForm } = await import('redux/ducks/ui');
+          if (market.state === 'closed') {
+            const { openReportForm } = await import('redux/ducks/ui');
 
-          dispatch(openTradeForm());
-        }
-        if (isOutcomeActive) {
-          const { closeTradeForm } = await import('redux/ducks/ui');
+            dispatch(openReportForm());
+          } else {
+            const { openTradeForm } = await import('redux/ducks/ui');
 
-          dispatch(closeTradeForm());
+            dispatch(openTradeForm());
+          }
+          if (isOutcomeActive) {
+            const { closeTradeForm } = await import('redux/ducks/ui');
+
+            dispatch(closeTradeForm());
+          }
+          history.push(`/markets/${market.slug}`, { from: location.pathname });
         }
-        history.push(`/markets/${market.slug}`);
       }
     },
-    [dispatch, getOutcomeActive, setOutcome, history, market]
+    [
+      readonly,
+      getOutcomeActive,
+      setOutcome,
+      history,
+      market.slug,
+      market.state,
+      location.pathname,
+      dispatch
+    ]
   );
 
   const handleCloseTrade = useCallback(async () => {
@@ -204,6 +231,7 @@ export default function MarketOutcomes({ market }: MarketOutcomesProps) {
               value={outcome.id}
               data={outcome.data}
               primary={outcome.title}
+              isPredicted={isPredictedOutcome(outcome.id)}
               isActive={getOutcomeActive(outcome.id)}
               onClick={handleOutcomeClick}
               secondary={{
@@ -226,6 +254,9 @@ export default function MarketOutcomes({ market }: MarketOutcomesProps) {
           <OutcomeItem
             $size="sm"
             $variant="dashed"
+            isPredicted={expandableOutcomes.off.some(outcome =>
+              isPredictedOutcome(outcome.id)
+            )}
             value={expandableOutcomes.onseted[0].id}
             onClick={handleOutcomeClick}
             {...expandableOutcomes.offseted}

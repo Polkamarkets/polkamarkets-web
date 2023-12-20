@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 import * as realitioLib from '@reality.eth/reality-eth-lib/formatters/question';
 import { features } from 'config';
@@ -29,6 +29,7 @@ import { initialValues, validationSchema } from './CreateMarketForm.util';
 
 function CreateMarketForm() {
   const history = useHistory();
+  const location = useLocation();
   const dispatch = useAppDispatch();
   const polkamarketsService = usePolkamarketsService();
   const { network, networkConfig } = useNetwork();
@@ -117,7 +118,7 @@ function CreateMarketForm() {
 
       await updateWallet();
       resetLocalStorage();
-      history.push(`/markets/${res.data.slug}`);
+      history.push(`/markets/${res.data.slug}`, { from: location.pathname });
     } catch (err) {
       history.push('/');
     }

@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback, useMemo } from 'react';
 
 import cn from 'classnames';
 import { features, ui } from 'config';
+import { isEmpty, isUndefined } from 'lodash';
 import { setTokenTicker } from 'redux/ducks/market';
 import {
   setTradeAmount,
@@ -44,7 +45,7 @@ function TradeFormInput() {
   );
 
   const type = useAppSelector(state => state.trade.type);
-  const label = `${type} shares`;
+  const label = `Amount`;
 
   const selectedMarketId = useAppSelector(
     state => state.trade.selectedMarketId
@@ -116,7 +117,12 @@ function TradeFormInput() {
   }, [dispatch, type, wrapped]);
 
   useEffect(() => {
-    if (![type, market, outcome, amount].includes(undefined)) {
+    if (
+      [type, market, outcome, amount].every(
+        value =>
+          !isUndefined(value) && (!isEmpty(value) || typeof value === 'number')
+      )
+    ) {
       const tradeDetails = calculateTradeDetails(type, market, outcome, amount);
 
       dispatch(setTradeDetails(tradeDetails));

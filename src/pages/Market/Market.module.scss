@@ -5,7 +5,6 @@
 }
 
 .hero {
-  height: 224px;
   display: flex;
   flex-direction: column;
 
@@ -14,6 +13,14 @@
     flex: 1 0 auto;
     gap: var(--size-24);
     align-items: center;
+
+    padding-top: var(--size-24);
+    padding-bottom: var(--size-24);
+
+    @media (min-width: 1024px) {
+      padding-top: 40px;
+      padding-bottom: 40px;
+    }
 
     &Breadcrumb {
       display: flex;
@@ -51,17 +58,22 @@
   &Stats {
     height: var(--size-48);
     background-color: var(--color-background-quaternary);
-    border-top: 1px solid var(--color-text-quinary);
+    border-top: 1px solid var(--color-border);
     border-bottom: 1px solid var(--color-border);
   }
 }
 
 .body {
   width: 100%;
-  border-right: 1px solid var(--color-border);
+
+  background-color: var(--color-surface-primary);
 
   @media (min-width: 1024px) {
-    background-color: var(--color-surface-primary);
+    margin-top: var(--size-24);
+
+    border: 1px solid var(--color-border);
+    border-top-left-radius: var(--size-8);
+    border-top-right-radius: var(--size-8);
   }
 }
 
@@ -122,7 +134,7 @@
   flex-direction: column;
   gap: var(--size-12);
 
-  margin-bottom: 56px;
+  margin-bottom: 24px;
 
   &Title {
     font-size: 1.2rem;
@@ -183,6 +195,14 @@
   &Adornment {
     padding: 0 var(--size-12) !important;
     height: var(--size-32) !important;
+  }
+}
+
+.relatedQuestions {
+  margin-top: var(--size-4);
+
+  &Item {
+    margin-bottom: var(--size-24);
   }
 }
 

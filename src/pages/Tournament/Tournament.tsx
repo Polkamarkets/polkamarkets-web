@@ -67,6 +67,17 @@ export default function Tournament() {
 
   const isTournamentEnded = dayjs().utc().isAfter(dayjs(data?.expiresAt).utc());
 
+  const tournamentCriteria = useMemo(() => {
+    if (data) {
+      if (data.rankBy === 'claim_winnings_count,earnings_eur') {
+        return 'Won predictions';
+      }
+      return 'Earnings';
+    }
+
+    return undefined;
+  }, [data]);
+
   if (isLoadingTournamentBySlugQuery || isLoadingLeaderboardByTimeframeQuery)
     return (
       <div className="flex-row justify-center align-center width-full padding-y-5 padding-x-4">
@@ -89,21 +100,27 @@ export default function Tournament() {
         <TournamentHero
           landName={data?.land?.title}
           landSlug={data?.land?.slug}
+          landImageUrl={data?.land?.imageUrl}
           landBannerUrl={data?.land?.bannerUrl}
           tournamentName={data?.title}
           tournamentDescription={data?.description}
           tournamentSlug={data?.slug}
+          tournamentImageUrl={data?.imageUrl}
           topUsers={
             <TournamentTopUsers
               rows={leaderboardByTimeframe?.filter(row => row.username)}
               isLoading={isLoadingLeaderboardByTimeframeQuery}
             />
           }
+          questions={marketsIds.length}
+          users={data?.users}
+          rewards={data?.rewards}
+          criteria={tournamentCriteria}
+          rules={data?.rules}
         />
       )}
       <Container ref={ref} className={styles.nav}>
         <TournamentNav
-          tournamentSlug={data?.slug || slug}
           onFilterClick={theme.device.isDesktop ? handleToggle : handleShow}
         />
       </Container>

@@ -1,4 +1,5 @@
-import { useCallback, useMemo, useState, MouseEvent } from 'react';
+import { useCallback, useMemo, MouseEvent } from 'react';
+import { Virtuoso } from 'react-virtuoso';
 
 import cn from 'classnames';
 import { roundNumber } from 'helpers/math';
@@ -8,7 +9,6 @@ import { Image } from 'ui';
 
 import { useAppDispatch, useAppSelector } from 'hooks';
 
-import VirtualizedList from '../VirtualizedList';
 import styles from './Trade.module.scss';
 import { View } from './Trade.types';
 import TradePredictionsWithImages from './TradePredictionsWithImages';
@@ -25,7 +25,6 @@ function TradePredictions({
   onPredictionSelected
 }: TradePredictionsProps) {
   const dispatch = useAppDispatch();
-  const [visiblePredictions, setVisiblePredictions] = useState(3);
 
   const { id, outcomes, networkId } = useAppSelector(
     state => state.market.market
@@ -58,20 +57,19 @@ function TradePredictions({
   const multiple = predictions.length > 2;
   const withImages = predictions.every(outcome => !!outcome.imageUrl);
 
-  const on = multiple ? predictions.slice(0, visiblePredictions) : predictions;
-  const off = multiple ? predictions.slice(visiblePredictions) : [];
-
   const listHeight = Math.min(
     Math.ceil(window.innerHeight * (view === 'modal' ? 0.25 : 0.35)),
-    on.length * (size === 'md' ? 49 : 71)
+    predictions.length * (size === 'md' ? 60 : 82)
   );
 
   if (view === 'default' || (view === 'modal' && !withImages)) {
     return (
       <div>
-        <VirtualizedList
-          height={listHeight}
-          data={on}
+        <Virtuoso
+          style={{
+            height: listHeight
+          }}
+          data={predictions}
           itemContent={(index, outcome) => (
             <button
               type="button"
@@ -118,17 +116,6 @@ function TradePredictions({
             </button>
           )}
         />
-        {predictions.length > 3 ? (
-          <button
-            type="button"
-            className={styles.predictionsShowMore}
-            onClick={() =>
-              setVisiblePredictions(off.length > 0 ? predictions.length : 3)
-            }
-          >
-            {off.length > 0 ? `Show More (${off.length})` : 'Show Less'}
-          </button>
-        ) : null}
       </div>
     );
   }
