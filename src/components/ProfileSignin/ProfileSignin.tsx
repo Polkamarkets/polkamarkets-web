@@ -65,7 +65,51 @@ export default function ProfileSignin({ onClick, ...props }: ButtonProps) {
     async (event: React.MouseEvent<HTMLButtonElement>) => {
       const name = event.currentTarget.name as Exclude<Providers, 'Email'>;
 
+      const getUserData = async (userJwt: string) => {
+        const publicKey = await importSPKI(
+          process.env.REACT_APP_OBSERVADOR_LOGIN_PUBLIC_KEY || '',
+          'RS256'
+        );
+
+        const { payload: userData } = await jwtVerify(userJwt, publicKey);
+
+        return userData;
+      };
+
+      const loginObservador = async userData => {
+        const userId = userData.uid as string;
+        console.log('userData:', userData);
+
+        const jwtToken = await getJWTForUser(
+          userId,
+          userData.email || `${userId}@observador.pt`,
+          userData.name as string,
+          userData.picture as string
+        );
+
+        const success = await polkamarketsService.socialLoginWithJWT(
+          userId,
+          jwtToken.data
+        );
+
+        if (success) {
+          const { login } = await import('redux/ducks/polkamarkets');
+
+          dispatch(login(polkamarketsService));
+        }
+
+        setLoad('');
+        setShow(false);
+      };
+
       setLoad(name);
+
+      let userJwt = Cookies.get('obs_foreland');
+      if (userJwt) {
+        const userData = await getUserData(userJwt as string);
+        await loginObservador(userData);
+        return;
+      }
 
       const popup = window.open(
         'https://observador.pt/login-popup/',
@@ -80,35 +124,13 @@ export default function ProfileSignin({ onClick, ...props }: ButtonProps) {
           // TODO need to test if the refresh is needed or not
           // refresh the page to rerender with cookie obs_foreland seted
 
-          const userJwt = Cookies.get('obs_foreland');
+          userJwt = Cookies.get('obs_foreland');
           console.log('userJwt:', userJwt);
 
-          const publicKey = await importSPKI(
-            process.env.REACT_APP_OBSERVADOR_LOGIN_PUBLIC_KEY || '',
-            'RS256'
-          );
+          const userData = await getUserData(userJwt as string);
 
-          const { payload: userData } = await jwtVerify(userJwt, publicKey);
-
+          await loginObservador(userData);
           console.log('payload:', userData);
-
-          const userId = userData.uid as string;
-
-          const jwtToken = await getJWTForUser(userId);
-
-          const success = await polkamarketsService.socialLoginWithJWT(
-            userId,
-            jwtToken.data
-          );
-
-          if (success) {
-            const { login } = await import('redux/ducks/polkamarkets');
-
-            dispatch(login(polkamarketsService));
-          }
-
-          setLoad('');
-          setShow(false);
         }
       });
     },
