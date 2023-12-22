@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable no-param-reassign */
 const CopyPlugin = require('copy-webpack-plugin');
 const cracoPluginStyleResourcesLoader = require('craco-plugin-style-resources-loader');
