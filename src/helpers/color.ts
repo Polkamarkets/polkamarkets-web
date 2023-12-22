@@ -13,7 +13,7 @@ const categoricalColors = [
   'categorical-11'
 ] as const;
 
-export type CategoricalColor = typeof categoricalColors[number];
+export type CategoricalColor = (typeof categoricalColors)[number];
 
 const categoricalColorsInHex = [
   '#0fb5ae',

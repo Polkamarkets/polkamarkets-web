@@ -40,8 +40,8 @@ export default function MarketHead() {
 
     if (market.tournaments.length > 1) {
       if (location.state && location.state.from) {
-        const tournament = market.tournaments.find(({ slug }) =>
-          location.state.from?.includes(slug)
+        const tournament = market.tournaments.find(
+          ({ slug }) => location.state.from?.includes(slug)
         );
 
         return tournament;

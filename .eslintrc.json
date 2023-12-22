@@ -4,12 +4,12 @@
     "es2021": true
   },
   "extends": [
+    "react-app",
     "airbnb",
+    "plugin:react/recommended",
     "plugin:react-hooks/recommended",
     "plugin:prettier/recommended",
-    "plugin:jsx-a11y/recommended",
-    "plugin:storybook/recommended",
-    "prettier/react"
+    "plugin:jsx-a11y/recommended"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -20,6 +20,7 @@
     "sourceType": "module"
   },
   "plugins": [
+    "react",
     "react-hooks",
     "prettier",
     "@typescript-eslint",
@@ -31,9 +32,22 @@
     /**
      * START COLLISIONS
      */
+    // TODO: Remove when fixed
+    "import/no-cycle": "off",
+    "no-restricted-exports": "off",
+    "react/jsx-no-useless-fragment": "off",
+    "react/function-component-definition": "off",
+    "react/no-unstable-nested-components": "off",
+    "react/no-invalid-html-attribute": "off",
+    "prefer-regex-literals": "off",
+    "react/jsx-no-constructed-context-values": "off",
+    "no-unsafe-optional-chaining": "off",
+    "default-param-last": "off",
+    "react/display-name": "off",
+    "prefer-exponentiation-operator": "off",
+
     "no-shadow": "off",
     "@typescript-eslint/no-shadow": ["error"],
-
     "no-use-before-define": "off",
     "@typescript-eslint/no-use-before-define": ["error"],
 

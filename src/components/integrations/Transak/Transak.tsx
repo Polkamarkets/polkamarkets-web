@@ -92,7 +92,7 @@ function isValidApiKey(transakApiKey?: string) {
 
 function isValidEnvironment(
   transakEnvironment?
-): transakEnvironment is typeof transakEnviroments[number] {
+): transakEnvironment is (typeof transakEnviroments)[number] {
   return transakEnviroments.includes(transakEnvironment);
 }
 

@@ -65,10 +65,12 @@ const environmentConfigVariables = [
 ] as const;
 
 export type EnvironmentConfigVariable =
-  typeof environmentConfigVariables[number];
+  (typeof environmentConfigVariables)[number];
 
 export type EnvironmentConfig = {
-  [_variable in typeof environmentConfigVariables[number]]: string | undefined;
+  [_variable in (typeof environmentConfigVariables)[number]]:
+    | string
+    | undefined;
 };
 
 function getEnvironmentConfigVariable(

@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable no-param-reassign */
 const CopyPlugin = require('copy-webpack-plugin');
 const cracoPluginStyleResourcesLoader = require('craco-plugin-style-resources-loader');
@@ -5,6 +6,11 @@ const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
+  devServer: {
+    client: {
+      overlay: false
+    }
+  },
   plugins: [
     {
       plugin: cracoPluginStyleResourcesLoader,
@@ -33,16 +39,14 @@ module.exports = {
   ],
   babel: {
     plugins: [
-      '@babel/plugin-proposal-class-properties',
-      '@babel/plugin-proposal-logical-assignment-operators',
       '@babel/plugin-proposal-nullish-coalescing-operator',
       '@babel/plugin-proposal-optional-chaining',
       '@babel/plugin-proposal-private-methods',
       '@babel/plugin-proposal-numeric-separator',
       '@babel/plugin-transform-class-properties',
       '@babel/plugin-transform-private-methods',
-      '@babel/plugin-transform-private-property-in-object',
-    ],
+      '@babel/plugin-transform-private-property-in-object'
+    ]
   },
   webpack: {
     plugins: [
@@ -71,8 +75,7 @@ module.exports = {
         ]
       })
     ],
-
-    configure: (config) => {
+    configure: config => {
       const fallback = config.resolve.fallback || {};
       Object.assign(fallback, {
         crypto: false, // require.resolve("crypto-browserify") can be polyfilled here if needed
@@ -84,29 +87,24 @@ module.exports = {
         url: false, // require.resolve("url") can be polyfilled here if needed
         zlib: false, // require.resolve("browserify-zlib") can be polyfilled here if needed
         path: false,
-        fs: false,
+        fs: false
       });
       config.resolve.fallback = fallback;
       config.plugins = (config.plugins || []).concat([
         new webpack.ProvidePlugin({
-          process: "process/browser",
-          Buffer: ["buffer", "Buffer"],
-        }),
+          process: 'process/browser',
+          Buffer: ['buffer', 'Buffer']
+        })
       ]);
       config.ignoreWarnings = [/Failed to parse source map/];
       config.module.rules.push({
         test: /\.(js|mjs|jsx)$/,
-        enforce: "pre",
-        loader: require.resolve("source-map-loader"),
+        enforce: 'pre',
+        loader: require.resolve('source-map-loader'),
         resolve: {
-          fullySpecified: false,
-        },
+          fullySpecified: false
+        }
       });
-      config.devServer = {
-        client: {
-          overlay: false,
-        },
-      };
 
       return config;
     }
