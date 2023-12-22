@@ -65,7 +65,9 @@ export default function Tournament() {
     [marketsIds, networkId]
   );
 
-  const isTournamentEnded = dayjs().utc().isAfter(dayjs(data?.expiresAt).utc());
+  const isTournamentEnded = dayjs()
+    .utc()
+    .isAfter(dayjs(data?.expiresAt).utc());
 
   const tournamentCriteria = useMemo(() => {
     if (data) {

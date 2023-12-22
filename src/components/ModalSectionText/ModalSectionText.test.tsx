@@ -1,5 +1,4 @@
 import { render, screen } from '@testing-library/react';
-import cn from 'classnames';
 import { renderClassName } from 'helpers/test';
 
 import ModalSectionText from './ModalSectionText';

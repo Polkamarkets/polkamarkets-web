@@ -23,9 +23,8 @@ function useERC20Balance(erc20ContractAddress: string) {
     if (erc20ContractAddress) {
       try {
         setIsLoadingBalance(true);
-        const erc20Balance = await polkamarketsService.getERC20Balance(
-          erc20ContractAddress
-        );
+        const erc20Balance =
+          await polkamarketsService.getERC20Balance(erc20ContractAddress);
         setBalance(erc20Balance);
         setIsLoadingBalance(false);
       } catch (error) {

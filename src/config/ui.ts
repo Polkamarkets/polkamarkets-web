@@ -30,7 +30,7 @@ const categories = [
   'Other'
 ];
 
-export type Providers = typeof providers[number];
+export type Providers = (typeof providers)[number];
 
 const ui = {
   layout: {
