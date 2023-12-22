@@ -147,7 +147,8 @@
     "eslint-plugin-react": "^7.23.1",
     "eslint-plugin-react-hooks": "^4.2.0",
     "prettier": "^2.2.1",
-    "process": "^0.11.10"
+    "process": "^0.11.10",
+    "webpack": "^5.64.4"
   },
   "resolutions": {
     "styled-components": "^5",
