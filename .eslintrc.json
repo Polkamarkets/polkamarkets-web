@@ -4,7 +4,9 @@
     "es2021": true
   },
   "extends": [
+    "react-app",
     "airbnb",
+    "plugin:react/recommended",
     "plugin:react-hooks/recommended",
     "plugin:prettier/recommended",
     "plugin:jsx-a11y/recommended",
@@ -19,6 +21,7 @@
     "sourceType": "module"
   },
   "plugins": [
+    "react",
     "react-hooks",
     "prettier",
     "@typescript-eslint",
