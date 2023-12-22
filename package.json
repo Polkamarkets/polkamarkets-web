@@ -151,6 +151,7 @@
     "webpack": "^5.64.4"
   },
   "resolutions": {
+    "eslint-plugin-react": "^7.32.2",
     "styled-components": "^5",
     "html-to-text": "^7.1.1",
     "marked": "3.0.8"
