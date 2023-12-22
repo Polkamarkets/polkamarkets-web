@@ -5,6 +5,11 @@ const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
+  devServer: {
+    client: {
+      overlay: false
+    }
+  },
   plugins: [
     {
       plugin: cracoPluginStyleResourcesLoader,
@@ -99,11 +104,6 @@ module.exports = {
           fullySpecified: false
         }
       });
-      config.devServer = {
-        client: {
-          overlay: false
-        }
-      };
 
       return config;
     }
