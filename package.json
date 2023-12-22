@@ -94,12 +94,6 @@
     "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx,scss,css,json}'",
     "sentry:sourcemaps": "sentry-cli sourcemaps inject --org polkamarkets --project javascript-react ./build && sentry-cli sourcemaps upload --org polkamarkets --project javascript-react ./build"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
   "browserslist": {
     "production": [
       "chrome >= 67",
@@ -136,7 +130,6 @@
     "babel-plugin-macros": "^3.0.1",
     "buffer": "^6.0.3",
     "eslint": "^7.23.0",
-    "eslint-config-airbnb": "^18.2.1",
     "eslint-config-prettier": "^7.2.0",
     "eslint-config-react-app": "6.0.0",
     "eslint-import-resolver-typescript": "^2.4.0",
