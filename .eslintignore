@@ -2,4 +2,3 @@ node_modules
 build/*
 public/*
 /src/react-app-env.d.ts
-!.storybook
