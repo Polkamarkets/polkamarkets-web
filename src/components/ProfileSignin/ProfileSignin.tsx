@@ -58,7 +58,7 @@ export default function ProfileSignin({ onClick, ...props }: ButtonProps) {
         setShow(false);
       }
     },
-    [dispatch, polkamarketsService]
+    []
   );
 
   const handleObservadorClick = useCallback(
@@ -78,7 +78,6 @@ export default function ProfileSignin({ onClick, ...props }: ButtonProps) {
 
       const loginObservador = async userData => {
         const userId = userData.uid as string;
-        console.log('userData:', userData);
 
         const jwtToken = await getJWTForUser(
           userId,
@@ -125,12 +124,10 @@ export default function ProfileSignin({ onClick, ...props }: ButtonProps) {
           // refresh the page to rerender with cookie obs_foreland seted
 
           userJwt = Cookies.get('obs_foreland');
-          console.log('userJwt:', userJwt);
 
           const userData = await getUserData(userJwt as string);
 
           await loginObservador(userData);
-          console.log('payload:', userData);
         }
       });
     },
@@ -161,7 +158,7 @@ export default function ProfileSignin({ onClick, ...props }: ButtonProps) {
         }
       }
     },
-    [dispatch, polkamarketsService]
+    []
   );
 
   const renderProviders = useCallback(
@@ -265,7 +262,7 @@ export default function ProfileSignin({ onClick, ...props }: ButtonProps) {
         </Button>
       );
     },
-    [handleClick, handleSubmit, load]
+    [handleClick, handleSubmit, load, handleObservadorClick]
   );
 
   function handleHide() {
