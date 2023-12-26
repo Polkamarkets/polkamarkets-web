@@ -26,8 +26,7 @@ import { useAppDispatch, usePolkamarketsService } from 'hooks';
 import { getJWTForUser } from '../../services/Polkamarkets/jwt';
 import profileSigninClasses from './ProfileSignin.module.scss';
 
-// currently disabling single provider login UI
-const hasSingleProvider = ui.socialLogin.providers.length === 1 && false;
+const hasSingleProvider = ui.socialLogin.providers.length === 1;
 const singleProviderName = ui.socialLogin.providers[0];
 
 export default function ProfileSignin({ onClick, ...props }: ButtonProps) {
@@ -175,23 +174,29 @@ export default function ProfileSignin({ onClick, ...props }: ButtonProps) {
             ''
           ) : (
             <>
-              {hasSingleProvider && (
+              {hasSingleProvider ? (
                 <>
-                  <Icon
-                    name="LogIn"
-                    size="lg"
-                    className={profileSigninClasses.signinIcon}
-                  />
-                  Login with{' '}
+                  <Icon name="Profile" size="md" />
+                  <Text as="span" scale="caption">
+                    Sign In
+                  </Text>
                 </>
+              ) : (
+                { provider }
               )}
-              {provider}
             </>
           )}
           {isLoading ? (
             <Spinner $size="md" />
           ) : (
-            <Icon size="lg" name={provider === 'Email' ? 'LogIn' : provider} />
+            <>
+              {!hasSingleProvider && (
+                <Icon
+                  size="lg"
+                  name={provider === 'Email' ? 'LogIn' : provider}
+                />
+              )}
+            </>
           )}
         </>
       );
@@ -210,12 +215,11 @@ export default function ProfileSignin({ onClick, ...props }: ButtonProps) {
       if (provider === 'Observador') {
         return (
           <Button
-            variant="outline"
-            color="default"
-            size="sm"
+            color="primary"
+            size="xs"
             key={provider}
             name={provider}
-            className={className}
+            className={profileSigninClasses.signin}
             onClick={handleObservadorClick}
             disabled={isDisabled}
           >
