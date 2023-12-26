@@ -26,7 +26,8 @@ import { useAppDispatch, usePolkamarketsService } from 'hooks';
 import { getJWTForUser } from '../../services/Polkamarkets/jwt';
 import profileSigninClasses from './ProfileSignin.module.scss';
 
-const hasSingleProvider = ui.socialLogin.providers.length === 1;
+// currently disabling single provider login UI
+const hasSingleProvider = ui.socialLogin.providers.length === 1 && false;
 const singleProviderName = ui.socialLogin.providers[0];
 
 export default function ProfileSignin({ onClick, ...props }: ButtonProps) {
