@@ -182,7 +182,7 @@ export default function ProfileSignin({ onClick, ...props }: ButtonProps) {
                   </Text>
                 </>
               ) : (
-                { provider }
+                provider
               )}
             </>
           )}
