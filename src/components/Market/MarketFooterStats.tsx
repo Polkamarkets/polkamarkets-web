@@ -123,7 +123,7 @@ export default function MarketFooterStats({
               text={`Volume: ${roundNumber(
                 volumeEur,
                 features.fantasy.enabled ? 0 : 3
-              )} EUR`}
+              )} ${fantasyTokenTicker || 'EUR'}`}
             >
               <Icon
                 name="Stats"
