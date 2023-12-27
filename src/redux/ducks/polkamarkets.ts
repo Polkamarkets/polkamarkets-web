@@ -18,6 +18,7 @@ export type Votes = { [key: string]: { upvoted: boolean; downvoted: boolean } };
 
 export type PolkamarketsInitialState = {
   isLoggedIn: boolean;
+  isLoggedOut: boolean;
   ethAddress: string;
   ethBalance: number;
   polkBalance: number;
@@ -41,6 +42,7 @@ export type PolkamarketsInitialState = {
 
 const initialState: PolkamarketsInitialState = {
   isLoggedIn: false,
+  isLoggedOut: false,
   ethAddress: '',
   ethBalance: 0,
   polkBalance: 0,
@@ -73,6 +75,10 @@ const polkamarketsSlice = createSlice({
     changeIsLoggedIn: (state, action: PayloadAction<boolean>) => ({
       ...state,
       isLoggedIn: action.payload
+    }),
+    changeIsLoggedOut: (state, action: PayloadAction<boolean>) => ({
+      ...state,
+      isLoggedOut: action.payload
     }),
     changeEthAddress: (state, action: PayloadAction<string>) => ({
       ...state,
@@ -173,6 +179,7 @@ export default polkamarketsSlice.reducer;
 
 const {
   changeIsLoggedIn,
+  changeIsLoggedOut,
   changeEthAddress,
   changeEthBalance,
   changePolkBalance,
@@ -294,6 +301,7 @@ function login(
 
 function logout() {
   return async dispatch => {
+    dispatch(changeIsLoggedOut(true));
     dispatch(changeIsLoggedIn(false));
     dispatch(changeEthAddress(''));
     dispatch(changeEthBalance(0));
@@ -438,6 +446,7 @@ function fetchAditionalData(polkamarketsService: PolkamarketsService) {
 export {
   changeLoading,
   changeIsLoggedIn,
+  changeIsLoggedOut,
   changeEthAddress,
   changeEthBalance,
   changePolkBalance,
