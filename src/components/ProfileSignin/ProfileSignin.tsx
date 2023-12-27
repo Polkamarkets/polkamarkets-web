@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import classNames from 'classnames';
 import { ui } from 'config';
@@ -21,7 +21,7 @@ import ModalSection from 'components/ModalSection';
 import ProfileSigninEmail from 'components/ProfileSigninEmail';
 import Text from 'components/Text';
 
-import { useAppDispatch, usePolkamarketsService } from 'hooks';
+import { useAppDispatch, useAppSelector, usePolkamarketsService } from 'hooks';
 
 import { getJWTForUser } from '../../services/Polkamarkets/jwt';
 import profileSigninClasses from './ProfileSignin.module.scss';
@@ -61,78 +61,73 @@ export default function ProfileSignin({ onClick, ...props }: ButtonProps) {
     []
   );
 
-  const handleObservadorClick = useCallback(
-    async (event: React.MouseEvent<HTMLButtonElement>) => {
-      const name = event.currentTarget.name as Exclude<Providers, 'Email'>;
-
-      const getUserData = async (userJwt: string) => {
-        const publicKey = await importSPKI(
-          process.env.REACT_APP_OBSERVADOR_LOGIN_PUBLIC_KEY || '',
-          'RS256'
-        );
-
-        const { payload: userData } = await jwtVerify(userJwt, publicKey);
-
-        return userData;
-      };
-
-      const loginObservador = async userData => {
-        const userId = userData.uid as string;
-
-        const jwtToken = await getJWTForUser(
-          userId,
-          userData.email || `${userId}@observador.pt`,
-          userData.name as string,
-          userData.picture as string
-        );
-
-        const success = await polkamarketsService.socialLoginWithJWT(
-          userId,
-          jwtToken.data
-        );
-
-        if (success) {
-          const { login } = await import('redux/ducks/polkamarkets');
-
-          dispatch(login(polkamarketsService));
-        }
-
-        setLoad('');
-        setShow(false);
-      };
-
-      setLoad(name);
-
-      let userJwt = Cookies.get('obs_foreland');
-      if (userJwt) {
-        const userData = await getUserData(userJwt as string);
-        await loginObservador(userData);
-        return;
-      }
-
-      const popup = window.open(
-        'https://observador.pt/login-popup/',
-        'Observador',
-        'width=500, height=500'
+  const handleObservadorClick = useCallback(async () => {
+    const getUserData = async (userJwt: string) => {
+      const publicKey = await importSPKI(
+        process.env.REACT_APP_OBSERVADOR_LOGIN_PUBLIC_KEY || '',
+        'RS256'
       );
 
-      window.addEventListener('message', async message => {
-        if (message.data.event === 'login-success' && popup) {
-          popup.close();
+      const { payload: userData } = await jwtVerify(userJwt, publicKey);
 
-          // TODO need to test if the refresh is needed or not
-          // refresh the page to rerender with cookie obs_foreland seted
+      return userData;
+    };
 
-          userJwt = Cookies.get('obs_foreland');
+    const loginObservador = async userData => {
+      const userId = userData.uid as string;
 
-          const userData = await getUserData(userJwt as string);
+      const jwtToken = await getJWTForUser(
+        userId,
+        userData.email || `${userId}@observador.pt`,
+        userData.name as string,
+        userData.picture as string
+      );
 
-          await loginObservador(userData);
-        }
-      });
-    },
-    [dispatch, polkamarketsService]
-  );
+      const success = await polkamarketsService.socialLoginWithJWT(
+        userId,
+        jwtToken.data
+      );
+
+      if (success) {
+        const { login } = await import('redux/ducks/polkamarkets');
+
+        dispatch(login(polkamarketsService));
+      }
+
+      setLoad('');
+      setShow(false);
+    };
+
+    setLoad('Observador');
+
+    let userJwt = Cookies.get('obs_foreland');
+    if (userJwt) {
+      const userData = await getUserData(userJwt as string);
+      await loginObservador(userData);
+      return;
+    }
+
+    const popup = window.open(
+      'https://observador.pt/login-popup/',
+      'Observador',
+      'width=500, height=500'
+    );
+
+    window.addEventListener('message', async message => {
+      if (message.data.event === 'login-success' && popup) {
+        popup.close();
+
+        // TODO need to test if the refresh is needed or not
+        // refresh the page to rerender with cookie obs_foreland seted
+
+        userJwt = Cookies.get('obs_foreland');
+
+        const userData = await getUserData(userJwt as string);
+
+        await loginObservador(userData);
+      }
+    });
+  }, [dispatch, polkamarketsService]);
 
   const handleSubmit = useCallback(
     async (event: React.FormEvent<HTMLFormElement>) => {
@@ -268,6 +263,22 @@ export default function ProfileSignin({ onClick, ...props }: ButtonProps) {
   function handleHide() {
     setShow(false);
   }
+
+  const { isLoggedIn, isLoggedOut } = useAppSelector(
+    state => state.polkamarkets
+  );
+
+  useEffect(() => {
+    // triggering observador login if the user is already logged in
+    if (
+      !isLoggedIn &&
+      !isLoggedOut &&
+      Cookies.get('obs_foreland') &&
+      singleProviderName === 'Observador'
+    ) {
+      handleObservadorClick();
+    }
+  }, [isLoggedIn, handleObservadorClick, isLoggedOut]);
 
   return (
     <>
