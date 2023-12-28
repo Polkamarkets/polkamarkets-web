@@ -5,19 +5,19 @@ import { Button, ProfileSignin, Text } from 'components';
 
 import useAppSelector from 'hooks/useAppSelector';
 
-import HomeClasses from './Home.module.scss';
+import styles from './Markets.module.scss';
 
-export default function HomeHero() {
+export default function MarketsHero() {
   const isLoggedIn = useAppSelector(state => state.polkamarkets.isLoggedIn);
   const hasCta = ui.hero.action.title && ui.hero.action.url;
 
   return (
-    <Container className={HomeClasses.header}>
+    <Container className={styles.header}>
       <Hero
         $backdrop="main"
         $rounded
         $image={ui.hero.image}
-        className={`pm-p-home__hero ${HomeClasses.headerHero}`}
+        className={`pm-p-home__hero ${styles.headerHero}`}
         {...(ui.hero.image_url && {
           $as: 'a',
           href: ui.hero.image_url,

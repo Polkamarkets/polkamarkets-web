@@ -55,7 +55,9 @@ import {
   GetMarketFeedBySlugData,
   GetLandBySlugData,
   GetLandBySlugArgs,
-  GetTournamentsArgs
+  GetTournamentsArgs,
+  GetLandsData,
+  GetLandsArgs
 } from './types';
 
 function camelize<T extends object>(response: T): T {
@@ -270,6 +272,10 @@ const polkamarketsApi = createApi({
     getLandBySlug: builder.query<GetLandBySlugData, GetLandBySlugArgs>({
       query: ({ slug }) => `/lands/${slug}`,
       transformResponse: (response: GetLandBySlugData) => camelize(response)
+    }),
+    getLands: builder.query<GetLandsData, GetLandsArgs>({
+      query: ({ token }) => `/lands${token ? `?token=${token}` : ''}`,
+      transformResponse: (response: GetLandsData) => camelize(response)
     })
   })
 });
@@ -298,5 +304,6 @@ export const {
   useGetWhitelistStatusQuery,
   useAddCommentMutation,
   useGetMarketFeedBySlugQuery,
-  useGetLandBySlugQuery
+  useGetLandBySlugQuery,
+  useGetLandsQuery
 } = polkamarketsApi;

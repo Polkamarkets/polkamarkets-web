@@ -10,7 +10,7 @@ import { FilterProps } from 'components/Filter/Filter';
 import { useAppDispatch, useAppSelector } from 'hooks';
 import useMarkets from 'hooks/useMarkets';
 
-import { filters } from '../Home/utils';
+import { filters } from '../Markets/utils';
 import styles from './TournamentNav.module.scss';
 
 type TournamentNavProps = {

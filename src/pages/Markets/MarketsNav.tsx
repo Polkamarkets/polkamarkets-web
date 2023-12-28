@@ -17,14 +17,14 @@ import { FilterProps } from 'components/Filter/Filter';
 import { useAppDispatch, useAppSelector } from 'hooks';
 import useMarkets from 'hooks/useMarkets';
 
-import homeClasses from './Home.module.scss';
+import styles from './Markets.module.scss';
 import { filters } from './utils';
 
-type HomeNavProps = {
+type MarketsNavProps = {
   onFilterClick(): void;
 };
 
-export default function HomeNav({ onFilterClick }: HomeNavProps) {
+export default function MarketsNav({ onFilterClick }: MarketsNavProps) {
   const theme = useTheme();
   const dispatch = useAppDispatch();
   const markets = useMarkets();
@@ -73,7 +73,7 @@ export default function HomeNav({ onFilterClick }: HomeNavProps) {
         size="sm"
         onClick={onFilterClick}
         disabled={filterDisabled}
-        className={homeClasses.navAction}
+        className={styles.navAction}
       >
         <Icon
           name="Filter"

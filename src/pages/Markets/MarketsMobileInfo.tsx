@@ -1,6 +1,6 @@
 import { AlertMini } from 'components';
 
-function HomeMobileInfo() {
+function MarketsMobileInfo() {
   return (
     <div className="pm-p-home__mobile-info">
       <AlertMini
@@ -12,4 +12,4 @@ function HomeMobileInfo() {
   );
 }
 
-export default HomeMobileInfo;
+export default MarketsMobileInfo;

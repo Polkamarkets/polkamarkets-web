@@ -6,6 +6,6 @@ export default function useMarketPath() {
   const location = useLocation();
 
   return matchPath(location.pathname, {
-    path: pages.home.pages.market.pathname
+    path: pages.markets.pages.market.pathname
   });
 }

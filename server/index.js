@@ -284,21 +284,21 @@ app.get('/clubs/:slug', async (request, response, next) => {
   });
 });
 
-app.get('/tournaments', (request, response, next) => {
-  if (!isTournamentsEnabled) {
-    next();
-    return;
-  }
+// app.get('/tournaments', (request, response, next) => {
+//   if (!isTournamentsEnabled) {
+//     next();
+//     return;
+//   }
 
-  fs.readFile(indexPath, 'utf8', async (error, htmlData) => {
-    if (error) {
-      return response.status(404).end();
-    }
-    return response.send(
-      metadataByPageTemplate('tournaments', request, htmlData)
-    );
-  });
-});
+//   fs.readFile(indexPath, 'utf8', async (error, htmlData) => {
+//     if (error) {
+//       return response.status(404).end();
+//     }
+//     return response.send(
+//       metadataByPageTemplate('tournaments', request, htmlData)
+//     );
+//   });
+// });
 
 app.get('/tournaments/:slug', async (request, response, next) => {
   if (!isTournamentsEnabled) {

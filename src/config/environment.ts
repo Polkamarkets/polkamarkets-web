@@ -61,7 +61,8 @@ const environmentConfigVariables = [
   'UI_TWITTER_SHARE_INTENT',
   'SENTRY_DSN',
   'FAVICON_URL',
-  'TOUCHICON_URL'
+  'TOUCHICON_URL',
+  'HOMEPAGE_URL'
 ] as const;
 
 export type EnvironmentConfigVariable =

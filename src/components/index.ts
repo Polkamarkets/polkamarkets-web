@@ -148,6 +148,8 @@ export { default as ApproveToken } from './ApproveToken';
 
 export { default as BetaTesting } from './BetaTesting';
 
+export { default as Carousel } from './Carousel';
+
 export { default as ConnectMetamask } from './ConnectMetamask';
 
 export { default as CreateLeaderboardGroup } from './CreateLeaderboardGroup';

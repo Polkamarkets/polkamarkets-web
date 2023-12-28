@@ -4,7 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { features } from 'config';
 import { isNull } from 'lodash';
 import { Market as MarketInterface } from 'models/market';
-import { useTheme } from 'ui';
+import { Avatar, useTheme } from 'ui';
 
 import MarketAvatar from 'components/MarketAvatar';
 import MarketCategory from 'components/MarketCategory';
@@ -12,15 +12,21 @@ import Text from 'components/Text';
 
 import { useAppDispatch } from 'hooks';
 
+import styles from './Market.module.scss';
 import MarketFooter from './MarketFooter';
 import MarketOutcomes from './MarketOutcomes';
 
 type MarketCardProps = {
   market: MarketInterface;
   showCategory?: boolean;
+  showLand?: boolean;
 };
 
-function Market({ market, showCategory = true }: MarketCardProps) {
+function Market({
+  market,
+  showCategory = true,
+  showLand = false
+}: MarketCardProps) {
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const location = useLocation();
@@ -61,7 +67,20 @@ function Market({ market, showCategory = true }: MarketCardProps) {
         />
       )}
       <div className="pm-c-market__body-details">
-        {showCategory ? (
+        {!showCategory && showLand && market.land ? (
+          <div className={styles.bodyDetailsLand}>
+            {market.land.imageUrl ? (
+              <Avatar
+                $radius="lg"
+                src={market.land.imageUrl}
+                alt={market.land.title}
+                className={styles.bodyDetailsLandAvatar}
+              />
+            ) : null}
+            <h4 className={styles.bodyDetailsLandTitle}>{market.land.title}</h4>
+          </div>
+        ) : null}
+        {!showLand && showCategory ? (
           <MarketCategory
             category={market.category}
             subcategory={market.subcategory}

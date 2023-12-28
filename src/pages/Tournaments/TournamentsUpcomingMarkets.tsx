@@ -1,12 +1,4 @@
-import {
-  ContextType,
-  useCallback,
-  useContext,
-  useMemo,
-  useState,
-  WheelEvent
-} from 'react';
-import { ScrollMenu, VisibilityContext } from 'react-horizontal-scrolling-menu';
+import { useCallback, useMemo, useState } from 'react';
 import type { VirtuosoProps } from 'react-virtuoso';
 import { Virtuoso } from 'react-virtuoso';
 
@@ -19,7 +11,7 @@ import {
   getTokenByTicker
 } from 'redux/ducks/market';
 
-import { AlertMini, Icon, PredictionCard } from 'components';
+import { Carousel, PredictionCard } from 'components';
 
 import styles from './TournamentsUpcomingMarkets.module.scss';
 
@@ -37,11 +29,9 @@ function Header({
   children
 }: HeaderProps) {
   return (
-    <div className={styles.header}>
+    <>
       <div className={styles.headerGroup}>
-        <h2 className={styles.headerTitle}>
-          {expanded ? 'Markets' : 'Upcoming'}
-        </h2>
+        <h2 className={styles.headerTitle}>Questions</h2>
         {expandable && !expanded ? (
           <button
             type="button"
@@ -62,37 +52,7 @@ function Header({
         ) : null}
       </div>
       {children}
-    </div>
-  );
-}
-
-function LeftArrow() {
-  const { isFirstItemVisible, scrollPrev } = useContext(VisibilityContext);
-
-  return (
-    <button
-      type="button"
-      className={styles.predictionsWithImageArrowButton}
-      disabled={isFirstItemVisible}
-      onClick={() => scrollPrev()}
-    >
-      <Icon name="Chevron" dir="left" />
-    </button>
-  );
-}
-
-function RightArrow() {
-  const { isLastItemVisible, scrollNext } = useContext(VisibilityContext);
-
-  return (
-    <button
-      type="button"
-      className={styles.predictionsWithImageArrowButton}
-      disabled={isLastItemVisible}
-      onClick={() => scrollNext()}
-    >
-      <Icon name="Chevron" dir="right" />
-    </button>
+    </>
   );
 }
 
@@ -118,8 +78,6 @@ function MarketList({ data }: MarketListProps) {
 
 const CAROUSEL_SIZE = 8;
 
-type scrollVisibilityApiType = ContextType<typeof VisibilityContext>;
-
 type TournamentsUpcomingMarketsProps = {
   markets: Market[];
 };
@@ -136,113 +94,78 @@ function TournamentsUpcomingMarkets({
     [setExpanded]
   );
 
-  const openMarkets = useMemo(
-    () =>
-      markets
-        .map(market => {
-          const network = getNetworkById(market.networkId);
-          const ticker = market.token.wrapped
-            ? network.currency.ticker
-            : market.token.symbol;
+  const newMarkets = useMemo(() => {
+    const marketsByState = [
+      ...orderBy(
+        markets.filter(question => question.state === 'open'),
+        'createdAt',
+        'desc'
+      ),
+      ...orderBy(
+        markets.filter(question => question.state !== 'open'),
+        'createdAt',
+        'desc'
+      )
+    ];
 
-          const tokenByTicker = getTokenByTicker(ticker);
-          const currencyByTicker = getCurrencyByTicker(ticker);
+    return marketsByState.map(market => {
+      const network = getNetworkById(market.networkId);
+      const ticker = market.token.wrapped
+        ? network.currency.ticker
+        : market.token.symbol;
 
-          return {
-            ...market,
-            network,
-            currency: network.currency,
-            token: {
-              ...market.token,
-              ticker,
-              iconName: (tokenByTicker || currencyByTicker).iconName
-            },
-            outcomes: market.outcomes.map(outcome => ({
-              ...outcome,
-              price: Number(outcome.price.toFixed(3))
-            }))
-          } as Market;
-        })
-        .filter(market => market.state === 'open'),
-    [markets]
-  );
+      const tokenByTicker = getTokenByTicker(ticker);
+      const currencyByTicker = getCurrencyByTicker(ticker);
 
-  const marketsByVolume = useMemo(
-    () => orderBy(openMarkets, 'volume', 'desc'),
-    [openMarkets]
-  );
+      return {
+        ...market,
+        network,
+        currency: network.currency,
+        token: {
+          ...market.token,
+          ticker,
+          iconName: (tokenByTicker || currencyByTicker).iconName
+        },
+        outcomes: market.outcomes.map(outcome => ({
+          ...outcome,
+          price: Number(outcome.price.toFixed(3))
+        }))
+      } as Market;
+    });
+  }, [markets]);
 
   const marketsVisibleInCarousel = useMemo(
-    () => marketsByVolume.slice(0, CAROUSEL_SIZE),
-    [marketsByVolume]
+    () => newMarkets.slice(0, CAROUSEL_SIZE),
+    [newMarkets]
   );
 
-  const expandable = openMarkets.length > CAROUSEL_SIZE;
-
-  const onWheel = useCallback(
-    (apiObj: scrollVisibilityApiType, event: WheelEvent): void => {
-      const isTouchpad =
-        Math.abs(event.deltaX) !== 0 || Math.abs(event.deltaY) < 15;
-
-      if (isTouchpad) {
-        event.stopPropagation();
-        return;
-      }
-
-      if (event.deltaY < 0) {
-        apiObj.scrollNext();
-      } else if (event.deltaY > 0) {
-        apiObj.scrollPrev();
-      }
-    },
-    []
-  );
-
-  if (!openMarkets.length)
-    return (
-      <div>
-        <Header expandable={false} />
-        <div className="padding-y-5 padding-x-4 width-full border-solid border-1 border-radius-medium">
-          <AlertMini
-            style={{ border: 'none' }}
-            styles="outline"
-            variant="information"
-            description="There are no available markets at the moment."
-          />
-        </div>
-      </div>
-    );
+  const expandable = newMarkets.length > CAROUSEL_SIZE;
 
   if (expandable && expanded) {
     return (
       <div>
-        <Header
-          expandable={expandable}
-          expanded={expanded}
-          onExpand={handleChangeExpanded}
-        />
-        <MarketList data={marketsByVolume} />
+        <div className={styles.header}>
+          <Header
+            expandable={expandable}
+            expanded={expanded}
+            onExpand={handleChangeExpanded}
+          />
+        </div>
+        <MarketList data={newMarkets} />
       </div>
     );
   }
 
   return (
-    <ScrollMenu
-      wrapperClassName={styles.predictionsWithImageWrapper}
-      scrollContainerClassName={styles.predictionsWithImageScroll}
-      itemClassName={styles.predictionsWithImageItem}
-      onWheel={onWheel}
+    <Carousel
+      data={marketsVisibleInCarousel}
+      emptyStateDescription="There are no available markets at the moment."
       Header={
         <Header
           expandable={expandable}
           expanded={expanded}
           onExpand={handleChangeExpanded}
-        >
-          <div className={styles.headerArrows}>
-            <LeftArrow />
-            <RightArrow />
-          </div>
-        </Header>
+        />
       }
     >
       {marketsVisibleInCarousel.map(market => (
@@ -251,6 +174,7 @@ function TournamentsUpcomingMarkets({
           key={market.slug}
           market={market}
           className={styles.predictionCard}
+          wrapperClassName="height-full"
           statsVisibility={{
             volume: {
               desktop: false
@@ -258,7 +182,7 @@ function TournamentsUpcomingMarkets({
           }}
         />
       ))}
-    </ScrollMenu>
+    </Carousel>
   );
 }
 

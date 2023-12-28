@@ -149,7 +149,7 @@ const pages = {
     navigation: false,
     name: 'Tournaments',
     meta: metadataByPage.tournaments,
-    enabled: ui.tournaments.enabled
+    enabled: false
   },
   land: {
     pathname: '/lands/:slug',
@@ -188,9 +188,18 @@ const pages = {
     enabled: false
   },
   home: {
+    pathname: '/',
+    Component: lazy(() => import('pages/Home')),
+    exact: true,
+    navigation: !features.fantasy.enabled,
+    name: 'Home',
+    meta: defaultMetadata,
+    enabled: features.fantasy.enabled && ui.tournaments.enabled
+  },
+  markets: {
     pathname:
       features.fantasy.enabled && ui.tournaments.enabled ? '/markets' : '/',
-    Component: lazy(() => import('pages/Home')),
+    Component: lazy(() => import('pages/Markets')),
     exact: false,
     navigation: !features.fantasy.enabled,
     name: 'Markets',

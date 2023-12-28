@@ -34,7 +34,7 @@ import type { UpdateDropdownPayload } from 'contexts/filters/filters.type';
 
 import { useFilters, usePrevious } from 'hooks';
 
-import homeClasses from './Home.module.scss';
+import styles from './Markets.module.scss';
 
 type FormFields = {
   favorites: ToggleState;
@@ -55,7 +55,7 @@ type ListItemNestedProps = {
   updateDropdown: ({ dropdown, state }: UpdateDropdownPayload) => void;
 };
 
-function HomeFilterModal(
+function MarketsFilterModal(
   props: Pick<ModalProps, 'show' | 'onHide' | 'children'>
 ) {
   return (
@@ -77,7 +77,7 @@ function ModalFilterAnimation({
     <AnimatePresence>
       {show && (
         <motion.div
-          className={homeClasses.filter}
+          className={styles.filter}
           initial={{ width: 0, x: -264, opacity: 0 }}
           animate={{ width: 'auto', x: 0, opacity: 1 }}
           exit={{ width: 0, x: -264, opacity: 0 }}
@@ -137,12 +137,12 @@ function ListItemNested({
       <AnimatePresence>
         {expand && (
           <motion.div
-            className={homeClasses.filterSub}
+            className={styles.filterSub}
             initial={{ height: 0 }}
             animate={{ height: 'auto' }}
             exit={{ height: 0 }}
           >
-            <List className={homeClasses.filterSubList}>
+            <List className={styles.filterSubList}>
               {subitems.options.map(option => (
                 <ListItem key={option.value}>
                   <ListItemText>{option.label}</ListItemText>
@@ -161,7 +161,7 @@ function ListItemNested({
                 </ListItem>
               ))}
               {name === 'endDate' ? (
-                <ListItem className={homeClasses.filterSubListItem}>
+                <ListItem className={styles.filterSubListItem}>
                   <RangePicker
                     shouldCallOnChange={
                       previousField !== 'custom' && field === 'custom'
@@ -177,7 +177,7 @@ function ListItemNested({
     </>
   );
 }
-export default function HomeFilter({
+export default function MarketsFilter({
   onFilterHide,
   rect,
   show,
@@ -194,7 +194,7 @@ export default function HomeFilter({
 
   const ModalFilterRoot = theme.device.isDesktop
     ? ModalFilterAnimation
-    : HomeFilterModal;
+    : MarketsFilterModal;
 
   const { register, watch, setValue } = useForm<FormFields>({
     defaultValues: {
@@ -245,8 +245,8 @@ export default function HomeFilter({
           }
         : { onHide: onFilterHide })}
     >
-      <List className={homeClasses.filterList}>
-        <form className={homeClasses.filterForm}>
+      <List className={styles.filterList}>
+        <form className={styles.filterForm}>
           {!theme.device.isDesktop && (
             <ListItem
               ButtonProps={{

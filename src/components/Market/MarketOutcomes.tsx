@@ -27,11 +27,13 @@ import styles from './MarketOutcomes.module.scss';
 type MarketOutcomesProps = {
   market: Market;
   readonly?: boolean;
+  compact?: boolean;
 };
 
 export default function MarketOutcomes({
   market,
-  readonly = false
+  readonly = false,
+  compact = false
 }: MarketOutcomesProps) {
   const history = useHistory();
   const location = useLocation();
@@ -55,10 +57,10 @@ export default function MarketOutcomes({
   });
   const expandableOutcomes = useExpandableOutcomes({
     outcomes: sortedOutcomes,
-    max: theme.device.isDesktop ? 2 : 1
+    max: theme.device.isDesktop && !compact ? 2 : 1
   });
   const needExpandOutcomes =
-    sortedOutcomes.length > (theme.device.isDesktop ? 3 : 2);
+    sortedOutcomes.length > (theme.device.isDesktop && !compact ? 3 : 2);
   const getOutcomeActive = useCallback(
     (id: string | number) =>
       market.id === trade.selectedMarketId &&

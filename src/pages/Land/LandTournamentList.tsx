@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 import classNames from 'classnames';
 import dayjs from 'dayjs';
+import formatImageAlt from 'helpers/formatImageAlt';
 import isNull from 'lodash/isNull';
 import type { Land } from 'types/land';
 import type { Tournament } from 'types/tournament';
@@ -17,31 +18,7 @@ type LandTournamentListItemProps = {
 };
 
 function LandTournamentListItem({ tournament }: LandTournamentListItemProps) {
-  const altFormatter = useCallback((alt?: string): string | null => {
-    if (!alt) return null;
-
-    const altWithoutSpecialChars = alt.replace(/[^\w\s]/g, ' ');
-
-    const words = altWithoutSpecialChars
-      .trim()
-      .split(' ')
-      .filter(word => word !== '');
-
-    const numberMatch = altWithoutSpecialChars.match(/\d+/);
-
-    if (numberMatch) {
-      const firstLetter = altWithoutSpecialChars[0];
-      const number = numberMatch[0];
-      return (firstLetter + number).toUpperCase();
-    }
-
-    if (words.length >= 2) {
-      const firstLetters = words[0][0] + words[1][0];
-      return firstLetters.toUpperCase();
-    }
-
-    return altWithoutSpecialChars.substring(0, 2).toUpperCase();
-  }, []);
+  const altFormatter = useCallback(formatImageAlt, []);
 
   const isTournamentEnded = dayjs()
     .utc()

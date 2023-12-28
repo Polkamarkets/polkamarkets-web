@@ -15,7 +15,7 @@ import { MarketList, SEO } from 'components';
 
 import { useNetwork } from 'hooks';
 
-import HomeFilter from '../Home/HomeFilter';
+import MarketsFilter from '../Markets/MarketsFilter';
 import TournamentHero from './TournamentHero';
 import TournamentNav from './TournamentNav';
 import styles from './TournamentNav.module.scss';
@@ -127,7 +127,7 @@ export default function Tournament() {
         />
       </Container>
       <div className={styles.root}>
-        <HomeFilter
+        <MarketsFilter
           onFilterHide={handleHide}
           rect={rect}
           show={show}

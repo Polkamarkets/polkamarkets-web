@@ -1,0 +1,77 @@
+.carousel {
+  &Wrapper {
+    position: relative;
+  }
+
+  &Scroll {
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  &Item {
+    margin: 0 var(--size-8);
+
+    &:first-child {
+      margin-left: 0;
+    }
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  &Header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--size-16);
+
+    padding: 0 var(--size-16);
+    margin-bottom: var(--size-16);
+
+    &Arrows {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: var(--size-8);
+
+      &Button {
+        cursor: pointer;
+        user-select: none;
+
+        padding: 0;
+        margin: 0;
+        border: none;
+        border-radius: 50%;
+
+        width: var(--size-32);
+        height: var(--size-32);
+
+        svg {
+          height: 26px !important;
+          width: 26px !important;
+        }
+
+        background-color: transparent;
+        color: var(--color-text-1);
+        border: 1px solid var(--color-border);
+
+        align-self: center;
+        transition: opacity 0.2s ease-in-out;
+
+        &:hover {
+          opacity: 0.9;
+        }
+
+        &:disabled {
+          cursor: inherit;
+        }
+      }
+    }
+  }
+}

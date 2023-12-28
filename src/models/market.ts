@@ -1,4 +1,5 @@
 import { Currency, Token } from 'types/currency';
+import { Land } from 'types/land';
 import { News, Comment } from 'types/market';
 import { Network } from 'types/network';
 import { Tournament } from 'types/tournament';
@@ -87,4 +88,5 @@ export interface Market {
   comments: Comment[];
   tournaments: Tournament[];
   relatedMarkets?: Market[];
+  land?: Land | null;
 }

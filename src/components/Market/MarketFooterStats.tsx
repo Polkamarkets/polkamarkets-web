@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 
+import classNames from 'classnames';
 import { features } from 'config';
 import dayjs from 'dayjs';
 import { roundNumber } from 'helpers/math';
@@ -136,13 +137,16 @@ export default function MarketFooterStats({
                 fontWeight="semibold"
                 className={marketClasses.footerStatsText}
               >
-                {`${roundNumber(volume, features.fantasy.enabled ? 0 : 3)} `}
+                {`${roundNumber(volume, features.fantasy.enabled ? 0 : 3)}`}
               </Text>
               <Text
                 as="strong"
                 scale="tiny-uppercase"
                 fontWeight="semibold"
-                className={marketClasses.footerStatsText}
+                className={classNames(
+                  marketClasses.footerStatsText,
+                  'margin-left-2'
+                )}
               >
                 {`${fantasyTokenTicker || token.ticker}`}
               </Text>

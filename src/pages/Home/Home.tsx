@@ -1,49 +1,105 @@
-import { useCallback, useState } from 'react';
-import { Route, Switch, useRouteMatch } from 'react-router-dom';
+import { useCallback, useMemo } from 'react';
 
-import { pages, ui } from 'config';
-import { Container, useRect, useTheme } from 'ui';
+import classNames from 'classnames';
+import { environment } from 'config';
+import isEmpty from 'lodash/isEmpty';
+import uniqBy from 'lodash/uniqBy';
+import {
+  useGetLandsQuery,
+  useGetMarketsByIdsQuery
+} from 'services/Polkamarkets';
+import { Container } from 'ui';
 
-import { MarketList } from 'components';
+import styles from './Home.module.scss';
+import HomeCommunityLands from './HomeCommunityLands';
+import HomeNewQuestions from './HomeNewQuestions';
+import HomeOngoingEvents from './HomeOngoingEvents';
 
-import homeClasses from './Home.module.scss';
-import HomeFilter from './HomeFilter';
-import HomeHero from './HomeHero';
-import HomeNav from './HomeNav';
+function Home() {
+  const {
+    data: lands,
+    isLoading: isLoadingLands,
+    isFetching: isFetchingLands
+  } = useGetLandsQuery({ token: environment.FEATURE_FANTASY_TOKEN_TICKER });
 
-export default function Home() {
-  const routeMatch = useRouteMatch();
-  const theme = useTheme();
-  const [ref, rect] = useRect();
-  const [show, setShow] = useState(false);
-  const handleShow = useCallback(() => setShow(true), []);
-  const handleHide = useCallback(() => setShow(false), []);
-  const handleToggle = useCallback(() => setShow(prevShow => !prevShow), []);
+  const isLoadingGetLandsQuery = isLoadingLands || isFetchingLands;
+  const isEmptyLands = !lands || isEmpty(lands);
+
+  const tournaments = useMemo(() => {
+    if (isLoadingGetLandsQuery || isEmptyLands) return [];
+
+    return uniqBy(lands.map(land => land.tournaments).flat(), 'slug');
+  }, [isEmptyLands, isLoadingGetLandsQuery, lands]);
+
+  const marketsIds = useMemo(() => {
+    if (isLoadingGetLandsQuery || isEmptyLands) return [];
+
+    return uniqBy(
+      tournaments.map(tournament => tournament.markets || []).flat(),
+      'slug'
+    ).map(market => market.id);
+  }, [isEmptyLands, isLoadingGetLandsQuery, tournaments]);
+
+  const marketsIdsByLand = useMemo(() => {
+    if (isLoadingGetLandsQuery || isEmptyLands) return [];
+
+    return lands.map(land => ({
+      land,
+      markets: uniqBy(
+        land.tournaments.map(tournament => tournament.markets || []).flat(),
+        'slug'
+      ).map(market => market.id)
+    }));
+  }, [isEmptyLands, isLoadingGetLandsQuery, lands]);
+
+  const getMarketLand = useCallback(
+    (marketId: string) => {
+      if (isLoadingGetLandsQuery || isEmptyLands) return null;
+
+      const marketLand = marketsIdsByLand.find(({ markets }) =>
+        markets.includes(marketId)
+      );
+      if (!marketLand) return null;
+
+      return marketLand.land;
+    },
+    [isEmptyLands, isLoadingGetLandsQuery, marketsIdsByLand]
+  );
+
+  const {
+    data: markets,
+    isLoading: isLoadingMarkets,
+    isFetching: isFetchingMarkets
+  } = useGetMarketsByIdsQuery(
+    {
+      ids: marketsIds,
+      networkId: `${lands?.[0]?.tournaments?.[0]?.networkId}`
+    },
+    {
+      skip: isEmpty(marketsIds)
+    }
+  );
+
+  const isLoadingGetMarketsByIdsQuery = isLoadingMarkets || isFetchingMarkets;
+
+  if (isLoadingGetLandsQuery || isLoadingGetMarketsByIdsQuery) {
+    return (
+      <div className="flex-row justify-center align-center width-full padding-y-5 padding-x-4">
+        <span className="spinner--primary" />
+      </div>
+    );
+  }
 
   return (
-    <Switch>
-      <Route exact path={routeMatch.path}>
-        <div className="max-width-screen-xl">
-          {ui.hero.enabled && <HomeHero />}
-          <Container ref={ref} className={homeClasses.nav}>
-            <HomeNav
-              onFilterClick={theme.device.isDesktop ? handleToggle : handleShow}
-            />
-          </Container>
-          <div className={homeClasses.root}>
-            <HomeFilter onFilterHide={handleHide} rect={rect} show={show} />
-            <MarketList filtersVisible={show} />
-          </div>
-        </div>
-      </Route>
-      {Object.values(pages.home.pages).map(page => (
-        <Route
-          key={page.name}
-          exact={page.exact}
-          path={page.pathname}
-          component={page.Component}
-        />
-      ))}
-    </Switch>
+    <Container className={classNames('max-width-screen-xl', styles.root)}>
+      <HomeNewQuestions
+        questions={markets || []}
+        getMarketLand={getMarketLand}
+      />
+      <HomeOngoingEvents tournaments={tournaments || []} />
+      <HomeCommunityLands lands={lands || []} />
+    </Container>
   );
 }
+
+export default Home;
