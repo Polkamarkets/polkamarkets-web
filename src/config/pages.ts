@@ -152,9 +152,9 @@ const pages = {
     enabled: false
   },
   land: {
-    pathname: '/lands/:slug',
+    pathname: '/:slug',
     Component: lazy(() => import('pages/Land')),
-    exact: false,
+    exact: true,
     navigation: false,
     name: '',
     meta: null,

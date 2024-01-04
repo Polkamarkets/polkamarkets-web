@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type {
   VirtuosoProps as ReactVirtuosoProps,
   VirtuosoHandle,
@@ -122,11 +122,13 @@ type MarketListProps = {
     ids: string[];
     networkId: number;
   };
+  showOpenMarketsAtTheTop?: boolean;
 };
 
 export default function MarketList({
   filtersVisible,
-  fetchByIds
+  fetchByIds,
+  showOpenMarketsAtTheTop = false
 }: MarketListProps) {
   const { data, fetch, state } = useMarkets(fetchByIds);
 
@@ -137,6 +139,17 @@ export default function MarketList({
   useEffect(() => {
     fetchMarkets();
   }, [fetchMarkets]);
+
+  const markets = useMemo(() => {
+    if (!data) return [];
+
+    if (!showOpenMarketsAtTheTop) return data;
+
+    return [
+      ...data.filter(market => market.state === 'open'),
+      ...data.filter(market => market.state !== 'open')
+    ];
+  }, [data, showOpenMarketsAtTheTop]);
 
   return (
     <div
@@ -188,7 +201,7 @@ export default function MarketList({
               </div>
             </div>
           ),
-          success: <Virtuoso data={data} />
+          success: <Virtuoso data={markets} />
         }[state]
       }
     </div>

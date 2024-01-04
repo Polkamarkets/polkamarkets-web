@@ -26,7 +26,7 @@ function TournamentGroup({ group }: TournamentGroupProps) {
           />
         ) : null}
         <div className={styles.headerDetails}>
-          <Link to={`/lands/${group.slug}`} className={styles.title}>
+          <Link to={`/${group.slug}`} className={styles.title}>
             {group.title}
           </Link>
           <p className={styles.description}>{group.description}</p>

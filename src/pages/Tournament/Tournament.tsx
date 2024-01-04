@@ -4,7 +4,6 @@ import { useParams } from 'react-router-dom';
 import cn from 'classnames';
 import { ui } from 'config';
 import { defaultMetadata, metadataByPage } from 'config/pages';
-import dayjs from 'dayjs';
 import {
   useGetLeaderboardByTimeframeQuery,
   useGetTournamentBySlugQuery
@@ -64,10 +63,6 @@ export default function Tournament() {
     () => ({ ids: marketsIds, networkId: parseInt(`${networkId}`, 10) }),
     [marketsIds, networkId]
   );
-
-  const isTournamentEnded = dayjs()
-    .utc()
-    .isAfter(dayjs(data?.expiresAt).utc());
 
   const tournamentCriteria = useMemo(() => {
     if (data) {
@@ -131,9 +126,7 @@ export default function Tournament() {
           onFilterHide={handleHide}
           rect={rect}
           show={show}
-          resetStatesDropdown={
-            !isLoadingTournamentBySlugQuery && isTournamentEnded
-          }
+          resetStatesDropdown
         />
         {isLoadingTournamentBySlugQuery ? (
           <div

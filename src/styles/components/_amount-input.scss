@@ -86,36 +86,38 @@
     &__actions {
       display: flex;
 
-      button {
-        display: inline-flex;
-        align-items: center;
-
-        cursor: pointer;
-        touch-action: manipulation;
-        appearance: none;
-        outline: none;
-        border: none;
-
-        margin: $amount-input-action-margin-y $amount-input-action-margin-x;
-        padding: $amount-input-action-button-padding-y
-          $amount-input-action-button-padding-x;
-        background-color: themed('amount-input-action-button-background-color');
-
-        @extend .tiny-uppercase, .bold;
-        color: themed('amount-input-action-button-color');
-
-        border-radius: $amount-input-action-button-border-radius;
-        transition: $amount-input-action-button-transitions;
-
-        &:hover {
-          background-color: themed(
-            'amount-input-action-button-background-color-hover'
-          );
-        }
-      }
-
       :disabled {
         pointer-events: none;
+      }
+    }
+
+    &__action {
+      display: inline-flex;
+      align-items: center;
+
+      cursor: pointer;
+      touch-action: manipulation;
+      appearance: none;
+      outline: none;
+      border: none;
+
+      margin: $amount-input-action-margin-y $amount-input-action-margin-x;
+      padding: $amount-input-action-button-padding-y
+        $amount-input-action-button-padding-x;
+      background-color: themed('amount-input-action-button-background-color');
+
+      @extend .tiny-uppercase, .bold;
+      color: themed('amount-input-action-button-color');
+
+      border-radius: $amount-input-action-button-border-radius;
+      transition: $amount-input-action-button-transitions;
+
+      &:hover,
+      &:focus,
+      &--active {
+        background-color: themed(
+          'amount-input-action-button-background-color-hover'
+        );
       }
     }
 

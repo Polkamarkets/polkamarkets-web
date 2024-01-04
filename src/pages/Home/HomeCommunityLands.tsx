@@ -21,7 +21,7 @@ function CommunityLand({ land }: CommunityLandProps) {
   const altFormatter = useCallback(formatImageAlt, []);
 
   return (
-    <Link to={`/lands/${land.slug}`} className={styles.communityLand}>
+    <Link to={`/${land.slug}`} className={styles.communityLand}>
       <div className={styles.communityLandContent}>
         <div
           className={styles.communityLandContentHero}

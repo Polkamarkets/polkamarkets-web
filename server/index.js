@@ -402,6 +402,15 @@ app.get('/lands/:slug', async (request, response, next) => {
     return;
   }
 
+  response.redirect(`/${request.params.slug}`);
+});
+
+app.get('/:slug', async (request, response, next) => {
+  if (!isTournamentsEnabled) {
+    next();
+    return;
+  }
+
   fs.readFile(indexPath, 'utf8', async (error, htmlData) => {
     if (error) {
       return response.status(404).end();
@@ -418,7 +427,7 @@ app.get('/lands/:slug', async (request, response, next) => {
           htmlData,
           url: `${request.headers['x-forwarded-proto'] || 'http'}://${
             request.headers.host
-          }/lands/${request.params.slug}`,
+          }/${request.params.slug}`,
           title: `${title} | Foreland Alpha`,
           description: `${description}\nStart now with $ALPHA`,
           image:

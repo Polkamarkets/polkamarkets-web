@@ -57,7 +57,7 @@ export default function TournamentHero({
       <div className={styles.root}>
         <div className={styles.rootHeader}>
           <div className={styles.rootHeaderNavigation}>
-            <Link to={landSlug ? `/lands/${landSlug}` : '/tournaments'}>
+            <Link to={landSlug ? `/${landSlug}` : '/tournaments'}>
               <Button className={styles.rootHeaderNavigationButton}>
                 <Icon name="Arrow" title="Back to land" />
               </Button>
@@ -106,7 +106,7 @@ export default function TournamentHero({
                 <div>
                   <Link
                     className={styles.rootHeroContentLand}
-                    to={landSlug ? `/lands/${landSlug}` : '/tournaments'}
+                    to={landSlug ? `/${landSlug}` : '/tournaments'}
                   >
                     {landImageUrl ? (
                       <Avatar

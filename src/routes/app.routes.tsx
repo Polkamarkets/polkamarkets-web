@@ -49,6 +49,7 @@ export default function AppRoutes() {
                 {ui.clubs.enabled && (
                   <Redirect from="/leaderboard/:slug" to="/clubs/:slug" />
                 )}
+                <Redirect from="/lands/:slug" to="/:slug" />
               </Switch>
             </Layout>
           )}

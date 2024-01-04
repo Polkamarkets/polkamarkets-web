@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 
-import { features } from 'config';
+import { features, ui } from 'config';
 import { setSorter, setSearchQuery } from 'redux/ducks/markets';
 import { useTheme } from 'ui';
 
@@ -61,21 +61,23 @@ export default function TournamentNav({ onFilterClick }: TournamentNavProps) {
 
   return (
     <>
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={onFilterClick}
-        disabled={filterDisabled}
-        className={styles.navAction}
-      >
-        <Icon
-          name="Filter"
-          {...(!theme.device.isDesktop && {
-            title: 'Filter'
-          })}
-        />
-        {theme.device.isDesktop && 'Filter'}
-      </Button>
+      {ui.filters.enabled ? (
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={onFilterClick}
+          disabled={filterDisabled}
+          className={styles.navAction}
+        >
+          <Icon
+            name="Filter"
+            {...(!theme.device.isDesktop && {
+              title: 'Filter'
+            })}
+          />
+          {theme.device.isDesktop && 'Filter'}
+        </Button>
+      ) : null}
       <SearchBar
         size="sm"
         name="Search Questions"
@@ -86,7 +88,7 @@ export default function TournamentNav({ onFilterClick }: TournamentNavProps) {
       />
       <Filter
         description="Sort by"
-        defaultOption={features.fantasy.enabled ? 'expiresAt' : 'liquidityEur'}
+        defaultOption={features.fantasy.enabled ? 'createdAt' : 'liquidityEur'}
         options={filters}
         onChange={handleSelectedFilter}
       />

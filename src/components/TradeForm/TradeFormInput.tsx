@@ -290,6 +290,9 @@ function TradeFormInput() {
                 <button
                   key={button}
                   type="button"
+                  className={cn('pm-c-amount-input__action', {
+                    'pm-c-amount-input__action--active': button === amount
+                  })}
                   onClick={() => handleSetAmount(button)}
                   disabled={isWrongNetwork || isLoadingBalance}
                 >
@@ -304,6 +307,9 @@ function TradeFormInput() {
                 <button
                   key={step}
                   type="button"
+                  className={cn('pm-c-amount-input__action', {
+                    'pm-c-amount-input__action--active': step === amount
+                  })}
                   onClick={() =>
                     handleSetAmount(roundDown(max() * (step / 100)))
                   }

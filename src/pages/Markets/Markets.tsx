@@ -31,7 +31,12 @@ export default function Markets() {
             />
           </Container>
           <div className={styles.root}>
-            <MarketsFilter onFilterHide={handleHide} rect={rect} show={show} />
+            <MarketsFilter
+              onFilterHide={handleHide}
+              rect={rect}
+              show={show}
+              resetStatesDropdown={!ui.filters.enabled}
+            />
             <MarketList filtersVisible={show} />
           </div>
         </div>
