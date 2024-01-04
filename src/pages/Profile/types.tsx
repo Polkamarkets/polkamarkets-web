@@ -47,6 +47,7 @@ export type ProfileSummaryProps = {
   network: Network;
 } & {
   username?: string | null;
+  slug?: string | null;
   avatar?: string | null;
   bankrupt?: boolean | null;
 };

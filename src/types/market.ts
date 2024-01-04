@@ -15,11 +15,13 @@ export type Comment = {
   user: {
     username: string;
     avatar: string | null;
+    slug: string;
   };
 };
 
 export type MarketActivity = {
   user: string;
+  userSlug: string;
   action: 'buy' | 'sell';
   marketTitle: string;
   marketSlug: string;

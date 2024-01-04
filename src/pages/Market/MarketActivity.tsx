@@ -59,7 +59,7 @@ export default function MarketActivity() {
                 <Link
                   key={`${activity.action}-${activity.user}-${activity.timestamp}`}
                   className={`pm-c-activity bg-${index % 2 === 0 ? '2' : '3'}`}
-                  to={`/user/${activity.user}`}
+                  to={`/user/${activity.userSlug || activity.user}`}
                 >
                   <div
                     className={`pm-c-activity__image--${activity.accentColor} border-radius-50`}

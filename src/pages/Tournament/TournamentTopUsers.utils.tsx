@@ -18,11 +18,17 @@ const USER_PLACES = {
 
 type TopUserRenderArgs = {
   address: string;
+  slug: string;
   place: number;
   bankrupt?: boolean | null;
 };
 
-function topUserColumnRender({ address, place, bankrupt }: TopUserRenderArgs) {
+function topUserColumnRender({
+  address,
+  slug,
+  place,
+  bankrupt
+}: TopUserRenderArgs) {
   const walletPlace = USER_PLACES[place] || {
     textColor: '1'
   };
@@ -32,7 +38,7 @@ function topUserColumnRender({ address, place, bankrupt }: TopUserRenderArgs) {
       <div className="flex-row gap-3 align-center">
         <Link
           className={`caption semibold text-${walletPlace.textColor}`}
-          to={`/user/${address}`}
+          to={`/user/${slug || address}`}
         >
           {address.startsWith('0x')
             ? `${address.substring(0, 6)}...${address.substring(
@@ -78,6 +84,7 @@ function prepareTournamentTopUsersRow({
       value: firstPlace
         ? {
             address: firstPlace.username || firstPlace.user,
+            slug: firstPlace.slug,
             place: 1,
             change: 'stable',
             bankrupt: firstPlace.bankrupt
@@ -89,6 +96,7 @@ function prepareTournamentTopUsersRow({
       value: secondPlace
         ? {
             address: secondPlace.username || secondPlace.user,
+            slug: secondPlace.slug,
             place: 2,
             change: 'stable',
             bankrupt: secondPlace.bankrupt
@@ -100,6 +108,7 @@ function prepareTournamentTopUsersRow({
       value: thirdPlace
         ? {
             address: thirdPlace.username || thirdPlace.user,
+            slug: thirdPlace.slug,
             place: 3,
             change: 'stable',
             bankrupt: thirdPlace.bankrupt

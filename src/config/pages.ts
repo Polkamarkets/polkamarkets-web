@@ -151,19 +151,10 @@ const pages = {
     meta: metadataByPage.tournaments,
     enabled: false
   },
-  land: {
-    pathname: '/:slug',
-    Component: lazy(() => import('pages/Land')),
-    exact: true,
-    navigation: false,
-    name: '',
-    meta: null,
-    enabled: ui.tournaments.enabled
-  },
   leaderboard: {
     pathname: '/leaderboard',
     Component: Leaderboard,
-    exact: false,
+    exact: true,
     navigation: true,
     name: 'Leaderboard',
     meta: metadataByPage.leaderboard,
@@ -172,7 +163,7 @@ const pages = {
   achievements: {
     pathname: '/achievements',
     Component: lazy(() => import('pages/Achievements')),
-    exact: false,
+    exact: true,
     navigation: true,
     name: 'Achievements',
     meta: metadataByPage.achievements,
@@ -181,7 +172,7 @@ const pages = {
   portfolio: {
     pathname: '/portfolio',
     Component: lazy(() => import('pages/Portfolio')),
-    exact: false,
+    exact: true,
     navigation: true,
     name: 'Portfolio',
     meta: metadataByPage.portfolio,
@@ -225,6 +216,15 @@ const pages = {
         enabled: true
       }
     }
+  },
+  land: {
+    pathname: '/:slug',
+    Component: lazy(() => import('pages/Land')),
+    exact: false,
+    navigation: false,
+    name: '',
+    meta: null,
+    enabled: ui.tournaments.enabled
   }
 } as const;
 

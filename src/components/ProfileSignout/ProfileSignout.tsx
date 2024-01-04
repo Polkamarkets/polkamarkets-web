@@ -54,6 +54,7 @@ export default function ProfileSignout() {
       ? socialLoginInfo?.name?.split('#')[0]
       : socialLoginInfo?.name?.split('@')[0]
   );
+  const [slug, setSlug] = useState(null);
   const [hasUpdatedSocialLoginInfo, setHasUpdatedSocialLoginInfo] =
     useState(false);
 
@@ -78,6 +79,10 @@ export default function ProfileSignout() {
 
       if (res.data?.user?.username) {
         setUserName(res.data?.user?.username);
+      }
+
+      if (res.data?.user?.slug) {
+        setSlug(res.data?.user?.slug);
       }
 
       if (res.data?.user?.avatar) {
@@ -115,7 +120,10 @@ export default function ProfileSignout() {
         <Link
           to={`/user/${
             (features.fantasy.enabled &&
-              (leaderboard.data?.username || username)) ||
+              (slug ||
+                leaderboard.data?.slug ||
+                leaderboard.data?.username ||
+                username)) ||
             address
           }`}
         >

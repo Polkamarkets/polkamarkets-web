@@ -73,6 +73,7 @@ export type GetAchievementsArgs = {
 export type GetLeaderboardBaseData = {
   userImageUrl?: string | null;
   username?: string | null;
+  slug?: string | null;
   bankrupt?: boolean | null;
   user: string;
   ens?: any;

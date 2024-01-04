@@ -167,7 +167,7 @@ function MarketComment({ user, body, timestamp }: MarketCommentProps) {
 
   return (
     <div className={`${styles.comment} notranslate`}>
-      <Link to={`/user/${user.username}`}>
+      <Link to={`/user/${user.slug}`}>
         <Avatar
           src={!isNull(user.avatar) ? user.avatar : undefined}
           alt={user.username}
@@ -178,7 +178,7 @@ function MarketComment({ user, body, timestamp }: MarketCommentProps) {
       <div className={styles.commentBody}>
         <p className={styles.commentBodyDetails}>
           <Link
-            to={`/user/${user.username}`}
+            to={`/user/${user.slug}`}
             className={styles.commentBodyDetailsUsername}
           >
             {user.username}

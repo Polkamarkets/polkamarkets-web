@@ -91,7 +91,7 @@ type WalletColumnRenderArgs = {
   achievements: Achievement[];
   malicious?: boolean;
   bankrupt?: boolean | null;
-} & Record<'username' | 'userImageUrl', string | null>;
+} & Record<'username' | 'userImageUrl' | 'slug', string | null>;
 
 function walletColumnRender({
   isLoggedInUser,
@@ -99,6 +99,7 @@ function walletColumnRender({
   place,
   achievements,
   username,
+  slug,
   userImageUrl,
   malicious,
   bankrupt
@@ -111,7 +112,7 @@ function walletColumnRender({
   return (
     <div className="flex-row gap-3 align-center">
       <Link
-        to={`/user/${username || address}`}
+        to={`/user/${slug || username || address}`}
         className="pm-c-leaderboard-table__wallet"
       >
         {walletPlace.icon}
@@ -323,6 +324,7 @@ function prepareLeaderboardTableRows({
           malicious: row.malicious,
           username: row.username,
           userImageUrl: row.userImageUrl,
+          slug: row.slug,
           bankrupt: row.bankrupt
         },
         volumeEur: {
@@ -451,12 +453,14 @@ export { prepareLeaderboardYourStatsRow };
 
 type TopWalletRenderArgs = {
   address: string;
+  slug: string | null;
   place: number;
   bankrupt?: boolean | null;
 };
 
 function topWalletColumnRender({
   address,
+  slug,
   place,
   bankrupt
 }: TopWalletRenderArgs) {
@@ -471,7 +475,7 @@ function topWalletColumnRender({
       <div className="flex-row gap-3 align-center">
         <Link
           className={`caption semibold text-${walletPlace.textColor}`}
-          to={`/user/${address}`}
+          to={`/user/${slug || address}`}
         >
           {address.startsWith('0x')
             ? `${address.substring(0, 6)}...${address.substring(
@@ -523,6 +527,7 @@ function prepareLeaderboardTopWalletsRow({
       value: firstPlace
         ? {
             address: firstPlace.username || firstPlace.user,
+            slug: firstPlace.slug,
             place: 1,
             change: 'stable',
             bankrupt: firstPlace.bankrupt
@@ -534,6 +539,7 @@ function prepareLeaderboardTopWalletsRow({
       value: secondPlace
         ? {
             address: secondPlace.username || secondPlace.user,
+            slug: secondPlace.slug,
             place: 2,
             change: 'stable',
             bankrupt: secondPlace.bankrupt
@@ -545,6 +551,7 @@ function prepareLeaderboardTopWalletsRow({
       value: thirdPlace
         ? {
             address: thirdPlace.username || thirdPlace.user,
+            slug: thirdPlace.slug,
             place: 3,
             change: 'stable',
             bankrupt: thirdPlace.bankrupt

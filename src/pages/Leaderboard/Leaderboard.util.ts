@@ -29,7 +29,7 @@ export const defaultLeaderboardColumns = [
 
 const emptyLeaderboardRowWithoutUser: Omit<
   GetLeaderboardBaseData,
-  'user' | 'username' | 'userImageUrl'
+  'user' | 'username' | 'userImageUrl' | 'slug'
 > = {
   marketsCreated: 0,
   volumeEur: 0,
