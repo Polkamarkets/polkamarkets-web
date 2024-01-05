@@ -136,6 +136,18 @@ function HeaderNavMenu({
           </NavLink>
         </li>
       ))}
+      {ui.layout.navbar.items.map(item => (
+        <li key={item.title} className={headerNavClasses.item}>
+          <a
+            target="_blank"
+            rel="noreferrer"
+            className={cn(headerNavClasses.link, headerNavClasses.customItem)}
+            href={item.href}
+          >
+            {item.title}
+          </a>
+        </li>
+      ))}
       {children}
     </ul>
   );
@@ -168,7 +180,10 @@ export default function HeaderNav() {
   const isLoggedIn = useAppSelector(state => state.polkamarkets.isLoggedIn);
   const theme = useTheme();
   const showLeftMenu =
-    theme.device.isDesktop && !theme.device.isTv && !!headerNavMenu.length;
+    theme.device.isDesktop &&
+    !theme.device.isTv &&
+    !!headerNavMenu.length &&
+    !!ui.layout.navbar.items.length;
 
   const headerLogo = () => {
     if (LogoDesktopComponent && !LogoMobileComponent) {
@@ -221,7 +236,8 @@ export default function HeaderNav() {
       )}
       {!theme.device.isDesktop &&
         ((features.fantasy.enabled && !!ui.layout.header.helpUrl) ||
-          !!headerNavMenu.length) && <HeaderNavMenuModal />}
+          !!headerNavMenu.length ||
+          !!ui.layout.navbar.items.length) && <HeaderNavMenuModal />}
     </nav>
   );
 }

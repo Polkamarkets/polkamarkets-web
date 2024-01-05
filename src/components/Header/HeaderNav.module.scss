@@ -111,3 +111,9 @@
   margin-right: 8px;
   border: none !important;
 }
+
+.customItem {
+  &:hover {
+    color: var(--color-text-primary) !important;
+  }
+}
