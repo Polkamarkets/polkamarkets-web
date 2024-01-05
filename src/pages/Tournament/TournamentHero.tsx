@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 
 import classNames from 'classnames';
-import { ui } from 'config';
+import { environment, ui } from 'config';
 import { Tournament } from 'types/tournament';
 import { Avatar, Container, Hero, useTheme } from 'ui';
 
@@ -52,17 +52,24 @@ export default function TournamentHero({
     setTruncated
   } = useTruncatedText(tournamentDescription || '', 156);
 
+  const isHomepage =
+    environment.HOMEPAGE_URL &&
+    environment.HOMEPAGE_URL.includes(window.location.pathname);
+
   return (
     <Container className={styles.wrapper}>
       <div className={styles.root}>
         <div className={styles.rootHeader}>
           <div className={styles.rootHeaderNavigation}>
-            <Link to={landSlug ? `/${landSlug}` : '/tournaments'}>
-              <Button className={styles.rootHeaderNavigationButton}>
-                <Icon name="Arrow" title="Back to land" />
-              </Button>
-            </Link>
-            {landName ? (
+            {!isHomepage ? (
+              <Link to={landSlug ? `/${landSlug}` : '/tournaments'}>
+                <Button className={styles.rootHeaderNavigationButton}>
+                  <Icon name="Arrow" title="Back to land" />
+                </Button>
+              </Link>
+            ) : null}
+
+            {landName && !isHomepage ? (
               <h4 className={styles.rootHeaderNavigationText}>{landName}</h4>
             ) : null}
           </div>
