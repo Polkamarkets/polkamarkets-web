@@ -406,6 +406,13 @@ app.get('/lands/:slug', async (request, response, next) => {
 });
 
 app.get('/:slug', async (request, response, next) => {
+  const isValidSlug = /^[a-z0-9]+(?:-[a-z0-9]+)*$/g.test(request.params.slug);
+
+  if (!isValidSlug) {
+    next();
+    return;
+  }
+
   if (!isTournamentsEnabled) {
     next();
     return;
