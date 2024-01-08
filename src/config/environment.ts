@@ -65,7 +65,8 @@ const environmentConfigVariables = [
   'SENTRY_DSN',
   'FAVICON_URL',
   'TOUCHICON_URL',
-  'HOMEPAGE_URL'
+  'HOMEPAGE_URL',
+  'DEFAULT_LANGUAGE'
 ] as const;
 
 export type EnvironmentConfigVariable =
