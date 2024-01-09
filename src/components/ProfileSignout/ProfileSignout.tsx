@@ -18,6 +18,7 @@ import {
   useAppDispatch,
   useAppSelector,
   useFantasyTokenTicker,
+  useLanguage,
   useNetwork,
   usePolkamarketsService
 } from 'hooks';
@@ -28,6 +29,7 @@ export default function ProfileSignout() {
   const dispatch = useAppDispatch();
   const fantasyTokenTicker = useFantasyTokenTicker();
   const polkamarketsService = usePolkamarketsService();
+  const language = useLanguage();
   const polkBalance = useAppSelector(state => state.polkamarkets.polkBalance);
   const address = useAppSelector(state => state.polkamarkets.ethAddress);
   const isPolkLoading = useAppSelector(
@@ -59,6 +61,10 @@ export default function ProfileSignout() {
   const [hasUpdatedSocialLoginInfo, setHasUpdatedSocialLoginInfo] =
     useState(false);
   const ticker = fantasyTokenTicker || 'POLK';
+  const tooltipText =
+    language === 'pt'
+      ? `${ticker} é a “moeda” usada para fazer previsões e para ordenar a classificação de cada jogador.`
+      : `${ticker} is the token used to place predictions and rank on the leaderboard.`;
 
   useEffect(() => {
     async function handleSocialLogin() {
@@ -154,9 +160,7 @@ export default function ProfileSignout() {
                 className="pm-c-wallet-info__profile__ticker"
               >
                 {formatNumberToString(polkBalance)} {ticker}
-                <InfoTooltip
-                  text={`${ticker} is the token used to place predictions and rank on the leaderboard.`}
-                />
+                <InfoTooltip text={tooltipText} />
               </Text>
               <BankruptBadge bankrupt={bankrupt} />
             </div>

@@ -541,6 +541,19 @@ app.get('/markets/:slug', async (request, response) => {
   });
 });
 
+app.get('/embed/markets/:slug', async (request, response) => {
+  // adding X-Frame-Options header to allow embedding
+  response.set('X-Frame-Options', 'ALLOWALL');
+
+  fs.readFile(indexPath, 'utf8', async (error, htmlData) => {
+    if (error) {
+      return response.status(404).end();
+    }
+
+    return response.send(defaultMetadataTemplate(request, htmlData));
+  });
+});
+
 app.use(express.static(path.resolve(__dirname, '..', 'build')));
 
 app.get('*', (_request, response) => {
