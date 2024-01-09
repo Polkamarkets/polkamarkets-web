@@ -1,10 +1,10 @@
-import { ReactNode } from 'react';
+import { CSSProperties, ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 
 import classNames from 'classnames';
 import { environment, ui } from 'config';
 import { Tournament } from 'types/tournament';
-import { Avatar, Container, Hero, useTheme } from 'ui';
+import { Avatar, Container, useTheme } from 'ui';
 
 import { Button, ButtonText, Icon, Share, Tooltip } from 'components';
 
@@ -82,9 +82,12 @@ export default function TournamentHero({
             ) : null}
           </div>
         </div>
-        <Hero
-          $rounded
-          $image={landBannerUrl || ui.hero.image}
+        <div
+          style={
+            {
+              '--background-image': `url(${landBannerUrl || ui.hero.image})`
+            } as CSSProperties
+          }
           className={`pm-p-home__hero ${styles.rootHero}`}
         >
           {theme.device.isDesktop && tournamentImageUrl ? (
@@ -154,7 +157,7 @@ export default function TournamentHero({
             </div>
             {topUsers || null}
           </div>
-        </Hero>
+        </div>
         <div className={styles.rootFooter}>
           <div className={styles.rootFooterStats}>
             <div className={styles.rootFooterStatsGroup}>
