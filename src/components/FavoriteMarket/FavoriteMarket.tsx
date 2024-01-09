@@ -35,7 +35,8 @@ export default function FavoriteMarket({
         {
           'pm-c-market-footer__actions-favorite--active': isFavoriteMarket
         },
-        className
+        className,
+        'button-favorite'
       )}
     >
       <Icon name="Star" title="Bookmark market" />

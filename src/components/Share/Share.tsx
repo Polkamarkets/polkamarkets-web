@@ -1,5 +1,7 @@
 import { useCallback } from 'react';
 
+import cn from 'classnames';
+
 import useToastNotification from 'hooks/useToastNotification';
 
 import { Button, ButtonProps } from '../Button';
@@ -61,7 +63,13 @@ export default function Share({
 
   return (
     <>
-      <Button size={size} color={color} onClick={handleClick} {...props}>
+      <Button
+        size={size}
+        color={color}
+        onClick={handleClick}
+        {...props}
+        className={cn(props.className, 'button-share')}
+      >
         <Icon name="Share" title="Share" />
         {!iconOnly && title}
       </Button>
