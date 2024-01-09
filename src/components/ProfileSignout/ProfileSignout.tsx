@@ -11,6 +11,7 @@ import { Avatar, Skeleton } from 'ui';
 import BankruptBadge from 'components/BankruptBadge';
 import { Button } from 'components/Button';
 import Icon from 'components/Icon';
+import InfoTooltip from 'components/InfoTooltip';
 import Text from 'components/Text';
 
 import {
@@ -57,6 +58,7 @@ export default function ProfileSignout() {
   const [slug, setSlug] = useState(null);
   const [hasUpdatedSocialLoginInfo, setHasUpdatedSocialLoginInfo] =
     useState(false);
+  const ticker = fantasyTokenTicker || 'POLK';
 
   useEffect(() => {
     async function handleSocialLogin() {
@@ -151,8 +153,10 @@ export default function ProfileSignout() {
                 fontWeight="semibold"
                 className="pm-c-wallet-info__profile__ticker"
               >
-                {formatNumberToString(polkBalance)}{' '}
-                {fantasyTokenTicker || 'POLK'}
+                {formatNumberToString(polkBalance)} {ticker}
+                <InfoTooltip
+                  text={`${ticker} is the token used to place predictions and rank on the leaderboard.`}
+                />
               </Text>
               <BankruptBadge bankrupt={bankrupt} />
             </div>

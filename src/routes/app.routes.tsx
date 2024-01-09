@@ -14,6 +14,11 @@ export default function AppRoutes() {
   return (
     <Suspense fallback={<Spinner />}>
       <Switch>
+        <Route
+          exact={pages.embed.exact}
+          path={pages.embed.pathname}
+          component={pages.embed.Component}
+        />
         {isEnabled ? (
           <Route
             exact={pages.whitelist.exact}
@@ -28,7 +33,8 @@ export default function AppRoutes() {
         />
         {environment.HOMEPAGE_URL && (
           <Route exact path="/">
-            <Redirect to={environment.HOMEPAGE_URL} />
+            {/* removing the trailing slash, if existent */}
+            <Redirect to={environment.HOMEPAGE_URL.replace(/\/$/, '')} />
           </Route>
         )}
         <Route

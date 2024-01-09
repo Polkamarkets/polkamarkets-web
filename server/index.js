@@ -147,6 +147,22 @@ const metadataByPageTemplate = (page, request, htmlData) => {
   });
 };
 
+const buildImageUrl = (imageUrl, defaultImage, request) => {
+  let url;
+
+  if (imageUrl && imageUrl.startsWith('http')) {
+    url = imageUrl;
+  } else if (defaultImage.startsWith('http')) {
+    url = defaultImage;
+  } else {
+    const protocol = request.headers['x-forwarded-proto'] || 'http';
+    const { host } = request.headers;
+    url = `${protocol}://${host}${defaultImage}`;
+  }
+
+  return url;
+};
+
 app.get('/', (request, response) => {
   fs.readFile(indexPath, 'utf8', async (error, htmlData) => {
     if (error) {
@@ -315,7 +331,7 @@ app.get('/tournaments/:slug', async (request, response, next) => {
 
     try {
       const tournament = await getTournamentBySlug(tournamentSlug);
-      const { title } = tournament.data;
+      const { title, land } = tournament.data;
 
       return response.send(
         replaceToMetadataTemplate({
@@ -327,9 +343,7 @@ app.get('/tournaments/:slug', async (request, response, next) => {
           description:
             metadataByPage.tournaments.description ||
             defaultMetadata.description,
-          image: `${request.headers['x-forwarded-proto'] || 'http'}://${
-            request.headers.host
-          }${defaultMetadata.image}`
+          image: buildImageUrl(land?.bannerUrl, defaultMetadata.image, request)
         })
       );
     } catch (e) {
@@ -353,7 +367,7 @@ app.get('/tournaments/:slug/leaderboard', async (request, response, next) => {
 
     try {
       const tournament = await getTournamentBySlug(tournamentSlug);
-      const { title } = tournament.data;
+      const { title, land } = tournament.data;
 
       return response.send(
         replaceToMetadataTemplate({
@@ -365,9 +379,7 @@ app.get('/tournaments/:slug/leaderboard', async (request, response, next) => {
           description:
             metadataByPage.tournaments.description ||
             defaultMetadata.description,
-          image: `${request.headers['x-forwarded-proto'] || 'http'}://${
-            request.headers.host
-          }${defaultMetadata.image}`
+          image: buildImageUrl(land.bannerUrl, defaultMetadata.image, request)
         })
       );
     } catch (e) {
@@ -437,11 +449,7 @@ app.get('/:slug', async (request, response, next) => {
           }/${request.params.slug}`,
           title: `${title} | Foreland Alpha`,
           description: `${description}\nStart now with $ALPHA`,
-          image:
-            bannerUrl ||
-            `${request.headers['x-forwarded-proto'] || 'http'}://${
-              request.headers.host
-            }${defaultMetadata.image}`
+          image: buildImageUrl(bannerUrl, defaultMetadata.image, request)
         })
       );
     } catch (e) {
@@ -498,6 +506,11 @@ app.get('/markets/:slug', async (request, response) => {
       const { title, category, subcategory, expiresAt, bannerUrl } =
         market.data;
 
+      const tournament =
+        market.data.tournaments && market.data.tournaments.length > 0
+          ? market.data.tournaments[0]
+          : null;
+
       const marketMetadata = formatMarketMetadata({
         title,
         category,
@@ -515,11 +528,11 @@ app.get('/markets/:slug', async (request, response) => {
           title: marketMetadata.title || defaultMetadata.title,
           description:
             marketMetadata.description || defaultMetadata.description,
-          image:
-            marketMetadata.image ||
-            `${request.headers['x-forwarded-proto'] || 'http'}://${
-              request.headers.host
-            }${defaultMetadata.image}`
+          image: buildImageUrl(
+            marketMetadata.image || tournament?.land?.bannerUrl,
+            defaultMetadata.image,
+            request
+          )
         })
       );
     } catch (e) {

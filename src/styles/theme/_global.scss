@@ -1,3 +1,9 @@
+html,
+body,
+#root {
+  height: 100%;
+}
+
 body {
   font-size: 1.6rem;
   line-height: 1.5;
@@ -19,16 +25,4 @@ body {
 
 ::-webkit-scrollbar-track {
   background-color: var(--color-text-quinary);
-}
-
-#root {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  min-height: 100vh;
-  padding-bottom: var(--size-64);
-
-  @media (min-width: 1024px) {
-    padding-bottom: unset;
-  }
 }

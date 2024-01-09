@@ -12,6 +12,8 @@ import WrongNetwork from 'components/WrongNetwork';
 
 import { useAppSelector, useMarketPath, useNetwork } from 'hooks';
 
+import layoutClasses from './Layout.module.scss';
+
 export default function Layout({ children }: React.PropsWithChildren<{}>) {
   const { network } = useNetwork();
   const isLoggedIn = useAppSelector(state => state.polkamarkets.isLoggedIn);
@@ -30,7 +32,7 @@ export default function Layout({ children }: React.PropsWithChildren<{}>) {
   }, [location.pathname]);
 
   return (
-    <>
+    <div className={layoutClasses.root}>
       {page?.meta && <SEO {...page.meta} />}
       {ui.layout.disclaimer.enabled && <BetaWarning />}
       {ui.layout.alert.enabled && <BetaTesting network={network} />}
@@ -41,6 +43,6 @@ export default function Layout({ children }: React.PropsWithChildren<{}>) {
       {children}
       <Footer $gutterTop={!isHomePathname} />
       <div id="toast-notification-portal" />
-    </>
+    </div>
   );
 }

@@ -1,5 +1,3 @@
-import { ReactNode } from 'react';
-
 import isArray from 'lodash/isArray';
 import isEmpty from 'lodash/isEmpty';
 import isNull from 'lodash/isNull';
@@ -13,11 +11,11 @@ export type TableMiniColumn = {
   /**
    * Title of this column
    */
-  title: string;
+  title: React.ReactNode;
   /**
    * Custom title render function
    */
-  render?: (_value: any) => ReactNode;
+  render?: (_value: any) => React.ReactNode;
 };
 
 export type TableMiniRowValue = {
@@ -28,7 +26,7 @@ export type TableMiniRowValue = {
   /**
    * Row slice value custom render
    */
-  render?: (_value: any) => ReactNode;
+  render?: (_value: any) => React.ReactNode;
 };
 
 export type TableMiniRow = {

@@ -167,6 +167,8 @@ export { default as CreateMarketFormFund } from './CreateMarketFormFund';
 export { default as Icon, IconClasses } from './Icon';
 export type { IconProps } from './Icon';
 
+export { default as InfoTooltip } from './InfoTooltip';
+
 export { default as FavoriteMarkets } from './FavoriteMarket';
 
 export { default as Feature } from './Feature';

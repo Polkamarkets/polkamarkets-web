@@ -3,32 +3,11 @@ import { useMemo } from 'react';
 import { features } from 'config';
 import omit from 'lodash/omit';
 
+import { InfoTooltip } from 'components';
+
 import { preparePredictionStatisticsRow } from './prepare';
 import ProfileStats from './ProfileStats';
 import { PredictionStatistics, PredictionStatisticsColumn } from './types';
-
-const columns: PredictionStatisticsColumn[] = [
-  {
-    key: 'volume',
-    title: 'Volume'
-  },
-  {
-    key: 'marketsCreated',
-    title: 'Markets Created'
-  },
-  {
-    key: 'wonPredictions',
-    title: 'Won Predictions'
-  },
-  {
-    key: 'liquidityAdded',
-    title: 'Liquidity Added'
-  },
-  {
-    key: 'earnings',
-    title: 'Earnings'
-  }
-];
 
 type ProfilePredictionStatisticsProps = {
   statistics: PredictionStatistics;
@@ -41,6 +20,43 @@ function ProfilePredictionStatistics({
   ticker,
   isLoading
 }: ProfilePredictionStatisticsProps) {
+  const columns: PredictionStatisticsColumn[] = useMemo(
+    () => [
+      {
+        key: 'volume',
+        title: (
+          <>
+            Volume
+            <InfoTooltip text={`Total ${ticker} placed in predictions.`} />
+          </>
+        )
+      },
+      {
+        key: 'marketsCreated',
+        title: 'Markets Created'
+      },
+      {
+        key: 'wonPredictions',
+        title: 'Won Predictions'
+      },
+      {
+        key: 'liquidityAdded',
+        title: 'Liquidity Added'
+      },
+      {
+        key: 'earnings',
+        title: (
+          <>
+            Earnings
+            <InfoTooltip
+              text={`Total ${ticker} earned in active and finished questions.`}
+            />
+          </>
+        )
+      }
+    ],
+    [ticker]
+  );
   const row = useMemo(
     () => preparePredictionStatisticsRow({ statistics, ticker }),
     [statistics, ticker]
@@ -53,7 +69,7 @@ function ProfilePredictionStatistics({
             column => !['marketsCreated', 'liquidityAdded'].includes(column.key)
           )
         : columns,
-    []
+    [columns]
   );
 
   const filteredRow = useMemo(

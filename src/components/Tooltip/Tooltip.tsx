@@ -20,7 +20,7 @@ type TooltipPosition =
   | 'left-start'
   | 'left-end';
 
-type TooltipProps = {
+export type TooltipProps = {
   interactive?: Config['interactive'];
   delayHide?: Config['delayHide'];
   /**
