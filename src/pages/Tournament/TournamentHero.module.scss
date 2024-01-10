@@ -170,6 +170,22 @@
         line-height: 1.3;
 
         align-self: stretch;
+
+        &Item {
+          &Link {
+            &Default {
+              color: var(--color-text-1);
+            }
+
+            &Primary {
+              color: #5d55fa;
+            }
+
+            &Underline {
+              text-decoration: underline;
+            }
+          }
+        }
       }
     }
   }

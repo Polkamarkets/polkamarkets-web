@@ -1,8 +1,9 @@
-import { CSSProperties, ReactNode } from 'react';
+import { Fragment, CSSProperties, ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 
 import classNames from 'classnames';
 import { environment, ui } from 'config';
+import isEmpty from 'lodash/isEmpty';
 import { Tournament } from 'types/tournament';
 import { Avatar, Container, useTheme } from 'ui';
 
@@ -11,6 +12,10 @@ import { Button, ButtonText, Icon, Share, Tooltip } from 'components';
 import { useTruncatedText } from 'hooks';
 
 import styles from './TournamentHero.module.scss';
+import {
+  getDescriptionItems,
+  matchesDynamicDescription
+} from './TournamentHero.utils';
 
 type TournamentHeroProps = {
   landName?: string;
@@ -55,6 +60,14 @@ export default function TournamentHero({
   const isHomepage =
     environment.HOMEPAGE_URL &&
     environment.HOMEPAGE_URL.includes(window.location.pathname);
+
+  const isDynamicDescription = matchesDynamicDescription(
+    tournamentDescription || ''
+  );
+
+  const dynamicDescriptionItems = isDynamicDescription
+    ? getDescriptionItems(tournamentDescription || '')
+    : [];
 
   return (
     <Container className={styles.wrapper}>
@@ -139,21 +152,50 @@ export default function TournamentHero({
                   ) : null}
                 </div>
               </div>
-
-              {tournamentDescription ? (
-                <p className={styles.rootHeroContentDescription}>
-                  {truncatedTournamentDescription}
-                </p>
-              ) : null}
-              {truncated ? (
-                <ButtonText
-                  size="sm"
-                  color="primary"
-                  onClick={() => setTruncated(false)}
-                >
-                  View more
-                </ButtonText>
-              ) : null}
+              {isEmpty(dynamicDescriptionItems) ? (
+                <>
+                  {tournamentDescription ? (
+                    <p className={styles.rootHeroContentDescription}>
+                      {truncatedTournamentDescription}
+                    </p>
+                  ) : null}
+                  {truncated ? (
+                    <ButtonText
+                      size="sm"
+                      color="primary"
+                      onClick={() => setTruncated(false)}
+                    >
+                      View more
+                    </ButtonText>
+                  ) : null}
+                </>
+              ) : (
+                <div className={styles.rootHeroContentDescription}>
+                  {dynamicDescriptionItems.map(item => (
+                    <Fragment key={item.text}>
+                      {item.isLink ? (
+                        <a
+                          className={classNames({
+                            [styles.rootHeroContentDescriptionItemLinkDefault]:
+                              !item.color || item.color === 'default',
+                            [styles.rootHeroContentDescriptionItemLinkPrimary]:
+                              item.color === 'primary',
+                            [styles.rootHeroContentDescriptionItemLinkUnderline]:
+                              item.underline
+                          })}
+                          href={item.url!}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          {item.text}
+                        </a>
+                      ) : (
+                        item.text
+                      )}
+                    </Fragment>
+                  ))}
+                </div>
+              )}
             </div>
             {topUsers || null}
           </div>
