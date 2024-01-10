@@ -14,6 +14,7 @@ import { Button } from 'components/Button';
 import CreateMarket from 'components/CreateMarket';
 import Feature from 'components/Feature';
 import HelpButton from 'components/HelpButton';
+import HowToPlayButton from 'components/HowToPlayButton';
 import Icon from 'components/Icon';
 import Modal from 'components/Modal';
 import NetworkSelector from 'components/NetworkSelector';
@@ -161,15 +162,24 @@ function HeaderNavMenuModal() {
         <HeaderNavMenu onMenuItemClick={handleHide}>
           {features.fantasy.enabled &&
             !isLoggedIn &&
-            ui.layout.header.helpUrl && (
-              <li className={headerNavClasses.item}>
-                <HelpButton
-                  $outline
-                  $fullWidth
-                  onClick={handleHide}
-                  href={ui.layout.header.helpUrl}
-                />
-              </li>
+            (ui.layout.header.helpUrl || ui.layout.onboarding) && (
+              <>
+                {ui.layout.header.helpUrl && (
+                  <li className={headerNavClasses.item}>
+                    <HelpButton
+                      $outline
+                      $fullWidth
+                      onClick={handleHide}
+                      href={ui.layout.header.helpUrl}
+                    />
+                  </li>
+                )}
+                {!!ui.layout.onboarding && (
+                  <li className={headerNavClasses.item}>
+                    <HowToPlayButton $outline $fullWidth />
+                  </li>
+                )}
+              </>
             )}
         </HeaderNavMenu>
       )}
@@ -235,7 +245,8 @@ export default function HeaderNav() {
         </ProfileSignin>
       )}
       {!theme.device.isDesktop &&
-        ((features.fantasy.enabled && !!ui.layout.header.helpUrl) ||
+        ((features.fantasy.enabled &&
+          (!!ui.layout.header.helpUrl || !!ui.layout.onboarding)) ||
           !!headerNavMenu.length ||
           !!ui.layout.navbar.items.length) && <HeaderNavMenuModal />}
     </nav>

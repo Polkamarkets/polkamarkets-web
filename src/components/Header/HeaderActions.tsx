@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Container, Skeleton, useTheme } from 'ui';
 
 import HelpButton from 'components/HelpButton';
+import HowToPlayButton from 'components/HowToPlayButton';
 import NetworkSelector from 'components/NetworkSelector';
 import Profile from 'components/Profile';
 import ThemeSelector from 'components/ThemeSelector';
@@ -161,6 +162,13 @@ export default function HeaderActions() {
                 [headerActionsClasses.help]: features.fantasy.enabled
               })}
               href={ui.layout.header.helpUrl}
+            />
+          )}
+          {ui.layout.onboarding.steps && (
+            <HowToPlayButton
+              className={cn({
+                [headerActionsClasses.howToPlay]: features.fantasy.enabled
+              })}
             />
           )}
         </Wrapper>

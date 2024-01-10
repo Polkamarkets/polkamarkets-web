@@ -1,0 +1,54 @@
+.header {
+  margin-bottom: var(--size-32);
+}
+
+.title {
+  font-size: var(--size-20--rem);
+  font-weight: 600;
+  line-height: normal;
+  letter-spacing: normal;
+}
+
+.description {
+  font-size: var(--size-14--rem);
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: normal;
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+}
+
+.steps {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  gap: var(--size-16);
+
+  margin-bottom: var(--size-24);
+
+  &Item {
+    height: 10px;
+    width: 10px;
+
+    flex-shrink: 0;
+    aspect-ratio: 1/1;
+
+    background-color: #f2f4f7 !important;
+    opacity: 0.32;
+    border-radius: 6px;
+
+    transition: background-color, opacity 0.2s ease-in-out;
+
+    &Active {
+      @composes .stepsItem;
+
+      background-color: #fafafa !important;
+      opacity: 1;
+    }
+  }
+}

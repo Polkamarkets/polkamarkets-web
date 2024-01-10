@@ -7,6 +7,7 @@ import BetaTesting from 'components/BetaTesting';
 import BetaWarning from 'components/BetaWarning';
 import Footer from 'components/Footer';
 import Header from 'components/Header';
+import Onboarding from 'components/Onboarding';
 import SEO from 'components/SEO';
 import WrongNetwork from 'components/WrongNetwork';
 
@@ -34,6 +35,7 @@ export default function Layout({ children }: React.PropsWithChildren<{}>) {
   return (
     <div className={layoutClasses.root}>
       {page?.meta && <SEO {...page.meta} />}
+      {ui.layout.onboarding.steps && <Onboarding />}
       {ui.layout.disclaimer.enabled && <BetaWarning />}
       {ui.layout.alert.enabled && <BetaTesting network={network} />}
       {!ui.socialLogin.enabled && !isAllowedNetwork && (

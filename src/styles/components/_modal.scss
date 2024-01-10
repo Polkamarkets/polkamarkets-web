@@ -33,6 +33,10 @@
       margin-top: 1.2rem;
       margin-bottom: $modal-padding-y;
 
+      &-description {
+        color: map-get(themed('text-colors'), 'secondary');
+      }
+
       &-text {
         color: map-get(themed('text-colors'), 'secondary');
         margin-bottom: 1.6rem;
