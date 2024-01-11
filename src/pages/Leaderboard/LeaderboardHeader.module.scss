@@ -1,0 +1,65 @@
+.root {
+  background-color: #171b23;
+  border-radius: 8px;
+  margin-bottom: 24px;
+  color: #fff;
+  border: 1px solid #252c3b;
+}
+
+.nav {
+  height: 44px;
+  padding-left: 16px;
+  padding-right: 16px;
+  display: flex;
+  align-items: center;
+
+  &Back {
+    width: 28px;
+    height: 28px;
+    display: inline-flex;
+    border: 1px solid rgb(99 112 132 / var(--border-alpha, 0.4));
+    border-radius: 8px;
+    margin-right: 12px;
+    transition: background-color, border 200ms ease;
+
+    &:hover {
+      --border-alpha: 1;
+      background-color: rgba(99, 112, 132, 0.16);
+    }
+
+    &Link {
+      color: #fff;
+    }
+
+    &Label {
+      vertical-align: text-top;
+    }
+
+    &Icon {
+      margin: auto;
+    }
+  }
+}
+
+.content {
+  padding: 16px;
+  background-color: #101218;
+  display: flex;
+  gap: 12px;
+  border-radius: 8px;
+  border: 1px solid #252c3b;
+  margin: -1px;
+
+  @media (min-width: 1024px) {
+    padding: 32px;
+    gap: 24px;
+  }
+
+  &Image {
+    flex-shrink: 0;
+  }
+
+  &Caption {
+    color: var(--color-text-secondary);
+  }
+}

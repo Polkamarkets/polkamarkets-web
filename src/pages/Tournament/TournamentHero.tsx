@@ -220,7 +220,7 @@ export default function TournamentHero({
                 </>
               ) : null}
             </div>
-            {rewards ? (
+            {rewards?.length === 1 ? (
               <>
                 {theme.device.isDesktop ? (
                   <span
@@ -236,7 +236,7 @@ export default function TournamentHero({
                     styles.rootFooterStatsRewards
                   )}
                 >
-                  Rewards: <strong>{rewards}</strong>
+                  Rewards: <strong>{rewards[0].reward}</strong>
                 </p>
               </>
             ) : null}

@@ -83,7 +83,7 @@ function LandTournamentListItem({ tournament }: LandTournamentListItemProps) {
             Members:
             <strong className="notranslate">{tournament.users}</strong>
           </span>
-          {tournament.rewards ? (
+          {tournament.rewards && tournament.rewards.length > 0 ? (
             <>
               <span
                 className={classNames(
@@ -93,7 +93,9 @@ function LandTournamentListItem({ tournament }: LandTournamentListItemProps) {
               />
               <span className={styles.tournamentFooterStatsItem}>
                 Rewards:
-                <strong className="notranslate">{1}</strong>
+                <strong className="notranslate">
+                  {tournament.rewards.length}
+                </strong>
               </span>
             </>
           ) : null}

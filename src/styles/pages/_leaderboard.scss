@@ -1,5 +1,4 @@
 .pm-p-leaderboard {
-  @include flex-column($justify: flex-start, $align: flex-start, $gap: 5);
   width: 100%;
 
   &__header {

@@ -10,6 +10,12 @@ export type TournamentGroup = {
   position: number;
 };
 
+export type TournamentReward = {
+  from: number;
+  to: number;
+  reward: string;
+}
+
 export type Tournament = {
   id: number;
   networkId: number;
@@ -23,6 +29,6 @@ export type Tournament = {
   users: number;
   expiresAt: string;
   rankBy: string;
-  rewards: string | null;
+  rewards: TournamentReward[] | null;
   rules: string | null;
 };

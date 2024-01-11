@@ -1,10 +1,5 @@
 import { useCallback, useMemo, useState } from 'react';
-import {
-  useLocation,
-  useParams,
-  matchPath,
-  Link as ReactRouterLink
-} from 'react-router-dom';
+import { useLocation, useParams, matchPath } from 'react-router-dom';
 
 import cn from 'classnames';
 import { ui, pages, features } from 'config';
@@ -28,8 +23,9 @@ import {
   buildLeaderboardData,
   sanitizePreviousCreateLeaderboardFormValues
 } from './Leaderboard.util';
-import LeaderboardMarkets from './LeaderboardMarkets';
+import LeaderboardHeader from './LeaderboardHeader';
 import LeaderboardMyLeaderboards from './LeaderboardMyLeaderboards';
+import LeaderboardRewards from './LeaderboardRewards';
 import LeaderboardTable from './LeaderboardTable';
 import LeaderboardTopWallets from './LeaderboardTopWallets';
 import LeaderboardYourStats from './LeaderboardYourStats';
@@ -228,6 +224,8 @@ function Leaderboard() {
     isLoadingTournamentBySlug || isFetchingTournamentBySlug;
 
   let tournamentCriteria: string | null = null;
+  let rewards: Array<Record<'title' | 'description', string>> = [];
+
   if (tournamentBySlug?.rankBy) {
     tournamentCriteria =
       tournamentBySlug?.rankBy === 'claim_winnings_count,earnings_eur'
@@ -243,6 +241,17 @@ function Leaderboard() {
       const [column] = columns.splice(index, 1);
       columns.splice(1, 0, column);
     }
+  }
+
+  if (tournamentBySlug?.rewards && tournamentBySlug?.rewards.length > 0) {
+    rewards = tournamentBySlug?.rewards.map(reward => ({
+      // cardinal numbering
+      title:
+        reward.from === reward.to
+          ? `#${reward.from} Place`
+          : `#${reward.from} to #${reward.to} Place`,
+      description: reward.reward
+    }));
   }
 
   // Default
@@ -408,80 +417,84 @@ function Leaderboard() {
             : defaultMetadata.description
         }
       />
-      <div className="pm-p-leaderboard__header">
-        <div className="flex-row gap-5 align-start">
-          {!isNull(leaderboardImageUrl) && (
-            <Image
-              $size="md"
-              $radius="sm"
-              alt={leaderboardTitle}
-              src={leaderboardImageUrl}
-            />
-          )}
-          <div className="flex-column gap-3">
-            <div className="flex-row gap-5 align-center">
-              <h1 className="heading semibold text-1">{leaderboardTitle}</h1>
-              {features.fantasy.enabled && leaderboardType.tournament ? (
-                <ReactRouterLink
-                  to={`/tournaments/${tournamentBySlug?.slug}`}
-                  className="pm-c-button-subtle--primary pm-c-button--xs"
-                >
-                  Back to Tournament
-                </ReactRouterLink>
+      {features.fantasy.enabled ? (
+        <LeaderboardHeader
+          imageUrl={leaderboardImageUrl}
+          title={leaderboardTitle}
+          slug={tournamentBySlug?.slug}
+          isTournament={leaderboardType.tournament}
+          description={
+            leaderboardType.tournament ? tournamentBySlug?.description : ''
+          }
+        />
+      ) : (
+        <div className="pm-p-leaderboard__header">
+          <div className="flex-row gap-5 align-start">
+            {!isNull(leaderboardImageUrl) && (
+              <Image
+                $size="md"
+                $radius="sm"
+                alt={leaderboardTitle}
+                src={leaderboardImageUrl}
+              />
+            )}
+            <div className="flex-column gap-3">
+              <div className="flex-row gap-5 align-center">
+                <h1 className="heading semibold text-1">{leaderboardTitle}</h1>
+                {leaderboardType.club &&
+                createGroupState.visible &&
+                createGroupState.mode === 'edit' ? (
+                  <CreateLeaderboardGroup
+                    mode={createGroupState.mode}
+                    previousValues={createGroupState.previousValues}
+                    slug={slug}
+                    disabled={isLoadingQuery}
+                    size="xs"
+                  />
+                ) : null}
+              </div>
+              {leaderboardType.club ? (
+                <p className="tiny medium text-2">
+                  {`Play with your friends, coworkers and community. `}
+                  <Link
+                    title="Learn more"
+                    scale="tiny"
+                    fontWeight="medium"
+                    href="https://docs.v2.polkamarkets.com/"
+                    target="_blank"
+                  />
+                </p>
               ) : null}
-              {leaderboardType.club &&
-              createGroupState.visible &&
-              createGroupState.mode === 'edit' ? (
-                <CreateLeaderboardGroup
-                  mode={createGroupState.mode}
-                  previousValues={createGroupState.previousValues}
-                  slug={slug}
-                  disabled={isLoadingQuery}
-                  size="xs"
-                />
+              {leaderboardType.tournament && tournamentBySlug ? (
+                <p className="tiny medium text-2 whitespace-pre-line">
+                  {tournamentBySlug.description}
+                </p>
               ) : null}
             </div>
-            {leaderboardType.club ? (
-              <p className="tiny medium text-2">
-                {`Play with your friends, coworkers and community. `}
-                <Link
-                  title="Learn more"
-                  scale="tiny"
-                  fontWeight="medium"
-                  href="https://docs.v2.polkamarkets.com/"
-                  target="_blank"
-                />
-              </p>
-            ) : null}
-            {leaderboardType.tournament && tournamentBySlug ? (
-              <p className="tiny medium text-2 whitespace-pre-line">
-                {tournamentBySlug.description}
-              </p>
-            ) : null}
           </div>
+          {leaderboardType.club &&
+          createGroupState.visible &&
+          !joinGroupState.visible ? (
+            <CreateLeaderboardGroup
+              mode={createGroupState.mode}
+              previousValues={createGroupState.previousValues}
+              slug={slug}
+              disabled={isLoadingQuery}
+            />
+          ) : null}
+          {leaderboardType.club && joinGroupState.visible ? (
+            <ButtonLoading
+              size="sm"
+              color="default"
+              onClick={handleJoinLeaderboardGroup}
+              loading={isLoadingJoinLeaderboardGroupMutation}
+              disabled={joinGroupState.disabled}
+            >
+              {joinGroupState.joined ? 'Joined' : 'Join Club'}
+            </ButtonLoading>
+          ) : null}
         </div>
-        {leaderboardType.club &&
-        createGroupState.visible &&
-        !joinGroupState.visible ? (
-          <CreateLeaderboardGroup
-            mode={createGroupState.mode}
-            previousValues={createGroupState.previousValues}
-            slug={slug}
-            disabled={isLoadingQuery}
-          />
-        ) : null}
-        {leaderboardType.club && joinGroupState.visible ? (
-          <ButtonLoading
-            size="sm"
-            color="default"
-            onClick={handleJoinLeaderboardGroup}
-            loading={isLoadingJoinLeaderboardGroupMutation}
-            disabled={joinGroupState.disabled}
-          >
-            {joinGroupState.joined ? 'Joined' : 'Join Club'}
-          </ButtonLoading>
-        ) : null}
-      </div>
+      )}
       {leaderboardType.tournament ? (
         <div
           className={cn('gap-6 justify-space-between align-start width-full', {
@@ -503,33 +516,23 @@ function Leaderboard() {
             ticker={ticker}
             isLoading={isLoadingQuery}
           />
-
           <div
             className={cn('flex-column gap-6 justify-start align-start', {
               'width-min-content': theme.device.isDesktop,
               'width-full': !theme.device.isDesktop
             })}
           >
-            {theme.device.isDesktop ? (
-              <>
-                {walletConnected ? (
-                  <LeaderboardYourStats
-                    loggedInUser={userEthAddress}
-                    rows={data}
-                    ticker={ticker}
-                    isLoading={isLoadingQuery}
-                  />
-                ) : null}
-                <LeaderboardTopWallets rows={data} isLoading={isLoadingQuery} />
-                {leaderboardType.club && walletConnected ? (
-                  <LeaderboardMyLeaderboards loggedInUser={userEthAddress} />
-                ) : null}
-              </>
-            ) : null}
-            <LeaderboardMarkets
-              data={tournamentBySlug?.markets}
-              isLoading={isLoadingTournamentBySlugQuery}
-            />
+            {walletConnected && theme.device.isDesktop && (
+              <LeaderboardYourStats
+                loggedInUser={userEthAddress}
+                rows={data}
+                ticker={ticker}
+                isLoading={isLoadingQuery}
+              />
+            )}
+            {features.fantasy.enabled && rewards && rewards.length > 0 && (
+              <LeaderboardRewards rewards={rewards} />
+            )}
           </div>
         </div>
       ) : (

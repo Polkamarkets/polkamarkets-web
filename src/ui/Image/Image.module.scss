@@ -17,6 +17,10 @@
   &Hide {
     opacity: 0;
   }
+
+  &Proportional {
+    aspect-ratio: 1/1;
+  }
 }
 
 .skeleton {

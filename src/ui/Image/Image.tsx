@@ -19,7 +19,9 @@ export type ImageProps = React.PropsWithChildren<
   }
 >;
 
-function Div(props: React.PropsWithChildren<{ className?: string }>) {
+function ImageAnimation(
+  props: React.PropsWithChildren<{ className?: string }>
+) {
   return (
     <motion.div
       initial={{
@@ -64,23 +66,26 @@ const Image = forwardRef<HTMLImageElement, ImageProps>(function Image(
         alt={alt}
         ref={useEnhancedRef<HTMLImageElement>(ref, imageRef)}
         className={cn(imageClasses.element, {
-          [imageClasses.elementHide]: state !== 'ok'
+          [imageClasses.elementHide]: state !== 'ok',
+          [imageClasses.elementProportional]: $size
         })}
         {...imageProps}
         {...props}
       />
       <AnimatePresence>
         {state === 'load' && (
-          <Div>
+          <ImageAnimation>
             <Skeleton className={imageClasses.skeleton} />
-          </Div>
+          </ImageAnimation>
         )}
       </AnimatePresence>
       <AnimatePresence>
         {state === 'error' && (
-          <Div className={cn(imageClasses.fallback, fallbackClassName)}>
+          <ImageAnimation
+            className={cn(imageClasses.fallback, fallbackClassName)}
+          >
             <div className={imageClasses.fallbackElement}>{children}</div>
-          </Div>
+          </ImageAnimation>
         )}
       </AnimatePresence>
     </div>
