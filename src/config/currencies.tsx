@@ -50,6 +50,13 @@ const currencies: { [key: string]: Currency } = Object.freeze({
     symbol: 'TOKEN',
     icon: <TokenIcon ticker="TOK" />,
     iconName: 'Token'
+  },
+  XDAI: {
+    name: 'xDAI',
+    ticker: 'XDAI',
+    symbol: 'xDAI',
+    icon: <TokenIcon ticker="XDAI" />,
+    iconName: 'Token'
   }
 });
 
