@@ -1,3 +1,4 @@
+import { ui } from 'config';
 import { fromPriceChartToLineChartSeries } from 'helpers/chart';
 import { roundNumber } from 'helpers/math';
 import type { Outcome, PriceChart } from 'models/market';
@@ -31,7 +32,17 @@ function getPricesDiff(priceChart?: PriceChart) {
 
 export default function sortOutcomes(args: SortOutcomes) {
   return [...args.outcomes]
-    .sort((compareA, compareB) => compareB.price - compareA.price)
+    .sort((compareA, compareB) => {
+      if (ui.market.outcomes.sorting.alphabetically.enabled) {
+        const exclude = ui.market.outcomes.sorting.alphabetically.exclude || [];
+
+        if (exclude.includes(compareA.title.toLowerCase())) return 1;
+
+        return compareA.title.localeCompare(compareB.title);
+      }
+
+      return compareB.price - compareA.price;
+    })
     .map(outcome => {
       const priceChart = outcome.priceCharts?.find(
         chart => chart.timeframe === args.timeframe

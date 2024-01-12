@@ -174,6 +174,19 @@ const ui = {
     },
     voting: {
       enabled: isTrue(environment.FEATURE_VOTING)
+    },
+    outcomes: {
+      sorting: {
+        alphabetically: {
+          enabled: isTrue(
+            environment.UI_MARKET_OUTCOMES_SORTING_ALPHABETICALLY
+          ),
+          exclude:
+            environment.UI_MARKET_OUTCOMES_SORTING_ALPHABETICALLY_EXCLUDE?.split(
+              ','
+            )
+        }
+      }
     }
   },
   socialLogin: {
