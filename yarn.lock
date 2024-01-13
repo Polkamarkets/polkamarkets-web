@@ -15939,9 +15939,9 @@ pkg-up@^3.1.0:
   dependencies:
     find-up "^3.0.0"
 
-"polkamarkets-js@https://github.com/Polkamarkets/polkamarkets-js#feat/login-with-jwt":
+"polkamarkets-js@https://github.com/Polkamarkets/polkamarkets-js#feat/login-with-jwt-v3":
   version "1.2.1"
-  resolved "https://github.com/Polkamarkets/polkamarkets-js#ca038e02861bc0ee3292db7c9e9a0f94c9f5fb47"
+  resolved "https://github.com/Polkamarkets/polkamarkets-js#4244e8cd4e1bda9e48f9da431b603ee13e880fe6"
   dependencies:
     "@metamask/safe-event-emitter" "^2.0.0"
     "@metamask/utils" "^8.2.1"

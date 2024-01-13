@@ -41,7 +41,7 @@
     "lodash": "^4.17.21",
     "mockdate": "^3.0.5",
     "node-gyp": "^9.4.0",
-    "polkamarkets-js": "https://github.com/Polkamarkets/polkamarkets-js#feat/login-with-jwt",
+    "polkamarkets-js": "https://github.com/Polkamarkets/polkamarkets-js#feat/login-with-jwt-v3",
     "postcss-normalize": "^10.0.1",
     "prop-types": "^15.7.2",
     "public-ip": "^4.0.4",
