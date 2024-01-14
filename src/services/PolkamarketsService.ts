@@ -19,9 +19,15 @@ export default class PolkamarketsService {
 
   public predictionMarketContractAddress: string;
 
+  public predictionMarketManagerContractAddress: string | undefined;
+
+  public predictionMarketIsV3: boolean;
+
   public erc20ContractAddress: string;
 
   public realitioErc20ContractAddress: string;
+
+  public realitioErc20Timeout: number;
 
   public achievementsContractAddress: string | undefined;
 
@@ -43,8 +49,11 @@ export default class PolkamarketsService {
   constructor(
     {
       PREDICTION_MARKET_CONTRACT_ADDRESS,
+      PREDICTION_MARKET_MANAGER_CONTRACT_ADDRESS,
+      PREDICTION_MARKET_IS_V3,
       ERC20_CONTRACT_ADDRESS,
       REALITIO_ERC20_CONTRACT_ADDRESS,
+      REALITIO_ERC20_TIMEOUT,
       ACHIEVEMENTS_CONTRACT_ADDRESS,
       VOTING_CONTRACT_ADDRESS,
       ARBITRATION_CONTRACT_ADDRESS,
@@ -54,7 +63,11 @@ export default class PolkamarketsService {
     }: NetworkConfig = environment.NETWORKS[environment.NETWORK_ID || 42]
   ) {
     this.predictionMarketContractAddress = PREDICTION_MARKET_CONTRACT_ADDRESS;
+    this.predictionMarketManagerContractAddress =
+      PREDICTION_MARKET_MANAGER_CONTRACT_ADDRESS;
+    this.predictionMarketIsV3 = PREDICTION_MARKET_IS_V3 || false;
     this.erc20ContractAddress = ERC20_CONTRACT_ADDRESS;
+    this.realitioErc20Timeout = REALITIO_ERC20_TIMEOUT || 3600;
     this.realitioErc20ContractAddress = REALITIO_ERC20_CONTRACT_ADDRESS;
     this.achievementsContractAddress = ACHIEVEMENTS_CONTRACT_ADDRESS;
     this.votingContractAddress = VOTING_CONTRACT_ADDRESS;
@@ -114,9 +127,13 @@ export default class PolkamarketsService {
   }
 
   public getPredictionMarketContract() {
-    this.contracts.pm = this.polkamarkets.getPredictionMarketV2Contract({
-      contractAddress: this.predictionMarketContractAddress
-    });
+    this.contracts.pm = this.predictionMarketIsV3
+      ? this.polkamarkets.getPredictionMarketV3Contract({
+          contractAddress: this.predictionMarketContractAddress
+        })
+      : this.polkamarkets.getPredictionMarketV2Contract({
+          contractAddress: this.predictionMarketContractAddress
+        });
   }
 
   public getERC20Contract() {
@@ -154,6 +171,12 @@ export default class PolkamarketsService {
       this.polkamarkets.getArbitrationProxyContract({
         contractAddress: this.arbitrationProxyContractAddress
       });
+  }
+
+  public getPredictionMarketManagerContract() {
+    this.contracts.pm = this.polkamarkets.getPredictionMarketV3ManagerContract({
+      contractAddress: this.predictionMarketManagerContractAddress
+    });
   }
 
   public logoutSocialLogin() {
@@ -225,6 +248,11 @@ export default class PolkamarketsService {
   // PredictionMarket contract functions
 
   public async getMinimumRequiredBalance(): Promise<number> {
+    // TOOD improve this: don't call function when on v3
+    if (this.predictionMarketIsV3) {
+      return 0;
+    }
+
     const requiredBalance = await this.contracts.pm.getMinimumRequiredBalance();
 
     return requiredBalance;
@@ -268,6 +296,16 @@ export default class PolkamarketsService {
       treasuryFee: (treasuryFee * 1e16).toString(),
       treasury: this.address
     };
+
+    if (this.predictionMarketIsV3) {
+      return this.contracts.pm.mintAndCreateMarket({
+        ...args,
+        token,
+        realitioAddress: this.realitioErc20ContractAddress,
+        realitioTimeout: this.realitioErc20Timeout,
+        PM3ManagerAddress: this.predictionMarketManagerContractAddress
+      });
+    }
 
     if (wrapped) {
       response = await this.contracts.pm.createMarketWithETH(args);
