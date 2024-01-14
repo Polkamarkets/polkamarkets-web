@@ -61,6 +61,16 @@ const networks: {
     rpcUrls: [],
     buyEc20Url: `//app.uniswap.org/#/swap?outputCurrency=${ERC20_CONTRACT_ADDRESS}&inputCurrency=ETH`
   },
+  '0x64': {
+    id: '100',
+    name: 'Gnosis',
+    key: 'gnosis',
+    colorAccent: 'blue',
+    currency: XDAI,
+    decimals: 18,
+    explorerURL: 'https://gnosisscan.io',
+    rpcUrls: ['https://rpc.gnosischain.com']
+  },
   '0x501': {
     id: '1281',
     name: 'Moonbase Local',
