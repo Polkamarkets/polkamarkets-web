@@ -136,8 +136,8 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
     setNeedsPricesRefresh(false);
 
     try {
-      // adding a 1% slippage due to js floating numbers rounding
-      const minShares = shares * 0.999;
+      // adding slippage due to js floating numbers rounding
+      const minShares = shares * (1 - ui.market.slippage);
 
       // calculating shares amount from smart contract
       const sharesToBuy = await polkamarketsService.calcBuyAmount(
@@ -146,13 +146,14 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
         amount
       );
 
-      // will refresh form if there's a slippage > 1%
-      if (Math.abs(sharesToBuy - minShares) / sharesToBuy > 0.01) {
-        setIsLoading(false);
-        setNeedsPricesRefresh(true);
+      // disabling refresh prices form temporarily
+      // will refresh form if > slippage
+      // if (Math.abs(sharesToBuy - minShares) / sharesToBuy > 0.1) {
+      //   setIsLoading(false);
+      //   setNeedsPricesRefresh(true);
 
-        return false;
-      }
+      //   return false;
+      // }
 
       setTimeout(() => {
         if (!needsPricesRefresh) {
@@ -244,7 +245,7 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
     try {
       // adding a 1% slippage due to js floating numbers rounding
       const ethAmount = totalStake - fee;
-      const minShares = shares * 1.001;
+      const maxShares = shares * (1 + ui.market.slippage);
 
       // calculating shares amount from smart contract
       const sharesToSell = await polkamarketsService.calcSellAmount(
@@ -253,13 +254,14 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
         ethAmount
       );
 
+      // disabling refresh prices form temporarily
       // will refresh form if there's a slippage > 2%
-      if (Math.abs(sharesToSell - minShares) / sharesToSell > 0.01) {
-        setIsLoading(false);
-        setNeedsPricesRefresh(true);
+      // if (Math.abs(sharesToSell - maxShares) / sharesToSell > 0.01) {
+      //   setIsLoading(false);
+      //   setNeedsPricesRefresh(true);
 
-        return false;
-      }
+      //   return false;
+      // }
 
       setTimeout(() => {
         if (!needsPricesRefresh) {
@@ -299,7 +301,7 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
         marketId,
         predictionId,
         ethAmount,
-        minShares,
+        maxShares,
         tokenWrapped && !wrapped
       );
 

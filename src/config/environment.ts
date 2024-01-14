@@ -65,6 +65,7 @@ const environmentConfigVariables = [
   'UI_TOURNAMENTS_TABS_ENABLED',
   'UI_TWITTER_SHARE_INTENT',
   'UI_ONBOARDING',
+  'UI_SLIPPAGE',
   'SENTRY_DSN',
   'FAVICON_URL',
   'TOUCHICON_URL',

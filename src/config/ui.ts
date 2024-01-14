@@ -187,7 +187,10 @@ const ui = {
             )
         }
       }
-    }
+    },
+    slippage: environment.UI_SLIPPAGE
+      ? parseFloat(environment.UI_SLIPPAGE)
+      : 0.003
   },
   socialLogin: {
     enabled: isTrue(environment.FEATURE_SOCIAL_LOGIN),
