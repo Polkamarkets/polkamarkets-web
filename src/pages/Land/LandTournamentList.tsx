@@ -40,8 +40,10 @@ function LandTournamentListItem({ tournament }: LandTournamentListItemProps) {
           src={!isNull(tournament.imageUrl) ? tournament.imageUrl : undefined}
           alt={tournament.title}
           altFormatter={altFormatter}
-          className={styles.tournamentContentAvatar}
-          fallbackClassName={styles.tournamentContentAvatarFallback}
+          className={{
+            root: styles.tournamentContentAvatar,
+            fallback: styles.tournamentContentAvatarFallback
+          }}
         />
         <div>
           <h4 className={styles.tournamentContentTitle}>{tournament.title}</h4>
