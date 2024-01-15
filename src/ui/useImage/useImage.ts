@@ -4,7 +4,10 @@ type States = 'load' | 'error' | 'ok';
 
 type UseImage = [
   States,
-  Pick<React.ComponentPropsWithRef<'img'>, 'ref' | 'onLoad' | 'onError'>
+  Pick<
+    React.ComponentPropsWithRef<'img'>,
+    'ref' | 'onLoad' | 'onError' | 'loading'
+  >
 ];
 
 export default function useImage(): UseImage {
@@ -20,7 +23,8 @@ export default function useImage(): UseImage {
         }
       }, []),
       onError: useCallback(() => setState('error'), []),
-      onLoad: useCallback(() => setState('ok'), [])
+      onLoad: useCallback(() => setState('ok'), []),
+      loading: 'lazy'
     }
   ];
 }
