@@ -1,6 +1,6 @@
 import { memo } from 'react';
 
-function ObservadorLogo() {
+function ObservadorLogo(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       width="837"
@@ -8,6 +8,7 @@ function ObservadorLogo() {
       viewBox="0 0 837 81"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      {...props}
     >
       <path
         fillRule="evenodd"

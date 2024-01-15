@@ -33,6 +33,9 @@ const categories = [
 export type Providers = (typeof providers)[number];
 
 const ui = {
+  maintenance: {
+    enabled: isTrue(environment.MAINTENANCE_MODE)
+  },
   layout: {
     navbar: {
       items: parseNavbarItemsFromEnv(environment.UI_NAVBAR_ITEMS)

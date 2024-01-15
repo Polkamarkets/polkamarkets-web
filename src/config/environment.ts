@@ -71,7 +71,8 @@ const environmentConfigVariables = [
   'TOUCHICON_URL',
   'HOMEPAGE_URL',
   'DEFAULT_LANGUAGE',
-  'EXTERNAL_JS_URL'
+  'EXTERNAL_JS_URL',
+  'MAINTENANCE_MODE'
 ] as const;
 
 export type EnvironmentConfigVariable =
