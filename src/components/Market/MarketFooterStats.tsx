@@ -11,7 +11,7 @@ import { useTheme } from 'ui';
 import Feature from 'components/Feature';
 import Icon from 'components/Icon';
 
-import { useFantasyTokenTicker } from 'hooks';
+import { useFantasyTokenTicker, useLanguage } from 'hooks';
 
 import Text from '../Text';
 import Tooltip from '../Tooltip';
@@ -36,7 +36,6 @@ export default function MarketFooterStats({
   const {
     users,
     volume,
-    volumeEur,
     liquidity,
     liquidityEur,
     fee,
@@ -58,6 +57,8 @@ export default function MarketFooterStats({
       );
 
   const fantasyTokenTicker = useFantasyTokenTicker();
+
+  const language = useLanguage();
 
   const statsVisibility = useMemo(() => {
     return {
@@ -91,7 +92,11 @@ export default function MarketFooterStats({
           >
             <Tooltip
               className={marketClasses.footerStatsTooltip}
-              text={`Users: ${users}`}
+              text={
+                language === 'pt'
+                  ? 'Jogadores que participaram nesta pergunta'
+                  : 'Players who engaged in this question'
+              }
             >
               <Icon
                 name="User"
@@ -121,10 +126,15 @@ export default function MarketFooterStats({
           >
             <Tooltip
               className={marketClasses.footerStatsTooltip}
-              text={`Volume: ${roundNumber(
-                volumeEur,
-                features.fantasy.enabled ? 0 : 3
-              )} ${fantasyTokenTicker || 'EUR'}`}
+              text={
+                language === 'pt'
+                  ? `Volume de ${
+                      fantasyTokenTicker || 'EUR'
+                    } já investido nesta pergunta`
+                  : `Volume of ${
+                      fantasyTokenTicker || 'EUR'
+                    } already invested in this question`
+              }
             >
               <Icon
                 name="Stats"
