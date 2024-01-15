@@ -7,7 +7,7 @@ import store from 'redux/store';
 import Routes from 'routes';
 import { ThemeProvider } from 'ui';
 
-import { SeoIcons } from 'components';
+import { ExternalJS, SeoIcons } from 'components';
 
 import FavoriteMarketsProvider from 'contexts/favoriteMarkets';
 import { FiltersProvider } from 'contexts/filters';
@@ -23,6 +23,7 @@ import { PolkamarketsServiceProvider } from 'hooks/usePolkamarketsService';
 export default function App() {
   return (
     <ThemeProvider>
+      <ExternalJS />
       <SeoIcons />
       <Provider store={store}>
         <Router>
