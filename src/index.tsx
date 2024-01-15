@@ -13,7 +13,7 @@ Sentry.init({
   dsn: environment.SENTRY_DSN,
   integrations: integrations =>
     integrations.filter(integration => integration.name !== 'GlobalHandlers'),
-  enabled: process.env.NODE_ENV !== 'development'
+  enabled: process.env.NODE_ENV !== 'development' || true
 });
 
 render(
