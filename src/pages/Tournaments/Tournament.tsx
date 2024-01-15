@@ -33,8 +33,10 @@ function Tournament({ tournament }: TournamentProps) {
           src={!isNull(tournament.imageUrl) ? tournament.imageUrl : undefined}
           alt={tournament.title}
           altFormatter={altFormatter}
-          className={styles.contentAvatar}
-          fallbackClassName={styles.contentAvatarFallback}
+          className={{
+            root: styles.contentAvatar,
+            fallback: styles.contentAvatarFallback
+          }}
         />
         <div>
           <h4 className={styles.contentTitle}>{tournament.title}</h4>
