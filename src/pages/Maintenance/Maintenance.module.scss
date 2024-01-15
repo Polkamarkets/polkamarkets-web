@@ -1,0 +1,31 @@
+.root {
+  width: 100%;
+  height: 100vh;
+
+  background-image: url('../../assets/images/maintenance.png');
+  background-size: cover;
+}
+
+.modal {
+  &Backdrop {
+    -webkit-backdrop-filter: blur(0);
+    backdrop-filter: blur(0);
+  }
+}
+
+.content {
+  text-align: center;
+}
+
+.logo {
+  height: 16px;
+  width: auto;
+
+  margin-bottom: var(--size-16);
+
+  @media (min-width: 1024px) {
+    height: 20px;
+
+    margin-bottom: var(--size-20);
+  }
+}
