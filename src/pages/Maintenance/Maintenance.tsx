@@ -30,7 +30,7 @@ export default function Maintenance() {
               O Sucesso do Previsómetro foi difícil de prever.
             </ModalSectionText>
             <ModalSectionText>
-              Avisaremos assim que puder voltar para continuar dar VOZ às suas
+              Avisaremos assim que puder voltar para continuar a dar VOZ às suas
               previsões.
             </ModalSectionText>
           </ModalSection>
