@@ -38,8 +38,10 @@ function CommunityLand({ land }: CommunityLandProps) {
             src={!isNull(land.imageUrl) ? land.imageUrl : undefined}
             alt={land.title}
             altFormatter={altFormatter}
-            className={styles.communityLandContentAvatar}
-            fallbackClassName={styles.communityLandContentAvatarFallback}
+            className={{
+              root: styles.communityLandContentAvatar,
+              fallback: styles.communityLandContentAvatarFallback
+            }}
           />
           <h4 className={styles.communityLandContentTitle}>{land.title}</h4>
         </div>
