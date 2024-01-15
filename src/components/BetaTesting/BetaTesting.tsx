@@ -19,17 +19,9 @@ export default function BetaTesting({ network }: BetaTestingProps) {
   if (!show) return null;
 
   return (
-    <Banner $type="info" $variant="subtle" onHide={() => setShow(false)}>
-      Welcome to the brand new <strong>Polkamarkets V2</strong> 🎉 if you want
-      to use V1 use the following{' '}
-      <Link
-        className={betaTesting.link}
-        title="link"
-        target="_blank"
-        rel="noreferrer noopener"
-        href="//v1.polkamarkets.com"
-      />
-      .
+    <Banner $type="warning" $variant="subtle" onHide={() => setShow(false)}>
+      Aviso: devido ao elevado tráfego de jogadores, a compra e venda de
+      previsões pode estar mais lenta.
     </Banner>
   );
 }
