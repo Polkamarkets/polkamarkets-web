@@ -3,7 +3,6 @@ import { useCallback, useMemo } from 'react';
 import { camelize } from 'humps';
 import isEmpty from 'lodash/isEmpty';
 import {
-  getFavoriteMarkets,
   getMarkets,
   getMarketsByIds,
   marketsSelector
