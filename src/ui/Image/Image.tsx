@@ -2,6 +2,7 @@ import { forwardRef } from 'react';
 
 import cn from 'classnames';
 import { AnimatePresence, motion } from 'framer-motion';
+import { isObject } from 'lodash';
 import Skeleton from 'ui/Skeleton';
 import useEnhancedRef from 'ui/useEnhancedRef';
 import useImage from 'ui/useImage';
@@ -9,13 +10,13 @@ import useImage from 'ui/useImage';
 import imageClasses from './Image.module.scss';
 
 export type ImageProps = React.PropsWithChildren<
-  Pick<
-    React.ComponentPropsWithRef<'img'>,
-    'src' | 'alt' | 'className' | 'ref'
-  > & {
+  Pick<React.ComponentPropsWithRef<'img'>, 'src' | 'alt' | 'ref'> & {
     $size?: 'x2s' | 'xs' | 'sm' | 'md' | 'lg';
     $radius?: 'xs' | 'sm' | 'md' | 'lg';
-    fallbackClassName?: string;
+    height?: number;
+    className?:
+      | Partial<Record<'root' | 'img' | 'fallback' | 'skeleton', string>>
+      | string;
   }
 >;
 
@@ -39,7 +40,7 @@ function ImageAnimation(
 }
 
 const Image = forwardRef<HTMLImageElement, ImageProps>(function Image(
-  { alt, className, children, $radius, $size, fallbackClassName, ...props },
+  { alt, className, children, $radius, $size, ...props },
   ref
 ) {
   const [state, { ref: imageRef, ...imageProps }] = useImage();
@@ -59,16 +60,20 @@ const Image = forwardRef<HTMLImageElement, ImageProps>(function Image(
           [imageClasses.sizeMd]: $size === 'md',
           [imageClasses.sizeLg]: $size === 'lg'
         },
-        className
+        isObject(className) ? className.root : className
       )}
     >
       <img
         alt={alt}
         ref={useEnhancedRef<HTMLImageElement>(ref, imageRef)}
-        className={cn(imageClasses.element, {
-          [imageClasses.elementHide]: state !== 'ok',
-          [imageClasses.elementProportional]: $size
-        })}
+        className={cn(
+          imageClasses.element,
+          {
+            [imageClasses.elementHide]: state !== 'ok',
+            [imageClasses.elementProportional]: !!$size
+          },
+          isObject(className) && className.img
+        )}
         {...imageProps}
         {...props}
       />
@@ -82,7 +87,10 @@ const Image = forwardRef<HTMLImageElement, ImageProps>(function Image(
       <AnimatePresence>
         {state === 'error' && (
           <ImageAnimation
-            className={cn(imageClasses.fallback, fallbackClassName)}
+            className={cn(
+              imageClasses.fallback,
+              isObject(className) && className.fallback
+            )}
           >
             <div className={imageClasses.fallbackElement}>{children}</div>
           </ImageAnimation>
