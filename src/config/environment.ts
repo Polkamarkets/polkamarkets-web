@@ -69,7 +69,8 @@ const environmentConfigVariables = [
   'FAVICON_URL',
   'TOUCHICON_URL',
   'HOMEPAGE_URL',
-  'DEFAULT_LANGUAGE'
+  'DEFAULT_LANGUAGE',
+  'MAINTENANCE_MODE'
 ] as const;
 
 export type EnvironmentConfigVariable =
