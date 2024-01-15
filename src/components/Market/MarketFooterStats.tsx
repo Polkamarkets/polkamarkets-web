@@ -128,12 +128,12 @@ export default function MarketFooterStats({
               className={marketClasses.footerStatsTooltip}
               text={
                 language === 'pt'
-                  ? `Volume de ${
+                  ? `Total de ${
                       fantasyTokenTicker || 'EUR'
                     } já investido nesta pergunta`
-                  : `Volume of ${
+                  : `Total ${
                       fantasyTokenTicker || 'EUR'
-                    } already invested in this question`
+                    } placed in this question`
               }
             >
               <Icon
