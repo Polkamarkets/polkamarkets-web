@@ -64,8 +64,10 @@ function HomeOngoingEvents({ tournaments }: HomeOngoingEventsProps) {
               src={!isNull(event.imageUrl) ? event.imageUrl : undefined}
               alt={event.title}
               altFormatter={altFormatter}
-              className={styles.ongoingEventsItemContentAvatar}
-              fallbackClassName={styles.ongoingEventsItemContentAvatarFallback}
+              className={{
+                root: styles.ongoingEventsItemContentAvatar,
+                fallback: styles.ongoingEventsItemContentAvatarFallback
+              }}
             />
             <div>
               <h4 className={styles.ongoingEventsItemContentTitle}>
