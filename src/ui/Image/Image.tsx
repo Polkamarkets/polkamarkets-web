@@ -10,10 +10,9 @@ import useImage from 'ui/useImage';
 import imageClasses from './Image.module.scss';
 
 export type ImageProps = React.PropsWithChildren<
-  Pick<React.ComponentPropsWithRef<'img'>, 'src' | 'alt' | 'ref'> & {
+  Pick<React.ComponentPropsWithoutRef<'img'>, 'src' | 'alt'> & {
     $size?: 'x2s' | 'xs' | 'sm' | 'md' | 'lg';
     $radius?: 'xs' | 'sm' | 'md' | 'lg';
-    height?: number;
     className?:
       | Partial<Record<'root' | 'img' | 'fallback' | 'skeleton', string>>
       | string;
