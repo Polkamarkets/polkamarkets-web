@@ -74,6 +74,9 @@ export default class PolkamarketsService {
     this.arbitrationContractAddress = ARBITRATION_CONTRACT_ADDRESS;
     this.arbitrationProxyContractAddress = ARBITRATION_PROXY_CONTRACT_ADDRESS;
 
+    console.log('bundler fdp');
+    console.log(process.env.REACT_APP_FEATURE_SOCIAL_LOGIN_BUNDLER_RPC);
+
     this.polkamarkets = new polkamarketsjs.Application({
       web3Provider: WEB3_PROVIDER,
       web3EventsProvider: WEB3_EVENTS_PROVIDER,
