@@ -139,21 +139,12 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
       // adding slippage due to js floating numbers rounding
       const minShares = shares * (1 - ui.market.slippage);
 
-      console.log('here?');
-      console.log(polkamarketsService);
-
       // calculating shares amount from smart contract
       const sharesToBuy = await polkamarketsService.calcBuyAmount(
         marketId,
         predictionId,
         amount
       );
-
-      console.log('here!');
-      console.log(marketId);
-      console.log(predictionId);
-      console.log(amount);
-      console.log(minShares);
 
       // disabling refresh prices form temporarily
       // will refresh form if > slippage
@@ -205,16 +196,6 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
         }
       }, 200);
 
-      console.log({
-        marketId,
-        predictionId,
-        amount,
-        minShares,
-        tokenWrapped
-      });
-
-      console.log(polkamarketsService);
-
       // performing buy action on smart contract
       await polkamarketsService.buy(
         marketId,
@@ -234,13 +215,9 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
       // updating wallet
       await updateWallet();
       await refreshBalance();
-      console.log('not resetting fdp');
       resetTrade();
     } catch (error) {
       setTrade({ status: 'error' });
-
-      console.log('error')
-      console.log(error)
       // TODO: improve this
       const extraData = (error as any)?.data as any;
       Sentry.captureException(error, { extra: extraData });
