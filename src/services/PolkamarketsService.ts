@@ -89,7 +89,8 @@ export default class PolkamarketsService {
           particleClientKey:
             process.env.REACT_APP_FEATURE_SOCIAL_LOGIN_PARTICLE_CLIENT_KEY,
           particleAppId:
-            process.env.REACT_APP_FEATURE_SOCIAL_LOGIN_PARTICLE_APP_ID
+            process.env.REACT_APP_FEATURE_SOCIAL_LOGIN_PARTICLE_APP_ID,
+          bundlerRPC: process.env.REACT_APP_FEATURE_SOCIAL_LOGIN_BUNDLER_RPC
         },
         web3AuthConfig: {
           clientId: process.env.REACT_APP_WEB3AUTH_CLIENT_ID,
