@@ -16,8 +16,8 @@ export default function BetaTesting({ network }: BetaTestingProps) {
 
   return (
     <Banner $type="warning" $variant="subtle" onHide={() => setShow(false)}>
-      O sucesso do Previsómetro foi difícil de prever devido à elevada
-      alfuência. Estamos de volta para todos os previsores.
+      O sucesso do Previsómetro foi difícil de prever devido à elevada afluência
+      de jogadores. Estamos de volta para todos os previsores.
     </Banner>
   );
 }
