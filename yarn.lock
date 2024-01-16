@@ -3567,9 +3567,9 @@
     solidity-ast "^0.4.26"
 
 "@openzeppelin/upgrades-core@^1.30.0":
-  version "1.32.2"
-  resolved "https://registry.yarnpkg.com/@openzeppelin/upgrades-core/-/upgrades-core-1.32.2.tgz#4313bd0a547090a350817cf798af60e0eb0728e8"
-  integrity sha512-EkXriOHZfn6u00Tbq0zUuhHDeTQB9WyAZKZo3UeYdqULb7E3vqxZgxgXmWJwEzAb6E77DvprzQ4gwCAjMV/S4Q==
+  version "1.32.3"
+  resolved "https://registry.yarnpkg.com/@openzeppelin/upgrades-core/-/upgrades-core-1.32.3.tgz#7f92aeab6f6c7300c8fa4c1cde14253b2bd62341"
+  integrity sha512-v04RbrBOTRiIhfkTRfY4M34I2wIcuz+K1cUk/6duulsMXvRpM6/IPWeXh+1Xr1K+xedJi7gcS/pNSXfYhYNXIg==
   dependencies:
     cbor "^9.0.0"
     chalk "^4.1.0"
@@ -4463,7 +4463,7 @@
   resolved "https://registry.yarnpkg.com/@toruslabs/constants/-/constants-11.0.0.tgz#c4a0ed1528ec5bbd6f9d1c4cd415913c693034e2"
   integrity sha512-ImSw2cFMCdJH2zZ9jAR2vfK03YXpEGxBuNctx2Mq7fDyx+h0FvFSOV/VHMcjKcYCsPZyw1WjRCP0rDVY+7lHZg==
 
-"@toruslabs/constants@^13.0.4", "@toruslabs/constants@^13.1.0":
+"@toruslabs/constants@^13.1.0":
   version "13.1.0"
   resolved "https://registry.yarnpkg.com/@toruslabs/constants/-/constants-13.1.0.tgz#f1077a6654d98c0444fb0831f479007fb5cff79d"
   integrity sha512-W1LyRoM5xCTyNivGnxa+mOit4yWPZjyYHfM+whYBujP1nQVnJ09nSFCBn1ePm6ONxB5mp58jsI3TJugeY2KFSg==
@@ -4668,19 +4668,19 @@
     pump "^3.0.0"
     readable-stream "^4.4.2"
 
-"@toruslabs/openlogin-jrpc@^6.1.0":
-  version "6.2.1"
-  resolved "https://registry.yarnpkg.com/@toruslabs/openlogin-jrpc/-/openlogin-jrpc-6.2.1.tgz#6d2d1992f681237f0662cc4407e249d3e7725e27"
-  integrity sha512-H0UGOBOD1d9wDBpTYPn3F5FP1QjTOInBKitv9ga5gOgjJBTB4/zVMcilFpLcHZjwugNoZ+u5VOiGS88IZQh1DQ==
+"@toruslabs/openlogin-jrpc@^6.1.0", "@toruslabs/openlogin-jrpc@^6.2.2":
+  version "6.2.2"
+  resolved "https://registry.yarnpkg.com/@toruslabs/openlogin-jrpc/-/openlogin-jrpc-6.2.2.tgz#75e998091ef59caf4c83a4597bd06533ff453f1f"
+  integrity sha512-DzZ6uqBhsay9F2R61aqmFWMtZBm0o7G4gBj1imMURad+bOfOr6aSJbhk+6ZANGfijVB7ieb7uNyAIYJLrgmYiA==
   dependencies:
     "@metamask/rpc-errors" "^6.1.0"
-    "@toruslabs/openlogin-utils" "^6.2.0"
+    "@toruslabs/openlogin-utils" "^6.2.2"
     end-of-stream "^1.4.4"
     events "^3.3.0"
     fast-safe-stringify "^2.1.1"
     once "^1.4.0"
     pump "^3.0.0"
-    readable-stream "^4.4.2"
+    readable-stream "^4.5.2"
 
 "@toruslabs/openlogin-session-manager@^1.1.0":
   version "1.1.0"
@@ -4725,12 +4725,12 @@
   dependencies:
     base64url "^3.0.1"
 
-"@toruslabs/openlogin-utils@^6.1.0", "@toruslabs/openlogin-utils@^6.2.0":
-  version "6.2.0"
-  resolved "https://registry.yarnpkg.com/@toruslabs/openlogin-utils/-/openlogin-utils-6.2.0.tgz#c280875e12cc6728d14780a3c7be07779df61ee4"
-  integrity sha512-/BWb3qBcEGYgqERzStgXAiQULWvaBPqxN8k9iZiexK5Ndo1qLz/OdBoXgYPPKE5B4/OoMm9MERsXg1tpPtvnCw==
+"@toruslabs/openlogin-utils@^6.1.0", "@toruslabs/openlogin-utils@^6.2.2":
+  version "6.2.2"
+  resolved "https://registry.yarnpkg.com/@toruslabs/openlogin-utils/-/openlogin-utils-6.2.2.tgz#08c815ee4836524b5aaf4d283e78193860401d87"
+  integrity sha512-+NBC8QB0HEcQT8T8DYiNZcdjjm1pL1slXXhiFcy7yNxq7tgUmRCfS2+b+t1ftmuE9tSbA7tW4V+uPPWjBYJKww==
   dependencies:
-    "@toruslabs/constants" "^13.0.4"
+    "@toruslabs/constants" "^13.1.0"
     base64url "^3.0.1"
 
 "@toruslabs/openlogin@^4.7.2":
@@ -4748,15 +4748,15 @@
     loglevel "^1.8.1"
     ts-custom-error "^3.3.1"
 
-"@toruslabs/openlogin@^6.1.0":
-  version "6.2.1"
-  resolved "https://registry.yarnpkg.com/@toruslabs/openlogin/-/openlogin-6.2.1.tgz#34eed3c58f98733b6fd71048dc8a401407865e6e"
-  integrity sha512-tCnsZRr7fIU9YiHmQF5CGFg5deeYl0xl7ze0TlwnRY4Ns9IggPQ78gQlPSSyHRhs8uG4ghBKh0QnDi/+Ozpryg==
+"@toruslabs/openlogin@^6.2.2":
+  version "6.2.2"
+  resolved "https://registry.yarnpkg.com/@toruslabs/openlogin/-/openlogin-6.2.2.tgz#829666dee1ebac1360ce6bb1e317d4029ca065b1"
+  integrity sha512-aFj5Hzes1UFCDjqQx9RwISJJl1nIIXVhiFb7VIT2JFueYfFbNOBXKRaKEw9Yw1Q9lVIa+C8FX8+lf6gnjX8ADQ==
   dependencies:
     "@toruslabs/eccrypto" "^4.0.0"
     "@toruslabs/metadata-helpers" "^5.0.0"
     "@toruslabs/openlogin-session-manager" "^3.0.0"
-    "@toruslabs/openlogin-utils" "^6.2.0"
+    "@toruslabs/openlogin-utils" "^6.2.2"
     "@toruslabs/secure-pub-sub" "^0.0.1"
     bowser "^2.11.0"
     events "^3.3.0"
@@ -5325,9 +5325,9 @@
     "@types/node" "*"
 
 "@types/node@*":
-  version "20.11.3"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.11.3.tgz#ac29fba7aeadc74046b02e50758156f4850f1296"
-  integrity sha512-nrlmbvGPNGaj84IJZXMPhQuCMEVTT/hXZMJJG/aIqVL9fKxqk814sGGtJA4GI6hpJSLQjpi6cn0Qx9eOf9SDVg==
+  version "20.11.4"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.11.4.tgz#c724a5d6723182af758b91b994209336f4439cb7"
+  integrity sha512-6I0fMH8Aoy2lOejL3s4LhyIYX34DPwY8bl5xlNjBvUEk8OHrcuzsFt+Ied4LvJihbtXPM+8zUqdydfIti86v9g==
   dependencies:
     undici-types "~5.26.4"
 
@@ -5901,14 +5901,14 @@
     ts-custom-error "^3.3.1"
 
 "@web3auth/base@^7.2.0":
-  version "7.2.1"
-  resolved "https://registry.yarnpkg.com/@web3auth/base/-/base-7.2.1.tgz#d88ff693bd11ff1d7b9a0531f846982c0bb4cc2e"
-  integrity sha512-IgQ7TuDkG3qlao2WI/LXfX7eUZTIrvwZuizNcbbl8vG1I9So+acr7Fe0H/sH9+4XNNCjPWeRDI946E2UnJSvBw==
+  version "7.3.1"
+  resolved "https://registry.yarnpkg.com/@web3auth/base/-/base-7.3.1.tgz#f87680741e40944159ebdd68c80e1b3993f4d696"
+  integrity sha512-L2JgNTuLq/LZhZzJsnn1tRnDDvHO5o8rYzfjpVAVJOFHS6UxP2009oCJhDl9lSXWCZHV6mH3E2pEIE7NU5OBLA==
   dependencies:
     "@toruslabs/http-helpers" "^6.0.0"
-    "@toruslabs/openlogin" "^6.1.0"
-    "@toruslabs/openlogin-jrpc" "^6.1.0"
-    "@toruslabs/openlogin-utils" "^6.1.0"
+    "@toruslabs/openlogin" "^6.2.2"
+    "@toruslabs/openlogin-jrpc" "^6.2.2"
+    "@toruslabs/openlogin-utils" "^6.2.2"
     jwt-decode "^4.0.0"
     loglevel "^1.8.1"
     ts-custom-error "^3.3.1"
@@ -8223,9 +8223,9 @@ caniuse-lite@^1.0.0:
   integrity sha512-uv7/gXuHi10Whlj0pp5q/tsK/32J2QSqVRKQhs2j8VsDCjgyruAh/eEXHF822VqO9yT6iZKw3nRwZRSPBE9OQg==
 
 caniuse-lite@^1.0.30000844:
-  version "1.0.30001576"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001576.tgz#893be772cf8ee6056d6c1e2d07df365b9ec0a5c4"
-  integrity sha512-ff5BdakGe2P3SQsMsiqmt1Lc8221NR1VzHj5jXN5vBny9A6fpze94HiVV/n7XRosOlsShJcvMv5mdnpjOGCEgg==
+  version "1.0.30001577"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001577.tgz#a24991eb4ad67324ba8b96716340d53151f2f6f8"
+  integrity sha512-rs2ZygrG1PNXMfmncM0B5H1hndY5ZCC9b5TkFaVNfZ+AUlyqcMyVIQtc3fsezi0NUCk5XZfDf9WS6WxMxnfdrg==
 
 caniuse-lite@^1.0.30001400:
   version "1.0.30001488"
@@ -9936,9 +9936,9 @@ ejs@^3.1.6:
     jake "^10.8.5"
 
 electron-to-chromium@^1.3.47:
-  version "1.4.631"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.631.tgz#db2de2e1ce90fc1785b5c3f49fde594413270e05"
-  integrity sha512-g73CJB/rMPjdxpiNJYmV1homV7mLVUNe/R0z/HhqMfpjkt58FpYmkTjbtuv3zymdbTTJ+VOEqe1c+lkTjSOhmQ==
+  version "1.4.632"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.632.tgz#df6253483b802eb83eee2fdc0e5067bd46f36f11"
+  integrity sha512-JGmudTwg7yxMYvR/gWbalqqQiyu7WTFv2Xu3vw4cJHXPFxNgAk0oy8UHaer8nLF4lZJa+rNoj6GsrKIVJTV6Tw==
 
 electron-to-chromium@^1.4.251:
   version "1.4.399"
@@ -16015,7 +16015,7 @@ pkg-up@^3.1.0:
 
 "polkamarkets-js@https://github.com/Polkamarkets/polkamarkets-js#feat/login-with-jwt-v3":
   version "1.2.1"
-  resolved "https://github.com/Polkamarkets/polkamarkets-js#9fdd9379512303a65809fec0f293c0dd5d8668cd"
+  resolved "https://github.com/Polkamarkets/polkamarkets-js#132182a39df98cf5a81d3e25b4443f5353044dfc"
   dependencies:
     "@metamask/safe-event-emitter" "^2.0.0"
     "@metamask/utils" "^8.2.1"
@@ -17445,7 +17445,7 @@ readable-stream@^3.1.1, readable-stream@^3.6.0:
     string_decoder "^1.1.1"
     util-deprecate "^1.0.1"
 
-readable-stream@^4.4.2:
+readable-stream@^4.4.2, readable-stream@^4.5.2:
   version "4.5.2"
   resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-4.5.2.tgz#9e7fc4c45099baeed934bff6eb97ba6cf2729e09"
   integrity sha512-yjavECdqeZ3GLXNgRXgeQEdz9fvDDkNKyHnbHRFtOr7/LcfgBcmct7t/ET+HaCTqfh06OzoAxrkN/IfjJBVe+g==
