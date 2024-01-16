@@ -107,11 +107,13 @@
     }
 
     &Avatar {
-      height: 100px;
       width: 100px;
 
-      aspect-ratio: 1 / 1;
       flex-shrink: 0;
+
+      &Image {
+        height: 100px;
+      }
     }
 
     &Content {
@@ -138,11 +140,13 @@
         margin-bottom: var(--size-8);
 
         &Avatar {
-          height: 20px;
           width: 20px;
 
-          aspect-ratio: 1 / 1;
           flex-shrink: 0;
+
+          &Image {
+            height: 20px;
+          }
         }
 
         &Name {

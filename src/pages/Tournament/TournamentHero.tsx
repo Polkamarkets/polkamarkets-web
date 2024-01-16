@@ -120,7 +120,10 @@ export default function TournamentHero({
               $radius="md"
               src={tournamentImageUrl}
               alt={tournamentName}
-              className={styles.rootHeroAvatar}
+              className={{
+                root: styles.rootHeroAvatar,
+                img: styles.rootHeroAvatarImage
+              }}
             />
           ) : null}
           <div className={styles.rootHeroContent}>
@@ -148,7 +151,10 @@ export default function TournamentHero({
                         $radius="lg"
                         src={landImageUrl}
                         alt={landName}
-                        className={styles.rootHeroContentLandAvatar}
+                        className={{
+                          root: styles.rootHeroContentLandAvatar,
+                          img: styles.rootHeroContentLandAvatarImage
+                        }}
                       />
                     ) : null}
                     {landName ? (
