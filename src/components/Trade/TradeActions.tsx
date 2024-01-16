@@ -396,7 +396,7 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
               description="Sorry, we failed to record your prediction. Please try again."
             />
           ) : null}
-          {status === 'success' && trade.market === marketId ? (
+          {status === 'success' ? (
             <AlertMinimal
               variant="information"
               description="We're recording your previous prediction. Hang on..."
@@ -422,9 +422,7 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
                     fullwidth
                     onClick={handleBuy}
                     disabled={
-                      !isValidAmount ||
-                      isLoading ||
-                      (status === 'success' && trade.market === marketId)
+                      !isValidAmount || isLoading || status === 'success'
                     }
                     loading={isLoading}
                   >
