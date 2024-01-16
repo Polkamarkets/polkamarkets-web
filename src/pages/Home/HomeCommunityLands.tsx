@@ -1,11 +1,11 @@
-import { CSSProperties, useCallback } from 'react';
+import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 
 import classNames from 'classnames';
 import formatImageAlt from 'helpers/formatImageAlt';
 import isNull from 'lodash/isNull';
 import type { Land } from 'types/land';
-import { Avatar } from 'ui';
+import { Avatar, Image } from 'ui';
 
 import { InfoIcon } from 'assets/icons';
 
@@ -23,14 +23,16 @@ function CommunityLand({ land }: CommunityLandProps) {
   return (
     <Link to={`/${land.slug}`} className={styles.communityLand}>
       <div className={styles.communityLandContent}>
-        <div
-          className={styles.communityLandContentHero}
-          style={
-            {
-              '--background-image': `url(${land.bannerUrl})`
-            } as CSSProperties
-          }
-        />
+        {!isNull(land.bannerUrl) && (
+          <Image
+            alt=""
+            src={land.bannerUrl}
+            className={{
+              root: styles.communityLandContentHero,
+              img: styles.communityLandContentHeroImage
+            }}
+          />
+        )}
         <div className={styles.communityLandContentBody}>
           <Avatar
             $size="xs"

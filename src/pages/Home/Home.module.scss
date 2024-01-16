@@ -330,16 +330,11 @@
     border-top: none;
 
     &Hero {
-      height: 160px;
-
-      background: var(--background-image), transparent;
-      background-clip: border-box;
-      background-repeat: no-repeat;
-      background-size: cover;
-      background-position: center center;
-      transition: background-color 300ms ease-in;
-
       border-radius: var(--size-8);
+
+      &Image {
+        height: 160px;
+      }
     }
 
     &Body {
