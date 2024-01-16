@@ -3580,50 +3580,50 @@
     proper-lockfile "^4.1.1"
     solidity-ast "^0.4.51"
 
-"@parcel/watcher-android-arm64@2.3.0":
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/@parcel/watcher-android-arm64/-/watcher-android-arm64-2.3.0.tgz#d82e74bb564ebd4d8a88791d273a3d2bd61e27ab"
-  integrity sha512-f4o9eA3dgk0XRT3XhB0UWpWpLnKgrh1IwNJKJ7UJek7eTYccQ8LR7XUWFKqw6aEq5KUNlCcGvSzKqSX/vtWVVA==
+"@parcel/watcher-android-arm64@2.4.0":
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/@parcel/watcher-android-arm64/-/watcher-android-arm64-2.4.0.tgz#9c93763794153e4f76920994a423b6ea3257059d"
+  integrity sha512-+fPtO/GsbYX1LJnCYCaDVT3EOBjvSFdQN9Mrzh9zWAOOfvidPWyScTrHIZHHfJBvlHzNA0Gy0U3NXFA/M7PHUA==
 
-"@parcel/watcher-darwin-arm64@2.3.0":
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/@parcel/watcher-darwin-arm64/-/watcher-darwin-arm64-2.3.0.tgz#c9cd03f8f233d512fcfc873d5b4e23f1569a82ad"
-  integrity sha512-mKY+oijI4ahBMc/GygVGvEdOq0L4DxhYgwQqYAz/7yPzuGi79oXrZG52WdpGA1wLBPrYb0T8uBaGFo7I6rvSKw==
+"@parcel/watcher-darwin-arm64@2.4.0":
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/@parcel/watcher-darwin-arm64/-/watcher-darwin-arm64-2.4.0.tgz#2c79c2abde16aa24cac67e555b60802fd13fe210"
+  integrity sha512-T/At5pansFuQ8VJLRx0C6C87cgfqIYhW2N/kBfLCUvDhCah0EnLLwaD/6MW3ux+rpgkpQAnMELOCTKlbwncwiA==
 
-"@parcel/watcher-darwin-x64@2.3.0":
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/@parcel/watcher-darwin-x64/-/watcher-darwin-x64-2.3.0.tgz#83c902994a2a49b9e1ab5050dba24876fdc2c219"
-  integrity sha512-20oBj8LcEOnLE3mgpy6zuOq8AplPu9NcSSSfyVKgfOhNAc4eF4ob3ldj0xWjGGbOF7Dcy1Tvm6ytvgdjlfUeow==
+"@parcel/watcher-darwin-x64@2.4.0":
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/@parcel/watcher-darwin-x64/-/watcher-darwin-x64-2.4.0.tgz#23d82f198c5d033f047467c68d7c335f3df49b46"
+  integrity sha512-vZMv9jl+szz5YLsSqEGCMSllBl1gU1snfbRL5ysJU03MEa6gkVy9OMcvXV1j4g0++jHEcvzhs3Z3LpeEbVmY6Q==
 
-"@parcel/watcher-freebsd-x64@2.3.0":
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/@parcel/watcher-freebsd-x64/-/watcher-freebsd-x64-2.3.0.tgz#7a0f4593a887e2752b706aff2dae509aef430cf6"
-  integrity sha512-7LftKlaHunueAEiojhCn+Ef2CTXWsLgTl4hq0pkhkTBFI3ssj2bJXmH2L67mKpiAD5dz66JYk4zS66qzdnIOgw==
+"@parcel/watcher-freebsd-x64@2.4.0":
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/@parcel/watcher-freebsd-x64/-/watcher-freebsd-x64-2.4.0.tgz#7310cc86abc27dacd57624bcdba1f0ba092e76df"
+  integrity sha512-dHTRMIplPDT1M0+BkXjtMN+qLtqq24sLDUhmU+UxxLP2TEY2k8GIoqIJiVrGWGomdWsy5IO27aDV1vWyQ6gfHA==
 
-"@parcel/watcher-linux-arm-glibc@2.3.0":
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/@parcel/watcher-linux-arm-glibc/-/watcher-linux-arm-glibc-2.3.0.tgz#3fc90c3ebe67de3648ed2f138068722f9b1d47da"
-  integrity sha512-1apPw5cD2xBv1XIHPUlq0cO6iAaEUQ3BcY0ysSyD9Kuyw4MoWm1DV+W9mneWI+1g6OeP6dhikiFE6BlU+AToTQ==
+"@parcel/watcher-linux-arm-glibc@2.4.0":
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/@parcel/watcher-linux-arm-glibc/-/watcher-linux-arm-glibc-2.4.0.tgz#c31b76e695027eeb1078d3d6f1d641d0b900c335"
+  integrity sha512-9NQXD+qk46RwATNC3/UB7HWurscY18CnAPMTFcI9Y8CTbtm63/eex1SNt+BHFinEQuLBjaZwR2Lp+n7pmEJPpQ==
 
-"@parcel/watcher-linux-arm64-glibc@2.3.0":
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/@parcel/watcher-linux-arm64-glibc/-/watcher-linux-arm64-glibc-2.3.0.tgz#f7bbbf2497d85fd11e4c9e9c26ace8f10ea9bcbc"
-  integrity sha512-mQ0gBSQEiq1k/MMkgcSB0Ic47UORZBmWoAWlMrTW6nbAGoLZP+h7AtUM7H3oDu34TBFFvjy4JCGP43JlylkTQA==
+"@parcel/watcher-linux-arm64-glibc@2.4.0":
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/@parcel/watcher-linux-arm64-glibc/-/watcher-linux-arm64-glibc-2.4.0.tgz#56e09b86e9d8a4096f606be118b588da6e965080"
+  integrity sha512-QuJTAQdsd7PFW9jNGaV9Pw+ZMWV9wKThEzzlY3Lhnnwy7iW23qtQFPql8iEaSFMCVI5StNNmONUopk+MFKpiKg==
 
-"@parcel/watcher-linux-arm64-musl@2.3.0":
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/@parcel/watcher-linux-arm64-musl/-/watcher-linux-arm64-musl-2.3.0.tgz#de131a9fcbe1fa0854e9cbf4c55bed3b35bcff43"
-  integrity sha512-LXZAExpepJew0Gp8ZkJ+xDZaTQjLHv48h0p0Vw2VMFQ8A+RKrAvpFuPVCVwKJCr5SE+zvaG+Etg56qXvTDIedw==
+"@parcel/watcher-linux-arm64-musl@2.4.0":
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/@parcel/watcher-linux-arm64-musl/-/watcher-linux-arm64-musl-2.4.0.tgz#27ffd5ca5f510ecd638f9ad22e2e813049db54e7"
+  integrity sha512-oyN+uA9xcTDo/45bwsd6TFHa7Lc7hKujyMlvwrCLvSckvWogndCEoVYFNfZ6JJ2KNL/6fFiGPcbjp8jJmEh5Ng==
 
-"@parcel/watcher-linux-x64-glibc@2.3.0":
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/@parcel/watcher-linux-x64-glibc/-/watcher-linux-x64-glibc-2.3.0.tgz#193dd1c798003cdb5a1e59470ff26300f418a943"
-  integrity sha512-P7Wo91lKSeSgMTtG7CnBS6WrA5otr1K7shhSjKHNePVmfBHDoAOHYRXgUmhiNfbcGk0uMCHVcdbfxtuiZCHVow==
+"@parcel/watcher-linux-x64-glibc@2.4.0":
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/@parcel/watcher-linux-x64-glibc/-/watcher-linux-x64-glibc-2.4.0.tgz#44cbbb1e5884a1ca900655f47a0775218318f934"
+  integrity sha512-KphV8awJmxU3q52JQvJot0QMu07CIyEjV+2Tb2ZtbucEgqyRcxOBDMsqp1JNq5nuDXtcCC0uHQICeiEz38dPBQ==
 
-"@parcel/watcher-linux-x64-musl@2.3.0":
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/@parcel/watcher-linux-x64-musl/-/watcher-linux-x64-musl-2.3.0.tgz#6dbdb86d96e955ab0fe4a4b60734ec0025a689dd"
-  integrity sha512-+kiRE1JIq8QdxzwoYY+wzBs9YbJ34guBweTK8nlzLKimn5EQ2b2FSC+tAOpq302BuIMjyuUGvBiUhEcLIGMQ5g==
+"@parcel/watcher-linux-x64-musl@2.4.0":
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/@parcel/watcher-linux-x64-musl/-/watcher-linux-x64-musl-2.4.0.tgz#4c33993618c8d5113722852806239cb80360494b"
+  integrity sha512-7jzcOonpXNWcSijPpKD5IbC6xC7yTibjJw9jviVzZostYLGxbz8LDJLUnLzLzhASPlPGgpeKLtFUMjAAzM+gSA==
 
 "@parcel/watcher-wasm@2.3.0":
   version "2.3.0"
@@ -3634,43 +3634,43 @@
     micromatch "^4.0.5"
     napi-wasm "^1.1.0"
 
-"@parcel/watcher-win32-arm64@2.3.0":
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/@parcel/watcher-win32-arm64/-/watcher-win32-arm64-2.3.0.tgz#59da26a431da946e6c74fa6b0f30b120ea6650b6"
-  integrity sha512-35gXCnaz1AqIXpG42evcoP2+sNL62gZTMZne3IackM+6QlfMcJLy3DrjuL6Iks7Czpd3j4xRBzez3ADCj1l7Aw==
+"@parcel/watcher-win32-arm64@2.4.0":
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/@parcel/watcher-win32-arm64/-/watcher-win32-arm64-2.4.0.tgz#2a172fd2fda95fe5389298ca3e70b5a96316162a"
+  integrity sha512-NOej2lqlq8bQNYhUMnOD0nwvNql8ToQF+1Zhi9ULZoG+XTtJ9hNnCFfyICxoZLXor4bBPTOnzs/aVVoefYnjIg==
 
-"@parcel/watcher-win32-ia32@2.3.0":
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/@parcel/watcher-win32-ia32/-/watcher-win32-ia32-2.3.0.tgz#3ee6a18b08929cd3b788e8cc9547fd9a540c013a"
-  integrity sha512-FJS/IBQHhRpZ6PiCjFt1UAcPr0YmCLHRbTc00IBTrelEjlmmgIVLeOx4MSXzx2HFEy5Jo5YdhGpxCuqCyDJ5ow==
+"@parcel/watcher-win32-ia32@2.4.0":
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/@parcel/watcher-win32-ia32/-/watcher-win32-ia32-2.4.0.tgz#279225b2ebe1fadd3c5137c9b2365ad422656904"
+  integrity sha512-IO/nM+K2YD/iwjWAfHFMBPz4Zqn6qBDqZxY4j2n9s+4+OuTSRM/y/irksnuqcspom5DjkSeF9d0YbO+qpys+JA==
 
-"@parcel/watcher-win32-x64@2.3.0":
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/@parcel/watcher-win32-x64/-/watcher-win32-x64-2.3.0.tgz#14e7246289861acc589fd608de39fe5d8b4bb0a7"
-  integrity sha512-dLx+0XRdMnVI62kU3wbXvbIRhLck4aE28bIGKbRGS7BJNt54IIj9+c/Dkqb+7DJEbHUZAX1bwaoM8PqVlHJmCA==
+"@parcel/watcher-win32-x64@2.4.0":
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/@parcel/watcher-win32-x64/-/watcher-win32-x64-2.4.0.tgz#93e0bd0ad1bda2c9a688764b9b30b71dc5b72a71"
+  integrity sha512-pAUyUVjfFjWaf/pShmJpJmNxZhbMvJASUpdes9jL6bTEJ+gDxPRSpXTIemNyNsb9AtbiGXs9XduP1reThmd+dA==
 
 "@parcel/watcher@^2.3.0":
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/@parcel/watcher/-/watcher-2.3.0.tgz#803517abbc3981a1a1221791d9f59dc0590d50f9"
-  integrity sha512-pW7QaFiL11O0BphO+bq3MgqeX/INAk9jgBldVDYjlQPO4VddoZnF22TcF9onMhnLVHuNqBJeRf+Fj7eezi/+rQ==
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/@parcel/watcher/-/watcher-2.4.0.tgz#2d3c4ef8832a5cdfdbb76b914f022489933e664f"
+  integrity sha512-XJLGVL0DEclX5pcWa2N9SX1jCGTDd8l972biNooLFtjneuGqodupPQh6XseXIBBeVIMaaJ7bTcs3qGvXwsp4vg==
   dependencies:
     detect-libc "^1.0.3"
     is-glob "^4.0.3"
     micromatch "^4.0.5"
     node-addon-api "^7.0.0"
   optionalDependencies:
-    "@parcel/watcher-android-arm64" "2.3.0"
-    "@parcel/watcher-darwin-arm64" "2.3.0"
-    "@parcel/watcher-darwin-x64" "2.3.0"
-    "@parcel/watcher-freebsd-x64" "2.3.0"
-    "@parcel/watcher-linux-arm-glibc" "2.3.0"
-    "@parcel/watcher-linux-arm64-glibc" "2.3.0"
-    "@parcel/watcher-linux-arm64-musl" "2.3.0"
-    "@parcel/watcher-linux-x64-glibc" "2.3.0"
-    "@parcel/watcher-linux-x64-musl" "2.3.0"
-    "@parcel/watcher-win32-arm64" "2.3.0"
-    "@parcel/watcher-win32-ia32" "2.3.0"
-    "@parcel/watcher-win32-x64" "2.3.0"
+    "@parcel/watcher-android-arm64" "2.4.0"
+    "@parcel/watcher-darwin-arm64" "2.4.0"
+    "@parcel/watcher-darwin-x64" "2.4.0"
+    "@parcel/watcher-freebsd-x64" "2.4.0"
+    "@parcel/watcher-linux-arm-glibc" "2.4.0"
+    "@parcel/watcher-linux-arm64-glibc" "2.4.0"
+    "@parcel/watcher-linux-arm64-musl" "2.4.0"
+    "@parcel/watcher-linux-x64-glibc" "2.4.0"
+    "@parcel/watcher-linux-x64-musl" "2.4.0"
+    "@parcel/watcher-win32-arm64" "2.4.0"
+    "@parcel/watcher-win32-ia32" "2.4.0"
+    "@parcel/watcher-win32-x64" "2.4.0"
 
 "@particle-network/aa@^1.2.0":
   version "1.3.3"
@@ -5325,9 +5325,9 @@
     "@types/node" "*"
 
 "@types/node@*":
-  version "20.11.0"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.11.0.tgz#8e0b99e70c0c1ade1a86c4a282f7b7ef87c9552f"
-  integrity sha512-o9bjXmDNcF7GbM4CNQpmi+TutCgap/K3w1JyKgxAjqx41zp9qlIAVFi0IhCNsJcXolEqLWhbFbEeL0PvYm4pcQ==
+  version "20.11.3"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.11.3.tgz#ac29fba7aeadc74046b02e50758156f4850f1296"
+  integrity sha512-nrlmbvGPNGaj84IJZXMPhQuCMEVTT/hXZMJJG/aIqVL9fKxqk814sGGtJA4GI6hpJSLQjpi6cn0Qx9eOf9SDVg==
   dependencies:
     undici-types "~5.26.4"
 
@@ -9936,9 +9936,9 @@ ejs@^3.1.6:
     jake "^10.8.5"
 
 electron-to-chromium@^1.3.47:
-  version "1.4.630"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.630.tgz#1d9f4169653784997bec98975e11a2c05214ce39"
-  integrity sha512-osHqhtjojpCsACVnuD11xO5g9xaCyw7Qqn/C2KParkMv42i8jrJJgx3g7mkHfpxwhy9MnOJr8+pKOdZ7qzgizg==
+  version "1.4.631"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.631.tgz#db2de2e1ce90fc1785b5c3f49fde594413270e05"
+  integrity sha512-g73CJB/rMPjdxpiNJYmV1homV7mLVUNe/R0z/HhqMfpjkt58FpYmkTjbtuv3zymdbTTJ+VOEqe1c+lkTjSOhmQ==
 
 electron-to-chromium@^1.4.251:
   version "1.4.399"
@@ -12039,7 +12039,7 @@ has-flag@^4.0.0:
   resolved "https://registry.yarnpkg.com/has-flag/-/has-flag-4.0.0.tgz#944771fd9c81c81265c4d6941860da06bb59479b"
   integrity sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ==
 
-has-property-descriptors@^1.0.0:
+has-property-descriptors@^1.0.0, has-property-descriptors@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/has-property-descriptors/-/has-property-descriptors-1.0.1.tgz#52ba30b6c5ec87fd89fa574bc1c39125c6f65340"
   integrity sha512-VsX8eaIewvas0xnvinAe9bw4WfIeODpGYikiWYLH+dma0Jw6KHYqWiWfhQlgOVK8D6PvjubK5Uc4P0iIhIcNVg==
@@ -16015,7 +16015,7 @@ pkg-up@^3.1.0:
 
 "polkamarkets-js@https://github.com/Polkamarkets/polkamarkets-js#feat/login-with-jwt-v3":
   version "1.2.1"
-  resolved "https://github.com/Polkamarkets/polkamarkets-js#29d1223d36b079623406a7a74399c618457145c2"
+  resolved "https://github.com/Polkamarkets/polkamarkets-js#9fdd9379512303a65809fec0f293c0dd5d8668cd"
   dependencies:
     "@metamask/safe-event-emitter" "^2.0.0"
     "@metamask/utils" "^8.2.1"
@@ -18016,12 +18016,12 @@ run-parallel@^1.1.9:
     queue-microtask "^1.2.2"
 
 safe-array-concat@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/safe-array-concat/-/safe-array-concat-1.0.1.tgz#91686a63ce3adbea14d61b14c99572a8ff84754c"
-  integrity sha512-6XbUAseYE2KtOuGueyeobCySj9L4+66Tn6KQMOPQJrAJEowYKW/YR/MGJZl7FdydUdaFu4LYyDZjxf4/Nmo23Q==
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/safe-array-concat/-/safe-array-concat-1.1.0.tgz#8d0cae9cb806d6d1c06e08ab13d847293ebe0692"
+  integrity sha512-ZdQ0Jeb9Ofti4hbt5lX3T2JcAamT9hfzYU1MNB+z/jaEbB6wfFfPIR/zEORmZqobkCCJhSjodobH6WHNmJ97dg==
   dependencies:
-    call-bind "^1.0.2"
-    get-intrinsic "^1.2.1"
+    call-bind "^1.0.5"
+    get-intrinsic "^1.2.2"
     has-symbols "^1.0.3"
     isarray "^2.0.5"
 
@@ -18317,14 +18317,15 @@ set-blocking@^2.0.0:
   integrity sha512-KiKBS8AnWGEyLzofFfmvKwpdPzqiy16LvQfK3yv/fVH7Bj13/wl3JSR1J+rfgRE9q7xUJK4qvgS8raSOeLUehw==
 
 set-function-length@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/set-function-length/-/set-function-length-1.1.1.tgz#4bc39fafb0307224a33e106a7d35ca1218d659ed"
-  integrity sha512-VoaqjbBJKiWtg4yRcKBQ7g7wnGnLV3M8oLvVWwOk2PdYY6PEFegR1vezXR0tw6fZGF9csVakIRjrJiy2veSBFQ==
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/set-function-length/-/set-function-length-1.2.0.tgz#2f81dc6c16c7059bda5ab7c82c11f03a515ed8e1"
+  integrity sha512-4DBHDoyHlM1IRPGYcoxexgh67y4ueR53FKV1yyxwFMY7aCqcN/38M1+SwZ/qJQ8iLv7+ck385ot4CcisOAPT9w==
   dependencies:
     define-data-property "^1.1.1"
-    get-intrinsic "^1.2.1"
+    function-bind "^1.1.2"
+    get-intrinsic "^1.2.2"
     gopd "^1.0.1"
-    has-property-descriptors "^1.0.0"
+    has-property-descriptors "^1.0.1"
 
 set-function-name@^2.0.0, set-function-name@^2.0.1:
   version "2.0.1"
