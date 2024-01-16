@@ -3,10 +3,6 @@ import { useState } from 'react';
 import type { Network } from 'types/network';
 import { Banner } from 'ui';
 
-import { Link } from 'components';
-
-import betaTesting from './BetaTesting.module.scss';
-
 type BetaTestingProps = {
   network: Network;
 };
@@ -20,8 +16,8 @@ export default function BetaTesting({ network }: BetaTestingProps) {
 
   return (
     <Banner $type="warning" $variant="subtle" onHide={() => setShow(false)}>
-      Aviso: devido ao elevado tráfego de jogadores, a compra e venda de
-      previsões pode estar mais lenta.
+      O sucesso do Previsómetro foi difícil de prever devido à elevada
+      alfuência. Estamos de volta para todos os previsores.
     </Banner>
   );
 }
