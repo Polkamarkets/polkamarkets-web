@@ -1,8 +1,9 @@
-import { CSSProperties, useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import classNames from 'classnames';
+import { isNull } from 'lodash';
 import { Land } from 'types/land';
-import { Avatar, useTheme } from 'ui';
+import { Avatar, Image, useTheme } from 'ui';
 
 import { InfoIcon } from 'assets/icons';
 
@@ -40,20 +41,24 @@ export default function LandHero({ meta, stats }: LandHeroProps) {
   return (
     <div className={classNames('max-width-screen-xl', styles.container)}>
       <div className={styles.root}>
-        <div
-          className={styles.banner}
-          style={
-            { '--background-image': `url(${meta.bannerUrl})` } as CSSProperties
-          }
-        >
-          {meta.imageUrl ? (
-            <Avatar
-              src={meta.imageUrl}
-              alt={meta.title}
-              $radius="lg"
-              className={styles.bannerAvatar}
+        <div className={styles.banner}>
+          {!isNull(meta.bannerUrl) && (
+            <Image
+              alt=""
+              src={meta.bannerUrl}
+              className={{ img: styles.bannerImage }}
             />
-          ) : null}
+          )}
+          <div className={styles.bannerContent}>
+            {meta.imageUrl ? (
+              <Avatar
+                src={meta.imageUrl}
+                alt={meta.title}
+                $radius="lg"
+                className={styles.bannerAvatar}
+              />
+            ) : null}
+          </div>
         </div>
         <div className={styles.content}>
           <Modal show={showAboutModal} size="sm" centered>
