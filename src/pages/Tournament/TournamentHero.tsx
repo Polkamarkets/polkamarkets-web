@@ -1,11 +1,11 @@
-import { Fragment, CSSProperties, ReactNode } from 'react';
+import { Fragment, ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 
 import classNames from 'classnames';
 import { environment, ui } from 'config';
 import isEmpty from 'lodash/isEmpty';
 import { Tournament } from 'types/tournament';
-import { Avatar, Container, useTheme } from 'ui';
+import { Avatar, Container, Image, useTheme } from 'ui';
 
 import { Button, ButtonText, Icon, Share, Tooltip } from 'components';
 
@@ -96,13 +96,25 @@ export default function TournamentHero({
           </div>
         </div>
         <div
-          style={
-            {
-              '--background-image': `url(${landBannerUrl || ui.hero.image})`
-            } as CSSProperties
-          }
           className={`pm-p-home__hero ${styles.rootHero}`}
+          role="presentation"
         >
+          <div className={styles.rootHeroBanner}>
+            <Image
+              alt=""
+              src={landBannerUrl || ui.hero.image}
+              className={{
+                img: styles.rootHeroImage
+              }}
+            />
+            <div
+              aria-hidden
+              className={classNames(
+                styles.rootHeroBackdrop,
+                styles.rootHeroBanner
+              )}
+            />
+          </div>
           {theme.device.isDesktop && tournamentImageUrl ? (
             <Avatar
               $radius="md"

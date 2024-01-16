@@ -76,6 +76,7 @@
   }
 
   &Hero {
+    position: relative;
     padding: 40px 12px 12px 12px;
     aspect-ratio: unset;
 
@@ -83,27 +84,27 @@
       padding: 12px 12px 12px 40px;
     }
 
-    width: calc(100% + 2px);
+    &Image {
+      height: 497px;
 
-    margin-left: -1px;
-    margin-right: -1px;
+      @media (min-width: 768px) {
+        height: 259px;
+      }
+    }
 
-    background: linear-gradient(
+    &Backdrop {
+      background: linear-gradient(
         90deg,
         rgba(0, 0, 0, 0.95) 0%,
         rgba(16, 18, 24, 0.9) 50%,
         rgba(16, 18, 24, 0.8) 100%
-      ),
-      var(--background-image) #0e0d26;
+      );
+    }
 
-    background-clip: border-box;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center center;
-    transition: background-color 300ms ease-in;
-
-    border: 1px solid var(--color-border);
-    border-radius: var(--size-8);
+    &Banner {
+      position: absolute;
+      inset: 0;
+    }
 
     &Avatar {
       height: 100px;
@@ -118,6 +119,7 @@
       flex-direction: column;
       gap: var(--size-24);
       width: 100%;
+      z-index: 1;
 
       @media (min-width: 768px) {
         flex-direction: row;
