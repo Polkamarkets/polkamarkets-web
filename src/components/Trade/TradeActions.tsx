@@ -196,26 +196,14 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
         }
       }, 200);
 
-      // TODO: improve this
       // performing buy action on smart contract
-      // trying action 3 times
-      const retries = 1;
-      for (let i = 0; i < retries; i += 1) {
-        try {
-          console.log(`buying ${i}`);
-          // eslint-disable-next-line no-await-in-loop
-          await polkamarketsService.buy(
-            marketId,
-            predictionId,
-            amount,
-            i === retries ? minShares : minShares * 1,
-            tokenWrapped && !wrapped
-          );
-          break;
-        } catch (error) {
-          if (i === retries - 1) throw error;
-        }
-      }
+      await polkamarketsService.buy(
+        marketId,
+        predictionId,
+        amount,
+        minShares,
+        tokenWrapped && !wrapped
+      );
 
       // triggering market prices redux update
       reloadMarketPrices();

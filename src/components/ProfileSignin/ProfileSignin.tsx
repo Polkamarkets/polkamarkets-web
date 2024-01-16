@@ -74,7 +74,7 @@ export default function ProfileSignin({ onClick, ...props }: ButtonProps) {
     };
 
     const loginObservador = async userData => {
-      const userId = '223';
+      const userId = userData.uid as string;
 
       const jwtToken = await getJWTForUser(
         userId,
