@@ -246,7 +246,7 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
 
     try {
       // adding a 1% slippage due to js floating numbers rounding
-      const ethAmount = totalStake - fee;
+      let ethAmount = totalStake - fee;
       const maxShares = shares * (1 + ui.market.slippage);
 
       // calculating shares amount from smart contract
@@ -255,6 +255,15 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
         predictionId,
         ethAmount
       );
+
+      // TODO: improve this
+      // lowering ethAmount if it exceeds the amount on users portfolio
+      if (sharesToSell > portfolio[marketId]?.outcomes[predictionId]) {
+        // lowering the amount sent to tx
+        ethAmount *=
+          (portfolio[marketId]?.outcomes[predictionId].shares / sharesToSell) *
+          0.99;
+      }
 
       // disabling refresh prices form temporarily
       // will refresh form if there's a slippage > 2%
