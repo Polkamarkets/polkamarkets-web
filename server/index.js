@@ -3,8 +3,10 @@
 require('dotenv').config();
 const express = require('express');
 const helmet = require('helmet');
+const NodeCache = require('node-cache');
 
 const app = express();
+const cache = new NodeCache();
 app.use(helmet.frameguard({ action: 'deny' }));
 
 app.use((request, response, next) => {
@@ -25,6 +27,7 @@ app.use((request, response, next) => {
 const fs = require('fs');
 const path = require('path');
 const { isTrue } = require('./helpers/boolean');
+const { roundNumber } = require('./helpers/number');
 
 const { getMarket } = require('./api/market');
 const { getLeaderboardGroupBySlug } = require('./api/group_leaderboards');
@@ -34,6 +37,10 @@ const {
   formatMarketMetadata,
   replaceToMetadataTemplate
 } = require('./helpers/string');
+
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, './embed'));
+app.use('/public', express.static(path.resolve(__dirname, '..', 'public')));
 
 const port = process.env.PORT || 5000;
 
@@ -46,6 +53,16 @@ const isAchievementsEnabled = isTrue(
 );
 const isTournamentsEnabled = isTrue(process.env.REACT_APP_FEATURE_TOURNAMENTS);
 const isClubsEnabled = isTrue(process.env.REACT_APP_FEATURE_CLUBS);
+
+const outcomesSortingAlphabeticallyEnabled = isTrue(
+  process.env.REACT_APP_UI_MARKET_OUTCOMES_SORTING_ALPHABETICALLY
+);
+const outcomesSortingAlphabeticallyExclude =
+  process.env.REACT_APP_UI_MARKET_OUTCOMES_SORTING_ALPHABETICALLY_EXCLUDE?.split(
+    ','
+  );
+
+const localizeConfig = process.env.REACT_APP_LOCALIZE_CONFIG;
 
 const indexPath = path.resolve(__dirname, '..', 'build', 'index.html');
 
@@ -177,6 +194,92 @@ app.get('/', (request, response) => {
 
     return response.send(defaultMetadataTemplate(request, htmlData));
   });
+});
+
+app.get('/embed/markets/:slug', async (request, response) => {
+  // adding X-Frame-Options header to allow embedding
+  response.set('X-Frame-Options', 'ALLOWALL');
+
+  const marketSlug = request.params.slug;
+  const maxVisibleOutcomes = parseFloat(request.query.outcomes);
+
+  const cacheKey = maxVisibleOutcomes ? `${marketSlug}-${maxVisibleOutcomes}` : marketSlug;
+
+  const cachedData = cache.get(cacheKey);
+
+  if (cachedData) {
+    response.render('markets/index', cachedData);
+  } else {
+    try {
+      const market = await getMarket(marketSlug);
+      const { outcomes: marketOutcomes, tournaments } = market.data;
+
+      const outcomes = marketOutcomes.sort((compareA, compareB) => {
+        if (outcomesSortingAlphabeticallyEnabled) {
+          const exclude = outcomesSortingAlphabeticallyExclude || [];
+
+          if (exclude.includes(compareA.title.toLowerCase())) return 1;
+
+          return compareA.title.localeCompare(compareB.title);
+        }
+
+        return compareB.price - compareA.price;
+      });
+
+      const isValidMax =
+        !Number.isNaN(maxVisibleOutcomes) &&
+        Number.isFinite(maxVisibleOutcomes) &&
+        maxVisibleOutcomes >= 2 &&
+        maxVisibleOutcomes <= outcomes.length;
+
+      const max = isValidMax ? maxVisibleOutcomes - 1 : 2;
+
+      const multipleOutcomes = outcomes.length > max;
+      const on = multipleOutcomes ? outcomes.slice(0, max) : outcomes;
+      const off = multipleOutcomes ? outcomes.slice(max) : [];
+
+      const tournament =
+        tournaments && tournaments.length > 0 ? tournaments[0] : null;
+
+      const land = tournament?.land;
+
+      const data = {
+        market: {
+          ...market.data,
+          outcomes: {
+            on: on.map(outcome => {
+              const priceChart = outcome.priceCharts?.find(
+                chart => chart.timeframe === '24h'
+              );
+
+              return {
+                ...outcome,
+                percentage: `${roundNumber(+outcome.price * 100, 1)} %`,
+                isPriceUp:
+                  !priceChart?.changePercent || priceChart?.changePercent > 0
+              };
+            }),
+            off: off.length > 0 && {
+              title: `${off.length}+ Outcomes`,
+              subtitle: `${off.map(outcome => outcome.title).join(', ')}`,
+              price: roundNumber(
+                +off.reduce((prices, outcome) => outcome.price + prices, 0),
+                1
+              )
+            }
+          }
+        },
+        land,
+        localizeConfig
+      };
+
+      cache.set(cacheKey, data);
+
+      response.render('markets/index', data);
+    } catch (e) {
+      return response.status(404).end();
+    }
+  }
 });
 
 app.get('/blocked', (request, response) => {
@@ -538,19 +641,6 @@ app.get('/markets/:slug', async (request, response) => {
     } catch (e) {
       return response.send(defaultMetadataTemplate(request, htmlData));
     }
-  });
-});
-
-app.get('/embed/markets/:slug', async (request, response) => {
-  // adding X-Frame-Options header to allow embedding
-  response.set('X-Frame-Options', 'ALLOWALL');
-
-  fs.readFile(indexPath, 'utf8', async (error, htmlData) => {
-    if (error) {
-      return response.status(404).end();
-    }
-
-    return response.send(defaultMetadataTemplate(request, htmlData));
   });
 });
 

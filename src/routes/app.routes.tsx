@@ -31,11 +31,11 @@ export default function AppRoutes() {
   return (
     <Suspense fallback={<Spinner />}>
       <Switch>
-        <Route
+        {/* <Route
           exact={pages.embed.exact}
           path={pages.embed.pathname}
           component={pages.embed.Component}
-        />
+        /> */}
         {isEnabled ? (
           <Route
             exact={pages.whitelist.exact}

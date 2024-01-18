@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= market.title %></title>
+  <link rel="preload" href="/public/fonts/Gilroy-Regular.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+  <link rel="preload" href="/public/fonts/Gilroy-Medium.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+  <link rel="preload" href="/public/fonts/Gilroy-SemiBold.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+  <link href="/public/css/reset.css" rel="stylesheet" type="text/css" />
+  <link href="/public/css/typography.css" rel="stylesheet" type="text/css" />
+  <link href="/public/css/embed/markets/style.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript">
+    "<%= localizeConfig %>".includes('key') &&
+      document.write(
+        '<script src="/public/js/localize.js"><\/script><script>!function(a){if(!a.Localize){a.Localize={};for(var e=["translate","untranslate","phrase","initialize","translatePage","setLanguage","getLanguage","getSourceLanguage","detectLanguage","getAvailableLanguages","untranslatePage","bootstrap","prefetch","on","off","hideWidget","showWidget"],t=0;t<e.length;t++)a.Localize[e[t]]=function(){}}}(window);<\/script><script>Localize.initialize(<%- localizeConfig %>);<\/script><style>body #localize-powered-by,body #localize-widget.show #localize-powered-by,body #localize-widget:hover #localize-powered-by{display:none!important}</style>'
+      );
+  </script>
+</head>
+
+<body>
+  <div class="market">
+    <% if(land) { %>
+    <div class="market-land">
+      <% if(land?.imageUrl){ %>
+      <img src="<%= land?.imageUrl %>" alt="<%= land.title %>" class="market-land__avatar" />
+      <% } %>
+      <p class="market-land__title"><%= land.title %></p>
+    </div>
+    <% } %>
+    <h1 class="market__title"><%= market.title %></h1>
+    <ul class="market-outcomes">
+      <% market.outcomes.on.forEach((outcome) => { %>
+      <li class="market-outcome <%= outcome.imageUrl && 'market-outcome__backdrop' %>" style="--outcome-image: <%= outcome.imageUrl && `url('${outcome.imageUrl}')` %>">
+        <div class="market-outcome__content">
+          <div class="market-outcome__content-container">
+            <p class="market-outcome__title"><%= outcome.title %></p>
+            <p class="market-outcome__percentage notranslate">
+              <%= outcome.percentage %>
+              <span class="<%= outcome.isPriceUp ? 'change--up' : 'change--down' %>">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true">
+                  <path d="M21,11H5.414l5.293-5.293c.391-.391,.391-1.023,0-1.414s-1.023-.391-1.414,0L2.293,11.293c-.391,.391-.391,1.023,0,1.414l7,7c.195,.195,.451,.293,.707,.293s.512-.098,.707-.293c.391-.391,.391-1.023,0-1.414l-5.293-5.293h15.586c.553,0,1-.448,1-1s-.447-1-1-1Z" />
+                </svg>
+              </span>
+            </p>
+          </div>
+          <div class="market-outcome__end">
+            <% if(outcome.imageUrl){ %>
+            <img src="<%= outcome.imageUrl %>" alt="<%= outcome.title %>" class="market-outcome__avatar" />
+            <% } %>
+          </div>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-bar__line <%= outcome.isPriceUp ? 'progress-bar__line--up' : 'progress-bar__line--down' %>" style="--width: <%= `${outcome.price * 100}%` %>"></div>
+        </div>
+      </li>
+      <% }) %>
+      <% if(market.outcomes.off){ %>
+      <li class="market-outcome market-outcome--dashed">
+        <div class="market-outcome__content">
+          <div class="market-outcome__content-container">
+            <p class="market-outcome__title"><%= market.outcomes.off.title %></p>
+            <p class="market-outcome__subtitle notranslate">
+              <%= market.outcomes.off.subtitle %>
+            </p>
+          </div>
+          <div class="market-outcome__end">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" focusable="false" class="plus" aria-hidden="true">
+              <rect x="4" y="10.933" width="16" height="2.133" rx="1.067"></rect>
+              <rect x="13.067" y="4" width="16" height="2.133" rx="1.067" transform="rotate(90 13.067 4)"></rect>
+            </svg>
+          </div>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-bar__line" style="--width: <%= `${market.outcomes.off.price * 100}%` %>"></div>
+        </div>
+      </li>
+      <% } %>
+    </ul>
+  </div>
+</body>
+
+</html>
