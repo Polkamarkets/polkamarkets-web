@@ -16,7 +16,7 @@ import { Line } from 'rc-progress';
 import { selectOutcome } from 'redux/ducks/trade';
 import { Image } from 'ui';
 
-import { useAppDispatch, useAppSelector } from 'hooks';
+import { useAppDispatch, useAppSelector, usePredictedOutcome } from 'hooks';
 
 import Icon from '../Icon';
 import styles from './Trade.module.scss';
@@ -62,10 +62,15 @@ function TradePredictionsWithImages({
 }: TradePredictionsWithImagesProps) {
   const dispatch = useAppDispatch();
 
-  const { id, networkId } = useAppSelector(state => state.market.market);
+  const id = useAppSelector(state => state.market.market.id);
+  const networkId = useAppSelector(state => state.market.market.networkId);
+  const predictedOutcome = usePredictedOutcome(id);
 
-  const { selectedOutcomeId, selectedMarketId } = useAppSelector(
-    state => state.trade
+  const selectedOutcomeId = useAppSelector(
+    state => state.trade.selectedOutcomeId
+  );
+  const selectedMarketId = useAppSelector(
+    state => state.trade.selectedMarketId
   );
 
   const apiRef = useRef({} as scrollVisibilityApiType);
@@ -143,6 +148,7 @@ function TradePredictionsWithImages({
           })}
           value={prediction.id.toString()}
           onClick={handleSelectPrediction}
+          disabled={predictedOutcome !== prediction.id.toString()}
         >
           <div className={styles.predictionWithImageProgressWrapper}>
             <Image
