@@ -13,6 +13,7 @@ import {
   useAppDispatch,
   useAppSelector,
   useExpandableOutcomes,
+  usePredictedOutcome,
   useTrade
 } from 'hooks';
 
@@ -39,15 +40,9 @@ export default function MarketOutcomes({
   const location = useLocation();
   const dispatch = useAppDispatch();
   const trade = useAppSelector(state => state.trade);
-  const portfolio = useAppSelector(state => state.polkamarkets.portfolio);
+  const predictedOutcome = usePredictedOutcome(market.id);
   const theme = useTheme();
   const { trade: tradeState, status } = useTrade();
-
-  const isPredictedOutcome = useCallback(
-    (outcomeId: string | number) =>
-      portfolio[market.id]?.outcomes[outcomeId]?.shares >= 0.0005,
-    [market.id, portfolio]
-  );
 
   const [tradeVisible, setTradeVisible] = useState(false);
 
@@ -78,12 +73,24 @@ export default function MarketOutcomes({
   const setOutcome = useCallback(
     async (outcomeId: string) => {
       const { marketSelected } = await import('redux/ducks/market');
-      const { selectOutcome } = await import('redux/ducks/trade');
+      const { changeTradeType, selectOutcome } = await import(
+        'redux/ducks/trade'
+      );
+      const hasPredictedOutcome =
+        !!predictedOutcome && features.fantasy.enabled;
 
       dispatch(marketSelected(market));
-      dispatch(selectOutcome(market.id, market.networkId, outcomeId));
+      dispatch(
+        selectOutcome(
+          market.id,
+          market.networkId,
+          hasPredictedOutcome ? predictedOutcome : outcomeId
+        )
+      );
+
+      if (hasPredictedOutcome) dispatch(changeTradeType('sell'));
     },
-    [dispatch, market]
+    [dispatch, market, predictedOutcome]
   );
 
   const handleOutcomeClick = useCallback(
@@ -233,7 +240,7 @@ export default function MarketOutcomes({
               value={outcome.id}
               data={outcome.data}
               primary={outcome.title}
-              isPredicted={isPredictedOutcome(outcome.id)}
+              isPredicted={predictedOutcome === outcome.id.toString()}
               isActive={getOutcomeActive(outcome.id)}
               onClick={handleOutcomeClick}
               secondary={{
@@ -256,8 +263,8 @@ export default function MarketOutcomes({
           <OutcomeItem
             $size="sm"
             $variant="dashed"
-            isPredicted={expandableOutcomes.off.some(outcome =>
-              isPredictedOutcome(outcome.id)
+            isPredicted={expandableOutcomes.off.some(
+              outcome => predictedOutcome === outcome.id.toString()
             )}
             value={expandableOutcomes.onseted[0].id}
             onClick={handleOutcomeClick}
