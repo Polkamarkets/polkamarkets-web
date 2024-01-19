@@ -38,6 +38,8 @@ export { default as useMount } from './useMount';
 
 export { default as usePortal } from './usePortal';
 
+export { default as usePredictedOutcome } from './usePredictedOutcome';
+
 export { default as usePrevious } from './usePrevious';
 
 export { default as useTimeoutEffect } from './useTimeoutEffect';
