@@ -157,3 +157,8 @@ button {
 [role='button'] {
   cursor: pointer;
 }
+
+button:disabled {
+  pointer-events: none;
+  cursor: default;
+}
