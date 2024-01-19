@@ -7,7 +7,7 @@ import sortOutcomes from 'helpers/sortOutcomes';
 import { selectOutcome } from 'redux/ducks/trade';
 import { Image } from 'ui';
 
-import { useAppDispatch, useAppSelector } from 'hooks';
+import { useAppDispatch, useAppSelector, usePredictedOutcome } from 'hooks';
 
 import styles from './Trade.module.scss';
 import { View } from './Trade.types';
@@ -26,12 +26,16 @@ function TradePredictions({
 }: TradePredictionsProps) {
   const dispatch = useAppDispatch();
 
-  const { id, outcomes, networkId } = useAppSelector(
-    state => state.market.market
-  );
+  const id = useAppSelector(state => state.market.market.id);
+  const outcomes = useAppSelector(state => state.market.market.outcomes);
+  const networkId = useAppSelector(state => state.market.market.networkId);
+  const predictedOutcome = usePredictedOutcome(id);
 
-  const { selectedOutcomeId, selectedMarketId } = useAppSelector(
-    state => state.trade
+  const selectedOutcomeId = useAppSelector(
+    state => state.trade.selectedOutcomeId
+  );
+  const selectedMarketId = useAppSelector(
+    state => state.trade.selectedMarketId
   );
 
   const handleSelectOutcome = useCallback(
@@ -72,6 +76,7 @@ function TradePredictions({
           data={predictions}
           itemContent={(index, outcome) => (
             <button
+              key={outcome.name}
               type="button"
               className={cn(styles.prediction, {
                 [styles.predictionLg]: size === 'lg',
@@ -85,6 +90,7 @@ function TradePredictions({
               })}
               value={outcome.id.toString()}
               onClick={handleSelectOutcome}
+              disabled={predictedOutcome !== outcome.id.toString()}
             >
               <div
                 className={cn(styles.predictionProgress, {
