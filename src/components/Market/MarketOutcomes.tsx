@@ -73,9 +73,7 @@ export default function MarketOutcomes({
   const setOutcome = useCallback(
     async (outcomeId: string) => {
       const { marketSelected } = await import('redux/ducks/market');
-      const { changeTradeType, selectOutcome } = await import(
-        'redux/ducks/trade'
-      );
+      const { selectOutcome } = await import('redux/ducks/trade');
       const hasPredictedOutcome =
         !!predictedOutcome && features.fantasy.enabled;
 
@@ -87,8 +85,6 @@ export default function MarketOutcomes({
           hasPredictedOutcome ? predictedOutcome : outcomeId
         )
       );
-
-      if (hasPredictedOutcome) dispatch(changeTradeType('sell'));
     },
     [dispatch, market, predictedOutcome]
   );
