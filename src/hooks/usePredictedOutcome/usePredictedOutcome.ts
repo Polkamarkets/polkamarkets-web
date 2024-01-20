@@ -2,19 +2,16 @@ import useAppSelector from 'hooks/useAppSelector';
 
 type Outcomes = Record<number, Record<'shares' | 'price', number>>;
 
+const defaultPredictedOutcome = '';
+
 export default function usePredictedOutcome(marketId: string) {
   const portfolio = useAppSelector(state => state.polkamarkets.portfolio);
+  const market = portfolio[marketId];
 
-  let predictedOutcomeId = '';
+  if (!market) return defaultPredictedOutcome;
 
-  if (!portfolio[marketId]) return predictedOutcomeId;
-
-  // eslint-disable-next-line no-restricted-syntax
-  for (const [key, { shares }] of Object.entries(
-    portfolio[marketId].outcomes as Outcomes
-  )) {
-    if (shares >= 0.0005) predictedOutcomeId = key;
-  }
-
-  return predictedOutcomeId;
+  return Object.entries(market.outcomes as Outcomes).reduce(
+    (acc, [id, { shares }]) => (shares > 1e-5 ? id : acc),
+    defaultPredictedOutcome
+  );
 }
