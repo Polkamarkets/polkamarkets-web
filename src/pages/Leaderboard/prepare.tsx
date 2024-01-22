@@ -147,7 +147,7 @@ function walletColumnRender({
             )
           : null}
       </Link>
-      {!isUndefined(ui.leaderboard.wallet.suspiciousActivityUrl) &&
+      {!!ui.leaderboard.wallet.suspiciousActivityUrl &&
       !isUndefined(malicious) &&
       malicious ? (
         <Tooltip
