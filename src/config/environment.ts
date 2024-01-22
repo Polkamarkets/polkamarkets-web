@@ -66,13 +66,15 @@ const environmentConfigVariables = [
   'UI_TWITTER_SHARE_INTENT',
   'UI_ONBOARDING',
   'UI_SLIPPAGE',
+  'UI_SOCIAL_LOGIN_AUTO_CLAIM',
   'SENTRY_DSN',
   'FAVICON_URL',
   'TOUCHICON_URL',
   'HOMEPAGE_URL',
   'DEFAULT_LANGUAGE',
   'EXTERNAL_JS_URL',
-  'MAINTENANCE_MODE'
+  'MAINTENANCE_MODE',
+  'EXTERNAL_JS_URL'
 ] as const;
 
 export type EnvironmentConfigVariable =

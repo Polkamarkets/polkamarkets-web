@@ -196,6 +196,7 @@ const ui = {
       : 0.003
   },
   socialLogin: {
+    hasAutoClaim: isTrue(environment.UI_SOCIAL_LOGIN_AUTO_CLAIM),
     enabled: isTrue(environment.FEATURE_SOCIAL_LOGIN),
     networkId: environment.FEATURE_SOCIAL_LOGIN_NETWORK_ID,
     isTestnet: isTrue(environment.FEATURE_SOCIAL_LOGIN_IS_TESTNET),

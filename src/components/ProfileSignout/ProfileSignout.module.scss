@@ -27,3 +27,18 @@
 .username {
   color: var(--color-text-primary);
 }
+
+.claim {
+  background-color: #5d55fa;
+  border-radius: 4px;
+  height: 24px;
+  padding-left: 8px;
+  padding-right: 8px;
+  border: 0px;
+  font-size: 14px;
+  text-transform: uppercase;
+  font-weight: 500;
+  margin-top: 2px;
+  color: var(--color-text-primary) !important;
+  cursor: pointer;
+}
