@@ -109,7 +109,7 @@ export default function MarketFooterStats({
                 fontWeight="semibold"
                 className={marketClasses.footerStatsText}
               >
-                {users}
+                {users.toLocaleString('fr-FR')}
               </Text>
             </Tooltip>
           </Text>
@@ -147,7 +147,10 @@ export default function MarketFooterStats({
                 fontWeight="semibold"
                 className={marketClasses.footerStatsText}
               >
-                {`${roundNumber(volume, features.fantasy.enabled ? 0 : 3)}`}
+                {`${roundNumber(
+                  volume,
+                  features.fantasy.enabled ? 0 : 3
+                ).toLocaleString('fr-FR')} `}
               </Text>
               <Text
                 as="strong"
