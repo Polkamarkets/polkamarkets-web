@@ -28,6 +28,7 @@ import profileSigninClasses from './ProfileSignin.module.scss';
 
 const hasSingleProvider = ui.socialLogin.providers.length === 1;
 const singleProviderName = ui.socialLogin.providers[0];
+const autoClaimEnabled = ui.socialLogin.hasAutoClaim;
 
 export default function ProfileSignin({ onClick, ...props }: ButtonProps) {
   const dispatch = useAppDispatch();
@@ -91,7 +92,7 @@ export default function ProfileSignin({ onClick, ...props }: ButtonProps) {
       if (success) {
         const { login } = await import('redux/ducks/polkamarkets');
 
-        dispatch(login(polkamarketsService));
+        dispatch(login(polkamarketsService, autoClaimEnabled));
       }
 
       setLoad('');
