@@ -67,7 +67,7 @@ function Trade({ view = 'default', onTradeFinished }: TradeProps) {
       };
     });
 
-    return sharesByOutcome.filter(outcome => outcome.shares > 1e-5);
+    return sharesByOutcome.filter(outcome => outcome.shares > 1e0);
   }, [isLoadingPortfolio, portfolio, marketId, market.outcomes]);
 
   const hasSharesOfOtherOutcomes = useMemo(

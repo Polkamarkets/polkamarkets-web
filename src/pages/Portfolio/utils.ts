@@ -106,7 +106,7 @@ function formatMarketPositions(
   markets?.forEach(market => {
     market.outcomes.forEach((outcome: Outcome) => {
       // ignoring zero balances
-      if (portfolio[market.id]?.outcomes[outcome.id]?.shares >= 0.0005) {
+      if (portfolio[market.id]?.outcomes[outcome.id]?.shares >= 1e0) {
         const shares = portfolio[market.id]?.outcomes[outcome.id]?.shares;
         // const price = {
         //   value: outcome.price,
@@ -234,7 +234,7 @@ function formatLiquidityPositions(
   // looping through outcomes array and showing positions where user holds shares
   markets?.forEach((market: Market) => {
     // ignoring zero balances
-    if (portfolio[market.id]?.liquidity?.shares > 0.0005) {
+    if (portfolio[market.id]?.liquidity?.shares > 1e0) {
       const shares = portfolio[market.id]?.liquidity?.shares;
       const buyPrice = portfolio[market.id]?.liquidity?.price;
       const poolShare = shares / market.liquidity;

@@ -27,7 +27,7 @@ export default function MarketFooterActions({
 
   const isPredictedOutcome = useCallback(
     (outcomeId: string | number) =>
-      portfolio[market.id]?.outcomes[outcomeId]?.shares >= 0.0005,
+      portfolio[market.id]?.outcomes[outcomeId]?.shares >= 1e0,
     [market.id, portfolio]
   );
 

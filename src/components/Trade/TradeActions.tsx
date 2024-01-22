@@ -246,7 +246,7 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
     setNeedsPricesRefresh(false);
 
     try {
-      // adding a 1% slippage due to js floating numbers rounding
+      // adding a slippage due to js floating numbers rounding
       let ethAmount = totalStake - fee;
       const maxShares = shares * (1 + ui.market.slippage);
 
@@ -308,14 +308,28 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
         }
       }, 200);
 
-      // performing sell action on smart contract
-      await polkamarketsService.sell(
-        marketId,
-        predictionId,
-        ethAmount,
-        maxShares,
-        tokenWrapped && !wrapped
-      );
+      // TODO: improve this
+      // performing 3 tries while lowering ethAmount value
+      const maxTries = 3;
+      for (let i = 0; i < maxTries; i += 1) {
+        try {
+          // performing sell action on smart contract
+          // eslint-disable-next-line no-await-in-loop
+          await polkamarketsService.sell(
+            marketId,
+            predictionId,
+            ethAmount,
+            maxShares,
+            tokenWrapped && !wrapped
+          );
+
+          break;
+        } catch (error) {
+          // lowering the amount sent to tx
+          ethAmount *= 0.95;
+          if (i === maxTries - 1) throw error;
+        }
+      }
 
       // triggering market prices redux update
       reloadMarketPrices();
