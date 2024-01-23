@@ -70,6 +70,7 @@ const environmentConfigVariables = [
   'TOUCHICON_URL',
   'HOMEPAGE_URL',
   'DEFAULT_LANGUAGE',
+  'UI_SOCIAL_LOGIN_AUTO_CLAIM',
   'EXTERNAL_JS_URL'
 ] as const;
 

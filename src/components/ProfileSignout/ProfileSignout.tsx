@@ -36,6 +36,7 @@ export default function ProfileSignout() {
     state => state.polkamarkets.isLoading.polk
   );
   const bankrupt = useAppSelector(state => state.polkamarkets.bankrupt);
+  const polkClaimed = useAppSelector(state => state.polkamarkets.polkClaimed);
   const network = useNetwork();
   const leaderboard = useGetLeaderboardByAddressQuery({
     address,
@@ -50,6 +51,11 @@ export default function ProfileSignout() {
 
     polkamarketsService.logoutSocialLogin();
     dispatch(logout());
+  }, [dispatch, polkamarketsService]);
+  const handleClaim = useCallback(async () => {
+    const { claim } = await import('redux/ducks/polkamarkets');
+
+    dispatch(claim(polkamarketsService));
   }, [dispatch, polkamarketsService]);
 
   const [username, setUserName] = useState(
@@ -148,21 +154,34 @@ export default function ProfileSignout() {
           >
             {username || shortenAddress(address)}
           </Text>
-          {isPolkLoading ? (
-            <Skeleton style={{ height: 16, width: 52 }} />
-          ) : (
-            <div className="flex-row gap-3 align-center">
-              <Text
-                scale="tiny-uppercase"
-                fontWeight="semibold"
-                className="pm-c-wallet-info__profile__ticker"
-              >
-                {formatNumberToString(polkBalance)} {ticker}
-                <InfoTooltip text={tooltipText} />
-              </Text>
-              <BankruptBadge bankrupt={bankrupt} />
-            </div>
-          )}
+          {(() => {
+            if (isPolkLoading)
+              return <Skeleton style={{ height: 16, width: 52 }} />;
+            if (!polkClaimed)
+              return (
+                <button
+                  type="button"
+                  className={profileSignoutClasses.claim}
+                  onClick={handleClaim}
+                >
+                  Claim {ticker}
+                </button>
+              );
+
+            return (
+              <div className="flex-row gap-3 align-center">
+                <Text
+                  scale="tiny-uppercase"
+                  fontWeight="semibold"
+                  className="pm-c-wallet-info__profile__ticker"
+                >
+                  {formatNumberToString(polkBalance)} {ticker}
+                  <InfoTooltip text={tooltipText} />
+                </Text>
+                <BankruptBadge bankrupt={bankrupt} />
+              </div>
+            );
+          })()}
         </div>
       </div>
     </div>

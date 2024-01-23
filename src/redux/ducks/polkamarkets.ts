@@ -191,10 +191,42 @@ const {
   changeLoading
 } = polkamarketsSlice.actions;
 
+function claim(polkamarketsService: PolkamarketsService) {
+  return async dispatch => {
+    dispatch(
+      changeLoading({
+        key: 'polk',
+        value: true
+      })
+    );
+
+    try {
+      const polkClaimed = await polkamarketsService.claimPolk();
+      dispatch(changePolkClaimed(polkClaimed));
+    } catch (error) {
+      // it should be non-blocking
+    }
+
+    try {
+      const polkBalance = await polkamarketsService.getPolkBalance();
+      dispatch(changePolkBalance(polkBalance));
+    } catch (error) {
+      // it should be non-blocking
+    }
+
+    dispatch(
+      changeLoading({
+        key: 'polk',
+        value: false
+      })
+    );
+  };
+}
+
 // fetching initial wallet details
 function login(
   polkamarketsService: PolkamarketsService,
-  autoClaimAllowed = true
+  autoClaimAllowed = false
 ) {
   return async dispatch => {
     const isLoggedIn = await polkamarketsService.isLoggedIn();
@@ -231,31 +263,7 @@ function login(
         .isPolkClaimed()
         .then(polkClaimed => {
           if (autoClaimAllowed && !polkClaimed) {
-            dispatch(
-              changeLoading({
-                key: 'polk',
-                value: true
-              })
-            );
-
-            polkamarketsService
-              .claimPolk()
-              .then(_polkClaimed => {
-                // balance is updated after claim
-                polkamarketsService
-                  .getPolkBalance()
-                  .then(polkBalance => {
-                    dispatch(changePolkBalance(polkBalance));
-                    dispatch(
-                      changeLoading({
-                        key: 'polk',
-                        value: false
-                      })
-                    );
-                  })
-                  .catch(() => {});
-              })
-              .catch(() => {});
+            claim(polkamarketsService)(dispatch);
           }
 
           dispatch(changePolkClaimed(polkClaimed));
@@ -452,5 +460,6 @@ export {
   changeCreateMarketToken,
   login,
   logout,
-  fetchAditionalData
+  fetchAditionalData,
+  claim
 };

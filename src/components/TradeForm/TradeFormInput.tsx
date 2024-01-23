@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useMemo } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 
 import cn from 'classnames';
 import { features, ui } from 'config';
@@ -71,13 +71,14 @@ function TradeFormInput() {
 
   const [amount, setAmount] = useState<number | string | undefined>(0);
   const [stepAmount, setStepAmount] = useState<number>(0);
+  const [amountInputButtons, setAmountInputButtons] = useState<number[]>([]);
 
   const portfolio = useAppSelector(state => state.polkamarkets.portfolio);
   const market = useAppSelector(state => state.market.market);
   const outcome = market.outcomes[selectedOutcomeId];
 
   const { balance: erc20Balance, isLoadingBalance } = useERC20Balance(address);
-  const { ethBalance, polkBalance } = useAppSelector(
+  const { ethBalance, polkBalance, polkClaimed } = useAppSelector(
     state => state.polkamarkets
   );
 
@@ -111,6 +112,8 @@ function TradeFormInput() {
     selectedOutcomeId
   ]);
 
+  const currentMax = max();
+
   useEffect(() => {
     dispatch(setMaxAmount(max()));
   }, [dispatch, max, type]);
@@ -133,6 +136,24 @@ function TradeFormInput() {
       dispatch(setTradeDetails(tradeDetails));
     }
   }, [dispatch, type, market, outcome, amount]);
+
+  useEffect(() => {
+    if (currentMax <= 1) {
+      setAmountInputButtons([]);
+    } else if (currentMax > 1 && currentMax < 10) {
+      setAmountInputButtons([0.5, 1]);
+    } else if (currentMax >= 10 && currentMax < 100) {
+      setAmountInputButtons([1, 5, 10]);
+    } else if (currentMax >= 100 && currentMax < 200) {
+      setAmountInputButtons([5, 10, 25, 50]);
+    } else if (currentMax >= 200 && currentMax < 500) {
+      setAmountInputButtons([10, 20, 50, 100]);
+    } else if (currentMax >= 500) {
+      setAmountInputButtons([10, 50, 100, 200]);
+    } else {
+      setAmountInputButtons([]);
+    }
+  }, [balance, polkClaimed, polkBalance, currentMax]);
 
   function handleChangeAmount(event: React.ChangeEvent<HTMLInputElement>) {
     const { value } = event.currentTarget;
@@ -181,24 +202,6 @@ function TradeFormInput() {
     );
   }, [dispatch, token.symbol, wrapped]);
 
-  const amountInputButtons = useMemo((): number[] => {
-    switch (true) {
-      case balance <= 1:
-        return [];
-      case balance > 1 && balance < 10:
-        return [0.5, 1];
-      case balance >= 10 && balance < 100:
-        return [1, 5, 10];
-      case balance >= 100 && balance < 200:
-        return [5, 10, 25, 50];
-      case balance >= 200 && balance < 500:
-        return [10, 20, 50, 100];
-      case balance >= 500:
-        return [10, 50, 100, 200];
-      default:
-        return [];
-    }
-  }, [balance]);
   const tooltips = {
     buy: `The more ${token.ticker} you use the more it will influence the outcome probability.`,
     sell: `To change your answer you'll need to sell your entire ${token.ticker} position.`
