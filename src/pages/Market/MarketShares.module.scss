@@ -12,11 +12,13 @@
   border-radius: var(--size-4);
 
   &Item {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    gap: var(--size-24);
+    @media (min-width: 768px) {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--size-24);
+    }
 
     &TitleGroup {
       display: inline-flex;
@@ -24,7 +26,6 @@
       align-items: center;
       gap: var(--size-4);
 
-      padding: 0 var(--size-4);
       vertical-align: bottom;
 
       &Image {
@@ -38,13 +39,9 @@
       font-weight: 500;
       color: var(--color-market-shares-description);
 
-      text-overflow: ellipsis;
-      overflow: hidden;
-
-      display: -webkit-box;
-      -webkit-line-clamp: 1;
-      -webkit-box-orient: vertical;
-      word-break: break-all;
+      @media (max-width: 767px) {
+        margin-bottom: 16px;
+      }
 
       strong {
         color: var(--color-market-shares-description--bold);

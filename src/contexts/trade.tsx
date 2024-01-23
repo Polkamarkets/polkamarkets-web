@@ -78,7 +78,11 @@ function TradeProvider({ children }) {
             description="Your transaction is completed!"
           >
             <Toast.Actions>
-              <Button size="sm" variant="ghost" onClick={() => close(type)}>
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={() => close(`${type}-success`)}
+              >
                 Dismiss
               </Button>
             </Toast.Actions>

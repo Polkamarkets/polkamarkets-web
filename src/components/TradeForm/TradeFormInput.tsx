@@ -29,7 +29,7 @@ import StepSlider from '../StepSlider';
 import Text from '../Text';
 import ToggleSwitch from '../ToggleSwitch';
 import TradeFormClasses from './TradeForm.module.scss';
-import { calculateTradeDetails } from './utils';
+import { calculateEthAmountSold, calculateTradeDetails } from './utils';
 
 const SELL_STEPS = [10, 25, 50, 100];
 
@@ -96,8 +96,16 @@ function TradeFormInput() {
     }
     // max for sell actions - number of outcome shares
     else if (type === 'sell') {
-      maxAmount =
-        portfolio[selectedMarketId]?.outcomes[selectedOutcomeId]?.shares || 0;
+      if (features.fantasy.enabled) {
+        maxAmount = calculateEthAmountSold(
+          market,
+          outcome,
+          portfolio[selectedMarketId]?.outcomes[selectedOutcomeId]?.shares || 0
+        ).totalStake;
+      } else {
+        maxAmount =
+          portfolio[selectedMarketId]?.outcomes[selectedOutcomeId]?.shares || 0;
+      }
     }
 
     // rounding (down) to 5 decimals
@@ -109,7 +117,9 @@ function TradeFormInput() {
     balance,
     portfolio,
     selectedMarketId,
-    selectedOutcomeId
+    selectedOutcomeId,
+    market,
+    outcome
   ]);
 
   const currentMax = max();
@@ -228,9 +238,17 @@ function TradeFormInput() {
               <Text as="strong" scale="tiny" fontWeight="semibold">
                 {max()}
               </Text>
-              <Text as="span" scale="tiny" fontWeight="semibold">
-                {type === 'buy' ? ticker : ' Shares'}
-              </Text>
+              {features.fantasy.enabled ? (
+                <Text as="span" scale="tiny" fontWeight="semibold">
+                  {' '}
+                  {fantasyTokenTicker || ticker}
+                </Text>
+              ) : (
+                <Text as="span" scale="tiny" fontWeight="semibold">
+                  {' '}
+                  {type === 'buy' ? ticker : 'Shares'}
+                </Text>
+              )}
             </Button>
           </div>
         ) : null}
@@ -279,7 +297,9 @@ function TradeFormInput() {
           {type === 'sell' ? (
             <div className="pm-c-amount-input__logo">
               <Text as="span" scale="caption" fontWeight="bold">
-                Shares
+                {features.fantasy.enabled
+                  ? fantasyTokenTicker || ticker
+                  : 'Shares'}
               </Text>
             </div>
           ) : null}
