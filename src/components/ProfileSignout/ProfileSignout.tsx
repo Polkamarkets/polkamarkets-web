@@ -166,7 +166,7 @@ export default function ProfileSignout() {
                   className={profileSignoutClasses.claim}
                   onClick={handleClaim}
                 >
-                  Claim {ticker}
+                  {language === 'pt' ? `Receber ${ticker}` : `Claim  ${ticker}`}
                 </button>
               );
 
