@@ -3,6 +3,7 @@ import { CSSProperties, useCallback, useMemo } from 'react';
 import cn from 'classnames';
 import { features } from 'config';
 import getMarketColors from 'helpers/getMarketColors';
+import type { Outcome } from 'models/market';
 import { changeTradeType, selectOutcome } from 'redux/ducks/trade';
 import { useTheme } from 'ui';
 
@@ -78,6 +79,17 @@ function Trade({ view = 'default', onTradeFinished }: TradeProps) {
     [outcomesWithShares, predictionId]
   );
 
+  const filterByHaveShares = useCallback(
+    (outcome: Outcome) => {
+      const haveShares = outcomesWithShares.find(
+        outcomeWithShares => outcomeWithShares.id === outcome.id.toString()
+      );
+
+      return !!haveShares;
+    },
+    [outcomesWithShares]
+  );
+
   const prediction = useMemo(
     () =>
       market.outcomes.find(
@@ -133,7 +145,10 @@ function Trade({ view = 'default', onTradeFinished }: TradeProps) {
             <p className={styles.marketTitle}>{market.title}</p>
           </div>
         ) : null}
-        <TradePredictions view={view} />
+        <TradePredictions
+          view={view}
+          filterBy={hasSharesOfOtherOutcomes ? filterByHaveShares : undefined}
+        />
       </div>
       {features.fantasy.enabled && (isLoadingLogin || isLoadingPortfolio) ? (
         <div className="flex-row justify-center align-center padding-y-10 padding-x-6 border-solid border-1 border-radius-medium">
