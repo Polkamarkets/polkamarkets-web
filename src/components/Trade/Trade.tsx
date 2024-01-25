@@ -68,7 +68,7 @@ function Trade({ view = 'default', onTradeFinished }: TradeProps) {
       };
     });
 
-    return sharesByOutcome.filter(outcome => outcome.shares > 1e-5);
+    return sharesByOutcome.filter(outcome => outcome.shares > 1e-4);
   }, [isLoadingPortfolio, portfolio, marketId, market.outcomes]);
 
   const hasSharesOfOtherOutcomes = useMemo(
@@ -147,7 +147,11 @@ function Trade({ view = 'default', onTradeFinished }: TradeProps) {
         ) : null}
         <TradePredictions
           view={view}
-          filterBy={hasSharesOfOtherOutcomes ? filterByHaveShares : undefined}
+          filterBy={
+            hasSharesOfOtherOutcomes || type === 'sell'
+              ? filterByHaveShares
+              : undefined
+          }
         />
       </div>
       {features.fantasy.enabled && (isLoadingLogin || isLoadingPortfolio) ? (
