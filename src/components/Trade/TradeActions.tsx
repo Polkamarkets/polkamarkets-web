@@ -209,13 +209,14 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
             shares: sharesToBuy,
             timestamp: Date.now() / 1000,
             transactionHash: '',
-            userOperationHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
+            userOperationHash:
+              '0x0000000000000000000000000000000000000000000000000000000000000000',
             value: amount,
             marketTitle,
             outcomeTitle: predictionTitle,
             marketSlug,
             ticker,
-            networkId: parseInt(network.id),
+            networkId: parseInt(network.id, 10),
             status: 'pending',
             user: ethAddress,
             imageUrl: ''
@@ -237,7 +238,8 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
       );
 
       userOperations.updateOperationStatus({
-        userOperationHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
+        userOperationHash:
+          '0x0000000000000000000000000000000000000000000000000000000000000000',
         status: 'success'
       });
 
@@ -259,7 +261,8 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
       Sentry.captureException(error, { extra: extraData });
 
       userOperations.updateOperationStatus({
-        userOperationHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
+        userOperationHash:
+          '0x0000000000000000000000000000000000000000000000000000000000000000',
         status: 'failed'
       });
 
@@ -353,13 +356,14 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
             shares: sharesToSell,
             timestamp: Date.now() / 1000,
             transactionHash: '',
-            userOperationHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
+            userOperationHash:
+              '0x0000000000000000000000000000000000000000000000000000000000000000',
             value: amount,
             marketTitle,
             outcomeTitle: predictionTitle,
             marketSlug,
             ticker,
-            networkId: parseInt(network.id),
+            networkId: parseInt(network.id, 10),
             status: 'pending',
             user: ethAddress,
             imageUrl: ''
@@ -395,7 +399,8 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
       }
 
       userOperations.updateOperationStatus({
-        userOperationHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
+        userOperationHash:
+          '0x0000000000000000000000000000000000000000000000000000000000000000',
         status: 'success'
       });
 
@@ -417,7 +422,8 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
       Sentry.captureException(error, { extra: extraData });
 
       userOperations.updateOperationStatus({
-        userOperationHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
+        userOperationHash:
+          '0x0000000000000000000000000000000000000000000000000000000000000000',
         status: 'failed'
       });
 
