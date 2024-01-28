@@ -20,7 +20,8 @@ import {
   useFantasyTokenTicker,
   useLanguage,
   useNetwork,
-  usePolkamarketsService
+  usePolkamarketsService,
+  useUserOperations
 } from 'hooks';
 
 import profileSignoutClasses from './ProfileSignout.module.scss';
@@ -29,6 +30,7 @@ export default function ProfileSignout() {
   const dispatch = useAppDispatch();
   const fantasyTokenTicker = useFantasyTokenTicker();
   const polkamarketsService = usePolkamarketsService();
+  const userOperations = useUserOperations();
   const language = useLanguage();
   const polkBalance = useAppSelector(state => state.polkamarkets.polkBalance);
   const address = useAppSelector(state => state.polkamarkets.ethAddress);
@@ -55,8 +57,41 @@ export default function ProfileSignout() {
   const handleClaim = useCallback(async () => {
     const { claim } = await import('redux/ducks/polkamarkets');
 
-    dispatch(claim(polkamarketsService));
-  }, [dispatch, polkamarketsService]);
+    userOperations.addOperation({
+      action: 'claimAndApproveTokens',
+      marketId: null,
+      outcomeId: null,
+      shares: null,
+      timestamp: Date.now() / 1000,
+      transactionHash: '',
+      userOperationHash:
+        '0x0000000000000000000000000000000000000000000000000000000000000000',
+      value: null,
+      marketTitle: null,
+      outcomeTitle: null,
+      marketSlug: null,
+      ticker: fantasyTokenTicker,
+      networkId: parseInt(network.network.id, 10),
+      status: 'pending',
+      user: address,
+      imageUrl: ''
+    });
+
+    const success = await dispatch(claim(polkamarketsService));
+
+    userOperations.updateOperationStatus({
+      userOperationHash:
+        '0x0000000000000000000000000000000000000000000000000000000000000000',
+      status: success ? 'success' : 'failed'
+    });
+  }, [
+    address,
+    dispatch,
+    fantasyTokenTicker,
+    network.network.id,
+    polkamarketsService,
+    userOperations
+  ]);
 
   const [username, setUserName] = useState(
     socialLoginInfo?.name?.includes('#')

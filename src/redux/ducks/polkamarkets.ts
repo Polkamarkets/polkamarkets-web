@@ -200,6 +200,8 @@ const {
 
 function claim(polkamarketsService: PolkamarketsService) {
   return async dispatch => {
+    let success = false;
+
     dispatch(
       changeLoading({
         key: 'polk',
@@ -210,6 +212,7 @@ function claim(polkamarketsService: PolkamarketsService) {
     try {
       const polkClaimed = await polkamarketsService.claimPolk();
       dispatch(changePolkClaimed(polkClaimed));
+      success = true;
     } catch (error) {
       // it should be non-blocking
     }
@@ -227,6 +230,8 @@ function claim(polkamarketsService: PolkamarketsService) {
         value: false
       })
     );
+
+    return success;
   };
 }
 

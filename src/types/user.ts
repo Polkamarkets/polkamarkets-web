@@ -1,18 +1,18 @@
 export type UserOperation = {
   imageUrl: string | null;
-  marketSlug: string;
-  marketTitle: string;
-  marketId: number;
-  outcomeTitle: string;
-  outcomeId: number;
+  marketSlug: string | null;
+  marketTitle: string | null;
+  marketId: number | null;
+  outcomeTitle: string | null;
+  outcomeId: number | null;
   networkId: number;
   shares: number | null;
   status: 'success' | 'failed' | 'pending';
   action: 'buy' | 'sell' | 'claimAndApproveTokens';
-  ticker: string;
+  ticker: string | undefined;
   timestamp: number;
   transactionHash: string | null;
   user: string;
   userOperationHash: string;
-  value: number;
+  value: number | null;
 };
