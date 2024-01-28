@@ -53,7 +53,7 @@ function useUserOperations() {
           'getUserOperationsByAddress',
           { address: userAddress },
           operations => {
-            return [...operations, operation];
+            return [operation, ...operations];
           }
         )
       ),

@@ -284,8 +284,13 @@ const polkamarketsApi = createApi({
       GetUserOperationsByAddressArgs
     >({
       query: ({ address }) => `/user_operations?from=${address}`,
-      transformResponse: (response: GetUserOperationsByAddressData) =>
-        camelize(response)
+      transformResponse: (response: GetUserOperationsByAddressData) => {
+        // sorting by timestamp
+        const sortedResponse = response.sort(
+          (a, b) => b.timestamp - a.timestamp
+        );
+        return camelize(sortedResponse);
+      }
     })
   })
 });
