@@ -25,7 +25,8 @@ import {
   useFantasyTokenTicker,
   useNetwork,
   usePolkamarketsService,
-  useTrade
+  useTrade,
+  useUserOperations
 } from 'hooks';
 
 import ApproveToken from '../ApproveToken';
@@ -82,6 +83,8 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
 
   const [needsPricesRefresh, setNeedsPricesRefresh] = useState(false);
   const { refreshBalance } = useERC20Balance(address);
+
+  const userOperations = useUserOperations();
 
   async function reloadMarketPrices() {
     const marketData = await new PolkamarketsService(
@@ -199,6 +202,25 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
           }
           dispatch(changePortfolio(newPortfolio));
 
+          userOperations.addOperation({
+            action: 'buy',
+            marketId: parseInt(marketId, 10),
+            outcomeId: parseInt(predictionId, 10),
+            shares: sharesToBuy,
+            timestamp: Date.now() / 1000,
+            transactionHash: '',
+            userOperationHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
+            value: amount,
+            marketTitle,
+            outcomeTitle: predictionTitle,
+            marketSlug,
+            ticker,
+            networkId: parseInt(network.id),
+            status: 'pending',
+            user: ethAddress,
+            imageUrl: ''
+          });
+
           setIsLoading(false);
           onTradeFinished();
           setTrade({ status: 'success' });
@@ -213,6 +235,11 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
         minShares,
         tokenWrapped && !wrapped
       );
+
+      userOperations.updateOperationStatus({
+        userOperationHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
+        status: 'success'
+      });
 
       // triggering market prices redux update
       reloadMarketPrices();
@@ -230,6 +257,11 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
       // TODO: improve this
       const extraData = (error as any)?.data as any;
       Sentry.captureException(error, { extra: extraData });
+
+      userOperations.updateOperationStatus({
+        userOperationHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
+        status: 'failed'
+      });
 
       // restoring wallet data on error too
       await updateWallet();
@@ -314,6 +346,25 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
             dispatch(changePortfolio(newPortfolio));
           }
 
+          userOperations.addOperation({
+            action: 'sell',
+            marketId: parseInt(marketId, 10),
+            outcomeId: parseInt(predictionId, 10),
+            shares: sharesToSell,
+            timestamp: Date.now() / 1000,
+            transactionHash: '',
+            userOperationHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
+            value: amount,
+            marketTitle,
+            outcomeTitle: predictionTitle,
+            marketSlug,
+            ticker,
+            networkId: parseInt(network.id),
+            status: 'pending',
+            user: ethAddress,
+            imageUrl: ''
+          });
+
           setIsLoading(false);
           onTradeFinished();
           setTrade({ status: 'success' });
@@ -343,6 +394,11 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
         }
       }
 
+      userOperations.updateOperationStatus({
+        userOperationHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
+        status: 'success'
+      });
+
       // triggering market prices redux update
       reloadMarketPrices();
 
@@ -359,6 +415,11 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
       // TODO: improve this
       const extraData = (error as any)?.data as any;
       Sentry.captureException(error, { extra: extraData });
+
+      userOperations.updateOperationStatus({
+        userOperationHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
+        status: 'failed'
+      });
 
       // restoring wallet data on error too
       await updateWallet();
