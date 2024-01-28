@@ -1,11 +1,10 @@
 import { useMemo } from 'react';
 
 import cn from 'classnames';
-import { useGetUserOperationsByAddressQuery } from 'services/Polkamarkets';
 
 import Icon from 'components/Icon';
 
-import { useAppSelector, useDrawer } from 'hooks';
+import { useDrawer, useUserOperations } from 'hooks';
 
 import styles from './TransactionsButton.module.scss';
 
@@ -25,24 +24,7 @@ export default function TransactionsButton({
   ...props
 }: TransactionsButtonProps) {
   const openDrawer = useDrawer(state => state.open);
-
-  const { login: isLoadingLogin } = useAppSelector(
-    state => state.polkamarkets.isLoading
-  );
-
-  const isLoggedIn = useAppSelector(state => state.polkamarkets.isLoggedIn);
-  const userAddress = useAppSelector(state => state.polkamarkets.ethAddress);
-
-  const {
-    data: userOperations,
-    isLoading: isLoadingUserOperations,
-    isFetching: isFetchingUserOperations
-  } = useGetUserOperationsByAddressQuery(
-    { address: userAddress },
-    { skip: !isLoggedIn || isLoadingLogin }
-  );
-
-  const isLoading = isLoadingUserOperations || isFetchingUserOperations;
+  const { data: userOperations, isLoading } = useUserOperations();
 
   const openTransactions = useMemo(() => {
     if (isLoading || !userOperations) return 0;

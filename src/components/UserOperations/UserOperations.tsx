@@ -1,37 +1,30 @@
+import { useCallback } from 'react';
+
 import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
-import { useGetUserOperationsByAddressQuery } from 'services/Polkamarkets';
+import type { UserOperation } from 'types/user';
 import { Spinner } from 'ui';
 
-import { useAppSelector, useTrade } from 'hooks';
+import { useTrade, useUserOperations } from 'hooks';
 
 import { AlertMini } from '../Alert';
 import Operation from '../Operation';
-import VirtualizedList from '../VirtualizedList';
 import styles from './UserOperations.module.scss';
 
 function UserOperations() {
   const trade = useTrade();
+  const { data: userOperations, isLoading } = useUserOperations();
 
-  const { login: isLoadingLogin } = useAppSelector(
-    state => state.polkamarkets.isLoading
+  const operationItemContent = useCallback(
+    (operation: UserOperation) => (
+      <li key={operation.userOperationHash} className={styles.item}>
+        <Operation {...operation} trade={trade} />
+      </li>
+    ),
+    [trade]
   );
 
-  const isLoggedIn = useAppSelector(state => state.polkamarkets.isLoggedIn);
-  const userAddress = useAppSelector(state => state.polkamarkets.ethAddress);
-
-  const {
-    data: userOperations,
-    isLoading: isLoadingUserOperations,
-    isFetching: isFetchingUserOperations
-  } = useGetUserOperationsByAddressQuery(
-    { address: userAddress },
-    { skip: !isLoggedIn || isLoadingLogin }
-  );
-
-  const isLoading = isLoadingUserOperations || isFetchingUserOperations;
-
-  if (isLoadingLogin || isLoading) return <Spinner />;
+  if (isLoading) return <Spinner />;
 
   if (isEmpty(userOperations)) {
     return (
@@ -51,18 +44,7 @@ function UserOperations() {
     );
   }
 
-  return (
-    <VirtualizedList
-      height="100%"
-      data={userOperations}
-      itemContent={(_index, operation) => (
-        <div className={styles.item}>
-          <Operation {...operation} trade={trade} />
-        </div>
-      )}
-      useWindowScroll
-    />
-  );
+  return <ul>{userOperations?.map(operationItemContent)}</ul>;
 }
 
 export default UserOperations;

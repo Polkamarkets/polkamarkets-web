@@ -10,7 +10,7 @@ import Icon from 'components/Icon';
 
 import type { TradeContextState } from 'contexts/trade';
 
-import { useDrawer } from 'hooks';
+import { useDrawer, useLanguage, useFantasyTokenTicker } from 'hooks';
 
 import { Button } from '../Button';
 import styles from './Operation.module.scss';
@@ -46,6 +46,10 @@ function Operation({
   const location = useLocation();
 
   const { open, close } = useDrawer(state => state);
+
+  const fantasyTokenTicker = useFantasyTokenTicker();
+
+  const language = useLanguage();
 
   const handleRetry = useCallback(() => {
     trade?.set({
@@ -113,14 +117,21 @@ function Operation({
         )}
       </span>
       {action === 'buy' && (
-        <p
-          className={styles.action}
-        >{`Bought ${value} ${ticker} of outcome ${outcomeTitle}`}</p>
+        <p className={styles.action}>
+          {language === 'pt'
+            ? `Previu ${outcomeTitle} com ${value} ${ticker}`
+            : `Bought ${value} ${ticker} of outcome ${outcomeTitle}`}
+        </p>
       )}
       {action === 'sell' && (
-        <p
-          className={styles.action}
-        >{`Sold ${value} ${ticker} of outcome ${outcomeTitle}`}</p>
+        <p className={styles.action}>
+          {language === 'pt'
+            ? `Vendeu ${value} ${ticker} de ${outcomeTitle}`
+            : `Sold ${value} ${ticker} of outcome ${outcomeTitle}`}
+        </p>
+      )}
+      {action === 'claimAndApproveTokens' && (
+        <p className={styles.action}>{`Claimed ${fantasyTokenTicker}`}</p>
       )}
       <p className={styles.market}>{marketTitle}</p>
       <div className={styles.footer}>
