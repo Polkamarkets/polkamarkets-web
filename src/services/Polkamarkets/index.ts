@@ -57,7 +57,9 @@ import {
   GetLandBySlugArgs,
   GetTournamentsArgs,
   GetLandsData,
-  GetLandsArgs
+  GetLandsArgs,
+  GetUserOperationsByAddressData,
+  GetUserOperationsByAddressArgs
 } from './types';
 
 function camelize<T extends object>(response: T): T {
@@ -276,6 +278,14 @@ const polkamarketsApi = createApi({
     getLands: builder.query<GetLandsData, GetLandsArgs>({
       query: ({ token }) => `/lands${token ? `?token=${token}` : ''}`,
       transformResponse: (response: GetLandsData) => camelize(response)
+    }),
+    getUserOperationsByAddress: builder.query<
+      GetUserOperationsByAddressData,
+      GetUserOperationsByAddressArgs
+    >({
+      query: ({ address }) => `/user_operations?from=${address}`,
+      transformResponse: (response: GetUserOperationsByAddressData) =>
+        camelize(response)
     })
   })
 });
@@ -305,5 +315,6 @@ export const {
   useAddCommentMutation,
   useGetMarketFeedBySlugQuery,
   useGetLandBySlugQuery,
-  useGetLandsQuery
+  useGetLandsQuery,
+  useGetUserOperationsByAddressQuery
 } = polkamarketsApi;

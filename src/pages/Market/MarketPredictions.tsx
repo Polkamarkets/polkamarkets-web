@@ -33,8 +33,8 @@ function MarketPredictions() {
   useEffect(() => {
     if (
       status === 'error' &&
-      trade.market === marketId &&
-      trade.network === marketNetworkId
+      trade.market.toString() === marketId.toString() &&
+      trade.network.toString() === marketNetworkId.toString()
     ) {
       dispatch(selectOutcome(trade.market, trade.network, trade.outcome));
       setTradeVisible(true);

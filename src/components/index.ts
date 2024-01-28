@@ -164,6 +164,8 @@ export { default as CreateMarketFormOutcomes } from './CreateMarketFormOutcomes'
 
 export { default as CreateMarketFormFund } from './CreateMarketFormFund';
 
+export { default as Drawer } from './Drawer';
+
 export { default as ExternalJS } from './ExternalJS';
 
 export { default as HowToPlayButton } from './HowToPlayButton';
@@ -214,6 +216,8 @@ export { default as OutcomeItem } from './OutcomeItem';
 
 export { default as Onboarding } from './Onboarding';
 
+export { default as Operation } from './Operation';
+
 export { default as Profile } from './Profile';
 
 export { default as ProfileSignin } from './ProfileSignin';
@@ -233,6 +237,10 @@ export { default as Steps } from './Steps';
 export { default as ThemeSelector } from './ThemeSelector';
 
 export { default as Trade } from './Trade';
+
+export { default as TransactionsButton } from './TransactionsButton';
+
+export { default as UserOperations } from './UserOperations';
 
 export { default as VirtualizedList } from './VirtualizedList';
 

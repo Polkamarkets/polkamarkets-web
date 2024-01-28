@@ -10,6 +10,7 @@ import {
 import { MarketState, Comment, MarketActivity } from 'types/market';
 import { FeedActivity } from 'types/portfolio';
 import { Tournament } from 'types/tournament';
+import { UserOperation } from 'types/user';
 
 // getMarketBySlug
 export type GetMarketBySlugData = Market;
@@ -209,4 +210,10 @@ export type GetLandBySlugArgs = {
 export type GetLandsData = Land[];
 export type GetLandsArgs = {
   token?: string;
+};
+
+// getUserOperationsByAddress
+export type GetUserOperationsByAddressData = UserOperation[];
+export type GetUserOperationsByAddressArgs = {
+  address: string;
 };

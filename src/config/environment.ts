@@ -67,6 +67,7 @@ const environmentConfigVariables = [
   'UI_ONBOARDING',
   'UI_SLIPPAGE',
   'UI_SOCIAL_LOGIN_AUTO_CLAIM',
+  'UI_TRANSACTIONS_QUEUE',
   'SENTRY_DSN',
   'FAVICON_URL',
   'TOUCHICON_URL',

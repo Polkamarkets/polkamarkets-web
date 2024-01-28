@@ -21,6 +21,8 @@ export { default as useClickaway } from './useClickaway';
 
 export { default as useCookie } from './useCookie';
 
+export { default as useDrawer } from './useDrawer';
+
 export { default as useExpandableOutcomes } from './useExpandableOutcomes';
 
 export { default as useFantasyTokenTicker } from './useFantasyTokenTicker';

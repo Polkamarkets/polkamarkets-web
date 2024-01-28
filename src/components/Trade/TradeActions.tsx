@@ -56,13 +56,17 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
     state => state.market.market.networkId
   );
   const marketSlug = useAppSelector(state => state.market.market.slug);
+  const marketTitle = useAppSelector(state => state.market.market.title);
   const predictionId = useAppSelector(state => state.trade.selectedOutcomeId);
+  const predictionTitle = useAppSelector(
+    state => state.market.market.outcomes[predictionId]?.title
+  );
   const { amount, shares, totalStake, fee } = useAppSelector(
     state => state.trade
   );
   const maxAmount = useAppSelector(state => state.trade.maxAmount);
   const token = useAppSelector(state => state.market.market.token);
-  const { wrapped: tokenWrapped, address } = token;
+  const { wrapped: tokenWrapped, address, ticker } = token;
 
   const polkClaimed = useAppSelector(state => state.polkamarkets.polkClaimed);
   const isLoadingPolk = useAppSelector(
@@ -128,7 +132,11 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
       status: 'pending',
       trade: {
         market: marketId,
+        marketTitle,
         outcome: predictionId,
+        outcomeTitle: predictionTitle,
+        amount,
+        ticker: fantasyTokenTicker || ticker,
         network: marketNetworkId,
         location: window.location.pathname
       }
@@ -237,7 +245,11 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
       status: 'pending',
       trade: {
         market: marketId,
+        marketTitle,
         outcome: predictionId,
+        outcomeTitle: predictionTitle,
+        amount,
+        ticker: fantasyTokenTicker || ticker,
         network: marketNetworkId,
         location: window.location.pathname
       }

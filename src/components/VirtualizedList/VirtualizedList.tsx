@@ -7,6 +7,7 @@ type VirtualizedListProps<T> = {
   components?: Components;
   itemContent: (_index: number, _item: T) => ReactNode;
   atBottom?: (_atBottom: boolean) => void;
+  useWindowScroll?: boolean;
 };
 
 function VirtualizedList<T>({
@@ -14,7 +15,8 @@ function VirtualizedList<T>({
   data = [],
   components = {},
   itemContent,
-  atBottom
+  atBottom,
+  useWindowScroll
 }: VirtualizedListProps<T>) {
   const [visibleRange, setVisibleRange] = useState({
     startIndex: 0,
@@ -39,6 +41,7 @@ function VirtualizedList<T>({
       data={data}
       itemContent={itemContent}
       rangeChanged={setVisibleRange}
+      useWindowScroll={useWindowScroll}
     />
   );
 }
