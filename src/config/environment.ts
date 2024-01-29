@@ -71,7 +71,10 @@ const environmentConfigVariables = [
   'HOMEPAGE_URL',
   'DEFAULT_LANGUAGE',
   'UI_SOCIAL_LOGIN_AUTO_CLAIM',
-  'EXTERNAL_JS_URL'
+  'EXTERNAL_JS_URL',
+  'EXTERNAL_CSS_URL',
+  'LOCALIZE_CONFIG',
+  'CLARITY_PROJECT_ID'
 ] as const;
 
 export type EnvironmentConfigVariable =
