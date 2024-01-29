@@ -11,12 +11,6 @@
   <link href="/public/css/reset.css" rel="stylesheet" type="text/css" />
   <link href="/public/css/typography.css" rel="stylesheet" type="text/css" />
   <link href="/public/css/embed/markets/style.css" rel="stylesheet" type="text/css" />
-  <script type="text/javascript">
-    "<%= localizeConfig %>".includes('key') &&
-      document.write(
-        '<script src="/public/js/localize.js"><\/script><script>!function(a){if(!a.Localize){a.Localize={};for(var e=["translate","untranslate","phrase","initialize","translatePage","setLanguage","getLanguage","getSourceLanguage","detectLanguage","getAvailableLanguages","untranslatePage","bootstrap","prefetch","on","off","hideWidget","showWidget"],t=0;t<e.length;t++)a.Localize[e[t]]=function(){}}}(window);<\/script><script>Localize.initialize(<%- localizeConfig %>);<\/script><style>body #localize-powered-by,body #localize-widget.show #localize-powered-by,body #localize-widget:hover #localize-powered-by{display:none!important}</style>'
-      );
-  </script>
 </head>
 
 <body>
