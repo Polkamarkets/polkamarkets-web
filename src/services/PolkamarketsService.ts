@@ -829,11 +829,15 @@ export default class PolkamarketsService {
   }
 
   public async getUserBonds(_user: string): Promise<Object> {
+    if (!this.contracts.realitio.getContract()._address) return {};
+
     // TODO: use correct user
     return this.getBonds();
   }
 
   public async getBonds(): Promise<Object> {
+    if (!this.contracts.realitio.getContract()._address) return {};
+
     // ensuring user has wallet connected
     await this.login();
     if (!this.address) return {};
@@ -855,6 +859,8 @@ export default class PolkamarketsService {
   }
 
   public async getUserBondMarketsIds(_user: string): Promise<string[]> {
+    if (!this.contracts.realitio.getContract()._address) return [];
+
     // TODO: use correct user
     return this.getBondMarketIds();
   }
