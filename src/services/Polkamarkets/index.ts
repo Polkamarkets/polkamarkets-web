@@ -297,11 +297,11 @@ const polkamarketsApi = createApi({
           if (operation.status !== 'failed') return true;
 
           // only showing failed operation if there is no successful operation after it on same marketId
-          return !userOperations.some((op, i) => {
+          return !userOperations.some((op, _i) => {
             return (
               op.marketId === operation.marketId &&
               op.outcomeId === operation.outcomeId &&
-              i < index &&
+              op.timestamp > operation.timestamp - 300 && // giving a 5 minute buffer
               op.status === 'success' &&
               op.action === operation.action
             );
