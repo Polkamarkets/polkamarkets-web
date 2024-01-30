@@ -165,7 +165,7 @@ function Trade({ view = 'default', onTradeFinished }: TradeProps) {
                 variant="warning"
                 description={
                   language === 'pt'
-                    ? `Só podes escolher um resultado de cada vez. Para mudar a tua previsão para "${prediction.title}", tens que vender a tua previsão "${outcomesWithShares[0].title}".`
+                    ? `Você só pode escolher um resultado de cada vez. Para mudar a sua previsão para "${prediction.title}", terá que vender a previsão "${outcomesWithShares[0].title}".`
                     : `You can only buy shares of one outcome at a time. In order to buy shares of "${prediction.title}" you need to sell your position of "${outcomesWithShares[0].title}".`
                 }
                 descriptionClasses="notranslate"

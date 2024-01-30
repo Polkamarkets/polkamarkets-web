@@ -293,7 +293,7 @@ const polkamarketsApi = createApi({
         );
 
         // removing failed operations from array
-        userOperations = userOperations.filter((operation, index) => {
+        userOperations = userOperations.filter((operation, _index) => {
           if (operation.status !== 'failed') return true;
 
           // only showing failed operation if there is no successful operation after it on same marketId

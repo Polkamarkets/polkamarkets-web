@@ -110,7 +110,7 @@ function MarketShares({ onSellSelected }: MarketSharesProps) {
               </>
             ) : language === 'pt' ? (
               <>
-                Tens{' '}
+                Tem{' '}
                 <strong>
                   {outcome.value.toFixed(1)} {token.symbol}{' '}
                 </strong>
