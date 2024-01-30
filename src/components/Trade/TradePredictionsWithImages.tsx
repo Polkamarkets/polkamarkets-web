@@ -139,7 +139,8 @@ function TradePredictionsWithImages({
           className={cn(styles.predictionWithImage, {
             [styles.predictionWithImageSelected]:
               prediction.id.toString() === selectedOutcomeId.toString() &&
-              prediction.marketId.toString() === selectedMarketId.toString()
+              prediction.marketId.toString() === selectedMarketId.toString(),
+            [styles.predictionWithImageDisabled]: predictions.length === 1
           })}
           value={prediction.id.toString()}
           onClick={handleSelectPrediction}

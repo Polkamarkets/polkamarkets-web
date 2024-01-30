@@ -72,12 +72,6 @@
         );
     </script>
     <script type="text/javascript">
-      '%REACT_APP_EXTERNAL_JS_URL%'.includes('http') &&
-        document.write(
-          '<script type="text/javascript" src="%REACT_APP_EXTERNAL_JS_URL%" async><\/script>'
-        );
-    </script>
-    <script type="text/javascript">
       '%REACT_APP_LOCALIZE_CONFIG%'.includes('key') &&
         document.write(
           '<script src="/js/localize.js"><\/script><script>!function(a){if(!a.Localize){a.Localize={};for(var e=["translate","untranslate","phrase","initialize","translatePage","setLanguage","getLanguage","getSourceLanguage","detectLanguage","getAvailableLanguages","untranslatePage","bootstrap","prefetch","on","off","hideWidget","showWidget"],t=0;t<e.length;t++)a.Localize[e[t]]=function(){}}}(window);<\/script><script>Localize.initialize(%REACT_APP_LOCALIZE_CONFIG%);<\/script><style>body #localize-powered-by,body #localize-widget.show #localize-powered-by,body #localize-widget:hover #localize-powered-by{display:none!important}</style>'

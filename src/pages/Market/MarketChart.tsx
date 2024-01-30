@@ -4,6 +4,7 @@ import TradingViewWidget, { Themes } from 'react-tradingview-widget';
 import { features } from 'config';
 import { roundNumber } from 'helpers/math';
 import sortOutcomes from 'helpers/sortOutcomes';
+import maxBy from 'lodash/maxBy';
 import { useTheme } from 'ui';
 
 import { ChartHeader, LineChart, Text } from 'components';
@@ -20,13 +21,17 @@ const intervals = [
 function MarketOverview() {
   const outcomes = useAppSelector(state => state.market.market.outcomes);
   const ticker = useAppSelector(state => state.market.market.token.ticker);
+
   const [currentInterval, setCurrentInterval] = useState(
     intervals[intervals.length - 1]
   );
-  const [highOutcome, ...restOutcomes] = sortOutcomes({
+
+  const sortedOutcomes = sortOutcomes({
     outcomes,
     timeframe: currentInterval.id
   });
+
+  const highestPriceOutcome = maxBy(sortedOutcomes, 'price') || sortOutcomes[0];
 
   return (
     <>
@@ -37,7 +42,7 @@ function MarketOverview() {
             fontWeight="semibold"
             className="market-chart__view-title"
           >
-            {highOutcome.title.toUpperCase()}
+            {highestPriceOutcome.title.toUpperCase()}
           </Text>
           <Text
             color="light-gray"
@@ -46,26 +51,26 @@ function MarketOverview() {
             className="notranslate"
           >
             {features.fantasy.enabled ? (
-              <>{roundNumber(highOutcome.price * 100, 3)}%</>
+              <>{roundNumber(highestPriceOutcome.price * 100, 3)}%</>
             ) : (
               <>
-                {highOutcome.price} {ticker}
+                {highestPriceOutcome.price} {ticker}
               </>
             )}
           </Text>
           <Text
             as="span"
             scale="tiny-uppercase"
-            color={highOutcome.isPriceUp ? 'success' : 'danger'}
+            color={highestPriceOutcome.isPriceUp ? 'success' : 'danger'}
             fontWeight="semibold"
             className="notranslate"
           >
             {features.fantasy.enabled ? (
-              <>{highOutcome.pricesDiff.pct}</>
+              <>{highestPriceOutcome.pricesDiff.pct}</>
             ) : (
               <>
-                {highOutcome.pricesDiff.value} {ticker} (
-                {highOutcome.pricesDiff.pct})
+                {highestPriceOutcome.pricesDiff.value} {ticker} (
+                {highestPriceOutcome.pricesDiff.pct})
               </>
             )}
           </Text>{' '}
@@ -81,11 +86,7 @@ function MarketOverview() {
           />
         </div>
       </div>
-      <LineChart
-        series={[highOutcome, ...restOutcomes]}
-        ticker={ticker}
-        height={332}
-      />
+      <LineChart series={sortedOutcomes} ticker={ticker} height={332} />
     </>
   );
 }

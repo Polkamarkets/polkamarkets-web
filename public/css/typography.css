@@ -1,0 +1,63 @@
+h1,
+h2,
+h3 {
+  line-height: 1.5;
+}
+h5,
+h6,
+p {
+  line-height: 1.4;
+}
+@font-face {
+  font-family: Gilroy;
+  src: local(''), url('../fonts/Gilroy-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-stretch: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: Gilroy;
+  src: local(''), url('../fonts/Gilroy-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-stretch: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: Gilroy;
+  src: local(''), url('../fonts/Gilroy-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-stretch: normal;
+  font-display: swap;
+}
+
+h1 {
+  font-size: 4.8rem;
+}
+h2 {
+  font-size: 4rem;
+}
+h3 {
+  font-size: 3.2rem;
+}
+h4 {
+  font-size: 2.4rem;
+  line-height: 1.36;
+}
+h5 {
+  font-size: 1.4rem;
+  letter-spacing: 0.112rem;
+}
+h6 {
+  font-size: 1.2rem;
+  letter-spacing: 0.096rem;
+}
+p {
+  font-size: 1.6rem;
+}
+label {
+  font-size: 1.3rem;
+  line-height: normal;
+}

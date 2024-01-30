@@ -225,16 +225,16 @@ const pages = {
     name: '',
     meta: null,
     enabled: ui.tournaments.enabled
-  },
-  embed: {
-    pathname: '/embed/markets/:marketSlug',
-    Component: lazy(() => import('pages/Embed')),
-    exact: true,
-    navigation: false,
-    name: '',
-    meta: null,
-    enabled: false
   }
+  // embed: {
+  //   pathname: '/embed/markets/:marketSlug',
+  //   Component: lazy(() => import('pages/Embed')),
+  //   exact: true,
+  //   navigation: false,
+  //   name: '',
+  //   meta: null,
+  //   enabled: false
+  // }
 } as const;
 
 export default pages;
