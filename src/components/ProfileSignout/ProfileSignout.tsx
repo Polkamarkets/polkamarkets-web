@@ -154,7 +154,13 @@ export default function ProfileSignout() {
     }
 
     handleSocialLogin();
-  }, [socialLoginInfo, address, dispatch, hasUpdatedSocialLoginInfo]);
+  }, [
+    socialLoginInfo,
+    address,
+    dispatch,
+    hasUpdatedSocialLoginInfo,
+    theme.device.isDesktop
+  ]);
 
   return (
     <div className={profileSignoutClasses.root}>
