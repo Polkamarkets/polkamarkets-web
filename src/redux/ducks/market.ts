@@ -228,16 +228,26 @@ const marketSlice = createSlice({
       ...state,
       chartViewType: action.payload
     }),
+    /**
+     * TODO: Both just-for-check conditions could be made on
+     *  usage to avoid firing unnecessarily state changes.
+     *
+     * @example state.market.id === action.payload.marketId
+     * @example index === action.payload.outcomeId
+     */
     changeOutcomeData: (state, action) => ({
       ...state,
-      market: {
-        ...state.market,
-        outcomes: state.market.outcomes.map((outcome, index) =>
-          index === action.payload.outcomeId
-            ? { ...outcome, ...action.payload.data }
-            : outcome
-        )
-      }
+      market:
+        state.market.id === action.payload.marketId
+          ? {
+              ...state.market,
+              outcomes: state.market.outcomes.map((outcome, index) =>
+                index === action.payload.outcomeId
+                  ? { ...outcome, ...action.payload.data }
+                  : outcome
+              )
+            }
+          : state.market
     }),
     changeQuestion: (state, action) => ({
       ...state,

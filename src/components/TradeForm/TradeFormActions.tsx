@@ -2,12 +2,10 @@ import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { ui } from 'config';
-import { changeOutcomeData, changeData } from 'redux/ducks/market';
-import { changeMarketOutcomeData, changeMarketData } from 'redux/ducks/markets';
 import { login, fetchAditionalData } from 'redux/ducks/polkamarkets';
 import { selectOutcome } from 'redux/ducks/trade';
 import { closeTradeForm } from 'redux/ducks/ui';
-import { PolkamarketsService, PolkamarketsApiService } from 'services';
+import { PolkamarketsApiService } from 'services';
 
 import TWarningIcon from 'assets/icons/TWarningIcon';
 
@@ -18,6 +16,7 @@ import {
   useNetwork,
   usePolkamarketsService
 } from 'hooks';
+import useReloadMarketPrices from 'hooks/useReloadMarketPrices';
 import useToastNotification from 'hooks/useToastNotification';
 
 import ApproveToken from '../ApproveToken';
@@ -32,7 +31,7 @@ function TradeFormActions() {
   // Helpers
   const location = useLocation();
   const dispatch = useAppDispatch();
-  const { network, networkConfig } = useNetwork();
+  const { network } = useNetwork();
   const polkamarketsService = usePolkamarketsService();
   const { show, close } = useToastNotification();
 
@@ -65,31 +64,11 @@ function TradeFormActions() {
     useState(undefined);
   const [needsPricesRefresh, setNeedsPricesRefresh] = useState(false);
   const { refreshBalance } = useERC20Balance(address);
+  const reloadMarketPrices = useReloadMarketPrices({ id: marketId });
 
   function handleCancel() {
     dispatch(selectOutcome('', '', ''));
     dispatch(closeTradeForm());
-  }
-
-  async function reloadMarketPrices() {
-    const marketData = await new PolkamarketsService(
-      networkConfig
-    ).getMarketData(marketId);
-
-    marketData.outcomes.forEach((outcomeData, outcomeId) => {
-      const data = { price: outcomeData.price, shares: outcomeData.shares };
-
-      // updating both market/markets redux
-      dispatch(changeMarketOutcomeData({ marketId, outcomeId, data }));
-      dispatch(changeOutcomeData({ outcomeId, data }));
-      dispatch(
-        changeMarketData({
-          marketId,
-          data: { liquidity: marketData.liquidity }
-        })
-      );
-      dispatch(changeData({ data: { liquidity: marketData.liquidity } }));
-    });
   }
 
   useEffect(() => {

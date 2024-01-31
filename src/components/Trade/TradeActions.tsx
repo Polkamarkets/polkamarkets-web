@@ -2,8 +2,6 @@ import { useEffect, useState } from 'react';
 
 import * as Sentry from '@sentry/react';
 import { features, ui } from 'config';
-import { changeOutcomeData, changeData } from 'redux/ducks/market';
-import { changeMarketOutcomeData, changeMarketData } from 'redux/ducks/markets';
 import {
   login,
   fetchAditionalData,
@@ -11,7 +9,7 @@ import {
   changeActions,
   changePortfolio
 } from 'redux/ducks/polkamarkets';
-import { PolkamarketsService, PolkamarketsApiService } from 'services';
+import { PolkamarketsApiService } from 'services';
 
 import TWarningIcon from 'assets/icons/TWarningIcon';
 
@@ -28,6 +26,7 @@ import {
   useTrade,
   useUserOperations
 } from 'hooks';
+import useReloadMarketPrices from 'hooks/useReloadMarketPrices';
 
 import ApproveToken from '../ApproveToken';
 import { ButtonLoading } from '../Button';
@@ -41,7 +40,7 @@ type TradeActionsProps = {
 function TradeActions({ onTradeFinished }: TradeActionsProps) {
   // Helpers
   const dispatch = useAppDispatch();
-  const { network, networkConfig } = useNetwork();
+  const { network } = useNetwork();
   const polkamarketsService = usePolkamarketsService();
   const fantasyTokenTicker = useFantasyTokenTicker();
   const { status, trade, set: setTrade, reset: resetTrade } = useTrade();
@@ -86,26 +85,7 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
 
   const userOperations = useUserOperations();
 
-  async function reloadMarketPrices() {
-    const marketData = await new PolkamarketsService(
-      networkConfig
-    ).getMarketData(marketId);
-
-    marketData.outcomes.forEach((outcomeData, outcomeId) => {
-      const data = { price: outcomeData.price, shares: outcomeData.shares };
-
-      // updating both market/markets redux
-      dispatch(changeMarketOutcomeData({ marketId, outcomeId, data }));
-      dispatch(changeOutcomeData({ outcomeId, data }));
-      dispatch(
-        changeMarketData({
-          marketId,
-          data: { liquidity: marketData.liquidity }
-        })
-      );
-      dispatch(changeData({ data: { liquidity: marketData.liquidity } }));
-    });
-  }
+  const reloadMarketPrices = useReloadMarketPrices({ id: marketId });
 
   useEffect(() => {
     setNeedsPricesRefresh(false);
