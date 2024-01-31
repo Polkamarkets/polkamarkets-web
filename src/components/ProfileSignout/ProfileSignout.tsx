@@ -6,7 +6,7 @@ import { formatNumberToString } from 'helpers/math';
 import shortenAddress from 'helpers/shortenAddress';
 import { changeSocialLoginInfo } from 'redux/ducks/polkamarkets';
 import { useGetLeaderboardByAddressQuery } from 'services/Polkamarkets';
-import { Avatar, Skeleton } from 'ui';
+import { Avatar, Skeleton, useTheme } from 'ui';
 
 import BankruptBadge from 'components/BankruptBadge';
 import { Button } from 'components/Button';
@@ -28,6 +28,7 @@ import {
 import profileSignoutClasses from './ProfileSignout.module.scss';
 
 export default function ProfileSignout() {
+  const theme = useTheme();
   const dispatch = useAppDispatch();
   const fantasyTokenTicker = useFantasyTokenTicker();
   const polkamarketsService = usePolkamarketsService();
@@ -128,7 +129,12 @@ export default function ProfileSignout() {
       );
 
       if (res.data?.user?.username) {
-        setUserName(res.data?.user?.username);
+        if (!theme.device.isDesktop) {
+          // trimming username until first space
+          setUserName(res.data?.user?.username.trim().split(' ')[0]);
+        } else {
+          setUserName(res.data?.user?.username);
+        }
       }
 
       if (res.data?.user?.slug) {
