@@ -11,7 +11,9 @@
   }
 }
 
-.signout {
+.signout,
+.transactions {
+  padding: var(--size-12) !important;
   margin-left: auto;
   color: var(--color-text-primary) !important;
 

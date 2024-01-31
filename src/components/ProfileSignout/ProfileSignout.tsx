@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { features } from 'config';
+import { features, ui } from 'config';
 import { formatNumberToString } from 'helpers/math';
 import shortenAddress from 'helpers/shortenAddress';
 import { changeSocialLoginInfo } from 'redux/ducks/polkamarkets';
@@ -13,6 +13,7 @@ import { Button } from 'components/Button';
 import Icon from 'components/Icon';
 import InfoTooltip from 'components/InfoTooltip';
 import Text from 'components/Text';
+import TransactionsButton from 'components/TransactionsButton';
 
 import {
   useAppDispatch,
@@ -165,6 +166,9 @@ export default function ProfileSignout() {
         />
         Sign Out
       </Button>
+      {ui.layout.transactionsQueue && (
+        <TransactionsButton className={profileSignoutClasses.transactions} />
+      )}
       <div className="pm-c-wallet-info__profile notranslate">
         <Link
           to={`/user/${

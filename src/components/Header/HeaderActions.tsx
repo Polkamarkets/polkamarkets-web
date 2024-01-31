@@ -10,7 +10,6 @@ import HowToPlayButton from 'components/HowToPlayButton';
 import NetworkSelector from 'components/NetworkSelector';
 import Profile from 'components/Profile';
 import ThemeSelector from 'components/ThemeSelector';
-import TransactionsButton from 'components/TransactionsButton';
 import Wallet from 'components/Wallet';
 
 import { useAppSelector, usePortal } from 'hooks';
@@ -156,13 +155,6 @@ export default function HeaderActions() {
               <HeaderActionComponent isLoggedIn={isLoggedIn} />
             )}
           </HeaderActionsGroupComponent>
-          {ui.layout.transactionsQueue && (
-            <TransactionsButton
-              className={cn({
-                [headerActionsClasses.transactions]: features.fantasy.enabled
-              })}
-            />
-          )}
           {!features.fantasy.enabled && <ThemeSelector />}
           {ui.layout.header.helpUrl && (
             <HelpButton

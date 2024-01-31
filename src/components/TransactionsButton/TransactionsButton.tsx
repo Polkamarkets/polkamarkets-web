@@ -51,7 +51,7 @@ export default function TransactionsButton({
       {...props}
     >
       <Icon name="Transactions" size="lg" className={styles.icon} />
-      {`(${openTransactions})`}
+      {openTransactions}
     </button>
   );
 }

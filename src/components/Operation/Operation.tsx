@@ -58,11 +58,15 @@ function Operation({
         ...trade.trade,
         market: `${marketId}`,
         outcome: `${outcomeId}`,
-        network: `${networkId}`
+        network: `${networkId}`,
+        location: `/markets/${marketSlug}`
       }
     });
 
-    history.push(`/markets/${marketSlug}`, { from: location.pathname });
+    if (location.pathname !== `/markets/${marketSlug}`) {
+      history.push(`/markets/${marketSlug}`, { from: location.pathname });
+    }
+
     close();
   }, [
     close,
@@ -74,6 +78,13 @@ function Operation({
     outcomeId,
     trade
   ]);
+
+  const handleViewAll = useCallback(() => {
+    if (dismissable) {
+      onDismiss?.();
+    }
+    open();
+  }, [dismissable, onDismiss, open]);
 
   return (
     <div
@@ -139,7 +150,7 @@ function Operation({
           <button
             type="button"
             className={classNames('pm-c-button--xs', styles.viewTransactions)}
-            onClick={open}
+            onClick={handleViewAll}
           >
             View transactions
           </button>
