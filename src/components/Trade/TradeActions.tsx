@@ -32,6 +32,7 @@ import ApproveToken from '../ApproveToken';
 import { ButtonLoading } from '../Button';
 import NetworkSwitch from '../Networks/NetworkSwitch';
 import Text from '../Text';
+import { calculateEthAmountSold } from '../TradeForm/utils';
 
 type TradeActionsProps = {
   onTradeFinished: () => void;
@@ -55,6 +56,7 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
   const marketNetworkId = useAppSelector(
     state => state.market.market.networkId
   );
+  const market = useAppSelector(state => state.market.market);
   const marketSlug = useAppSelector(state => state.market.market.slug);
   const marketTitle = useAppSelector(state => state.market.market.title);
   const predictionId = useAppSelector(state => state.trade.selectedOutcomeId);
@@ -284,13 +286,23 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
         ethAmount
       );
 
-      // TODO: improve this
       // lowering ethAmount if it exceeds the amount on users portfolio
-      if (sharesToSell > portfolio[marketId]?.outcomes[predictionId]) {
+      if (sharesToSell > portfolio[marketId]?.outcomes[predictionId].shares) {
+        // TODO: improve this: re-fetching market prices
+        const marketData = await polkamarketsService.getMarketData(marketId);
+        // creating market copy
+        const newMarket = JSON.parse(JSON.stringify(market));
+        marketData.outcomes.forEach((outcomeData, outcomeId) => {
+          newMarket.outcomes[outcomeId].shares = outcomeData.shares;
+        });
+
         // lowering the amount sent to tx
-        ethAmount *=
-          (portfolio[marketId]?.outcomes[predictionId].shares / sharesToSell) *
-          0.99;
+        const maxTradeDetails = calculateEthAmountSold(
+          newMarket,
+          newMarket.outcomes[predictionId],
+          portfolio[marketId]?.outcomes[predictionId].shares
+        );
+        ethAmount = maxTradeDetails.totalStake;
       }
 
       // disabling refresh prices form temporarily
@@ -373,7 +385,7 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
           break;
         } catch (error) {
           // lowering the amount sent to tx
-          ethAmount *= 0.95;
+          ethAmount *= 0.99;
           if (i === maxTries - 1) throw error;
         }
       }
