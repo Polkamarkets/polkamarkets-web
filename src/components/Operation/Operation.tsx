@@ -10,6 +10,8 @@ import Icon from 'components/Icon';
 
 import type { TradeContextState } from 'contexts/trade';
 
+import { roundNumber } from 'helpers/math'
+
 import { useDrawer, useLanguage, useFantasyTokenTicker } from 'hooks';
 
 import { Button } from '../Button';
@@ -86,6 +88,8 @@ function Operation({
     open();
   }, [dismissable, onDismiss, open]);
 
+  const valueToShow = value ? roundNumber(value, 2) : value;
+
   return (
     <div
       className={classNames(styles.root, {
@@ -130,15 +134,15 @@ function Operation({
       {action === 'buy' && (
         <p className={styles.action}>
           {language === 'pt'
-            ? `Previu ${outcomeTitle} com ${value} ${ticker}`
-            : `Bought ${value} ${ticker} of outcome ${outcomeTitle}`}
+            ? `Previu ${outcomeTitle} com ${valueToShow} ${ticker}`
+            : `Bought ${valueToShow} ${ticker} of outcome ${outcomeTitle}`}
         </p>
       )}
       {action === 'sell' && (
         <p className={styles.action}>
           {language === 'pt'
-            ? `Vendeu ${value} ${ticker} de ${outcomeTitle}`
-            : `Sold ${value} ${ticker} of outcome ${outcomeTitle}`}
+            ? `Vendeu ${valueToShow} ${ticker} de ${outcomeTitle}`
+            : `Sold ${valueToShow} ${ticker} of outcome ${outcomeTitle}`}
         </p>
       )}
       {action === 'claimAndApproveTokens' && (
