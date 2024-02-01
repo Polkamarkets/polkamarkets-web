@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 
 import classNames from 'classnames';
+import { roundNumber } from 'helpers/math';
 import type { UserOperation } from 'types/user';
 
 import { CheckIcon, InfoIcon, RemoveOutlinedIcon } from 'assets/icons';
@@ -9,8 +10,6 @@ import { CheckIcon, InfoIcon, RemoveOutlinedIcon } from 'assets/icons';
 import Icon from 'components/Icon';
 
 import type { TradeContextState } from 'contexts/trade';
-
-import { roundNumber } from 'helpers/math'
 
 import { useDrawer, useLanguage, useFantasyTokenTicker } from 'hooks';
 

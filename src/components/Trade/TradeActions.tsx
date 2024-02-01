@@ -44,7 +44,7 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
   const { network } = useNetwork();
   const polkamarketsService = usePolkamarketsService();
   const fantasyTokenTicker = useFantasyTokenTicker();
-  const { status, trade, set: setTrade, reset: resetTrade } = useTrade();
+  const { status, set: setTrade, reset: resetTrade } = useTrade();
 
   // Market selectors
   const type = useAppSelector(state => state.trade.type);
@@ -552,11 +552,7 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
               color="danger"
               fullwidth
               onClick={handleSell}
-              disabled={
-                !isValidAmount ||
-                isLoading ||
-                (status === 'success' && trade.market === marketId)
-              }
+              disabled={!isValidAmount || isLoading || status === 'success'}
               loading={isLoading}
             >
               Sell
