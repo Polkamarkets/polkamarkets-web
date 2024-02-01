@@ -15,6 +15,7 @@ import {
   useExpandableOutcomes,
   useTrade
 } from 'hooks';
+import useReloadMarketPrices from 'hooks/useReloadMarketPrices';
 
 import Modal from '../Modal';
 import ModalContent from '../ModalContent';
@@ -42,6 +43,7 @@ export default function MarketOutcomes({
   const portfolio = useAppSelector(state => state.polkamarkets.portfolio);
   const theme = useTheme();
   const { trade: tradeState, status } = useTrade();
+  const reloadMarketPrices = useReloadMarketPrices({ id: market.id });
 
   const isPredictedOutcome = useCallback(
     (outcomeId: string | number) =>
@@ -95,6 +97,7 @@ export default function MarketOutcomes({
         const { value } = event.currentTarget;
 
         const isOutcomeActive = getOutcomeActive(value);
+        reloadMarketPrices();
 
         setOutcome(isOutcomeActive ? '' : value);
 
@@ -127,6 +130,7 @@ export default function MarketOutcomes({
       market.slug,
       market.state,
       location.pathname,
+      reloadMarketPrices,
       dispatch
     ]
   );
