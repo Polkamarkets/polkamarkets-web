@@ -53,7 +53,7 @@ function ReportForm() {
   });
 
   async function handleFormSubmit(_values: ReportFormData) {
-    // console.log(values);
+    console.log(_values);
   }
 
   if (isLoading) return null;
