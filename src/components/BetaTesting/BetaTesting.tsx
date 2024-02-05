@@ -3,6 +3,8 @@ import { useState } from 'react';
 import type { Network } from 'types/network';
 import { Banner } from 'ui';
 
+import Link from 'components/Link';
+
 type BetaTestingProps = {
   network: Network;
 };
@@ -15,9 +17,16 @@ export default function BetaTesting({ network }: BetaTestingProps) {
   if (!show) return null;
 
   return (
-    <Banner $type="warning" $variant="subtle" onHide={() => setShow(false)}>
-      O sucesso do Previsómetro foi difícil de prever devido à elevada afluência
-      de jogadores. Estamos de volta para todos os previsores.
+    <Banner $type="info" $variant="subtle" onHide={() => setShow(false)}>
+      <Link
+        variant="information"
+        title="Votómetro Legislativas 2024"
+        scale="caption"
+        fontWeight="medium"
+        href="https://observador.pt/interativo/votometro-legislativas-2024/"
+        target="_blank"
+      />
+      : Responda e veja também os partidos mais próximos de si.
     </Banner>
   );
 }
