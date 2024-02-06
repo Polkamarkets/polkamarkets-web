@@ -3,6 +3,7 @@ import { features } from 'config';
 import { roundNumber } from 'helpers/math';
 import { kebabCase, uniqueId } from 'lodash';
 import { Line } from 'rc-progress';
+import type { UserOperation } from 'types/user';
 import { Avatar, useTheme } from 'ui';
 
 import { CheckIcon, RemoveIcon, RepeatCycleIcon } from 'assets/icons';
@@ -21,7 +22,7 @@ export type OutcomeProps = Pick<
 > &
   Partial<Record<'primary' | 'image' | 'activeColor', string>> &
   Partial<Record<'invested', number>> & {
-    isPredicted?: boolean;
+    $state?: UserOperation['status'];
     isActive?: boolean;
     data?: AreaDataPoint[];
     $variant?: 'dashed';
@@ -45,7 +46,6 @@ export default function OutcomeItem({
   primary,
   secondary,
   isActive,
-  isPredicted,
   invested,
   $size,
   data,
@@ -54,6 +54,7 @@ export default function OutcomeItem({
   activeColor,
   resolved,
   className,
+  $state,
   ...props
 }: OutcomeProps) {
   const theme = useTheme();
@@ -67,7 +68,6 @@ export default function OutcomeItem({
       className={cn(
         outcomeItemClasses.root,
         {
-          [outcomeItemClasses.rootPredicted]: isPredicted,
           'pm-c-market-outcomes__item--default': !image && !resolved,
           'pm-c-market-outcomes__item--success': !image && resolved === 'won',
           'pm-c-market-outcomes__item--danger': !image && resolved !== 'won',
@@ -78,6 +78,10 @@ export default function OutcomeItem({
           [outcomeItemClasses.variantDashed]: $variant === 'dashed',
           [outcomeItemClasses.sizeSm]: isSm,
           [outcomeItemClasses.sizeMd]: isMd,
+          [outcomeItemClasses.state]: $state,
+          [outcomeItemClasses.stateSuccess]: $state === 'success',
+          [outcomeItemClasses.statePending]: $state === 'pending',
+          [outcomeItemClasses.stateFailed]: $state === 'failed',
           active: isActive
         },
         className

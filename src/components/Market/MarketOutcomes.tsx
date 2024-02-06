@@ -13,6 +13,7 @@ import {
   useAppDispatch,
   useAppSelector,
   useExpandableOutcomes,
+  useOperation,
   useTrade
 } from 'hooks';
 import useReloadMarketPrices from 'hooks/useReloadMarketPrices';
@@ -40,16 +41,11 @@ export default function MarketOutcomes({
   const location = useLocation();
   const dispatch = useAppDispatch();
   const trade = useAppSelector(state => state.trade);
-  const portfolio = useAppSelector(state => state.polkamarkets.portfolio);
   const theme = useTheme();
   const { trade: tradeState, status } = useTrade();
   const reloadMarketPrices = useReloadMarketPrices({ id: market.id });
 
-  const isPredictedOutcome = useCallback(
-    (outcomeId: string | number) =>
-      portfolio[market.id]?.outcomes[outcomeId]?.shares >= 1e0,
-    [market.id, portfolio]
-  );
+  const operation = useOperation(market);
 
   const [tradeVisible, setTradeVisible] = useState(false);
 
@@ -165,14 +161,8 @@ export default function MarketOutcomes({
           ) {
             setOutcome(isOutcomeActive ? '' : persistIds.outcome);
             setTradeVisible(true);
-
             // clean local storage after modal is opened
-            try {
-              if ('SELECTED_OUTCOME' in localStorage)
-                localStorage.removeItem('SELECTED_OUTCOME');
-            } catch (error) {
-              // unsupported
-            }
+            localStorage.removeItem('SELECTED_OUTCOME');
           }
         }
       } catch (error) {
@@ -237,7 +227,7 @@ export default function MarketOutcomes({
               value={outcome.id}
               data={outcome.data}
               primary={outcome.title}
-              isPredicted={isPredictedOutcome(outcome.id)}
+              $state={operation.getStatus(+outcome.id)}
               isActive={getOutcomeActive(outcome.id)}
               onClick={handleOutcomeClick}
               secondary={{
@@ -260,9 +250,13 @@ export default function MarketOutcomes({
           <OutcomeItem
             $size="sm"
             $variant="dashed"
-            isPredicted={expandableOutcomes.off.some(outcome =>
-              isPredictedOutcome(outcome.id)
-            )}
+            $state={
+              expandableOutcomes.off.some(
+                outcome => operation.data?.outcomeId === outcome.id
+              )
+                ? operation.data?.status
+                : undefined
+            }
             value={expandableOutcomes.onseted[0].id}
             onClick={handleOutcomeClick}
             {...expandableOutcomes.offseted}

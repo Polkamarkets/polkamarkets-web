@@ -32,6 +32,8 @@ export { default as useLanguage } from './useLanguage';
 
 export { default as useMarkets } from './useMarkets';
 
+export { default as useOperation } from './useOperation';
+
 export { default as useMarketForms } from './useMarketForms';
 
 export { default as useMarketPath } from './useMarketPath';

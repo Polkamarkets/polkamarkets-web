@@ -1,14 +1,13 @@
-import { useCallback, useMemo } from 'react';
-
 import cn from 'classnames';
 import { Market } from 'models/market';
 
-import { CheckIcon } from 'assets/icons';
+import { CheckIcon, WarningIcon } from 'assets/icons';
 
 import FavoriteMarket from 'components/FavoriteMarket';
+import Icon from 'components/Icon';
 import Share from 'components/Share';
 
-import { useAppSelector } from 'hooks';
+import { useOperation } from 'hooks';
 
 import styles from './MarketFooterActions.module.scss';
 
@@ -17,32 +16,37 @@ type MarketFooterActionsProps = {
   $variant: 'filled' | 'text';
 };
 
+const status = {
+  success: (
+    <span className={cn(styles.predicted, styles.predictedSuccess)}>
+      <CheckIcon className={styles.predictedIcon} /> Predicted
+    </span>
+  ),
+  failed: (
+    <span className={cn(styles.predicted, styles.predictedFailed)}>
+      <WarningIcon className={styles.predictedIcon} /> Failed
+    </span>
+  ),
+  pending: (
+    <span className={cn(styles.predicted, styles.predictedPending)}>
+      <Icon name="Loading" size="md" /> Pending
+    </span>
+  )
+};
+
 export default function MarketFooterActions({
   market,
   $variant = 'text'
 }: MarketFooterActionsProps) {
   const { origin } = window.location;
 
-  const portfolio = useAppSelector(state => state.polkamarkets.portfolio);
-
-  const isPredictedOutcome = useCallback(
-    (outcomeId: string | number) =>
-      portfolio[market.id]?.outcomes[outcomeId]?.shares >= 1e0,
-    [market.id, portfolio]
-  );
-
-  const isMarketWithPrediction = useMemo(
-    () => market.outcomes.some(outcome => isPredictedOutcome(outcome.id)),
-    [isPredictedOutcome, market.outcomes]
-  );
+  const operation = useOperation(market);
 
   return (
     <div className="pm-c-market-footer__actions">
-      {isMarketWithPrediction ? (
-        <span className={styles.predicted}>
-          <CheckIcon className={styles.predictedIcon} /> Predicted
-        </span>
-      ) : null}
+      {operation.data
+        ? status[operation.data.status]
+        : operation.predictedOutcome != null && status.success}
       <Share
         id={market.slug}
         className={cn('pm-c-market-footer__actions-button', {

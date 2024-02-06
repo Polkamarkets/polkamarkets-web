@@ -6,7 +6,7 @@
   padding: 0px;
   width: var(--width, 100%);
 
-  border-width: 1px;
+  border-width: var(--border-width, 1px);
   border-style: solid;
   border-radius: 4px;
 
@@ -16,11 +16,6 @@
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center center;
-
-  &Predicted {
-    border-width: 2px !important;
-    border-color: $primary-500 !important;
-  }
 }
 
 .size {
@@ -85,6 +80,20 @@
       --border-color: var(--outcome-color);
       --border-alpha: 0.4;
     }
+  }
+}
+
+.state {
+  --border-width: 2px;
+
+  &Success {
+    border-color: $primary-500 !important;
+  }
+  &Pending {
+    border-color: #9f9dff !important;
+  }
+  &Failed {
+    border-color: #ef4444 !important;
   }
 }
 
