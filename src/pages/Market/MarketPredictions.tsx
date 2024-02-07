@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 
-import { reset, selectOutcome } from 'redux/ducks/trade';
+import { reset } from 'redux/ducks/trade';
 import { useTheme } from 'ui';
 
 import {
@@ -13,7 +13,7 @@ import {
 } from 'components';
 import { TradePredictions } from 'components/Trade';
 
-import { useAppDispatch, useAppSelector, useTrade } from 'hooks';
+import { useAppDispatch } from 'hooks';
 
 import styles from './Market.module.scss';
 import MarketShares from './MarketShares';
@@ -21,33 +21,8 @@ import MarketShares from './MarketShares';
 function MarketPredictions() {
   const dispatch = useAppDispatch();
   const theme = useTheme();
-  const { trade, status } = useTrade();
-
-  const marketId = useAppSelector(state => state.market.market.id);
-  const marketNetworkId = useAppSelector(
-    state => state.market.market.networkId
-  );
 
   const [tradeVisible, setTradeVisible] = useState(false);
-
-  useEffect(() => {
-    if (
-      status === 'error' &&
-      trade.market.toString() === marketId.toString() &&
-      trade.network.toString() === marketNetworkId.toString()
-    ) {
-      dispatch(selectOutcome(trade.market, trade.network, trade.outcome));
-      setTradeVisible(true);
-    }
-  }, [
-    dispatch,
-    marketId,
-    marketNetworkId,
-    status,
-    trade.market,
-    trade.network,
-    trade.outcome
-  ]);
 
   const handleCloseTrade = useCallback(() => {
     dispatch(reset());

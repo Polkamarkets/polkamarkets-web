@@ -13,8 +13,7 @@ import {
   useAppDispatch,
   useAppSelector,
   useExpandableOutcomes,
-  useOperation,
-  useTrade
+  useOperation
 } from 'hooks';
 import useReloadMarketPrices from 'hooks/useReloadMarketPrices';
 
@@ -42,7 +41,6 @@ export default function MarketOutcomes({
   const dispatch = useAppDispatch();
   const trade = useAppSelector(state => state.trade);
   const theme = useTheme();
-  const { trade: tradeState, status } = useTrade();
   const reloadMarketPrices = useReloadMarketPrices({ id: market.id });
 
   const operation = useOperation(market);
@@ -171,25 +169,6 @@ export default function MarketOutcomes({
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    if (
-      status === 'error' &&
-      tradeState.market === market.id &&
-      tradeState.network === market.networkId
-    ) {
-      setOutcome(tradeState.outcome.toString());
-      setTradeVisible(true);
-    }
-  }, [
-    market.id,
-    market.networkId,
-    setOutcome,
-    status,
-    tradeState.market,
-    tradeState.network,
-    tradeState.outcome
-  ]);
 
   return (
     <ul className="pm-c-market-outcomes">

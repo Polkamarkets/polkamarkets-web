@@ -225,6 +225,8 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
         status: 'success'
       });
 
+      setTrade({ status: 'completed' });
+
       // triggering market prices redux update
       reloadMarketPrices();
 
@@ -396,6 +398,8 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
         status: 'success'
       });
 
+      setTrade({ status: 'completed' });
+
       // triggering market prices redux update
       reloadMarketPrices();
 
@@ -483,7 +487,7 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
           </div>
         ) : null}
         <div className="flex-column gap-4 width-full">
-          {status === 'error' ? (
+          {status === 'retry' ? (
             <AlertMinimal
               variant="danger"
               description="Sorry, we failed to record your prediction. Please try again."
