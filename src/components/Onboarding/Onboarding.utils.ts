@@ -4,7 +4,7 @@ export const ARIA = {
 };
 export const variants = {
   enter: (direction: number) => ({
-    x: direction > 0 ? 1000 : -1000,
+    x: direction > 0 ? 500 : -500,
     opacity: 0
   }),
   center: {
@@ -12,13 +12,15 @@ export const variants = {
     x: 0,
     opacity: 1
   },
-  exit: (direction: number) => ({
-    zIndex: 0,
-    x: direction < 0 ? 1000 : -1000,
-    opacity: 0
-  })
+  exit: (direction: number) =>
+    ({
+      zIndex: 0,
+      x: direction < 0 ? 500 : -500,
+      opacity: 0,
+      position: 'absolute'
+    } as const)
 };
-export const swipeThreshold = 10000;
+export const swipeThreshold = 5000;
 
 export function getSwipePower(offset: number, velocity: number) {
   return Math.abs(offset) * velocity;
@@ -28,4 +30,7 @@ export function wrap(min: number, max: number, v: number): number {
   const rangeSize = max - min;
 
   return ((((v - min) % rangeSize) + rangeSize) % rangeSize) + min;
+}
+export function getButtonValue(value: string) {
+  return { currentTarget: { value } } as React.MouseEvent<HTMLButtonElement>;
 }
