@@ -56,4 +56,10 @@
   height: 412px;
   display: flex;
   flex-direction: column;
+  position: relative;
+}
+
+.dialog {
+  max-width: 472px;
+  width: 100%;
 }
