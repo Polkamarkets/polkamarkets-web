@@ -39,24 +39,70 @@ export default function useOperation(
 
     return Object.entries(portfolio[market.id].outcomes as Outcomes).reduce(
       (acc, [outcomeId, { shares }]) =>
-        shares > 1e-5 ? market.outcomes?.[outcomeId] : acc,
+        shares > 1 ? market.outcomes?.[outcomeId] : acc,
       null as Outcome | null
     );
   }, [isLoading, market.id, market.outcomes, portfolio]);
 
-  const getStatus = useCallback(
+  // Criteria for the outcome status
+  // 1. If there's a pending user operation, always show the pending status
+  // 2. If user holds an outcome on portfolio, show success (using the portfolio condition, not the operation success status)
+  // 3. If user has a failed operation, show the failed status
+
+  const getOutcomeStatus = useCallback(
     (id: number) => {
-      if (data) {
-        if (data.outcomeId === id) return data.status;
-      } else if (predictedOutcome?.id === id) return 'success';
+      if (data?.status === 'pending' && data.outcomeId === id) return 'pending';
+      if (data?.status === 'pending' && data.outcomeId !== id) return undefined;
+      if (predictedOutcome && predictedOutcome.id === id) return 'success';
+      if (predictedOutcome && predictedOutcome.id !== id) return undefined;
+      if (data?.status === 'failed' && data.outcomeId === id && !isLoading)
+        return 'failed';
       return undefined;
     },
-    [data, predictedOutcome?.id]
+    [data, isLoading, predictedOutcome]
   );
+
+  const getMultipleOutcomesStatus = useCallback(
+    (ids: number[]) => {
+      if (data?.status === 'pending' && ids.some(id => data.outcomeId === id)) {
+        return 'pending';
+      }
+      if (
+        data?.status === 'pending' &&
+        !ids.some(id => data.outcomeId === id)
+      ) {
+        return undefined;
+      }
+      if (predictedOutcome && ids.some(id => predictedOutcome.id === id)) {
+        return 'success';
+      }
+      if (predictedOutcome && !ids.some(id => predictedOutcome.id === id)) {
+        return undefined;
+      }
+      if (
+        data?.status === 'failed' &&
+        ids.some(id => data.outcomeId === id) &&
+        !isLoading
+      ) {
+        return 'failed';
+      }
+      return undefined;
+    },
+    [data, isLoading, predictedOutcome]
+  );
+
+  const getMarketStatus = useCallback(() => {
+    if (data?.status === 'pending') return 'pending';
+    if (predictedOutcome) return 'success';
+    if (data?.status === 'failed' && !isLoading) return 'failed';
+    return undefined;
+  }, [data, isLoading, predictedOutcome]);
 
   return {
     data,
     predictedOutcome,
-    getStatus
+    getOutcomeStatus,
+    getMultipleOutcomesStatus,
+    getMarketStatus
   };
 }

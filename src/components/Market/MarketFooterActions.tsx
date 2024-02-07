@@ -41,12 +41,11 @@ export default function MarketFooterActions({
   const { origin } = window.location;
 
   const operation = useOperation(market);
+  const operationStatus = operation.getMarketStatus();
 
   return (
     <div className="pm-c-market-footer__actions">
-      {operation.data
-        ? status[operation.data.status]
-        : operation.predictedOutcome != null && status.success}
+      {operationStatus && status[operationStatus]}
       <Share
         id={market.slug}
         className={cn('pm-c-market-footer__actions-button', {

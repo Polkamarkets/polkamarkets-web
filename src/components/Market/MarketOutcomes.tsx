@@ -227,7 +227,7 @@ export default function MarketOutcomes({
               value={outcome.id}
               data={outcome.data}
               primary={outcome.title}
-              $state={operation.getStatus(+outcome.id)}
+              $state={operation.getOutcomeStatus(+outcome.id)}
               isActive={getOutcomeActive(outcome.id)}
               onClick={handleOutcomeClick}
               secondary={{
@@ -250,13 +250,9 @@ export default function MarketOutcomes({
           <OutcomeItem
             $size="sm"
             $variant="dashed"
-            $state={
-              expandableOutcomes.off.some(
-                outcome => operation.data?.outcomeId === outcome.id
-              )
-                ? operation.data?.status
-                : undefined
-            }
+            $state={operation.getMultipleOutcomesStatus(
+              expandableOutcomes.off.map(outcome => +outcome.id)
+            )}
             value={expandableOutcomes.onseted[0].id}
             onClick={handleOutcomeClick}
             {...expandableOutcomes.offseted}
