@@ -19,7 +19,6 @@
 
 .footer {
   flex-direction: column;
-  margin-top: auto;
 }
 
 .steps {
@@ -63,4 +62,8 @@
 .dialog {
   max-width: 472px;
   width: 100%;
+}
+
+.container {
+  flex-grow: 1;
 }

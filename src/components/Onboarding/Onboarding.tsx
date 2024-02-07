@@ -87,6 +87,7 @@ function Onboarding({ steps }: OnboardingProps) {
             key={step}
             custom={direction}
             variants={variants}
+            className={styles.container}
             onDragEnd={handleDragEnd}
             dragConstraints={{
               left: 0,
