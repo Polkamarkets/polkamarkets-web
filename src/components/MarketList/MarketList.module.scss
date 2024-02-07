@@ -1,16 +1,34 @@
 .back {
-  &Root {
-    text-align: center;
-    padding-right: var(--grid-margin);
-    padding-top: var(--grid-margin);
-    padding-left: var(--grid-margin);
-    background: linear-gradient(
-      180deg,
-      transparent 0%,
-      var(--color-background-primary) 100%
-    );
-    position: sticky;
-    width: 100%;
-    z-index: 1;
+  text-align: center;
+
+  padding-right: var(--grid-margin);
+  padding-top: var(--grid-margin);
+  padding-left: var(--grid-margin);
+
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    var(--color-background-primary) 100%
+  );
+
+  position: sticky;
+  width: 100%;
+  z-index: 1;
+
+  transition: bottom 300ms ease;
+
+  &Show {
+    bottom: 0;
+
+    &AlongHeader {
+      bottom: var(--header-y);
+
+      @media (min-width: 1024px) {
+        bottom: 0;
+      }
+    }
+  }
+  &Hide {
+    bottom: -56px;
   }
 }

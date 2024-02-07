@@ -1,6 +1,8 @@
 .pm-c-market-list {
   flex: 1 1 auto;
-  padding: var(--grid-margin);
+
+  padding-left: var(--grid-margin);
+  padding-right: var(--grid-margin);
 
   @media (min-width: 1440px) {
     padding-left: unset;

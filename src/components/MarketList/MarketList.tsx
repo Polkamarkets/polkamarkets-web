@@ -8,9 +8,7 @@ import { Virtuoso as ReactVirtuoso } from 'react-virtuoso';
 
 import cn from 'classnames';
 import { features } from 'config';
-import { AnimatePresence, motion } from 'framer-motion';
 import type { Market } from 'models/market';
-import { useRect, useTheme } from 'ui';
 
 import { InfoIcon } from 'assets/icons';
 
@@ -29,16 +27,10 @@ type VirtuosoProps = Omit<
 
 function Virtuoso({ data }: VirtuosoProps) {
   const isLoggedIn = useAppSelector(state => state.polkamarkets.isLoggedIn);
-  const theme = useTheme();
-  const [back, backRect] = useRect();
-  const BACK_HEIGHT = `${backRect.height}px`;
-  const HEIGHT = theme.device.isDesktop
-    ? BACK_HEIGHT
-    : `calc(${BACK_HEIGHT} ${
-        !features.fantasy.enabled || isLoggedIn ? '+ var(--header-y)' : ''
-      })`;
+
   const virtuoso = useRef<VirtuosoHandle>(null);
   const [renderBack, setRenderBack] = useState(false);
+
   const handleItemContent = useCallback(
     (index: number, market: Market) => (
       <PredictionCard
@@ -87,31 +79,26 @@ function Virtuoso({ data }: VirtuosoProps) {
 
   return (
     <>
-      <AnimatePresence>
-        {renderBack && (
-          <motion.div
-            ref={back}
-            className={marketListClasses.backRoot}
-            initial={{ top: window.innerHeight }}
-            animate={{
-              top: `calc(${window.innerHeight}px - ${HEIGHT})`
-            }}
-            exit={{ top: window.innerHeight }}
-          >
-            <Button variant="ghost" size="xs" onClick={handleBackClick}>
-              Back to Top
-            </Button>
-          </motion.div>
-        )}
-      </AnimatePresence>
       <ReactVirtuoso
         ref={virtuoso}
         useWindowScroll
         itemContent={handleItemContent}
         rangeChanged={handleRangeChange}
         data={data}
-        style={{ top: renderBack ? -backRect.height : undefined }}
       />
+      <div
+        className={cn(marketListClasses.back, {
+          [marketListClasses.backShow]: renderBack,
+          [marketListClasses.backShowAlongHeader]:
+            renderBack && (!features.fantasy.enabled || isLoggedIn),
+          [marketListClasses.backHide]: !renderBack
+        })}
+        aria-hidden={renderBack ? undefined : 'true'}
+      >
+        <Button variant="ghost" size="xs" onClick={handleBackClick}>
+          Back to Top
+        </Button>
+      </div>
     </>
   );
 }

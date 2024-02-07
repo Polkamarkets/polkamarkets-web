@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { pages, environment, ui } from 'config';
+import cn from 'classnames';
+import { pages, environment, ui, features } from 'config';
 
 import BetaTesting from 'components/BetaTesting';
 import BetaWarning from 'components/BetaWarning';
@@ -35,7 +36,12 @@ export default function Layout({ children }: React.PropsWithChildren<{}>) {
   }, [location.pathname]);
 
   return (
-    <div className={layoutClasses.root}>
+    <div
+      className={cn(layoutClasses.root, {
+        [layoutClasses.placeholderBottom]:
+          features.fantasy.enabled && isLoggedIn
+      })}
+    >
       {page?.meta && <SEO {...page.meta} />}
       {ui.layout.onboarding.steps && <Onboarding />}
       {ui.layout.disclaimer.enabled && <BetaWarning />}
