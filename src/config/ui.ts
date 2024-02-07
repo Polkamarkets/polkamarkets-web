@@ -9,7 +9,11 @@ import {
 
 import environment from './environment';
 import features from './features';
-import { parseFiltersFromEnv, parseNavbarItemsFromEnv } from './ui.utils';
+import {
+  buildOnboardingSteps,
+  parseFiltersFromEnv,
+  parseNavbarItemsFromEnv
+} from './ui.utils';
 
 const providers = [
   'Google',
@@ -52,7 +56,7 @@ const ui = {
       }
     },
     onboarding: {
-      steps: environment.UI_ONBOARDING
+      steps: buildOnboardingSteps(environment.UI_ONBOARDING)
     },
     disclaimer: {
       enabled: features.regular.enabled
