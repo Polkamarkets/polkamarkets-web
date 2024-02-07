@@ -1,5 +1,6 @@
 .header {
   margin-bottom: var(--size-32);
+  height: 64px;
 }
 
 .title {
@@ -17,38 +18,42 @@
 }
 
 .footer {
-  display: flex;
   flex-direction: column;
+  margin-top: auto;
 }
 
 .steps {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-
-  gap: var(--size-16);
-
-  margin-bottom: var(--size-24);
+  text-align: center;
+  margin-bottom: var(--size-8);
 
   &Item {
-    height: 10px;
-    width: 10px;
+    display: inline;
 
-    flex-shrink: 0;
-    aspect-ratio: 1/1;
+    &:not(:last-child) {
+      margin-right: 16px;
+    }
 
-    background-color: #f2f4f7 !important;
-    opacity: 0.32;
-    border-radius: 6px;
+    &Button {
+      --channel-alpha: 0.32;
 
-    transition: background-color, opacity 0.2s ease-in-out;
+      height: 10px;
+      width: 10px;
 
-    &Active {
-      @composes .stepsItem;
+      background-color: rgb(250 250 250 / var(--channel-alpha));
+      border-radius: 5px;
+      border: 0;
 
-      background-color: #fafafa !important;
-      opacity: 1;
+      transition: background-color 200ms ease-in-out;
+
+      &Active {
+        --channel-alpha: 1;
+      }
     }
   }
+}
+
+.content {
+  height: 412px;
+  display: flex;
+  flex-direction: column;
 }
