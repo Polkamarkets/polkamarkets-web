@@ -36,6 +36,10 @@ function Onboarding({ steps }: OnboardingProps) {
 
   const [[step, direction], setStep] = useState([0, 0]);
 
+  const stepIndex = wrap(0, steps.length, step);
+  const stepsLenght = steps.length - 1;
+  const isLastStep = stepsLenght === step;
+
   const handleHide = useCallback(() => {
     setOnboarding(true);
     setStep([0, 0]);
@@ -52,17 +56,13 @@ function Onboarding({ steps }: OnboardingProps) {
     (_, info: PanInfo) => {
       const swipe = getSwipePower(info.offset.x, info.velocity.x);
 
-      if (swipe < -swipeThreshold) {
-        handleStep(getButtonValue('1'));
-      } else if (swipe > swipeThreshold) {
-        handleStep(getButtonValue('-1'));
-      }
+      if (swipe < -swipeThreshold)
+        handleStep(getButtonValue(step === stepsLenght ? '0' : '1'));
+      else if (swipe > swipeThreshold)
+        handleStep(getButtonValue(step === 0 ? '0' : '-1'));
     },
-    [handleStep]
+    [handleStep, step, stepsLenght]
   );
-
-  const stepIndex = wrap(0, steps.length, step);
-  const isLastStep = steps.length - 1 === step;
 
   return (
     <Modal
@@ -79,12 +79,19 @@ function Onboarding({ steps }: OnboardingProps) {
         </ModalHeader>
         <AnimatePresence>
           <motion.div
-            key={step}
-            custom={direction}
-            variants={variants}
             initial="enter"
             animate="center"
             exit="exit"
+            drag="x"
+            dragElastic={1}
+            key={step}
+            custom={direction}
+            variants={variants}
+            onDragEnd={handleDragEnd}
+            dragConstraints={{
+              left: 0,
+              right: 0
+            }}
             transition={{
               x: {
                 type: 'spring',
@@ -95,13 +102,6 @@ function Onboarding({ steps }: OnboardingProps) {
                 duration: 0.2
               }
             }}
-            drag="x"
-            dragConstraints={{
-              left: 0,
-              right: 0
-            }}
-            dragElastic={1}
-            onDragEnd={handleDragEnd}
           >
             <div className={styles.header}>
               {steps[stepIndex].imageUrl && (
