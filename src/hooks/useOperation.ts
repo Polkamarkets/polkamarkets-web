@@ -57,6 +57,12 @@ export default function useOperation(
       if (predictedOutcome && predictedOutcome.id !== id) return undefined;
       if (data?.status === 'failed' && data.outcomeId === id && !isLoading)
         return 'failed';
+      if (
+        data?.status === 'success' &&
+        data.outcomeId === id &&
+        data?.action === 'buy'
+      )
+        return 'success';
       return undefined;
     },
     [data, isLoading, predictedOutcome]
@@ -86,6 +92,13 @@ export default function useOperation(
       ) {
         return 'failed';
       }
+      if (
+        data?.status === 'success' &&
+        ids.some(id => data.outcomeId === id) &&
+        data?.action === 'buy'
+      ) {
+        return 'success';
+      }
       return undefined;
     },
     [data, isLoading, predictedOutcome]
@@ -95,6 +108,7 @@ export default function useOperation(
     if (data?.status === 'pending') return 'pending';
     if (predictedOutcome) return 'success';
     if (data?.status === 'failed' && !isLoading) return 'failed';
+    if (data?.status === 'success' && data?.action === 'buy') return 'success';
     return undefined;
   }, [data, isLoading, predictedOutcome]);
 
