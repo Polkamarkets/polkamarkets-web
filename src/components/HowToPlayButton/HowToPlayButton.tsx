@@ -1,3 +1,5 @@
+import { useCallback } from 'react';
+
 import cn from 'classnames';
 
 import Icon from 'components/Icon';
@@ -21,8 +23,13 @@ export default function HowToPlayButton({
   $outline,
   ...props
 }: HowToPlayButtonProps) {
-  const [_onboardingCompleted, setOnboardingCompleted] =
-    useLocalStorage<boolean>('onboardingCompleted', false);
+  const [_, setOnboarding] = useLocalStorage<boolean>(
+    'onboardingCompleted',
+    false
+  );
+  const handleCompleted = useCallback(() => {
+    setOnboarding(false);
+  }, [setOnboarding]);
 
   return (
     <button
@@ -37,7 +44,7 @@ export default function HowToPlayButton({
         },
         className
       )}
-      onClick={() => setOnboardingCompleted(false)}
+      onClick={handleCompleted}
       {...props}
     >
       <Icon name="Question" size="lg" className={styles.icon} />
