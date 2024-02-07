@@ -20,6 +20,7 @@ import styles from './Onboarding.module.scss';
 import type { OnboardingProps } from './Onboarding.type';
 import {
   ARIA,
+  getButtonValue,
   getSwipePower,
   swipeThreshold,
   variants,
@@ -42,15 +43,23 @@ function Onboarding({ steps }: OnboardingProps) {
     setStep([0, 0]);
   }, [setOnboarding]);
   const handleStep = useCallback(
-    (newDirection: number) => {
-      if (isLastStep) handleHide();
-      else setStep([step + newDirection, newDirection]);
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      const newDirection = +event.currentTarget.value;
+
+      setStep(([prevStep]) => [prevStep + newDirection, newDirection]);
     },
-    [handleHide, isLastStep, step]
+    []
   );
 
   return (
-    <Modal show={!onboarding} centered size="sm" onHide={handleHide}>
+    <Modal
+      centered
+      show={!onboarding}
+      onHide={handleHide}
+      className={{
+        dialog: styles.dialog
+      }}
+    >
       <ModalContent className={styles.content}>
         <ModalHeader>
           <ModalHeaderHide onClick={handleHide} />
@@ -83,38 +92,42 @@ function Onboarding({ steps }: OnboardingProps) {
               const swipe = getSwipePower(offset.x, velocity.x);
 
               if (swipe < -swipeThreshold) {
-                handleStep(1);
+                handleStep(getButtonValue('1'));
               } else if (swipe > swipeThreshold) {
-                handleStep(-1);
+                handleStep(getButtonValue('-1'));
               }
             }}
           >
             <div className={styles.header}>
               {steps[imageIndex].imageUrl && (
                 <Avatar
+                  alt=""
                   $size="md"
                   $radius="lg"
                   src={steps[imageIndex].imageUrl}
-                  alt={steps[imageIndex].title}
                 />
               )}
             </div>
-            <ModalHeaderTitle
-              id={ARIA['aria-labelledby']}
-              className={classNames(styles.title, 'pm-c-modal__header-title')}
-            >
-              {steps[imageIndex].title}
-            </ModalHeaderTitle>
-            <ModalSection>
-              <ModalSectionText
-                id={ARIA['aria-describedby']}
-                className={classNames(
-                  styles.description,
-                  'pm-c-modal__section-description'
-                )}
+            {steps[imageIndex].title && (
+              <ModalHeaderTitle
+                id={ARIA['aria-labelledby']}
+                className={classNames(styles.title, 'pm-c-modal__header-title')}
               >
-                {steps[imageIndex].description}
-              </ModalSectionText>
+                {steps[imageIndex].title}
+              </ModalHeaderTitle>
+            )}
+            <ModalSection>
+              {steps[imageIndex].description && (
+                <ModalSectionText
+                  id={ARIA['aria-describedby']}
+                  className={classNames(
+                    styles.description,
+                    'pm-c-modal__section-description'
+                  )}
+                >
+                  {steps[imageIndex].description}
+                </ModalSectionText>
+              )}
             </ModalSection>
           </motion.div>
         </AnimatePresence>
@@ -129,14 +142,8 @@ function Onboarding({ steps }: OnboardingProps) {
                     className={classNames(styles.stepsItemButton, {
                       [styles.stepsItemButtonActive]: index === step
                     })}
-                    onClick={() => {
-                      handleStep(index > step ? 1 : -1);
-                      /*  if (index > step) {
-                          handleStep(1); 
-                        } else if (index < step) {
-                          handleStep(-1);
-                        } */
-                    }}
+                    value={index - step}
+                    onClick={handleStep}
                   />
                 </li>
               ))}
@@ -145,10 +152,9 @@ function Onboarding({ steps }: OnboardingProps) {
           <Button
             size="sm"
             color="primary"
+            value={1}
             fullwidth
-            onClick={() => {
-              handleStep(1);
-            }}
+            onClick={isLastStep ? handleHide : handleStep}
           >
             {isLastStep ? "Let's Go" : 'Next'}
           </Button>
