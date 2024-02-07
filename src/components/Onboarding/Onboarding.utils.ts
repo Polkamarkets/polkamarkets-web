@@ -4,7 +4,7 @@ export const ARIA = {
 };
 export const variants = {
   enter: (direction: number) => ({
-    x: direction > 0 ? 500 : -500,
+    x: direction > 0 ? 1000 : -1000,
     opacity: 0
   }),
   center: {
@@ -15,17 +15,18 @@ export const variants = {
   exit: (direction: number) =>
     ({
       zIndex: 0,
-      x: direction < 0 ? 500 : -500,
+      x: direction < 0 ? 1000 : -1000,
       opacity: 0,
       position: 'absolute'
     } as const)
 };
-export const swipeThreshold = 5000;
+export const swipeThreshold = 10000;
 
 export function getSwipePower(offset: number, velocity: number) {
   return Math.abs(offset) * velocity;
 }
-// ref: wrap from popmotion's lib
+// ref: https://popmotion.io/#quick-start-utils-angle-wrap
+// wrap from popmotion's lib
 export function wrap(min: number, max: number, v: number): number {
   const rangeSize = max - min;
 
