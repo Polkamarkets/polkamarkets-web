@@ -160,27 +160,25 @@ function HeaderNavMenuModal() {
     <HeaderNavModal>
       {handleHide => (
         <HeaderNavMenu onMenuItemClick={handleHide}>
-          {features.fantasy.enabled &&
-            !isLoggedIn &&
-            (ui.layout.header.helpUrl || ui.layout.onboarding) && (
-              <>
-                {ui.layout.header.helpUrl && (
-                  <li className={headerNavClasses.item}>
-                    <HelpButton
-                      $outline
-                      $fullWidth
-                      onClick={handleHide}
-                      href={ui.layout.header.helpUrl}
-                    />
-                  </li>
-                )}
-                {!!ui.layout.onboarding && (
-                  <li className={headerNavClasses.item}>
-                    <HowToPlayButton $outline $fullWidth />
-                  </li>
-                )}
-              </>
-            )}
+          {features.fantasy.enabled && !isLoggedIn && (
+            <>
+              {ui.layout.header.helpUrl && (
+                <li className={headerNavClasses.item}>
+                  <HelpButton
+                    $outline
+                    $fullWidth
+                    onClick={handleHide}
+                    href={ui.layout.header.helpUrl}
+                  />
+                </li>
+              )}
+              {ui.layout.onboarding.steps && (
+                <li className={headerNavClasses.item}>
+                  <HowToPlayButton $outline $fullWidth />
+                </li>
+              )}
+            </>
+          )}
         </HeaderNavMenu>
       )}
     </HeaderNavModal>
