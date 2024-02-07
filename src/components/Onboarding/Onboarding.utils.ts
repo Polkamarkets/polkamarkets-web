@@ -1,26 +1,31 @@
-/* eslint-disable import/prefer-default-export */
-import { camelizeKeys } from 'humps';
+export const ARIA = {
+  'aria-labelledby': 'onboarding-modal-name',
+  'aria-describedby': 'onboarding-modal-description'
+};
+export const variants = {
+  enter: (direction: number) => ({
+    x: direction > 0 ? 1000 : -1000,
+    opacity: 0
+  }),
+  center: {
+    zIndex: 1,
+    x: 0,
+    opacity: 1
+  },
+  exit: (direction: number) => ({
+    zIndex: 0,
+    x: direction < 0 ? 1000 : -1000,
+    opacity: 0
+  })
+};
+export const swipeThreshold = 10000;
 
-import { Step } from './Onboarding.type';
+export function getSwipePower(offset: number, velocity: number) {
+  return Math.abs(offset) * velocity;
+}
+// ref: wrap from popmotion's lib
+export function wrap(min: number, max: number, v: number): number {
+  const rangeSize = max - min;
 
-export function buildOnboardingSteps(steps: string | undefined): Step[] {
-  if (!steps) {
-    return [];
-  }
-
-  try {
-    const parsedSteps = camelizeKeys(JSON.parse(steps));
-
-    const onboardingSteps = parsedSteps.filter(item =>
-      ['title', 'description'].every(key => item[key])
-    ) as Step[];
-
-    return onboardingSteps.map(({ title, description, imageUrl }) => ({
-      title,
-      description,
-      imageUrl: imageUrl || null
-    }));
-  } catch (error) {
-    return [];
-  }
+  return ((((v - min) % rangeSize) + rangeSize) % rangeSize) + min;
 }
