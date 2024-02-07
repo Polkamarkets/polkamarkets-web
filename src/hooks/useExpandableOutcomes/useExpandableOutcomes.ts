@@ -21,11 +21,10 @@ export default function useExpandableOutcomes({
     offseted: {
       primary: `${off.length}+ Outcomes`,
       secondary: {
-        text: `${off.map(outcome => outcome.title).join(', ')}`,
-        price: +(
-          off.reduce((prices, outcome) => outcome.price + prices, 0) /
-          off.length
-        ).toFixed(3)
+        text: off.map(outcome => outcome.title).join(', '),
+        price: +off
+          .reduce((prices, outcome) => outcome.price + prices, 0)
+          .toFixed(3)
       }
     },
     off

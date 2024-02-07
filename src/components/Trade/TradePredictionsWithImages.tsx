@@ -11,7 +11,7 @@ import { ScrollMenu, VisibilityContext } from 'react-horizontal-scrolling-menu';
 
 import cn from 'classnames';
 import { roundNumber } from 'helpers/math';
-import { Outcome } from 'models/market';
+import type { SortedOutcomes } from 'helpers/sortOutcomes';
 import { Line } from 'rc-progress';
 import { selectOutcome } from 'redux/ducks/trade';
 import { Image } from 'ui';
@@ -54,7 +54,7 @@ function RightArrow() {
 type scrollVisibilityApiType = ContextType<typeof VisibilityContext>;
 
 type TradePredictionsWithImagesProps = {
-  predictions: Outcome[];
+  predictions: SortedOutcomes;
 };
 
 function TradePredictionsWithImages({
@@ -130,7 +130,7 @@ function TradePredictionsWithImages({
       RightArrow={multiple ? RightArrow : undefined}
       onWheel={onWheel}
     >
-      {predictions.map((prediction, index) => (
+      {predictions.map(prediction => (
         <button
           type="button"
           key={prediction.id.toString()}
@@ -156,11 +156,10 @@ function TradePredictionsWithImages({
               strokeWidth={6}
               percent={prediction.price * 100}
               className={cn(styles.predictionWithImageProgress, {
-                [styles.predictionWithImageProgressDefault]: multiple,
                 [styles.predictionWithImageProgressWinning]:
-                  !multiple && index === 0,
+                  prediction.isPriceUp,
                 [styles.predictionWithImageProgressLosing]:
-                  !multiple && index === 1
+                  !prediction.isPriceUp
               })}
             />
           </div>

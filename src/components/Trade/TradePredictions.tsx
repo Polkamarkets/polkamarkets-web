@@ -67,7 +67,6 @@ function TradePredictions({
     [outcomes]
   );
 
-  const multiple = predictions.length > 2;
   const withImages = predictions.every(outcome => !!outcome.imageUrl);
 
   const listHeight = Math.min(
@@ -102,9 +101,8 @@ function TradePredictions({
             >
               <div
                 className={cn(styles.predictionProgress, {
-                  [styles.predictionProgressDefault]: multiple,
-                  [styles.predictionProgressWinning]: !multiple && index === 0,
-                  [styles.predictionProgressLosing]: !multiple && index === 1
+                  [styles.predictionProgressWinning]: outcome.isPriceUp,
+                  [styles.predictionProgressLosing]: !outcome.isPriceUp
                 })}
                 style={{
                   width: `${outcome.price * 100}%`
