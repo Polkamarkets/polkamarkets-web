@@ -42,7 +42,6 @@ export default function MarketOutcomes({
   const trade = useAppSelector(state => state.trade);
   const theme = useTheme();
   const reloadMarketPrices = useReloadMarketPrices({ id: market.id });
-
   const operation = useOperation(market);
 
   const [tradeVisible, setTradeVisible] = useState(false);
