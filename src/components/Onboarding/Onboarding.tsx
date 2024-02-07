@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react';
 
 import classNames from 'classnames';
 import { AnimatePresence, motion } from 'framer-motion';
+import type { PanInfo } from 'framer-motion';
 import { Avatar } from 'ui';
 
 import { Button } from 'components/Button';
@@ -14,7 +15,7 @@ import ModalHeaderTitle from 'components/ModalHeaderTitle';
 import ModalSection from 'components/ModalSection';
 import ModalSectionText from 'components/ModalSectionText';
 
-import { useLocalStorage } from 'hooks';
+import useLocalStorage from 'hooks/useLocalStorage';
 
 import styles from './Onboarding.module.scss';
 import type { OnboardingProps } from './Onboarding.type';
@@ -35,9 +36,6 @@ function Onboarding({ steps }: OnboardingProps) {
 
   const [[step, direction], setStep] = useState([0, 0]);
 
-  const isLastStep = steps.length - 1 === step;
-  const imageIndex = wrap(0, steps.length, step);
-
   const handleHide = useCallback(() => {
     setOnboarding(true);
     setStep([0, 0]);
@@ -50,6 +48,21 @@ function Onboarding({ steps }: OnboardingProps) {
     },
     []
   );
+  const handleDragEnd = useCallback(
+    (_, info: PanInfo) => {
+      const swipe = getSwipePower(info.offset.x, info.velocity.x);
+
+      if (swipe < -swipeThreshold) {
+        handleStep(getButtonValue('1'));
+      } else if (swipe > swipeThreshold) {
+        handleStep(getButtonValue('-1'));
+      }
+    },
+    [handleStep]
+  );
+
+  const stepIndex = wrap(0, steps.length, step);
+  const isLastStep = steps.length - 1 === step;
 
   return (
     <Modal
@@ -88,36 +101,28 @@ function Onboarding({ steps }: OnboardingProps) {
               right: 0
             }}
             dragElastic={1}
-            onDragEnd={(_, { offset, velocity }) => {
-              const swipe = getSwipePower(offset.x, velocity.x);
-
-              if (swipe < -swipeThreshold) {
-                handleStep(getButtonValue('1'));
-              } else if (swipe > swipeThreshold) {
-                handleStep(getButtonValue('-1'));
-              }
-            }}
+            onDragEnd={handleDragEnd}
           >
             <div className={styles.header}>
-              {steps[imageIndex].imageUrl && (
+              {steps[stepIndex].imageUrl && (
                 <Avatar
                   alt=""
                   $size="md"
                   $radius="lg"
-                  src={steps[imageIndex].imageUrl}
+                  src={steps[stepIndex].imageUrl}
                 />
               )}
             </div>
-            {steps[imageIndex].title && (
+            {steps[stepIndex].title && (
               <ModalHeaderTitle
                 id={ARIA['aria-labelledby']}
                 className={classNames(styles.title, 'pm-c-modal__header-title')}
               >
-                {steps[imageIndex].title}
+                {steps[stepIndex].title}
               </ModalHeaderTitle>
             )}
             <ModalSection>
-              {steps[imageIndex].description && (
+              {steps[stepIndex].description && (
                 <ModalSectionText
                   id={ARIA['aria-describedby']}
                   className={classNames(
@@ -125,7 +130,7 @@ function Onboarding({ steps }: OnboardingProps) {
                     'pm-c-modal__section-description'
                   )}
                 >
-                  {steps[imageIndex].description}
+                  {steps[stepIndex].description}
                 </ModalSectionText>
               )}
             </ModalSection>
