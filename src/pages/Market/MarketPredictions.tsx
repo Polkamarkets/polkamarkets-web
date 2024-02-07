@@ -17,6 +17,7 @@ import { useAppDispatch, useAppSelector, useTrade } from 'hooks';
 
 import styles from './Market.module.scss';
 import MarketShares from './MarketShares';
+import MarketTransactions from './MarketTransactions';
 
 function MarketPredictions() {
   const dispatch = useAppDispatch();
@@ -61,6 +62,7 @@ function MarketPredictions() {
 
   return (
     <>
+      <MarketTransactions />
       <MarketShares onSellSelected={handlePredictionSelected} />
       <div className={styles.predictions}>
         <p className={styles.predictionsTitle}>Select your prediction</p>

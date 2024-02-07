@@ -1,0 +1,61 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-16);
+
+  padding: var(--size-24);
+  margin-bottom: var(--size-24);
+  border-radius: var(--size-4);
+
+  &Pending {
+    background: rgba(93, 85, 250, 0.1);
+    border: 1px solid rgba(136, 136, 252, 0.3);
+  }
+
+  &Failed {
+    background: rgba(255, 85, 85, 0.1);
+    border: 1px solid rgba(255, 85, 85, 0.3);
+
+    .rootItemDescription {
+      color: rgb(250, 215, 215);
+    }
+  }
+
+  &Item {
+    @media (min-width: 768px) {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--size-24);
+    }
+
+    &TitleGroup {
+      display: inline-flex;
+      flex-direction: row;
+      align-items: center;
+      gap: var(--size-4);
+
+      vertical-align: bottom;
+
+      &Image {
+        margin-left: 2px;
+      }
+    }
+
+    &Description {
+      font-size: 1.5rem;
+      line-height: 1.6;
+      font-weight: 500;
+      color: var(--color-market-shares-description);
+
+      @media (max-width: 767px) {
+        margin-bottom: 16px;
+      }
+
+      strong {
+        color: var(--color-market-shares-description--bold);
+      }
+    }
+  }
+}
