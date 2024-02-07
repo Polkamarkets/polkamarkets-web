@@ -37,7 +37,9 @@ export default function Layout({ children }: React.PropsWithChildren<{}>) {
   return (
     <div className={layoutClasses.root}>
       {page?.meta && <SEO {...page.meta} />}
-      {ui.layout.onboarding.steps && <Onboarding />}
+      {ui.layout.onboarding.steps && (
+        <Onboarding steps={ui.layout.onboarding.steps} />
+      )}
       {ui.layout.disclaimer.enabled && <BetaWarning />}
       {ui.layout.alert.enabled && <BetaTesting network={network} />}
       {!ui.socialLogin.enabled && !isAllowedNetwork && (
