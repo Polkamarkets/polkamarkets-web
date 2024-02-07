@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react';
 
 import { features } from 'config';
-import type { Market, Outcome } from 'models/market';
+import type { Market } from 'models/market';
 
 import useAppSelector from 'hooks/useAppSelector';
 import useUserOperations from 'hooks/useUserOperations';
@@ -23,25 +23,22 @@ export default function useOperation(
         ({ networkId, marketId, outcomeId }) =>
           networkId === +market.networkId &&
           marketId === +market.id &&
-          market?.outcomes.some(
-            predictedOutcome => +predictedOutcome.id === outcomeId
-          )
+          market?.outcomes.some(outcome => +outcome.id === outcomeId)
       )?.[0],
     [market.id, market.networkId, market?.outcomes, userOperations.data]
   );
-  const predictedOutcome = useMemo(() => {
+
+  const predictedOutcomes = useMemo(() => {
     if (
       isLoading ||
       !portfolio?.[market.id]?.outcomes ||
       !features.fantasy.enabled
     )
-      return null;
+      return [];
 
-    return Object.entries(portfolio[market.id].outcomes as Outcomes).reduce(
-      (acc, [outcomeId, { shares }]) =>
-        shares > 1e0 ? market.outcomes?.[outcomeId] : acc,
-      null as Outcome | null
-    );
+    return Object.entries(portfolio[market.id].outcomes as Outcomes)
+      .filter(([_, { shares }]) => shares > 1e0)
+      .map(([outcomeId]) => market.outcomes?.[+outcomeId]);
   }, [isLoading, market.id, market.outcomes, portfolio]);
 
   // Criteria for the outcome status
@@ -52,20 +49,31 @@ export default function useOperation(
   const getOutcomeStatus = useCallback(
     (id: number) => {
       if (data?.status === 'pending' && data.outcomeId === id) return 'pending';
-      if (data?.status === 'pending' && data.outcomeId !== id) return undefined;
-      if (predictedOutcome && predictedOutcome.id === id) return 'success';
-      if (predictedOutcome && predictedOutcome.id !== id) return undefined;
+      // if (data?.status === 'pending' && data.outcomeId !== id) return undefined;
+      if (
+        predictedOutcomes.length > 0 &&
+        predictedOutcomes.some(outcome => outcome.id === id)
+      ) {
+        return 'success';
+      }
+      if (
+        predictedOutcomes.length > 0 &&
+        !predictedOutcomes.some(outcome => outcome.id === id)
+      ) {
+        return undefined;
+      }
       if (data?.status === 'failed' && data.outcomeId === id && !isLoading)
         return 'failed';
       if (
         data?.status === 'success' &&
         data.outcomeId === id &&
         data?.action === 'buy'
-      )
+      ) {
         return 'success';
+      }
       return undefined;
     },
-    [data, isLoading, predictedOutcome]
+    [data, isLoading, predictedOutcomes]
   );
 
   const getMultipleOutcomesStatus = useCallback(
@@ -79,10 +87,16 @@ export default function useOperation(
       ) {
         return undefined;
       }
-      if (predictedOutcome && ids.some(id => predictedOutcome.id === id)) {
+      if (
+        predictedOutcomes.length > 0 &&
+        ids.some(id => predictedOutcomes.some(outcome => outcome.id === id))
+      ) {
         return 'success';
       }
-      if (predictedOutcome && !ids.some(id => predictedOutcome.id === id)) {
+      if (
+        predictedOutcomes.length > 0 &&
+        !ids.some(id => predictedOutcomes.some(outcome => outcome.id === id))
+      ) {
         return undefined;
       }
       if (
@@ -101,20 +115,19 @@ export default function useOperation(
       }
       return undefined;
     },
-    [data, isLoading, predictedOutcome]
+    [data, isLoading, predictedOutcomes]
   );
 
   const getMarketStatus = useCallback(() => {
     if (data?.status === 'pending') return 'pending';
-    if (predictedOutcome) return 'success';
+    if (predictedOutcomes.length > 0) return 'success';
     if (data?.status === 'failed' && !isLoading) return 'failed';
     if (data?.status === 'success' && data?.action === 'buy') return 'success';
     return undefined;
-  }, [data, isLoading, predictedOutcome]);
+  }, [data, isLoading, predictedOutcomes]);
 
   return {
     data,
-    predictedOutcome,
     getOutcomeStatus,
     getMultipleOutcomesStatus,
     getMarketStatus
