@@ -1,5 +1,5 @@
-export type Step = {
-  title: string;
-  description: string;
-  imageUrl: string | null;
+import { OnboardingSteps } from 'config/ui.utils';
+
+export type OnboardingProps = {
+  steps: OnboardingSteps;
 };
