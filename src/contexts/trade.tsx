@@ -12,7 +12,7 @@ import useToastNotification from 'hooks/useToastNotification';
 
 export type TradeContextState = {
   type: TradeType;
-  status: 'pending' | 'success' | 'error' | 'completed';
+  status: 'pending' | 'success' | 'error' | 'completed' | 'retry';
   trade: {
     market: Market['id'];
     marketTitle: Market['title'];
