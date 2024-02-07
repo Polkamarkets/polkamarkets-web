@@ -52,7 +52,7 @@ export default function sortOutcomes(args: SortOutcomes) {
         ...outcome,
         price: +outcome.price.toFixed(3) * Math.sign(outcome.price),
         pricesDiff: getPricesDiff(priceChart),
-        isPriceUp: !priceChart?.changePercent || priceChart?.changePercent > 0,
+        isPriceUp: outcome.priceChange24h > 0,
         name: outcome.title,
         data: fromPriceChartToLineChartSeries(priceChart?.prices || [])
       };
