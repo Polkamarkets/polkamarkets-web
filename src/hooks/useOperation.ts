@@ -39,7 +39,7 @@ export default function useOperation(
 
     return Object.entries(portfolio[market.id].outcomes as Outcomes).reduce(
       (acc, [outcomeId, { shares }]) =>
-        shares > 1 ? market.outcomes?.[outcomeId] : acc,
+        shares > 1e0 ? market.outcomes?.[outcomeId] : acc,
       null as Outcome | null
     );
   }, [isLoading, market.id, market.outcomes, portfolio]);
