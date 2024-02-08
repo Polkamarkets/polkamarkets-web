@@ -129,6 +129,17 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
     setIsLoading(true);
     setNeedsPricesRefresh(false);
 
+    // random unique txid added to userOperations, while tx is processing
+    const fakeTxHash = `
+      0x000000000000000000000000000000000000000000000000000000000000${(
+        Math.random() *
+        0xfffff *
+        1000000
+      )
+        .toString(16)
+        .slice(0, 4)}
+      `;
+
     try {
       // adding slippage due to js floating numbers rounding
       const minShares = shares * (1 - ui.market.slippage);
@@ -154,15 +165,13 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
           // Dispatch data to Redux
           const newPolkBalance = polkBalance - amount;
           dispatch(changePolkBalance(newPolkBalance));
-
           const newActions = actions.concat({
             action: 'Buy',
             marketId: parseInt(marketId, 10),
             outcomeId: parseInt(predictionId, 10),
             shares: sharesToBuy,
             timestamp: Date.now() / 1000,
-            transactionHash:
-              '0x0000000000000000000000000000000000000000000000000000000000000000',
+            transactionHash: fakeTxHash,
             value: amount
           });
           dispatch(changeActions(newActions));
@@ -191,8 +200,7 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
             shares: sharesToBuy,
             timestamp: Date.now() / 1000,
             transactionHash: '',
-            userOperationHash:
-              '0x0000000000000000000000000000000000000000000000000000000000000000',
+            userOperationHash: fakeTxHash,
             value: amount,
             marketTitle,
             outcomeTitle: predictionTitle,
@@ -220,8 +228,7 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
       );
 
       userOperations.updateOperationStatus({
-        userOperationHash:
-          '0x0000000000000000000000000000000000000000000000000000000000000000',
+        userOperationHash: fakeTxHash,
         status: 'success'
       });
 
@@ -244,8 +251,7 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
       Sentry.captureException(error, { extra: extraData });
 
       userOperations.updateOperationStatus({
-        userOperationHash:
-          '0x0000000000000000000000000000000000000000000000000000000000000000',
+        userOperationHash: fakeTxHash,
         status: 'failed'
       });
 
@@ -274,6 +280,17 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
     });
     setIsLoading(true);
     setNeedsPricesRefresh(false);
+
+    // random unique txid added to userOperations, while tx is processing
+    const fakeTxHash = `
+      0x000000000000000000000000000000000000000000000000000000000000${(
+        Math.random() *
+        0xfffff *
+        1000000
+      )
+        .toString(16)
+        .slice(0, 4)}
+      `;
 
     try {
       // adding a slippage due to js floating numbers rounding
@@ -327,8 +344,7 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
             outcomeId: parseInt(predictionId, 10),
             shares: sharesToSell,
             timestamp: Date.now() / 1000,
-            transactionHash:
-              '0x0000000000000000000000000000000000000000000000000000000000000000',
+            transactionHash: fakeTxHash,
             value: ethAmount
           });
           dispatch(changeActions(newActions));
@@ -349,8 +365,7 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
             shares: sharesToSell,
             timestamp: Date.now() / 1000,
             transactionHash: '',
-            userOperationHash:
-              '0x0000000000000000000000000000000000000000000000000000000000000000',
+            userOperationHash: fakeTxHash,
             value: amount,
             marketTitle,
             outcomeTitle: predictionTitle,
@@ -392,8 +407,7 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
       }
 
       userOperations.updateOperationStatus({
-        userOperationHash:
-          '0x0000000000000000000000000000000000000000000000000000000000000000',
+        userOperationHash: fakeTxHash,
         status: 'success'
       });
 
@@ -416,8 +430,7 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
       Sentry.captureException(error, { extra: extraData });
 
       userOperations.updateOperationStatus({
-        userOperationHash:
-          '0x0000000000000000000000000000000000000000000000000000000000000000',
+        userOperationHash: fakeTxHash,
         status: 'failed'
       });
 
