@@ -103,7 +103,8 @@ function MarketTransactions() {
                 Falhou a{' '}
                 {failedTransaction.action === 'buy' ? 'previsão' : 'venda'} de{' '}
                 <strong>
-                  {failedTransaction.value?.toFixed(1)} {failedTransaction.ticker}{' '}
+                  {failedTransaction.value?.toFixed(1)}{' '}
+                  {failedTransaction.ticker}{' '}
                 </strong>
                 de{' '}
                 <div className={styles.rootItemTitleGroup}>
@@ -124,7 +125,8 @@ function MarketTransactions() {
                 Your have a failed{' '}
                 {failedTransaction.action === 'buy' ? 'prediction' : 'sell'} of{' '}
                 <strong>
-                  {failedTransaction.value?.toFixed(1)} {failedTransaction.ticker}{' '}
+                  {failedTransaction.value?.toFixed(1)}{' '}
+                  {failedTransaction.ticker}{' '}
                 </strong>
                 of{' '}
                 <div className={styles.rootItemTitleGroup}>
