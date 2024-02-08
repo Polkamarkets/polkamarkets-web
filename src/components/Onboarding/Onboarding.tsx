@@ -150,20 +150,25 @@ function Onboarding({ steps }: OnboardingProps) {
         <ModalFooter className={styles.footer}>
           {steps.length >= 2 && (
             <ul className={styles.steps}>
-              {steps.map((item, index) => (
-                <li key={item.title} className={styles.stepsItem}>
-                  <button
-                    type="button"
-                    aria-label={index === swipe.step ? undefined : item.title}
-                    aria-hidden={index === swipe.step ? 'true' : undefined}
-                    value={index - swipe.step}
-                    onClick={handleStep}
-                    className={classNames(styles.stepsItemButton, {
-                      [styles.stepsItemButtonActive]: index === swipe.step
-                    })}
-                  />
-                </li>
-              ))}
+              {steps.map((step, index) => {
+                const isCurrentStep = index === swipe.step;
+
+                return (
+                  <li key={step.title} className={styles.stepsItem}>
+                    {/** TODO: handle step on focus */}
+                    <button
+                      type="button"
+                      aria-label={isCurrentStep ? undefined : step.title}
+                      aria-hidden={isCurrentStep ? 'true' : undefined}
+                      value={index - swipe.step}
+                      onClick={handleStep}
+                      className={classNames(styles.stepsItemButton, {
+                        [styles.stepsItemButtonActive]: isCurrentStep
+                      })}
+                    />
+                  </li>
+                );
+              })}
             </ul>
           )}
           <Button
