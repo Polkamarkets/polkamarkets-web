@@ -110,7 +110,11 @@ function Onboarding({ steps }: OnboardingProps) {
               }
             }}
           >
-            <div className={styles.header}>
+            <div
+              className={classNames(styles.header, {
+                [styles.headerWithAvatar]: steps.some(step => step.imageUrl)
+              })}
+            >
               {steps[stepIndex].imageUrl && (
                 <Avatar
                   alt=""
