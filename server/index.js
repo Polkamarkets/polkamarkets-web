@@ -202,8 +202,17 @@ app.get('/embed/markets/:slug', async (request, response) => {
 
   const marketSlug = request.params.slug;
   const maxVisibleOutcomes = parseFloat(request.query.outcomes);
+  const outcomeDetail = isTrue(request.query.outcomeDetail);
 
-  const cacheKey = maxVisibleOutcomes ? `${marketSlug}-${maxVisibleOutcomes}` : marketSlug;
+  let cacheKey = marketSlug;
+
+  if (!Number.isNaN(maxVisibleOutcomes)) {
+    cacheKey += `-${maxVisibleOutcomes}`;
+  }
+
+  if (outcomeDetail) {
+    cacheKey += `-detail`;
+  }
 
   const cachedData = cache.get(cacheKey);
 
@@ -244,6 +253,9 @@ app.get('/embed/markets/:slug', async (request, response) => {
       const land = tournament?.land;
 
       const data = {
+        url: `${request.headers['x-forwarded-proto'] || 'http'}://${
+          request.headers.host
+        }/markets/${market.data.slug}`,
         market: {
           ...market.data,
           outcomes: {
@@ -260,7 +272,12 @@ app.get('/embed/markets/:slug', async (request, response) => {
               };
             }),
             off: off.length > 0 && {
-              title: `${off.length}+ Possibilidades`, // TODO: use useLanguage
+              title: `${
+                // TODO: use useLanguage
+                off.length === 1
+                  ? '1+ Possibilidade'
+                  : `${off.length}+ Possibilidades`
+              }`,
               subtitle: `${off.map(outcome => outcome.title).join(', ')}`,
               price: roundNumber(
                 +off.reduce((prices, outcome) => outcome.price + prices, 0),
@@ -270,7 +287,8 @@ app.get('/embed/markets/:slug', async (request, response) => {
           }
         },
         land,
-        localizeConfig
+        localizeConfig,
+        outcomeDetail
       };
 
       cache.set(cacheKey, data);
