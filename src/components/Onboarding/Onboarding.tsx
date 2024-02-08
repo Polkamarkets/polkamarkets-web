@@ -21,6 +21,7 @@ import styles from './Onboarding.module.scss';
 import type { OnboardingProps } from './Onboarding.type';
 import {
   ARIA,
+  defaultSwipe,
   getButtonValue,
   getSwipePower,
   swipeThreshold,
@@ -29,45 +30,49 @@ import {
 } from './Onboarding.utils';
 
 function Onboarding({ steps }: OnboardingProps) {
-  const [onboarding, setOnboarding] = useLocalStorage<boolean>(
-    'onboardingCompleted',
-    false
-  );
+  const [onboardingCompleted, setOnboardingCompleted] =
+    useLocalStorage<boolean>('onboardingCompleted', false);
 
-  const [[step, direction], setStep] = useState([0, 0]);
+  // TODO: Compose useMotionSwipe
+  const [swipe, setSwipe] = useState(defaultSwipe);
 
-  const stepIndex = wrap(0, steps.length, step);
+  const stepIndex = wrap(0, steps.length, swipe.step);
   const stepsLenght = steps.length - 1;
-  const isLastStep = stepsLenght === step;
+  const isLastStep = stepsLenght === swipe.step;
 
   const handleHide = useCallback(() => {
-    setOnboarding(true);
-    setStep([0, 0]);
-  }, [setOnboarding]);
+    setOnboardingCompleted(true);
+    setSwipe(defaultSwipe);
+  }, [setOnboardingCompleted]);
   const handleStep = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
-      const newDirection = +event.currentTarget.value;
+      const value = +event.currentTarget.value;
 
-      setStep(([prevStep]) => [prevStep + newDirection, newDirection]);
+      // TODO: fix flickering due to direction not waiting until new value updates
+      setSwipe(prevSwipe => ({
+        step: prevSwipe.step + value,
+        direction: value
+      }));
     },
     []
   );
   const handleDragEnd = useCallback(
     (_, info: PanInfo) => {
-      const swipe = getSwipePower(info.offset.x, info.velocity.x);
+      const swipePower = getSwipePower(info.offset.x, info.velocity.x);
 
-      if (swipe < -swipeThreshold)
-        handleStep(getButtonValue(step === stepsLenght ? '0' : '1'));
-      else if (swipe > swipeThreshold)
-        handleStep(getButtonValue(step === 0 ? '0' : '-1'));
+      if (swipePower < -swipeThreshold && swipe.step !== stepsLenght) {
+        handleStep(getButtonValue('1'));
+      } else if (swipePower > swipeThreshold && swipe.step !== 0) {
+        handleStep(getButtonValue('-1'));
+      }
     },
-    [handleStep, step, stepsLenght]
+    [handleStep, stepsLenght, swipe.step]
   );
 
   return (
     <Modal
       centered
-      show={!onboarding}
+      show={!onboardingCompleted}
       onHide={handleHide}
       className={{
         dialog: styles.dialog
@@ -77,6 +82,7 @@ function Onboarding({ steps }: OnboardingProps) {
         <ModalHeader>
           <ModalHeaderHide onClick={handleHide} />
         </ModalHeader>
+        {/** TODO: Compose MotionSwipe */}
         <AnimatePresence>
           <motion.div
             initial="enter"
@@ -84,8 +90,8 @@ function Onboarding({ steps }: OnboardingProps) {
             exit="exit"
             drag="x"
             dragElastic={1}
-            key={step}
-            custom={direction}
+            key={swipe.step}
+            custom={swipe.direction}
             variants={variants}
             className={styles.container}
             onDragEnd={handleDragEnd}
@@ -146,9 +152,9 @@ function Onboarding({ steps }: OnboardingProps) {
                     type="button"
                     aria-label={`Go to step ${index + 1}`}
                     className={classNames(styles.stepsItemButton, {
-                      [styles.stepsItemButtonActive]: index === step
+                      [styles.stepsItemButtonActive]: index === swipe.step
                     })}
-                    value={index - step}
+                    value={index - swipe.step}
                     onClick={handleStep}
                   />
                 </li>

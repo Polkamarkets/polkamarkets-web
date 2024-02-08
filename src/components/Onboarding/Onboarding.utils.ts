@@ -21,6 +21,10 @@ export const variants = {
     } as const)
 };
 export const swipeThreshold = 10000;
+export const defaultSwipe = {
+  step: 0,
+  direction: 0
+};
 
 export function getSwipePower(offset: number, velocity: number) {
   return Math.abs(offset) * velocity;
