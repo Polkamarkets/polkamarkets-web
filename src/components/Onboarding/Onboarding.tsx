@@ -154,12 +154,13 @@ function Onboarding({ steps }: OnboardingProps) {
                 <li key={item.title} className={styles.stepsItem}>
                   <button
                     type="button"
-                    aria-label={`Go to step ${index + 1}`}
+                    aria-label={index === swipe.step ? undefined : item.title}
+                    aria-hidden={index === swipe.step ? 'true' : undefined}
+                    value={index - swipe.step}
+                    onClick={handleStep}
                     className={classNames(styles.stepsItemButton, {
                       [styles.stepsItemButtonActive]: index === swipe.step
                     })}
-                    value={index - swipe.step}
-                    onClick={handleStep}
                   />
                 </li>
               ))}
