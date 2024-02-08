@@ -5,58 +5,35 @@ import { Image, useTheme } from 'ui';
 
 import { Button } from 'components';
 
-import { useAppSelector, useTrade, useUserOperations } from 'hooks';
+import { useAppSelector, useOperation, useTrade } from 'hooks';
 
 import styles from './MarketTransactions.module.scss';
 
 function MarketTransactions() {
   const theme = useTheme();
-  const userOperations = useUserOperations();
   const trade = useTrade();
+  const market = useAppSelector(state => state.market.market);
 
-  const marketId = useAppSelector(state => state.market.market.id).toString();
-  const outcomesIds = useAppSelector(state => state.market.market.outcomes).map(
-    outcome => outcome.id.toString()
-  );
+  const operation = useOperation(market);
+  const operationStatus = operation.getMarketStatus();
 
-  const pendingTransaction = userOperations?.data
-    ?.filter(operation => operation.status === 'pending')
-    .find(
-      operation =>
-        operation.marketId &&
-        operation.outcomeId &&
-        operation.marketId.toString() === marketId &&
-        outcomesIds.includes(operation.outcomeId.toString())
-    );
-
-  const failedTransaction = userOperations?.data
-    ?.filter(operation => operation.status === 'failed')
-    .find(
-      operation =>
-        operation.marketId &&
-        operation.outcomeId &&
-        operation.marketId.toString() === marketId &&
-        outcomesIds.includes(operation.outcomeId.toString())
-    );
+  const pendingTransaction =
+    operationStatus === 'pending' ? operation.data : null;
+  const failedTransaction =
+    operationStatus === 'failed' ? operation.data : null;
 
   const handleTryAgain = useCallback(() => {
     trade?.set({
       status: 'retry',
       trade: {
         ...trade.trade,
-        market: `${marketId}`,
+        market: `${market.id}`,
         outcome: `${failedTransaction?.outcomeId}`,
         network: `${failedTransaction?.networkId}`,
         location: `/markets/${failedTransaction?.marketSlug}`
       }
     });
-  }, [
-    failedTransaction?.marketSlug,
-    failedTransaction?.networkId,
-    failedTransaction?.outcomeId,
-    marketId,
-    trade
-  ]);
+  }, [failedTransaction, market.id, trade]);
 
   if (pendingTransaction)
     return (

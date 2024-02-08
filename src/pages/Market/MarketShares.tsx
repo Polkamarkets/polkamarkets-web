@@ -8,7 +8,13 @@ import { Image, useTheme } from 'ui';
 
 import { Button } from 'components';
 
-import { useAppDispatch, useAppSelector, useLanguage, useNetwork } from 'hooks';
+import {
+  useAppDispatch,
+  useAppSelector,
+  useLanguage,
+  useNetwork,
+  useOperation
+} from 'hooks';
 
 import { calculateEthAmountSold } from '../../components/TradeForm/utils';
 import styles from './MarketShares.module.scss';
@@ -32,6 +38,9 @@ function MarketShares({ onSellSelected }: MarketSharesProps) {
   const theme = useTheme();
 
   const language = useLanguage();
+
+  const operation = useOperation(market);
+  const operationStatus = operation.getMarketStatus();
 
   const handleSell = useCallback(
     (outcomeId: string) => {
@@ -80,6 +89,8 @@ function MarketShares({ onSellSelected }: MarketSharesProps) {
   const isWrongNetwork = network.id !== networkId.toString();
 
   if (isWrongNetwork || isEmpty(outcomesWithShares)) return null;
+
+  if (operationStatus === 'pending') return null;
 
   return (
     <ul className={styles.root}>
