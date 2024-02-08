@@ -300,7 +300,6 @@ const polkamarketsApi = createApi({
           return !userOperations.some((op, _i) => {
             return (
               op.marketId === operation.marketId &&
-              op.outcomeId === operation.outcomeId &&
               op.timestamp > operation.timestamp - 300 && // giving a 5 minute buffer
               op.status === 'success' &&
               op.action === operation.action
