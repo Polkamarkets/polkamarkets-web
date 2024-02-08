@@ -23,6 +23,8 @@ function MarketTransactions() {
     ?.filter(operation => operation.status === 'pending')
     .find(
       operation =>
+        operation.marketId &&
+        operation.outcomeId &&
         operation.marketId.toString() === marketId &&
         outcomesIds.includes(operation.outcomeId.toString())
     );
@@ -31,13 +33,15 @@ function MarketTransactions() {
     ?.filter(operation => operation.status === 'failed')
     .find(
       operation =>
+        operation.marketId &&
+        operation.outcomeId &&
         operation.marketId.toString() === marketId &&
         outcomesIds.includes(operation.outcomeId.toString())
     );
 
   const handleTryAgain = useCallback(() => {
     trade?.set({
-      status: 'retrying',
+      status: 'retry',
       trade: {
         ...trade.trade,
         market: `${marketId}`,
@@ -62,7 +66,7 @@ function MarketTransactions() {
             <>
               You have a pending prediction of{' '}
               <strong>
-                {pendingTransaction.value.toFixed(1)}{' '}
+                {pendingTransaction.value?.toFixed(1)}{' '}
                 {pendingTransaction.ticker}{' '}
               </strong>
               of{' '}
@@ -71,7 +75,7 @@ function MarketTransactions() {
                   <Image
                     className={styles.rootItemTitleGroupImage}
                     $radius="xs"
-                    alt={pendingTransaction.outcomeTitle}
+                    alt={pendingTransaction.outcomeTitle || ''}
                     $size="x2s"
                     src={pendingTransaction.imageUrl}
                   />
@@ -92,7 +96,7 @@ function MarketTransactions() {
             <>
               Your have a failed prediction of{' '}
               <strong>
-                {failedTransaction.value.toFixed(1)} {failedTransaction.ticker}{' '}
+                {failedTransaction.value?.toFixed(1)} {failedTransaction.ticker}{' '}
               </strong>
               of{' '}
               <div className={styles.rootItemTitleGroup}>
@@ -100,7 +104,7 @@ function MarketTransactions() {
                   <Image
                     className={styles.rootItemTitleGroupImage}
                     $radius="xs"
-                    alt={failedTransaction.outcomeTitle}
+                    alt={failedTransaction.outcomeTitle || ''}
                     $size="x2s"
                     src={failedTransaction.imageUrl}
                   />
