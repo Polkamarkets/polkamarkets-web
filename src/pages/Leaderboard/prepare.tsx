@@ -115,6 +115,7 @@ function walletColumnRender({
         to={`/user/${slug || username || address}`}
         className="pm-c-leaderboard-table__wallet"
       >
+        {`#${place}`}
         {walletPlace.icon}
         {(() => {
           if (userImageUrl)
@@ -236,16 +237,36 @@ function liquidityColumnRender({
 }
 
 type EarningsColumnRenderArgs = {
-  earnings: number;
+  earnings: {
+    open: number;
+    traded: number;
+  };
   ticker: string;
 };
 
 function earningsColumnRender({ earnings, ticker }: EarningsColumnRenderArgs) {
   return (
-    <span className="pm-c-leaderboard-table__liquidity caption semibold text-1 notranslate">
-      {`${earnings?.toFixed(1)} `}
-      <strong className="caption semibold text-3">{ticker}</strong>
-    </span>
+    <Tooltip
+      text={
+        <div>
+          <p className="pm-c-tooltip__text">
+            {`${earnings.open.toFixed(1)} ${ticker} open`}
+          </p>
+          <p className="pm-c-tooltip__text">
+            {`${earnings.traded.toFixed(1)} ${ticker} traded`}
+          </p>
+        </div>
+      }
+    >
+      <span className="pm-c-leaderboard-table__liquidity caption semibold text-1 notranslate">
+        {`${
+          earnings && earnings.open && earnings.traded
+            ? (earnings.open + earnings.traded).toFixed(1)
+            : 0
+        } `}
+        <strong className="caption semibold text-3">{ticker}</strong>
+      </span>
+    </Tooltip>
   );
 }
 
@@ -342,7 +363,11 @@ function prepareLeaderboardTableRows({
           ticker: fantasyTokenTicker || '€'
         },
         earnings: {
-          earnings: row.earningsEur,
+          // Temporary
+          earnings: {
+            open: row.earningsEur / 2,
+            traded: row.earningsEur / 2
+          },
           ticker: fantasyTokenTicker || '€'
         },
         transactions: row.transactions,

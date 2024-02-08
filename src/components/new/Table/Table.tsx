@@ -22,6 +22,7 @@ export type TableColumn = {
   title: string;
   key: string;
   render?: (_value: any) => ReactNode;
+  titleRender?: () => ReactNode;
   align: TableColumnAlign;
   width?: CSSProperties['width'];
 };
@@ -200,7 +201,7 @@ function Table({
                 className={`bg-3 padding-y-4 padding-x-5 tiny bold text-3 align-middle whitespace-nowrap text-${column.align}`}
                 style={{ width: column.width }}
               >
-                {column.title}
+                {column.titleRender ? column.titleRender() : column.title}
               </th>
             ))}
           </tr>

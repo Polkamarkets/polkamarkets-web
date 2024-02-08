@@ -1,8 +1,9 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import { ui } from 'config';
 import some from 'lodash/some';
 
+import { InfoTooltip } from 'components';
 import { TableMiniColumn } from 'components/new/TableMini';
 
 import { useFantasyTokenTicker } from 'hooks';
@@ -13,47 +14,6 @@ import {
   PrepareLeaderboardTableRowsArgs,
   prepareLeaderboardYourStatsRow
 } from './prepare';
-
-const columns: TableMiniColumn[] = [
-  {
-    key: 'rank',
-    title: 'Rank'
-  },
-  {
-    key: 'volumeEur',
-    title: 'Volume'
-  },
-  {
-    key: 'marketsCreated',
-    title: 'Markets Created'
-  },
-  {
-    key: 'wonPredictions',
-    title: 'Won Predictions'
-  },
-  {
-    key: 'transactions',
-    title: 'Transactions'
-  },
-  {
-    key: 'balance',
-    title: 'Balance'
-  },
-  {
-    key: 'netVolume',
-    title: 'Net Volume'
-  },
-  {
-    key: 'netLiquidity',
-    title: 'Net Liquidity'
-  },
-  {
-    key: 'earnings',
-    title: 'Earnings'
-  }
-].filter(column =>
-  ['rank', ...ui.leaderboard.columns].includes(column.key)
-) as TableMiniColumn[];
 
 type LeaderboardYourStatsProps = {
   loggedInUser?: string;
@@ -69,6 +29,66 @@ function LeaderboardYourStats({
   isLoading
 }: LeaderboardYourStatsProps) {
   const fantasyTokenTicker = useFantasyTokenTicker();
+
+  const earningsColumnRender = useCallback(
+    () => (
+      <span className="tiny-uppercase bold text-3">
+        Earnings
+        <InfoTooltip
+          text={`Cumulative ${
+            fantasyTokenTicker || ticker
+          } gains from your open and traded predictions`}
+        />
+      </span>
+    ),
+    [fantasyTokenTicker, ticker]
+  );
+
+  const columns: TableMiniColumn[] = useMemo(
+    () =>
+      [
+        {
+          key: 'rank',
+          title: 'Rank'
+        },
+        {
+          key: 'volumeEur',
+          title: 'Volume'
+        },
+        {
+          key: 'marketsCreated',
+          title: 'Markets Created'
+        },
+        {
+          key: 'wonPredictions',
+          title: 'Won Predictions'
+        },
+        {
+          key: 'transactions',
+          title: 'Transactions'
+        },
+        {
+          key: 'balance',
+          title: 'Balance'
+        },
+        {
+          key: 'netVolume',
+          title: 'Net Volume'
+        },
+        {
+          key: 'netLiquidity',
+          title: 'Net Liquidity'
+        },
+        {
+          key: 'earnings',
+          title: 'Earnings',
+          render: earningsColumnRender
+        }
+      ].filter(column =>
+        ['rank', ...ui.leaderboard.columns].includes(column.key)
+      ) as TableMiniColumn[],
+    [earningsColumnRender]
+  );
 
   const preparedRows = useMemo(
     () =>

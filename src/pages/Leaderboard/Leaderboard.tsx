@@ -13,11 +13,17 @@ import {
 } from 'services/Polkamarkets';
 import { Container, Image, useTheme } from 'ui';
 
-import { CreateLeaderboardGroup, Link, SEO, Tabs } from 'components';
+import {
+  CreateLeaderboardGroup,
+  InfoTooltip,
+  Link,
+  SEO,
+  Tabs
+} from 'components';
 import { ButtonLoading } from 'components/Button';
 import { Dropdown } from 'components/new';
 
-import { useAppSelector, useNetwork } from 'hooks';
+import { useAppSelector, useFantasyTokenTicker, useNetwork } from 'hooks';
 
 import {
   buildLeaderboardData,
@@ -33,7 +39,7 @@ import {
   balanceColumnRender,
   liquidityColumnRender,
   earningsColumnRender,
-  rankColumnRender,
+  // rankColumnRender,
   volumeColumnRender,
   walletColumnRender
 } from './prepare';
@@ -85,78 +91,6 @@ const tabs = [
   }
 ].filter(tab => ui.leaderboard.columns.includes(tab.id));
 
-const columns: LeaderboardTableColumn[] = [
-  {
-    title: 'User',
-    key: 'wallet',
-    align: 'left',
-    width: 200,
-    render: walletColumnRender
-  },
-  {
-    title: 'Volume',
-    key: 'volumeEur',
-    align: 'right',
-    width: 140,
-    render: volumeColumnRender
-  },
-  {
-    title: 'Markets Created',
-    key: 'marketsCreated',
-    align: 'right',
-    width: 140
-  },
-  {
-    title: 'Won Predictions',
-    key: 'wonPredictions',
-    align: 'right',
-    width: 140
-  },
-  {
-    title: 'Transactions',
-    key: 'transactions',
-    align: 'right',
-    width: 140
-  },
-  {
-    title: 'Balance',
-    key: 'balance',
-    align: 'right',
-    width: 140,
-    render: balanceColumnRender
-  },
-  {
-    title: 'Net Volume',
-    key: 'netVolume',
-    align: 'right',
-    width: 140,
-    render: volumeColumnRender
-  },
-  {
-    title: 'Net Liquidity',
-    key: 'netLiquidity',
-    align: 'right',
-    width: 140,
-    render: liquidityColumnRender
-  },
-  {
-    title: 'Earnings',
-    key: 'earnings',
-    align: 'right',
-    width: 140,
-    render: earningsColumnRender
-  },
-  {
-    title: 'Rank',
-    key: 'rank',
-    align: 'right',
-    width: 100,
-    render: rankColumnRender
-  }
-].filter(column =>
-  ['wallet', 'rank', ...ui.leaderboard.columns].includes(column.key)
-) as LeaderboardTableColumn[];
-
 type LeaderboardURLParams = {
   slug?: string;
 };
@@ -172,6 +106,7 @@ function Leaderboard() {
 
   // Custom hooks
   const theme = useTheme();
+  const fantasyTokenTicker = useFantasyTokenTicker();
   const { network } = useNetwork();
   const { currency } = network;
 
@@ -186,6 +121,99 @@ function Leaderboard() {
     ui.leaderboard.default_column || tabs[0].id
   );
   const [timeframe, setTimeframe] = useState<Timeframe>('at');
+
+  // Currency
+  const ticker = currency.symbol || currency.ticker;
+
+  const columns: LeaderboardTableColumn[] = useMemo(
+    () =>
+      [
+        {
+          title: 'User',
+          key: 'wallet',
+          align: 'left',
+          width: 200,
+          render: walletColumnRender
+        },
+        {
+          title: 'Volume',
+          key: 'volumeEur',
+          align: 'right',
+          width: 140,
+          render: volumeColumnRender
+        },
+        {
+          title: 'Markets Created',
+          key: 'marketsCreated',
+          align: 'right',
+          width: 140
+        },
+        {
+          title: 'Won Predictions',
+          key: 'wonPredictions',
+          align: 'right',
+          width: 140
+        },
+        {
+          title: 'Transactions',
+          key: 'transactions',
+          align: 'right',
+          width: 140
+        },
+        {
+          title: 'Balance',
+          key: 'balance',
+          align: 'right',
+          width: 140,
+          render: balanceColumnRender
+        },
+        {
+          title: 'Net Volume',
+          key: 'netVolume',
+          align: 'right',
+          width: 140,
+          render: volumeColumnRender
+        },
+        {
+          title: 'Net Liquidity',
+          key: 'netLiquidity',
+          align: 'right',
+          width: 140,
+          render: liquidityColumnRender
+        },
+        {
+          title: 'Earnings',
+          key: 'earnings',
+          align: 'right',
+          width: 140,
+          render: earningsColumnRender,
+          titleRender: () => (
+            <>
+              Earnings
+              <InfoTooltip
+                text={`Cumulative ${
+                  fantasyTokenTicker || ticker
+                } gains from your open and traded predictions`}
+              />
+            </>
+          )
+        }
+        // {
+        //   title: 'Rank',
+        //   key: 'rank',
+        //   align: 'right',
+        //   width: 100,
+        //   render: rankColumnRender
+        // }
+      ].filter(column =>
+        [
+          'wallet',
+          // 'rank',
+          ...ui.leaderboard.columns
+        ].includes(column.key)
+      ) as LeaderboardTableColumn[],
+    [fantasyTokenTicker, ticker]
+  );
 
   const leaderboardType = {
     default: !!matchPath(location.pathname, {
@@ -346,9 +374,6 @@ function Leaderboard() {
   if (features.fantasy.enabled) {
     data = data.filter(row => row.username);
   }
-
-  // Currency
-  const ticker = currency.symbol || currency.ticker;
 
   // Users
   const usersInLeaderboard = useMemo(() => data.map(row => row.user), [data]);

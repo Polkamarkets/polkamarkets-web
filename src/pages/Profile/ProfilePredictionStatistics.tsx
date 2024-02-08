@@ -49,7 +49,7 @@ function ProfilePredictionStatistics({
           <>
             Earnings
             <InfoTooltip
-              text={`Total ${ticker} earned in active and finished questions.`}
+              text={`Cumulative ${ticker} gains from your open and traded predictions`}
             />
           </>
         )
