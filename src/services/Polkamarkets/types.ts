@@ -85,6 +85,8 @@ export type GetLeaderboardBaseData = {
   liquidityEur: number;
   tvlLiquidityEur: number;
   earningsEur: number;
+  earningsOpenEur: number;
+  earningsClosedEur: number;
   claimWinningsCount: number;
   transactions: number;
   erc20Balance: number;

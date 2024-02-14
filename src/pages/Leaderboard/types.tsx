@@ -33,7 +33,8 @@ export type LeaderboardTableRow = {
   earnings?: {
     earnings: {
       open: number;
-      traded: number;
+      closed: number;
+      total: number;
     };
     ticker: string;
   };

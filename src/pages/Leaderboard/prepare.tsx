@@ -239,7 +239,8 @@ function liquidityColumnRender({
 type EarningsColumnRenderArgs = {
   earnings: {
     open: number;
-    traded: number;
+    closed: number;
+    total: number;
   };
   ticker: string;
 };
@@ -253,15 +254,15 @@ function earningsColumnRender({ earnings, ticker }: EarningsColumnRenderArgs) {
             {`${earnings.open.toFixed(1)} ${ticker} open`}
           </p>
           <p className="pm-c-tooltip__text">
-            {`${earnings.traded.toFixed(1)} ${ticker} traded`}
+            {`${earnings.closed.toFixed(1)} ${ticker} traded`}
           </p>
         </div>
       }
     >
       <span className="pm-c-leaderboard-table__liquidity caption semibold text-1 notranslate">
         {`${
-          earnings && earnings.open && earnings.traded
-            ? (earnings.open + earnings.traded).toFixed(1)
+          earnings && earnings.open && earnings.closed
+            ? (earnings.open + earnings.closed).toFixed(1)
             : 0
         } `}
         <strong className="caption semibold text-3">{ticker}</strong>
@@ -365,8 +366,9 @@ function prepareLeaderboardTableRows({
         earnings: {
           // Temporary
           earnings: {
-            open: row.earningsEur / 2,
-            traded: row.earningsEur / 2
+            open: row.earningsOpenEur || row.earningsEur,
+            closed: row.earningsClosedEur || 0,
+            total: row.earningsEur
           },
           ticker: fantasyTokenTicker || '€'
         },
