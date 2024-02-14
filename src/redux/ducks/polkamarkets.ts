@@ -368,13 +368,13 @@ function fetchAditionalData(polkamarketsService: PolkamarketsService) {
           if (features.fantasy.enabled) {
             // claiming winnings if any pending
             polkamarketsService
-              .checkPortfolioAndClaimWinnings()
+              .checkPortfolioAndClaimWinnings(portfolio)
               .then(hasClaimed => {
                 if (hasClaimed) {
                   polkamarketsService
                     .getPortfolio()
-                    .then(_portfolio => {
-                      dispatch(changePortfolio(_portfolio));
+                    .then(newPortfolio => {
+                      dispatch(changePortfolio(newPortfolio));
                     })
                     .catch(() => {});
 

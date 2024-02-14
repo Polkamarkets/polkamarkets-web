@@ -397,11 +397,10 @@ export default class PolkamarketsService {
     return response;
   }
 
-  public async checkPortfolioAndClaimWinnings() {
+  public async checkPortfolioAndClaimWinnings(portfolio: any) {
     // ensuring user has wallet connected
     await this.login();
 
-    const portfolio = await this.getPortfolio();
     let hasClaimed = false;
 
     // eslint-disable-next-line no-restricted-syntax
