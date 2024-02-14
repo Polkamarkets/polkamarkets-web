@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 
 import cn from 'classnames';
-import { ui } from 'config';
+import { environment, ui } from 'config';
 import shortenAddress from 'helpers/shortenAddress';
 import isEmpty from 'lodash/isEmpty';
 import isUndefined from 'lodash/isUndefined';
@@ -246,15 +246,21 @@ type EarningsColumnRenderArgs = {
 };
 
 function earningsColumnRender({ earnings, ticker }: EarningsColumnRenderArgs) {
+  const language = environment.DEFAULT_LANGUAGE || 'en';
+
   return (
     <Tooltip
       text={
-        <div>
+        <div className="notranslate">
           <p className="pm-c-tooltip__text">
-            {`${earnings.open.toFixed(1)} ${ticker} open`}
+            {`${earnings.open.toFixed(1)} ${ticker} ${
+              language === 'pt' ? 'Ativos' : 'Open'
+            }`}
           </p>
           <p className="pm-c-tooltip__text">
-            {`${earnings.closed.toFixed(1)} ${ticker} traded`}
+            {`${earnings.closed.toFixed(1)} ${ticker} ${
+              language === 'pt' ? 'Realizados' : 'Traded'
+            }`}
           </p>
         </div>
       }

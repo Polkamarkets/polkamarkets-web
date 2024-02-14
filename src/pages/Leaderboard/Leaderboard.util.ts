@@ -38,6 +38,8 @@ const emptyLeaderboardRowWithoutUser: Omit<
   tvlLiquidityEur: 0,
   claimWinningsCount: 0,
   earningsEur: 0,
+  earningsOpenEur: 0,
+  earningsClosedEur: 0,
   transactions: 0,
   erc20Balance: 0,
   achievements: []
