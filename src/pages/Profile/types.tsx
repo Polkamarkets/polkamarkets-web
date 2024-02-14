@@ -27,7 +27,11 @@ export type PredictionStatistics = {
   marketsCreated: number;
   wonPredictions: number;
   liquidityAdded: number;
-  earnings: number;
+  earnings: {
+    open: number;
+    closed: number;
+    total: number;
+  };
 };
 
 export type ProfileAchievementsProps = {

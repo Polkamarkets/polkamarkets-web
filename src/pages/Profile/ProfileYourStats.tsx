@@ -66,7 +66,11 @@ function ProfileYourStats({
                   marketsCreated: data.marketsCreated,
                   wonPredictions: data.claimWinningsCount,
                   liquidityAdded: data.liquidityEur,
-                  earnings: data.earningsEur
+                  earnings: {
+                    open: data.earningsOpenEur,
+                    closed: data.earningsClosedEur,
+                    total: data.earningsEur
+                  }
                 }}
                 ticker={ticker}
                 isLoading={false}

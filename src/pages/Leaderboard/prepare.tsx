@@ -364,7 +364,6 @@ function prepareLeaderboardTableRows({
           ticker: fantasyTokenTicker || '€'
         },
         earnings: {
-          // Temporary
           earnings: {
             open: row.earningsOpenEur || row.earningsEur,
             closed: row.earningsClosedEur || 0,
