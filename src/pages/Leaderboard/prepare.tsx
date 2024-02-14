@@ -267,7 +267,7 @@ function earningsColumnRender({ earnings, ticker }: EarningsColumnRenderArgs) {
     >
       <span className="pm-c-leaderboard-table__liquidity caption semibold text-1 notranslate">
         {`${
-          earnings && earnings.open && earnings.closed
+          earnings && earnings.open >= 0 && earnings.closed >= 0
             ? (earnings.open + earnings.closed).toFixed(1)
             : 0
         } `}
