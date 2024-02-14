@@ -266,11 +266,7 @@ function earningsColumnRender({ earnings, ticker }: EarningsColumnRenderArgs) {
       }
     >
       <span className="pm-c-leaderboard-table__liquidity caption semibold text-1 notranslate">
-        {`${
-          earnings && earnings.open >= 0 && earnings.closed >= 0
-            ? (earnings.open + earnings.closed).toFixed(1)
-            : 0
-        } `}
+        {`${earnings && earnings.total ? earnings.total.toFixed(1) : 0} `}
         <strong className="caption semibold text-3">{ticker}</strong>
       </span>
     </Tooltip>
