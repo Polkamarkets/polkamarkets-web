@@ -39,8 +39,8 @@ const columns: TournamentTopUsersColumn[] = [
 ];
 
 const tabs = {
-  ranking: 'Ranking',
-  rewards: 'Rewards'
+  rewards: 'Rewards',
+  ranking: 'Ranking'
 } as const;
 
 type Tabs = (typeof tabs)[keyof typeof tabs];
