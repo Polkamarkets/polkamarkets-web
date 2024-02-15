@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 import classNames from 'classnames';
@@ -62,19 +62,6 @@ function TournamentTopUsers({
 
   const [currentTab, setCurrentTab] = useState<Tabs>(tabs.ranking);
 
-  const state = useMemo(() => {
-    if (isLoading) return 'loading';
-    if (
-      isEmpty(rankingRows) ||
-      every(
-        Object.values(rankingRows).map(v => v.value),
-        isNull
-      )
-    )
-      return 'error';
-    return 'success';
-  }, [isLoading, rankingRows]);
-
   const handleCurrentTab = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
       setCurrentTab(event.currentTarget.value as Tabs);
@@ -105,40 +92,58 @@ function TournamentTopUsers({
             </button>
           ))}
         </div>
-        {
-          {
-            loading: (
+        {(() => {
+          if (isLoading)
+            return (
               <div className="flex-row justify-center align-center width-full padding-y-5 padding-x-4">
                 <span className="spinner--primary" />
               </div>
-            ),
-            error: (
+            );
+
+          return {
+            [tabs.ranking]:
+              isEmpty(rankingRows) ||
+              every(
+                Object.values(rankingRows).map(v => v.value),
+                isNull
+              ) ? (
+                <AlertMini
+                  style={{ border: 'none', margin: 2.5 }}
+                  styles="outline"
+                  variant="information"
+                  description="No data to show."
+                />
+              ) : (
+                <TableMini columns={columns} row={rankingRows} />
+              ),
+            [tabs.rewards]: !rewardsRows.length ? (
               <AlertMini
-                style={{ border: 'none' }}
+                style={{ border: 'none', margin: 2.5 }}
                 styles="outline"
                 variant="information"
-                description="No data to show."
+                description="No rewards to show."
               />
-            ),
-            success: {
-              [tabs.ranking]: <TableMini columns={columns} row={rankingRows} />,
-              [tabs.rewards]: (
-                <ul className={styles.list}>
-                  {rewardsRows.map(reward => (
-                    <li key={reward.title} className={styles.listItem}>
-                      <Text as="span" scale="caption" fontWeight="medium">
-                        {reward.title} -{' '}
-                      </Text>
-                      <Text as="span" scale="caption" color="lighter-gray">
-                        {reward.description}
-                      </Text>
-                    </li>
-                  ))}
-                </ul>
-              )
-            }[currentTab]
-          }[state]
-        }
+            ) : (
+              <ul className={styles.list}>
+                {rewardsRows.map(reward => (
+                  <li key={reward.title} className={styles.listItem}>
+                    <Text
+                      as="span"
+                      scale="caption"
+                      fontWeight="medium"
+                      color="lighter-gray-50"
+                    >
+                      {reward.title} -{' '}
+                    </Text>
+                    <Text as="span" scale="caption" color="lighter-gray">
+                      {reward.description}
+                    </Text>
+                  </li>
+                ))}
+              </ul>
+            )
+          }[currentTab];
+        })()}
       </div>
       <Divider />
       {

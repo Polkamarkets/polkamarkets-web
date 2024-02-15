@@ -110,7 +110,10 @@ export default function Tournament() {
           tournamentImageUrl={data?.imageUrl}
           topUsers={
             <TournamentTopUsers
-              isLoading={isLoadingLeaderboardByTimeframeQuery}
+              isLoading={
+                isLoadingTournamentBySlugQuery ||
+                isLoadingLeaderboardByTimeframeQuery
+              }
               rankingRows={prepareTournamentTopUsersRow({
                 rows: leaderboardByTimeframe?.filter(row => row.username)
               })}

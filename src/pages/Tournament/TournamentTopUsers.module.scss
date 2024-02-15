@@ -29,6 +29,8 @@
   border: 1px solid #252c3b;
 
   &Item {
+    --channel-alpha: 0.8;
+
     height: 32px;
     padding-left: 16px;
     padding-right: 16px;
@@ -39,15 +41,22 @@
     font-size: 12px;
     font-weight: 600;
     border-radius: 4px;
+    color: rgb(255 255 255 / var(--channel-alpha));
+
+    &:hover {
+      --channel-alpha: 1;
+    }
 
     &[aria-selected='true'] {
       background-color: #fff;
-      color: rgb(0 0 0 / 0.8);
+      color: rgb(0 0 0 / var(--channel-alpha));
     }
   }
 }
 
 .action {
+  --channel-alpha: 0.8;
+
   display: block;
   height: 40px;
   padding: 12px;
@@ -57,9 +66,14 @@
   font-weight: 500;
   border: 0;
   width: 100%;
+  color: rgb(255 255 255 / var(--channel-alpha));
+
+  &:hover {
+    --channel-alpha: 1;
+  }
 
   &Icon {
-    opacity: 0.6;
+    opacity: 0.8;
     margin-left: 16px;
   }
 }

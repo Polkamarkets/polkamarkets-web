@@ -34,7 +34,7 @@ export default function TournamentTopUsersRewards({
         className={tournamentTopUsersClasses.action}
         onClick={handleShow}
       >
-        View Ranking
+        View Rewards
         <Icon
           name="Arrow"
           size="md"
