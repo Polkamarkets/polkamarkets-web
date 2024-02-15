@@ -67,6 +67,7 @@
   border: 0;
   width: 100%;
   color: rgb(255 255 255 / var(--channel-alpha));
+  cursor: pointer;
 
   &:hover {
     --channel-alpha: 1;

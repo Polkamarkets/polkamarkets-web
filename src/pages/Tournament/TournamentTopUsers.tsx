@@ -43,7 +43,7 @@ const tabs = {
   rewards: 'Rewards'
 } as const;
 
-type Tabs = typeof tabs[keyof typeof tabs];
+type Tabs = (typeof tabs)[keyof typeof tabs];
 
 type TournamentTopUsersProps = {
   isLoading: boolean;
@@ -60,7 +60,7 @@ function TournamentTopUsers({
 }: TournamentTopUsersProps) {
   const location = useLocation();
 
-  const [currentTab, setCurrentTab] = useState<Tabs>(tabs.ranking);
+  const [currentTab, setCurrentTab] = useState<Tabs>(tabs.rewards);
 
   const handleCurrentTab = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -135,7 +135,7 @@ function TournamentTopUsers({
                     >
                       {reward.title} -{' '}
                     </Text>
-                    <Text as="span" scale="caption" color="lighter-gray">
+                    <Text as="span" scale="caption" color="light-gray">
                       {reward.description}
                     </Text>
                   </li>
