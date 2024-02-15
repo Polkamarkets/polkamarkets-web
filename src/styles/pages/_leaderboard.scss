@@ -88,7 +88,7 @@
 
 .pm-c-leaderboard-stats {
   @include flex-column($gap: 5);
-  padding: map-get($spacers, 5);
+  padding: map-get($spacers, 6);
   min-width: 29rem;
 }
 

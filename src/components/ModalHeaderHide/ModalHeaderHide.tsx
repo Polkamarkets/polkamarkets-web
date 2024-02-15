@@ -1,14 +1,33 @@
+import classNames from 'classnames';
+
 import { RemoveOutlinedIcon } from 'assets/icons';
 
 import { Button } from 'components/Button';
+import type { ButtonProps } from 'components/Button';
 
-import ModalClasses from './ModalHeaderHide.module.scss';
+import modalHeaderClasses from './ModalHeaderHide.module.scss';
 
-export default function ModalHeaderHide(props) {
+interface ModalHeaderHideProps
+  extends Omit<ButtonProps, 'aria-label' | 'variant'> {
+  $disableInset?: boolean;
+}
+
+export default function ModalHeaderHide({
+  className,
+  $disableInset,
+  ...props
+}: ModalHeaderHideProps) {
   return (
     <Button
       variant="ghost"
-      className={ModalClasses.root}
+      className={classNames(
+        modalHeaderClasses.root,
+        {
+          [modalHeaderClasses.inset]: !$disableInset,
+          [modalHeaderClasses.itemEnd]: $disableInset
+        },
+        className
+      )}
       aria-label="Hide"
       {...props}
     >

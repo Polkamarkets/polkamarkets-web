@@ -32,6 +32,7 @@ import {
 import LeaderboardHeader from './LeaderboardHeader';
 import LeaderboardMyLeaderboards from './LeaderboardMyLeaderboards';
 import LeaderboardRewards from './LeaderboardRewards';
+import LeaderboardRewardsList from './LeaderboardRewardsList';
 import LeaderboardTable from './LeaderboardTable';
 import LeaderboardTopWallets from './LeaderboardTopWallets';
 import LeaderboardYourStats from './LeaderboardYourStats';
@@ -47,6 +48,7 @@ import type {
   LeaderboardTableColumn,
   CreateLeaderboardGroupState
 } from './types';
+import { tournamentRewards } from './utils';
 
 const tabs = [
   {
@@ -272,14 +274,7 @@ function Leaderboard() {
   }
 
   if (tournamentBySlug?.rewards && tournamentBySlug?.rewards.length > 0) {
-    rewards = tournamentBySlug?.rewards.map(reward => ({
-      // cardinal numbering
-      title:
-        reward.from === reward.to
-          ? `#${reward.from} Place`
-          : `#${reward.from} to #${reward.to} Place`,
-      description: reward.reward
-    }));
+    rewards = tournamentRewards(tournamentBySlug);
   }
 
   // Default
@@ -555,8 +550,10 @@ function Leaderboard() {
                 isLoading={isLoadingQuery}
               />
             )}
-            {features.fantasy.enabled && rewards && rewards.length > 0 && (
-              <LeaderboardRewards rewards={rewards} />
+            {features.fantasy.enabled && !!rewards?.length && (
+              <LeaderboardRewards>
+                <LeaderboardRewardsList rewards={rewards} />
+              </LeaderboardRewards>
             )}
           </div>
         </div>

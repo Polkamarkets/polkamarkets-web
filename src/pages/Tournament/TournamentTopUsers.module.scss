@@ -1,5 +1,6 @@
 .root {
-  padding: var(--size-24) !important;
+  overflow: hidden;
+  flex-shrink: 0;
 
   &Actions {
     &Button {
@@ -17,6 +18,61 @@
 
       border: 1px solid transparent;
       border-radius: var(--size-6);
+    }
+  }
+}
+
+.tabs {
+  padding: 2px;
+  display: flex;
+  border-radius: 6px;
+  border: 1px solid #252c3b;
+
+  &Item {
+    height: 32px;
+    padding-left: 16px;
+    padding-right: 16px;
+    background-color: transparent;
+    border: 0;
+    cursor: pointer;
+    width: 100%;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 4px;
+
+    &[aria-selected='true'] {
+      background-color: #fff;
+      color: rgb(0 0 0 / 0.8);
+    }
+  }
+}
+
+.action {
+  display: block;
+  height: 40px;
+  padding: 12px;
+  background-color: #12141c;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 500;
+  border: 0;
+  width: 100%;
+
+  &Icon {
+    opacity: 0.6;
+    margin-left: 16px;
+  }
+}
+
+.list {
+  padding-left: 8px;
+  padding-right: 8px;
+
+  &Item {
+    line-height: normal;
+
+    &:not(:last-child) {
+      margin-bottom: 12px;
     }
   }
 }

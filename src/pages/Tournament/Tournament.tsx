@@ -10,6 +10,9 @@ import {
 } from 'services/Polkamarkets';
 import { Container, useRect, useTheme } from 'ui';
 
+import LeaderboardRewardsList from 'pages/Leaderboard/LeaderboardRewardsList';
+import { tournamentRewards } from 'pages/Leaderboard/utils';
+
 import { MarketList, SEO } from 'components';
 
 import { useNetwork } from 'hooks';
@@ -19,6 +22,8 @@ import TournamentHero from './TournamentHero';
 import TournamentNav from './TournamentNav';
 import styles from './TournamentNav.module.scss';
 import TournamentTopUsers from './TournamentTopUsers';
+import { prepareTournamentTopUsersRow } from './TournamentTopUsers.utils';
+import TournamentTopUsersRewards from './TournamentTopUsersRewards';
 
 export default function Tournament() {
   const theme = useTheme();
@@ -105,8 +110,16 @@ export default function Tournament() {
           tournamentImageUrl={data?.imageUrl}
           topUsers={
             <TournamentTopUsers
-              rows={leaderboardByTimeframe?.filter(row => row.username)}
               isLoading={isLoadingLeaderboardByTimeframeQuery}
+              rankingRows={prepareTournamentTopUsersRow({
+                rows: leaderboardByTimeframe?.filter(row => row.username)
+              })}
+              rewardsButton={
+                <TournamentTopUsersRewards>
+                  <LeaderboardRewardsList rewards={tournamentRewards(data)} />
+                </TournamentTopUsersRewards>
+              }
+              rewardsRows={tournamentRewards(data, true)}
             />
           }
           questions={marketsIds.length}

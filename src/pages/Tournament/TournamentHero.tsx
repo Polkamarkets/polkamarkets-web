@@ -236,6 +236,11 @@ export default function TournamentHero({
                     styles.rootFooterStatsRewards
                   )}
                 >
+                  <Icon
+                    name="Medal"
+                    size="md"
+                    className={styles.rootFooterStatsRewardsIcon}
+                  />
                   Rewards: <strong>{rewards[0].reward}</strong>
                 </p>
               </>

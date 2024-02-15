@@ -250,6 +250,11 @@
         margin: var(--size-8) 0;
 
         display: inline;
+
+        &Icon {
+          fill: rgba(159, 157, 255, 1);
+          margin-right: 4px;
+        }
       }
     }
   }
