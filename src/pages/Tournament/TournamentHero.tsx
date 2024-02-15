@@ -69,6 +69,10 @@ export default function TournamentHero({
     ? getDescriptionItems(tournamentDescription || '')
     : [];
 
+  const rewardsCount = rewards
+    ? Math.max(...rewards.map(reward => reward.to || reward.from))
+    : 0;
+
   return (
     <Container className={styles.wrapper}>
       <div className={styles.root}>
@@ -220,7 +224,7 @@ export default function TournamentHero({
                 </>
               ) : null}
             </div>
-            {rewards?.length === 1 ? (
+            {rewardsCount > 0 ? (
               <>
                 {theme.device.isDesktop ? (
                   <span
@@ -241,7 +245,7 @@ export default function TournamentHero({
                     size="md"
                     className={styles.rootFooterStatsRewardsIcon}
                   />
-                  Rewards: <strong>{rewards[0].reward}</strong>
+                  Rewards: <strong>Top {rewardsCount}</strong>
                 </p>
               </>
             ) : null}
