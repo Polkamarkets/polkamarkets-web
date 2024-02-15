@@ -125,7 +125,9 @@ function TournamentTopUsers({
               />
             ) : (
               <ul className={styles.list}>
-                {rewardsRows.map(reward => (
+                {
+                  // only showing top 3 rewards
+                  rewardsRows.slice(0,3).map(reward => (
                   <li key={reward.title} className={styles.listItem}>
                     <Text
                       as="span"
