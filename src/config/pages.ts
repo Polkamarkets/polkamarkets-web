@@ -1,6 +1,5 @@
 import { lazy } from 'react';
 
-import features from './features';
 import ui from './ui';
 
 const defaultMetadata = {
@@ -75,7 +74,7 @@ const pages = {
     navigation: false,
     name: '',
     meta: defaultMetadata,
-    enabled: features.fantasy.enabled
+    enabled: true
   },
   restrictedCountry: {
     pathname: '/blocked',
@@ -123,9 +122,7 @@ const pages = {
     enabled: ui.clubs.enabled
   },
   tournamentLeaderboard: {
-    pathname: `/tournaments/:slug${
-      features.fantasy.enabled ? '/leaderboard' : ''
-    }`,
+    pathname: '/tournaments/:slug/leaderboard',
     Component: Leaderboard,
     exact: false,
     navigation: false,
@@ -182,17 +179,16 @@ const pages = {
     pathname: '/',
     Component: lazy(() => import('pages/Home')),
     exact: true,
-    navigation: !features.fantasy.enabled,
+    navigation: false,
     name: 'Home',
     meta: defaultMetadata,
-    enabled: features.fantasy.enabled && ui.tournaments.enabled
+    enabled: ui.tournaments.enabled
   },
   markets: {
-    pathname:
-      features.fantasy.enabled && ui.tournaments.enabled ? '/markets' : '/',
+    pathname: ui.tournaments.enabled ? '/markets' : '/',
     Component: lazy(() => import('pages/Markets')),
     exact: false,
-    navigation: !features.fantasy.enabled,
+    navigation: false,
     name: 'Markets',
     meta: defaultMetadata,
     enabled: true,

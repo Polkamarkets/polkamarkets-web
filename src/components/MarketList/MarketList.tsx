@@ -7,7 +7,6 @@ import type {
 import { Virtuoso as ReactVirtuoso } from 'react-virtuoso';
 
 import cn from 'classnames';
-import { features } from 'config';
 import type { Market } from 'models/market';
 
 import { InfoIcon } from 'assets/icons';
@@ -89,8 +88,7 @@ function Virtuoso({ data }: VirtuosoProps) {
       <div
         className={cn(marketListClasses.back, {
           [marketListClasses.backShow]: renderBack,
-          [marketListClasses.backShowAlongHeader]:
-            renderBack && (!features.fantasy.enabled || isLoggedIn),
+          [marketListClasses.backShowAlongHeader]: renderBack && isLoggedIn,
           [marketListClasses.backHide]: !renderBack
         })}
         aria-hidden={renderBack ? undefined : 'true'}

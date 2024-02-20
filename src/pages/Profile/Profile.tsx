@@ -1,7 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { features } from 'config';
 import isError404 from 'helpers/isError404';
 import {
   useGetLeaderboardByAddressQuery,
@@ -81,12 +80,8 @@ export default function Profile() {
           address={address}
           data={portfolio.data}
           isLoading={portfolio.isLoading}
-          network={network}
-          {...(features.fantasy.enabled && {
-            username: leaderboard?.username,
-            avatar: leaderboard?.userImageUrl,
-            bankrupt: leaderboard?.bankrupt
-          })}
+          username={leaderboard?.username}
+          avatar={leaderboard?.userImageUrl}
         />
         <ProfileSummaryStat
           isLoading={portfolio.isLoading}

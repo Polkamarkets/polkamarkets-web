@@ -1,6 +1,5 @@
 import uuid from 'react-uuid';
 
-import { features } from 'config';
 import dayjs from 'dayjs';
 import { almost } from 'helpers/math';
 import sum from 'lodash/sum';
@@ -42,12 +41,10 @@ const initialValues: CreateMarketFormData = {
   category: '',
   subcategory: '',
   closingDate: dayjs().toString(),
-  liquidity: features.fantasy.enabled ? 5000 : 0,
-  fee: features.fantasy.enabled ? 0 : 2,
-  treasuryFee: features.fantasy.enabled ? 0 : 1,
-  ...(features.regular.enabled && {
-    resolutionSource: ''
-  })
+  liquidity: 5000,
+  fee: 0,
+  treasuryFee: 0,
+  resolutionSource: ''
 };
 
 const validationSchema = [
@@ -58,11 +55,9 @@ const validationSchema = [
       .required('Market Description is required.'),
     category: Yup.string().required('Category is required.'),
     subcategory: Yup.string().required('Subcategory is required.'),
-    ...(features.regular.enabled && {
-      resolutionSource: Yup.string()
-        .url('Please enter a valid url.')
-        .required('Resolution source is required.')
-    }),
+    resolutionSource: Yup.string()
+      .url('Please enter a valid url.')
+      .required('Resolution source is required.'),
     closingDate: Yup.date()
       .min(
         dayjs().format('MM/DD/YYYY HH:mm'),
@@ -70,9 +65,7 @@ const validationSchema = [
       )
       .required('Closing date is required.'),
     image: Yup.object().shape({
-      hash: features.fantasy.enabled
-        ? Yup.string()
-        : Yup.string().required('Image is required.')
+      hash: Yup.string()
     })
   }),
   Yup.object().shape({

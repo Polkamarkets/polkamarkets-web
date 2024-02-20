@@ -1,6 +1,5 @@
 import { useCallback, useMemo } from 'react';
 
-import { features } from 'config';
 import type { Market, Outcome } from 'models/market';
 
 import useAppSelector from 'hooks/useAppSelector';
@@ -30,12 +29,7 @@ export default function useOperation(
     [market.id, market.networkId, market?.outcomes, userOperations.data]
   );
   const predictedOutcome = useMemo(() => {
-    if (
-      isLoading ||
-      !portfolio?.[market.id]?.outcomes ||
-      !features.fantasy.enabled
-    )
-      return null;
+    if (isLoading || !portfolio?.[market.id]?.outcomes) return null;
 
     return Object.entries(portfolio[market.id].outcomes as Outcomes).reduce(
       (acc, [outcomeId, { shares }]) =>

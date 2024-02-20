@@ -2,7 +2,7 @@ import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 
 import cn from 'classnames';
-import { ui, features } from 'config';
+import { ui } from 'config';
 import type { Market as MarketInterface } from 'models/market';
 import type { Action } from 'redux/ducks/polkamarkets';
 import { Adornment, Container, useTheme } from 'ui';
@@ -19,8 +19,7 @@ import {
   Modal,
   Button,
   VoteArrows,
-  Icon,
-  Feature
+  Icon
 } from 'components';
 
 import {
@@ -107,9 +106,7 @@ function MarketUI() {
   const bondActions = useAppSelector(state => state.polkamarkets.bondActions);
   const market = useAppSelector(state => state.market.market);
   const chartViews = useAppSelector(state => state.market.chartViews);
-  const [tab, setTab] = useState(
-    features.fantasy.enabled ? 'relatedQuestions' : 'positions'
-  );
+  const [tab, setTab] = useState('relatedQuestions');
 
   const handleChartChange = useCallback(
     async (type: string) => {
@@ -135,11 +132,7 @@ function MarketUI() {
           return ['outcome', 'shares', 'tradeType'].includes(column.key);
         }
 
-        if (features.fantasy.enabled) {
-          return !['shares', 'transactionHash'].includes(column.key);
-        }
-
-        return true;
+        return !['shares', 'transactionHash'].includes(column.key);
       }) as Column[],
     [theme.device.isDesktop]
   );
@@ -149,11 +142,7 @@ function MarketUI() {
       return ['date', 'price', 'value', 'transactionHash'];
     }
 
-    if (features.fantasy.enabled) {
-      return ['transactionHash', 'shares'];
-    }
-
-    return [];
+    return ['transactionHash', 'shares'];
   }, [theme.device.isDesktop]);
 
   const tableItems = formatMarketPositions<Action, MarketInterface['outcomes']>(
@@ -207,9 +196,7 @@ function MarketUI() {
         />
         <MarketHead />
         <Container $enableGutters>
-          <Feature name="fantasy">
-            {market.state === 'open' ? <MarketPredictions /> : null}
-          </Feature>
+          {market.state === 'open' ? <MarketPredictions /> : null}
           {market.tradingViewSymbol && (
             <div className="pm-p-market__view">
               <div className="market-chart__view-selector">
@@ -222,29 +209,6 @@ function MarketUI() {
             </div>
           )}
           <MarketChart />
-          <Feature name="regular">
-            {market.resolutionSource && (
-              <div className="pm-p-market__source">
-                <Text
-                  as="p"
-                  scale="tiny"
-                  fontWeight="semibold"
-                  style={{ margin: '0.8rem 0rem' }}
-                  color="lighter-gray"
-                >
-                  Resolution source:{' '}
-                  <a
-                    href={market.resolutionSource}
-                    target="_blank"
-                    className="tiny semibold text-primary"
-                    rel="noreferrer"
-                  >
-                    {market.resolutionSource}
-                  </a>
-                </Text>
-              </div>
-            )}
-          </Feature>
           {!theme.device.isDesktop && <MarketAnalytics />}
           {market.description && (
             <MarketAbout>{market.description}</MarketAbout>
@@ -272,14 +236,10 @@ function MarketUI() {
               <Tabs.TabPane tab="Related questions" id="relatedQuestions">
                 <MarketRelatedQuestions markets={market.relatedMarkets} />
               </Tabs.TabPane>
-              {features.fantasy.enabled && ui.socialLogin.enabled ? (
-                <Tabs.TabPane tab="Activity" id="activity">
-                  <MarketActivity />
-                </Tabs.TabPane>
-              ) : null}
-              {features.fantasy.enabled &&
-              ui.socialLogin.enabled &&
-              ui.comments.enabled ? (
+              <Tabs.TabPane tab="Activity" id="activity">
+                <MarketActivity />
+              </Tabs.TabPane>
+              {ui.comments.enabled ? (
                 <Tabs.TabPane tab="Comments" id="comments">
                   <MarketComments />
                 </Tabs.TabPane>
@@ -324,14 +284,9 @@ export default function Market() {
 
   useEffect(() => {
     (async function handleMarket() {
-      const { openTradeForm } = await import('redux/ducks/ui');
       const { getMarket, setChartViewType } = await import(
         'redux/ducks/market'
       );
-
-      if (features.regular.enabled) {
-        dispatch(openTradeForm());
-      }
 
       dispatch(getMarket(params.marketId));
       dispatch(setChartViewType('marketOverview'));
@@ -349,9 +304,7 @@ export default function Market() {
     async function handleHome() {
       const { pages } = await import('config');
 
-      history.push(
-        `${pages.home.pathname}${ui.layout.disclaimer.enabled ? '?m=f' : ''}`
-      );
+      history.push(`${pages.home.pathname}`);
       window.location.reload();
     }
 

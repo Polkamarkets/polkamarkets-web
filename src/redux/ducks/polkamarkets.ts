@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { features } from 'config';
 import { PolkamarketsService } from 'services';
 import { Currency } from 'types/currency';
 import { Token } from 'types/token';
@@ -24,7 +23,6 @@ export type PolkamarketsInitialState = {
   polkApproved: boolean;
   socialLoginInfo: any;
   polkClaimed: boolean;
-  bankrupt: boolean;
   portfolio: any;
   actions: Action[];
   marketsWithActions: string[];
@@ -47,7 +45,6 @@ const initialState: PolkamarketsInitialState = {
   polkApproved: false,
   socialLoginInfo: null,
   polkClaimed: false,
-  bankrupt: false,
   portfolio: {},
   actions: [],
   marketsWithActions: [],
@@ -352,29 +349,27 @@ function fetchAditionalData(polkamarketsService: PolkamarketsService) {
         .then(portfolio => {
           dispatch(changePortfolio(portfolio));
 
-          if (features.fantasy.enabled) {
-            // claiming winnings if any pending
-            polkamarketsService
-              .checkPortfolioAndClaimWinnings()
-              .then(hasClaimed => {
-                if (hasClaimed) {
-                  polkamarketsService
-                    .getPortfolio()
-                    .then(_portfolio => {
-                      dispatch(changePortfolio(_portfolio));
-                    })
-                    .catch(() => {});
+          // claiming winnings if any pending
+          polkamarketsService
+            .checkPortfolioAndClaimWinnings()
+            .then(hasClaimed => {
+              if (hasClaimed) {
+                polkamarketsService
+                  .getPortfolio()
+                  .then(_portfolio => {
+                    dispatch(changePortfolio(_portfolio));
+                  })
+                  .catch(() => {});
 
-                  polkamarketsService
-                    .getPolkBalance()
-                    .then(polkBalance => {
-                      dispatch(changePolkBalance(polkBalance));
-                    })
-                    .catch(() => {});
-                }
-              })
-              .catch(() => {});
-          }
+                polkamarketsService
+                  .getPolkBalance()
+                  .then(polkBalance => {
+                    dispatch(changePolkBalance(polkBalance));
+                  })
+                  .catch(() => {});
+              }
+            })
+            .catch(() => {});
         })
         .catch(() => {})
         .finally(() => {

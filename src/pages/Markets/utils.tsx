@@ -1,5 +1,4 @@
 /* eslint-disable import/prefer-default-export */
-import { features } from 'config';
 
 import { ArrowDownSmallestIcom, ArrowUpSmallestIcon } from 'assets/icons';
 
@@ -64,8 +63,6 @@ const filters = [
       }
     ]
   }
-].filter(filter =>
-  features.fantasy.enabled ? !['liquidityEur'].includes(filter.value) : true
-);
+].filter(filter => !['liquidityEur'].includes(filter.value));
 
 export { filters };

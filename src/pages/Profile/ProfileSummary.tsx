@@ -3,9 +3,7 @@ import { Fragment } from 'react';
 import { fromTimestampToCustomFormatDate } from 'helpers/date';
 import { Avatar, Skeleton } from 'ui';
 
-import { ShareIcon } from 'assets/icons';
-
-import { AlertMini, Tooltip, Feature, BankruptBadge } from 'components';
+import { AlertMini } from 'components';
 import { Text } from 'components/new';
 
 import profileClasses from './Profile.module.scss';
@@ -25,10 +23,8 @@ export default function ProfileSummary({
   address,
   isLoading,
   data,
-  network,
   username,
-  avatar,
-  bankrupt
+  avatar
 }: ProfileSummaryProps) {
   const ProfileSummaryGroupComponent = avatar ? ProfileSummaryGroup : Fragment;
   const ProfileSummaryInfoComponent = avatar ? ProfileSummaryInfo : Fragment;
@@ -75,19 +71,7 @@ export default function ProfileSummary({
                   color="1"
                 >
                   {username || address}
-                  <Feature name="regular">
-                    <Tooltip position="bottom-start" text="View on Explorer">
-                      <a
-                        target="_blank"
-                        href={`${network.explorerURL}/address/${address}`}
-                        rel="noreferrer"
-                      >
-                        <ShareIcon className="pm-p-profile-summary__explorer-icon" />
-                      </a>
-                    </Tooltip>
-                  </Feature>
                 </Text>
-                <BankruptBadge bankrupt={bankrupt} />
               </div>
               <Text
                 fontSize="body-4"

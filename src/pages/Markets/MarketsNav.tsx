@@ -1,17 +1,10 @@
 import { useCallback, useState } from 'react';
 
-import { features, ui } from 'config';
+import { ui } from 'config';
 import { setSorter, setSearchQuery } from 'redux/ducks/markets';
 import { useTheme } from 'ui';
 
-import {
-  Button,
-  CreateMarket,
-  Feature,
-  Filter,
-  Icon,
-  SearchBar
-} from 'components';
+import { Button, Filter, Icon, SearchBar } from 'components';
 import { FilterProps } from 'components/Filter/Filter';
 
 import { useAppDispatch, useAppSelector } from 'hooks';
@@ -87,25 +80,18 @@ export default function MarketsNav({ onFilterClick }: MarketsNavProps) {
       ) : null}
       <SearchBar
         size="sm"
-        name={`Search ${features.fantasy.enabled ? 'Questions' : 'Markets'}`}
-        placeholder={`Search ${
-          features.fantasy.enabled ? 'questions' : 'markets'
-        }`}
+        name="Search Questions"
+        placeholder="Search questions"
         onSearch={handleSearch}
         onChange={handleSearchChange}
         value={searchValue}
       />
       <Filter
         description="Sort by"
-        defaultOption={features.fantasy.enabled ? 'createdAt' : 'liquidityEur'}
+        defaultOption="createdAt"
         options={filters}
         onChange={handleSelectedFilter}
       />
-      {theme.device.isDesktop && (
-        <Feature name="regular">
-          <CreateMarket />
-        </Feature>
-      )}
     </>
   );
 }

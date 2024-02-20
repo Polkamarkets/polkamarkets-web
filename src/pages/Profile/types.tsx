@@ -4,7 +4,6 @@ import type {
   GetPortfolioFeedByAddressData
 } from 'services/Polkamarkets/types';
 import type { LeaderboardTimeframe } from 'types/leaderboard';
-import type { Network } from 'types/network';
 
 import type { TableMiniColumn, TableMiniRow } from 'components/new/TableMini';
 
@@ -48,12 +47,10 @@ export type ProfileSummaryProps = {
   address: string;
   isLoading: boolean;
   data?: GetPortfolioByAddressData;
-  network: Network;
 } & {
   username?: string | null;
   slug?: string | null;
   avatar?: string | null;
-  bankrupt?: boolean | null;
 };
 
 export type ProfileStatsProps = {

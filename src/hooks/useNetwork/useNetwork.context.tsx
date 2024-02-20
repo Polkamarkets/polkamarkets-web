@@ -33,15 +33,11 @@ const DEFAULT_NETWORK_CONFIG = environment.NETWORKS[DEFAULT_NETWORK.id];
 
 const UNKNOWN_NETWORK = networks['0x270f'];
 
-function getNetwork(networkId) {
-  if (ui.socialLogin.enabled) {
-    return (
-      networks[toHexadecimal(ui.socialLogin.networkId as string)] ||
-      UNKNOWN_NETWORK
-    );
-  }
-
-  return networks[networkId] || UNKNOWN_NETWORK;
+function getNetwork(_networkId?: string) {
+  return (
+    networks[toHexadecimal(ui.socialLogin.networkId as string)] ||
+    UNKNOWN_NETWORK
+  );
 }
 
 type NetworkProviderProps = {
@@ -83,10 +79,6 @@ function NetworkProvider({ children }: NetworkProviderProps) {
   );
 
   const reloadWindow = useCallback(() => {
-    if (!query.has('m') && ui.layout.disclaimer.enabled) {
-      query.set('m', 'f');
-    }
-
     history.push({
       pathname: location.pathname,
       search: query.toString()

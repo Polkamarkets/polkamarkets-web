@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 
 import * as Sentry from '@sentry/react';
-import { features, ui } from 'config';
 import {
   login,
   fetchAditionalData,
@@ -27,7 +26,6 @@ import {
 } from 'hooks';
 import useReloadMarketPrices from 'hooks/useReloadMarketPrices';
 
-import ApproveToken from '../ApproveToken';
 import { ButtonLoading } from '../Button';
 import NetworkSwitch from '../Networks/NetworkSwitch';
 import Text from '../Text';
@@ -73,8 +71,7 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
   );
 
   // Derivated state
-  const isWrongNetwork =
-    !ui.socialLogin.enabled && network.id !== `${marketNetworkId}`;
+  const isWrongNetwork = network.id !== `${marketNetworkId}`;
 
   // Local state
   const [isLoading, setIsLoading] = useState(false);
@@ -103,117 +100,6 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
     const { claim } = await import('redux/ducks/polkamarkets');
 
     dispatch(claim(polkamarketsService));
-  }
-
-  async function handleBuy() {
-    setTrade({
-      type: 'buy',
-      status: 'pending',
-      trade: {
-        market: marketId,
-        marketTitle,
-        outcome: predictionId,
-        outcomeTitle: predictionTitle,
-        amount,
-        ticker: fantasyTokenTicker || ticker,
-        network: marketNetworkId,
-        location: window.location.pathname
-      }
-    });
-    setIsLoading(true);
-    setNeedsPricesRefresh(false);
-
-    try {
-      // adding a 1% slippage due to js floating numbers rounding
-      const minShares = shares * 0.999;
-
-      // calculating shares amount from smart contract
-      const sharesToBuy = await polkamarketsService.calcBuyAmount(
-        marketId,
-        predictionId,
-        amount
-      );
-
-      // will refresh form if there's a slippage > 1%
-      if (Math.abs(sharesToBuy - minShares) / sharesToBuy > 0.01) {
-        setIsLoading(false);
-        setNeedsPricesRefresh(true);
-
-        return false;
-      }
-
-      setTimeout(() => {
-        if (!needsPricesRefresh) {
-          // Dispatch data to Redux
-          const newPolkBalance = polkBalance - amount;
-          dispatch(changePolkBalance(newPolkBalance));
-
-          const newActions = actions.concat({
-            action: 'Buy',
-            marketId: parseInt(marketId, 10),
-            outcomeId: parseInt(predictionId, 10),
-            shares: sharesToBuy,
-            timestamp: Date.now() / 1000,
-            transactionHash:
-              '0x0000000000000000000000000000000000000000000000000000000000000000',
-            value: amount
-          });
-          dispatch(changeActions(newActions));
-
-          const newPortfolio = JSON.parse(JSON.stringify(portfolio));
-          if (portfolio[marketId]?.outcomes[predictionId]) {
-            newPortfolio[marketId].outcomes[predictionId].shares += sharesToBuy;
-            newPortfolio[marketId].outcomes[predictionId].price =
-              sharesToBuy / amount;
-          } else {
-            newPortfolio[marketId] = {
-              outcomes: {
-                [predictionId]: {
-                  shares: sharesToBuy,
-                  price: sharesToBuy / amount
-                }
-              }
-            };
-          }
-          dispatch(changePortfolio(newPortfolio));
-
-          setIsLoading(false);
-          onTradeFinished();
-          setTrade({ status: 'success' });
-        }
-      }, 200);
-
-      // performing buy action on smart contract
-      await polkamarketsService.buy(
-        marketId,
-        predictionId,
-        amount,
-        minShares,
-        tokenWrapped && !wrapped
-      );
-
-      setTrade({ status: 'completed' });
-
-      // triggering market prices redux update
-      reloadMarketPrices();
-
-      // triggering cache reload action on api
-      new PolkamarketsApiService().reloadMarket(marketSlug);
-      new PolkamarketsApiService().reloadPortfolio(ethAddress, network.id);
-
-      // updating wallet
-      await updateWallet();
-      await refreshBalance();
-    } catch (error) {
-      setTrade({ status: 'error' });
-      Sentry.captureException(error);
-
-      // restoring wallet data on error too
-      await updateWallet();
-      await refreshBalance();
-    }
-
-    return true;
   }
 
   async function handleSell() {
@@ -336,8 +222,6 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
 
   const isValidAmount = amount > 0 && amount <= maxAmount;
 
-  const preventBankruptcy = features.fantasy.enabled && ui.socialLogin.enabled;
-
   return (
     <div className="pm-c-trade-form-actions__group--column">
       <div className="pm-c-trade-form-actions">
@@ -390,9 +274,7 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
           ) : null}
           {type === 'buy' && !needsPricesRefresh && !isWrongNetwork ? (
             <div className="flex-column gap-6 width-full">
-              {isValidAmount &&
-              preventBankruptcy &&
-              amount >= polkBalance / 2 ? (
+              {isValidAmount && amount >= polkBalance / 2 ? (
                 <AlertMinimal
                   variant="warning"
                   description={`Do you really want to place all this ${fantasyTokenTicker} in this prediction? Distribute your ${fantasyTokenTicker} by other questions in order to minimize bankruptcy risk.`}
@@ -408,29 +290,7 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
                   Claim {fantasyTokenTicker}
                 </ButtonLoading>
               ) : null}
-              {!features.fantasy.enabled || (isLoggedIn && polkClaimed) ? (
-                <ApproveToken
-                  fullwidth
-                  address={token.address}
-                  ticker={token.ticker}
-                  wrapped={token.wrapped && !wrapped}
-                >
-                  <ButtonLoading
-                    color="primary"
-                    fullwidth
-                    onClick={handleBuy}
-                    disabled={
-                      !isValidAmount ||
-                      isLoading ||
-                      (status === 'success' && trade.market === marketId)
-                    }
-                    loading={isLoading}
-                  >
-                    Predict
-                  </ButtonLoading>
-                </ApproveToken>
-              ) : null}
-              {!isLoggedIn && features.fantasy.enabled ? (
+              {!isLoggedIn ? (
                 <ProfileSignin
                   fullwidth
                   size="normal"

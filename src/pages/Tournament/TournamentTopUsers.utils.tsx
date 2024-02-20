@@ -2,8 +2,6 @@ import { Link } from 'react-router-dom';
 
 import type { GetLeaderboardByTimeframeData } from 'services/Polkamarkets/types';
 
-import { BankruptBadge } from 'components';
-
 const USER_PLACES = {
   1: {
     textColor: 'warning'
@@ -23,12 +21,7 @@ type TopUserRenderArgs = {
   bankrupt?: boolean | null;
 };
 
-function topUserColumnRender({
-  address,
-  slug,
-  place,
-  bankrupt
-}: TopUserRenderArgs) {
+function topUserColumnRender({ address, slug, place }: TopUserRenderArgs) {
   const walletPlace = USER_PLACES[place] || {
     textColor: '1'
   };
@@ -46,7 +39,6 @@ function topUserColumnRender({
               )}`
             : address}
         </Link>
-        <BankruptBadge bankrupt={bankrupt} />
       </div>
     </div>
   );

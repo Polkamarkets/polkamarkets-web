@@ -1,6 +1,6 @@
 import { createContext, useContext, useMemo } from 'react';
 
-import { environment, features } from 'config';
+import { environment } from 'config';
 import useMedia from 'ui/useMedia';
 import useUpdateEffect from 'ui/useUpdateEffect';
 
@@ -73,25 +73,17 @@ export function isThemeDark(
   return mode === 'dark';
 }
 export default function ThemeProvider(props: ThemeProviderProps) {
-  const [mode, setMode] = useLocalStorage<ThemeModes>(
+  const [_mode, setMode] = useLocalStorage<ThemeModes>(
     THEME_MODE_KEY,
     THEME_MODE_DEFAULT
   );
-  const isDark = useMedia('(prefers-color-scheme: dark)');
   const isTablet = useMedia('(min-width: 512px)');
   const isDesktop = useMedia('(min-width: 1024px)');
   const isTv = useMedia('(min-width: 1440px)');
   const value: ThemeProps = useMemo(
     () => ({
       device: {
-        mode: (() => {
-          if (features.fantasy.enabled) return 'dark';
-          if (mode === THEME_MODES.system) {
-            if (isDark) return 'dark';
-            return 'light';
-          }
-          return mode;
-        })(),
+        mode: 'dark',
         isTv,
         isDesktop,
         isTablet,
@@ -99,7 +91,7 @@ export default function ThemeProvider(props: ThemeProviderProps) {
         setMode
       }
     }),
-    [isDark, isDesktop, isTablet, isTv, setMode, mode]
+    [isDesktop, isTablet, isTv, setMode]
   );
 
   handleChangeTheme(value.device.mode);
@@ -115,7 +107,7 @@ export default function ThemeProvider(props: ThemeProviderProps) {
     return () => window.clearTimeout(timer);
   }, [value.device.mode]);
 
-  if (features.fantasy.enabled && typeof window !== 'undefined')
+  if (typeof window !== 'undefined')
     window.localStorage.removeItem(THEME_MODE_KEY);
 
   return <ThemeContext.Provider value={value} {...props} />;

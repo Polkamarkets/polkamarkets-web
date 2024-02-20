@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
 
-import { ui } from 'config';
 import { roundNumber } from 'helpers/math';
 import { Skeleton } from 'ui';
 
@@ -48,9 +47,6 @@ export default function ProfileSummaryStat({
             <>
               <Skeleton style={{ height: 76 }} />
               <Skeleton style={{ height: 76 }} />
-              {ui.profile.summary.liquidityProvided.enabled ? (
-                <Skeleton style={{ height: 76 }} />
-              ) : null}
             </>
           );
         if (!data)
@@ -60,36 +56,30 @@ export default function ProfileSummaryStat({
               description="No summary data available."
             />
           );
-        return stats
-          .filter(stat =>
-            !ui.profile.summary.liquidityProvided.enabled
-              ? stat.title !== 'Liquidity provided'
-              : true
-          )
-          .map(stat => (
-            <div
-              key={stat.title}
-              className={`pm-p-profile-summary__stat bg-gradient-${stat.backgroundColor}`}
+        return stats.map(stat => (
+          <div
+            key={stat.title}
+            className={`pm-p-profile-summary__stat bg-gradient-${stat.backgroundColor}`}
+          >
+            <Text
+              className="text-white-50 whitespace-nowrap"
+              as="h5"
+              fontSize="body-4"
+              fontWeight="bold"
+              transform="uppercase"
             >
-              <Text
-                className="text-white-50 whitespace-nowrap"
-                as="h5"
-                fontSize="body-4"
-                fontWeight="bold"
-                transform="uppercase"
-              >
-                {stat.title}
-              </Text>
-              <Text
-                className="text-light notranslate"
-                as="span"
-                fontSize="body-1"
-                fontWeight="semibold"
-              >
-                {stat.value}
-              </Text>
-            </div>
-          ));
+              {stat.title}
+            </Text>
+            <Text
+              className="text-light notranslate"
+              as="span"
+              fontSize="body-1"
+              fontWeight="semibold"
+            >
+              {stat.value}
+            </Text>
+          </div>
+        ));
       })()}
     </div>
   );
