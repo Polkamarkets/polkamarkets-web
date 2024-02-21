@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 
 import cn from 'classnames';
+import { ui } from 'config';
 import { useField } from 'formik';
 import { roundDown, roundNumber } from 'helpers/math';
 import { changeCreateMarketToken } from 'redux/ducks/polkamarkets';
@@ -77,7 +78,7 @@ function CreateMarketFormFund() {
       dispatch(changeCreateMarketToken(token));
     };
 
-    if (!createMarketToken && !erc20Address) {
+    if (!createMarketToken && !erc20Address && ui.socialLogin.enabled) {
       setFantasyErc20AsDefaultToken();
     }
   }, [

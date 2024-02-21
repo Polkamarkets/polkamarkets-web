@@ -2,6 +2,7 @@ import { useCallback, useReducer } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import cn from 'classnames';
+import { ui } from 'config';
 import { Market } from 'models/market';
 import { changeVotes } from 'redux/ducks/market';
 import { changeMarketVotesById } from 'redux/ducks/markets';
@@ -74,7 +75,8 @@ function VoteModal({
     useToastNotification();
 
   // Derivated state from props
-  const isWrongNetwork = network.id !== `${marketNetworkId}`;
+  const isWrongNetwork =
+    !ui.socialLogin.enabled && network.id !== `${marketNetworkId}`;
   const needsBuyPolk = userPolkBalance < userRequiredPolkBalance;
   const isMarketPage = location.pathname === `/markets/${marketSlug}`;
 

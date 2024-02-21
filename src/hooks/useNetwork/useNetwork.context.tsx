@@ -33,11 +33,15 @@ const DEFAULT_NETWORK_CONFIG = environment.NETWORKS[DEFAULT_NETWORK.id];
 
 const UNKNOWN_NETWORK = networks['0x270f'];
 
-function getNetwork(_networkId?: string) {
-  return (
-    networks[toHexadecimal(ui.socialLogin.networkId as string)] ||
-    UNKNOWN_NETWORK
-  );
+function getNetwork(networkId: string) {
+  if (ui.socialLogin.enabled) {
+    return (
+      networks[toHexadecimal(ui.socialLogin.networkId as string)] ||
+      UNKNOWN_NETWORK
+    );
+  }
+
+  return networks[networkId] || UNKNOWN_NETWORK;
 }
 
 type NetworkProviderProps = {

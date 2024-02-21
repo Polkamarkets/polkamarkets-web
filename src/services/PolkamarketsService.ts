@@ -64,7 +64,7 @@ export default class PolkamarketsService {
     this.polkamarkets = new polkamarketsjs.Application({
       web3Provider: WEB3_PROVIDER,
       web3EventsProvider: WEB3_EVENTS_PROVIDER,
-      isSocialLogin: true,
+      isSocialLogin: ui.socialLogin.enabled,
       socialLoginParams: {
         useCustomModal: true,
         isTestnet: ui.socialLogin.isTestnet,

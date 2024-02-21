@@ -45,6 +45,12 @@ const parseTournament = (tournament: string) => {
   return null;
 };
 
+const isMarketTokenFromSocialLoginNetwork = (market: Market) => {
+  if (!ui.socialLogin.enabled) return true;
+
+  return market.networkId.toString() === ui.socialLogin.networkId?.toString();
+};
+
 export interface MarketsIntialState {
   markets: Market[];
   isLoading: {
@@ -130,23 +136,26 @@ const marketsSlice = createSlice({
         return {
           payload: {
             type,
-            data: data.filter(isMarketFromAvailableNetwork).map(market => {
-              const network = getNetworkById(market.networkId);
-              const currencyByTokenSymbol = getCurrencyByTicker(
-                market.token.symbol
-              );
+            data: data
+              .filter(isMarketFromAvailableNetwork)
+              .filter(isMarketTokenFromSocialLoginNetwork)
+              .map(market => {
+                const network = getNetworkById(market.networkId);
+                const currencyByTokenSymbol = getCurrencyByTicker(
+                  market.token.symbol
+                );
 
-              return {
-                ...market,
-                network,
-                currency: network.currency,
-                token: {
-                  ...market.token,
-                  ticker: market.token.symbol,
-                  iconName: currencyByTokenSymbol.iconName
-                }
-              } as Market;
-            })
+                return {
+                  ...market,
+                  network,
+                  currency: network.currency,
+                  token: {
+                    ...market.token,
+                    ticker: market.token.symbol,
+                    iconName: currencyByTokenSymbol.iconName
+                  }
+                } as Market;
+              })
           },
           type
         };

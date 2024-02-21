@@ -239,7 +239,12 @@ function MarketUI() {
               <Tabs.TabPane tab="Activity" id="activity">
                 <MarketActivity />
               </Tabs.TabPane>
-              {ui.comments.enabled ? (
+              {ui.socialLogin.enabled ? (
+                <Tabs.TabPane tab="Activity" id="activity">
+                  <MarketActivity />
+                </Tabs.TabPane>
+              ) : null}
+              {ui.socialLogin.enabled && ui.comments.enabled ? (
                 <Tabs.TabPane tab="Comments" id="comments">
                   <MarketComments />
                 </Tabs.TabPane>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 
 import cn from 'classnames';
+import { ui } from 'config';
 import { isEmpty, isUndefined } from 'lodash';
 import { setTokenTicker } from 'redux/ducks/market';
 import {
@@ -21,6 +22,8 @@ import {
   useERC20Balance,
   useFantasyTokenTicker
 } from 'hooks';
+
+import StepSlider from '../StepSlider';
 
 import { Button } from '../Button';
 import Icon from '../Icon';
@@ -60,11 +63,14 @@ function TradeFormInput() {
 
   const wrapped = useAppSelector(state => state.trade.wrapped);
 
-  const isWrongNetwork = network.id !== `${marketNetworkId}`;
+  const isWrongNetwork =
+    !ui.socialLogin.enabled && network.id !== `${marketNetworkId}`;
+  const preventBankruptcy = ui.socialLogin.enabled;
 
   // buy and sell have different maxes
 
   const [amount, setAmount] = useState<number | string | undefined>(0);
+  const [stepAmount, setStepAmount] = useState<number>(0);
   const [amountInputButtons, setAmountInputButtons] = useState<number[]>([]);
 
   const portfolio = useAppSelector(state => state.polkamarkets.portfolio);
@@ -179,6 +185,16 @@ function TradeFormInput() {
     dispatch(setTradeAmount(newAmount));
   }
 
+  function handleChangeSlider(value: number) {
+    const percentage = value / 100;
+
+    const newAmount = roundDown(max() * percentage);
+
+    setAmount(newAmount);
+    dispatch(setTradeAmount(newAmount));
+    setStepAmount(value);
+  }
+
   const handleChangeWrapped = useCallback(() => {
     dispatch(setWrapped(!wrapped));
     dispatch(
@@ -238,6 +254,17 @@ function TradeFormInput() {
           disabled={isWrongNetwork || isLoadingBalance}
         />
         <div className="pm-c-amount-input__actions">
+          {!preventBankruptcy ? (
+            <button
+              type="button"
+              onClick={handleSetMaxAmount}
+              disabled={isWrongNetwork || isLoadingBalance}
+            >
+              <Text as="span" scale="tiny-uppercase" fontWeight="semibold">
+                Max
+              </Text>
+            </button>
+          ) : null}
           {type === 'buy' ? (
             <div className="pm-c-amount-input__logo">
               <figure aria-label={name}>
@@ -303,6 +330,57 @@ function TradeFormInput() {
             ))
           : null}
       </ul>
+      {!preventBankruptcy ? (
+        <StepSlider
+          currentValue={stepAmount}
+          onChange={value => handleChangeSlider(value)}
+          disabled={isWrongNetwork || isLoadingBalance}
+        />
+      ) : (
+        <ul
+          className={cn(
+            'pm-c-amount-input__actions',
+            TradeFormClasses.inputActions
+          )}
+        >
+          {type === 'buy'
+            ? amountInputButtons.map(button => (
+                <button
+                  key={button}
+                  type="button"
+                  className={cn('pm-c-amount-input__action', {
+                    'pm-c-amount-input__action--active': button === amount
+                  })}
+                  onClick={() => handleSetAmount(button)}
+                  disabled={isWrongNetwork || isLoadingBalance}
+                >
+                  <Text as="span" scale="tiny-uppercase" fontWeight="semibold">
+                    {`${button} ${ticker}`}
+                  </Text>
+                </button>
+              ))
+            : null}
+          {type === 'sell'
+            ? SELL_STEPS.map(step => (
+                <button
+                  key={step}
+                  type="button"
+                  className={cn('pm-c-amount-input__action', {
+                    'pm-c-amount-input__action--active': step === amount
+                  })}
+                  onClick={() =>
+                    handleSetAmount(roundDown(max() * (step / 100)))
+                  }
+                  disabled={isWrongNetwork}
+                >
+                  <Text as="span" scale="tiny-uppercase" fontWeight="semibold">
+                    {`${step}%`}
+                  </Text>
+                </button>
+              ))
+            : null}
+        </ul>
+      )}
       {!isWrongNetwork && tokenWrapped ? (
         <div className={TradeFormClasses.wrappedToggle}>
           <Text
