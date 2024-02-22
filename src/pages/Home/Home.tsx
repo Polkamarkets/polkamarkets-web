@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import classNames from 'classnames';
 import { environment } from 'config';
 import { useGetLandsQuery } from 'services/Polkamarkets';
@@ -8,7 +10,19 @@ import BannerSearch from 'components/BannerSearch';
 import styles from './Home.module.scss';
 import HomeCommunityLands from './HomeCommunityLands';
 
+const filters = [
+  {
+    value: 'newest',
+    name: 'Newest'
+  },
+  {
+    value: 'activity',
+    name: 'Activity'
+  }
+];
 function Home() {
+  const [searchValue, setSearchValue] = useState('');
+  const [selectedFilter, setSelectedFilter] = useState(filters[0]);
   const {
     data: lands,
     isLoading: isLoadingLands,
@@ -25,10 +39,27 @@ function Home() {
     );
   }
 
+  const filteredLands = searchValue
+    ? lands?.filter(land =>
+        land.title.toLowerCase().includes(searchValue.toLowerCase())
+      ) || []
+    : lands || [];
+
+  const sortedLands =
+    selectedFilter.value === 'activity'
+      ? [...filteredLands].sort((a, b) => b.users - a.users)
+      : filteredLands;
+
   return (
     <Container className={classNames('max-width-screen-xl', styles.root)}>
-      <BannerSearch />
-      <HomeCommunityLands lands={lands || []} />
+      <BannerSearch
+        searchValue={searchValue}
+        onSearchChange={setSearchValue}
+        filters={filters}
+        defaultFilter={selectedFilter.value}
+        onSelectedFilter={setSelectedFilter}
+      />
+      <HomeCommunityLands lands={sortedLands} />
     </Container>
   );
 }

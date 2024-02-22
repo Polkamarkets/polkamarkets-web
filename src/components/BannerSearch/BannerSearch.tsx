@@ -4,24 +4,30 @@ import { Button, Filter, Icon, SearchBar } from 'components';
 
 import styles from './BannerSearch.module.scss';
 
-const filters = [
-  {
-    value: 'newest',
-    name: 'Newest'
-  },
-  {
-    value: 'joined',
-    name: 'Joined'
-  }
-];
+type BannerSearchProps = {
+  onSearchChange?(value: string): void;
+  onSelectedFilter?(filter: { value: string; name: string }): void;
+  searchValue: string;
+  filters: { value: string; name: string }[];
+  defaultFilter?: string;
+};
 
-export type BannerSearchProps = {};
-
-function BannerSearch() {
-  const handleSearch = (value: FormEvent<HTMLFormElement>) => {};
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {};
-  const [searchValue, setSearchValue] = useState('');
-  const handleSelectedFilter = (filter: { value: string; name: string }) => {};
+function BannerSearch({
+  onSearchChange,
+  onSelectedFilter,
+  searchValue,
+  filters,
+  defaultFilter
+}: BannerSearchProps) {
+  const handleSearch = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+  };
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    onSearchChange?.(event.target.value);
+  };
+  const handleSelectedFilter = (filter: { value: string; name: string }) => {
+    onSelectedFilter?.(filter);
+  };
   return (
     <div className={styles.bannerSearch}>
       <div className={styles.banner}>
@@ -47,7 +53,7 @@ function BannerSearch() {
         />
         <Filter
           description="Sort by"
-          defaultOption="newest"
+          defaultOption={defaultFilter || filters[0].value}
           options={filters}
           onChange={handleSelectedFilter}
         />
