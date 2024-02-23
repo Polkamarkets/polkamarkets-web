@@ -1,4 +1,6 @@
-import { FormEvent, useState } from 'react';
+import { CSSProperties, FormEvent } from 'react';
+
+import { ui } from 'config';
 
 import { Button, Filter, Icon, SearchBar } from 'components';
 
@@ -30,7 +32,12 @@ function BannerSearch({
   };
   return (
     <div className={styles.bannerSearch}>
-      <div className={styles.banner}>
+      <div
+        className={styles.banner}
+        style={
+          { '--background-image': `url(${ui.hero.image_url})` } as CSSProperties
+        }
+      >
         <h3>communities</h3>
         <h1>
           Predict, Play <br />& Collect Rewards.

@@ -7,7 +7,7 @@
 
 .banner {
   border-radius: var(--size-8);
-  background-image: url('../../assets/images/home-banner.png');
+  background: var(--background-image) transparent;
   background-size: cover;
   padding: 56px 61px;
   border-bottom: 1px solid #252C3B;

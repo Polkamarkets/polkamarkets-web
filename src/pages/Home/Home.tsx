@@ -16,10 +16,15 @@ const filters = [
     name: 'Newest'
   },
   {
-    value: 'activity',
-    name: 'Activity'
+    value: 'trending',
+    name: 'Trending'
+  },
+  {
+    value: 'most-followed',
+    name: 'Most Followed'
   }
 ];
+
 function Home() {
   const [searchValue, setSearchValue] = useState('');
   const [selectedFilter, setSelectedFilter] = useState(filters[0]);
@@ -45,10 +50,21 @@ function Home() {
       ) || []
     : lands || [];
 
-  const sortedLands =
-    selectedFilter.value === 'activity'
-      ? [...filteredLands].sort((a, b) => b.users - a.users)
-      : filteredLands;
+  let sortedLands = filteredLands;
+
+  if (selectedFilter.value === 'most-followed') {
+    sortedLands = [...filteredLands].sort((a, b) => b.users - a.users);
+  }
+  if (selectedFilter.value === 'trending') {
+    sortedLands = [...filteredLands].sort((a, b) => {
+      return (
+        (b.tournaments?.filter(t => Date.parse(t.expiresAt) >= Date.now())
+          .length || 0) -
+        (a.tournaments?.filter(t => Date.parse(t.expiresAt) >= Date.now())
+          .length || 0)
+      );
+    });
+  }
 
   return (
     <Container className={classNames('max-width-screen-xl', styles.root)}>
