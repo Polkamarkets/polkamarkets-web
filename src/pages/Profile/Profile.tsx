@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { features } from 'config';
+import isError404 from 'helpers/isError404';
 import {
   useGetLeaderboardByAddressQuery,
   useGetPortfolioByAddressQuery,
@@ -69,12 +70,7 @@ export default function Profile() {
     [language, portfolioFeed]
   );
 
-  if (
-    [portfolio, activity].some(
-      ({ error }) =>
-        typeof error === 'object' && 'status' in error && error.status === 404
-    )
-  ) {
+  if (isError404(portfolio.error) || isError404(activity.error)) {
     return <ProfileError username={address} />;
   }
 

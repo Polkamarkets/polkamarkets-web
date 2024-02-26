@@ -125,7 +125,10 @@ export default function OutcomeItem({
               {`${
                 outcomeWithShares.value > outcomeWithShares.buyValue ? '+' : ''
               }${(outcomeWithShares.value - outcomeWithShares.buyValue).toFixed(
-                1
+                Math.abs(outcomeWithShares.value - outcomeWithShares.buyValue) <
+                  1
+                  ? 1
+                  : 0
               )} ${token.symbol}`}
               )
             </span>

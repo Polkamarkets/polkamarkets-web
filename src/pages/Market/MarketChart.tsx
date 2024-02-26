@@ -7,7 +7,7 @@ import sortOutcomes from 'helpers/sortOutcomes';
 import maxBy from 'lodash/maxBy';
 import { useTheme } from 'ui';
 
-import { ChartHeader, LineChart, Text } from 'components';
+import { ChartHeader, InfoTooltip, LineChart, Text } from 'components';
 
 import { useAppSelector } from 'hooks';
 
@@ -44,18 +44,25 @@ function MarketOverview() {
           >
             {highestPriceOutcome.title.toUpperCase()}
           </Text>
-          <Text
-            color="light-gray"
-            scale="heading"
-            fontWeight="semibold"
-            className="notranslate"
-          >
+          <Text color="light-gray" scale="heading" fontWeight="semibold">
             {features.fantasy.enabled ? (
-              <>{roundNumber(highestPriceOutcome.price * 100, 3)}%</>
-            ) : (
               <>
-                {highestPriceOutcome.price} {ticker}
+                <span className="notranslate">
+                  {roundNumber(highestPriceOutcome.price * 100, 3)}%
+                </span>
+                <Text
+                  as="span"
+                  scale="tiny-uppercase"
+                  fontWeight="bold"
+                  className="market-chart__view-caption"
+                >
+                  <InfoTooltip text="Probability of an answer occur based on already made predictions." />
+                </Text>
               </>
+            ) : (
+              <span className="notranslate">
+                {highestPriceOutcome.price} {ticker}
+              </span>
             )}
           </Text>
           <Text

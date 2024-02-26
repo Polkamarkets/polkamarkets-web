@@ -15,7 +15,7 @@
       padding: 16px var(--grid-margin);
 
       @include breakpoint-to('lg') {
-        @include flex-row(space-between, center);
+        @include flex-row(space-between, center, 5);
       }
     }
 

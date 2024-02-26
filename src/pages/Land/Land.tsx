@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
 import classNames from 'classnames';
+import isError404 from 'helpers/isError404';
 import isEmpty from 'lodash/isEmpty';
 import uniqBy from 'lodash/uniqBy';
 import {
@@ -9,6 +10,8 @@ import {
   useGetMarketsByIdsQuery
 } from 'services/Polkamarkets';
 import { Container } from 'ui';
+
+import Error404 from 'pages/Error404';
 
 import { AlertMini, SEO } from 'components';
 
@@ -23,7 +26,8 @@ function Land() {
   const {
     data: land,
     isLoading: isLoadingLand,
-    isFetching: isFetchingLand
+    isFetching: isFetchingLand,
+    ...landBySlug
   } = useGetLandBySlugQuery({ slug }, { skip: !slug });
 
   const isLoadingGetLandBySlugQuery = isLoadingLand || isFetchingLand;
@@ -60,6 +64,8 @@ function Land() {
         <span className="spinner--primary" />
       </div>
     );
+
+  if (isError404(landBySlug.error)) return <Error404 />;
 
   if (isEmptyLand)
     return (

@@ -61,6 +61,11 @@
       &-title {
         color: themed('chart-view-title-color');
       }
+
+      &-caption {
+        color: var(--color-text-secondary);
+        vertical-align: middle;
+      }
     }
   }
 }

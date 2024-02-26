@@ -73,6 +73,11 @@ export default function AppRoutes() {
                   <Redirect from="/leaderboard/:slug" to="/clubs/:slug" />
                 )}
                 <Redirect from="/lands/:slug" to="/:slug" />
+                <Route
+                  exact={pages.error404.exact}
+                  path={pages.error404.pathname}
+                  component={pages.error404.Component}
+                />
               </Switch>
             </Layout>
           )}
