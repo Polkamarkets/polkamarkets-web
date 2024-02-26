@@ -18,9 +18,9 @@ export default function MarketsHero() {
         $rounded
         $image={ui.hero.image}
         className={`pm-p-home__hero ${styles.headerHero}`}
-        {...(ui.hero.image_url && {
+        {...(ui.hero.image && {
           $as: 'a',
-          href: ui.hero.image_url,
+          href: ui.hero.image,
           target: '_blank',
           rel: 'noopener',
           'aria-label': ui.hero.action.title || 'Learn More'

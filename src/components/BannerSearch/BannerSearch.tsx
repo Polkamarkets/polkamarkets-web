@@ -35,7 +35,11 @@ function BannerSearch({
       <div
         className={styles.banner}
         style={
-          { '--background-image': `url(${ui.hero.image_url})` } as CSSProperties
+          {
+            '--background-image': `url(${
+              ui.hero.image || '/images/home-banner.png'
+            })`
+          } as CSSProperties
         }
       >
         <h3>communities</h3>
