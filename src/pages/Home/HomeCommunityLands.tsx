@@ -77,15 +77,6 @@ type HomeCommunityLandsProps = {
 function HomeCommunityLands({ lands }: HomeCommunityLandsProps) {
   return (
     <div className={styles.communityLands}>
-      <div className={styles.communityLandsHeader}>
-        <h3 className={styles.communityLandsHeaderTitle}>Community Lands</h3>
-        <Tooltip
-          text="Foreland Communities that you can join to play their prediction contests for a chance to win rewards."
-          position="top"
-        >
-          <InfoIcon />
-        </Tooltip>
-      </div>
       {!lands.length ? (
         <div className="padding-y-5 padding-x-4 width-full border-solid border-1 border-radius-medium">
           <AlertMini
