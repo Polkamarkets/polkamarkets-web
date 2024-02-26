@@ -18,10 +18,13 @@ export type CreateMarketFormData = {
   outcomes: Outcome[];
   image: Image;
   category: string;
-  subcategory: string;
   closingDate: string;
-  liquidity: number;
-  fee: number;
-  treasuryFee: number;
+  communitySlug: string;
+  communityName: string;
+  communityImageUrl: string;
+  contestSlug: string;
+  contestName: string;
+  // fee: number;
+  // treasuryFee: number;
   resolutionSource?: string;
 };

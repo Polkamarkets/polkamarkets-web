@@ -2,7 +2,8 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: var(--size-16) var(--grid-margin);
+  padding: var(--size-16);
+
 
   &Header {
     display: flex;
@@ -16,6 +17,41 @@
     }
   }
 }
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--size-6);
+  margin-bottom: var(--size-16);
+
+}
+
+
+.community {
+  color:  #FFF;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px;
+  text-transform: uppercase;
+}
+
+.connection {
+  color: #6A7281;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+.context {
+  color: #9DA3AE;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+}
+
 
 .footer {
   height: inherit;

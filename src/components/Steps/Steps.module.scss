@@ -22,44 +22,43 @@
     margin-bottom: var(--size-12);
     font-size: 1.4rem;
     line-height: 1;
-    font-weight: 600;
+    font-weight: 400;
   }
 }
 
 .stepInProgress {
   @extend .step;
-  border-color: #8888fc;
+  border-color: #5751FC;
 
   &Title {
     @extend .stepTitle;
-    color: #8888fc;
+    color: white;
   }
 }
 
 .stepFinished {
   @extend .step;
-  border-color: #65d6ad;
-
+  border-color: #637084;
   &Title {
     @extend .stepTitle;
-    color: #65d6ad;
+    color: #637084;
   }
 }
 
 .stepWaiting {
   @extend .step;
-  border-color: #435270;
+  border-color: #637084;
 
   &Title {
     @extend .stepTitle;
-    color: #435270;
+    color: #637084;
   }
 }
 
 .currentStep {
   padding: var(--size-32);
   border: 1px solid var(--color-border);
-  border-radius: var(--size-8);
+  border-radius: var(--size-18);
 }
 
 .footer {

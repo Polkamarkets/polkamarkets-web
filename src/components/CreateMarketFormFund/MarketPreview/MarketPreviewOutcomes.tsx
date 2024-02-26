@@ -7,13 +7,9 @@ import MarketPreviewOutcomesClasses from './MarketPreviewOutcomes.module.scss';
 
 type MarketPreviewOutcomesProps = {
   outcomes: Outcome[];
-  ticker: string;
 };
 
-function MarketPreviewOutcomes({
-  outcomes,
-  ticker
-}: MarketPreviewOutcomesProps) {
+function MarketPreviewOutcomes({ outcomes }: MarketPreviewOutcomesProps) {
   const theme = useTheme();
 
   const max = theme.device.isDesktop ? 2 : 1;
@@ -69,7 +65,6 @@ function MarketPreviewOutcomes({
                     >
                       {`${(outcome.probability / 100).toFixed(3)} `}
                     </Text>
-                    {ticker}
                   </Text>
                 </div>
                 {image ? <Avatar $size="xs" $radius="xs" src={image} /> : null}
