@@ -1,3 +1,11 @@
+.root {
+  align-items: flex-end !important;
+
+  &HasPrediction {
+    margin-top: -10px;
+  }
+}
+
 .tradeModal {
   &Dialog {
     position: absolute;

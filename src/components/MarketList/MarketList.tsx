@@ -110,12 +110,14 @@ type MarketListProps = {
     networkId: number;
   };
   showOpenMarketsAtTheTop?: boolean;
+  classNames?: Partial<Record<'root', string>>;
 };
 
 export default function MarketList({
   filtersVisible,
   fetchByIds,
-  showOpenMarketsAtTheTop = false
+  showOpenMarketsAtTheTop = false,
+  classNames
 }: MarketListProps) {
   const { data, fetch, state } = useMarkets(fetchByIds);
 
@@ -140,9 +142,13 @@ export default function MarketList({
 
   return (
     <div
-      className={cn('pm-c-market-list', {
-        'pm-c-market-list--filters-visible': filtersVisible
-      })}
+      className={cn(
+        'pm-c-market-list',
+        {
+          'pm-c-market-list--filters-visible': filtersVisible
+        },
+        classNames?.root
+      )}
     >
       {
         {

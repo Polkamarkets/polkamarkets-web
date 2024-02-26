@@ -1,13 +1,16 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 
+import classNames from 'classnames';
 import { features } from 'config';
 import sortOutcomes from 'helpers/sortOutcomes';
+import isEmpty from 'lodash/isEmpty';
 import type { Market } from 'models/market';
 import { reset } from 'redux/ducks/trade';
 import { useTheme } from 'ui';
 
 import OutcomeItem from 'components/OutcomeItem';
+import { calculateEthAmountSold } from 'components/TradeForm/utils';
 
 import {
   useAppDispatch,
@@ -44,18 +47,55 @@ export default function MarketOutcomes({
   const reloadMarketPrices = useReloadMarketPrices({ id: market.id });
   const operation = useOperation(market);
 
+  const portfolio = useAppSelector(state => state.polkamarkets.portfolio);
+  const { portfolio: isLoadingPortfolio } = useAppSelector(
+    state => state.polkamarkets.isLoading
+  );
+
   const [tradeVisible, setTradeVisible] = useState(false);
 
   const sortedOutcomes = sortOutcomes({
     outcomes: market.outcomes,
     timeframe: '7d'
   });
+
   const expandableOutcomes = useExpandableOutcomes({
     outcomes: sortedOutcomes,
     max: theme.device.isDesktop && !compact ? 2 : 1
   });
+
   const needExpandOutcomes =
     sortedOutcomes.length > (theme.device.isDesktop && !compact ? 3 : 2);
+
+  const outcomesWithShares = useMemo(() => {
+    if (isLoadingPortfolio) return [];
+
+    const marketShares = portfolio[market.id];
+
+    if (!marketShares) return [];
+
+    const sharesByOutcome = market.outcomes.map(outcome => {
+      const outcomeShares = marketShares.outcomes[outcome.id];
+
+      return {
+        id: outcome.id.toString(),
+        title: outcome.title,
+        imageUrl: outcome.imageUrl,
+        shares: outcomeShares ? outcomeShares.shares : 0,
+        buyValue: outcomeShares
+          ? outcomeShares.shares * outcomeShares.price
+          : 0,
+        value:
+          outcomeShares && outcomeShares.shares > 0
+            ? calculateEthAmountSold(market, outcome, outcomeShares.shares)
+                .totalStake
+            : 0
+      };
+    });
+
+    return sharesByOutcome.filter(outcome => outcome.shares > 1e-5);
+  }, [isLoadingPortfolio, portfolio, market]);
+
   const getOutcomeActive = useCallback(
     (id: string | number) =>
       market.id === trade.selectedMarketId &&
@@ -170,7 +210,11 @@ export default function MarketOutcomes({
   }, []);
 
   return (
-    <ul className="pm-c-market-outcomes">
+    <ul
+      className={classNames('pm-c-market-outcomes', styles.root, {
+        [styles.rootHasPrediction]: !isEmpty(outcomesWithShares)
+      })}
+    >
       <Modal
         show={tradeVisible}
         onHide={handleCloseTrade}
@@ -206,6 +250,8 @@ export default function MarketOutcomes({
               data={outcome.data}
               primary={outcome.title}
               $state={operation.getOutcomeStatus(+outcome.id)}
+              token={market.token}
+              outcomesWithShares={outcomesWithShares}
               isActive={getOutcomeActive(outcome.id)}
               onClick={handleOutcomeClick}
               secondary={{
@@ -232,6 +278,8 @@ export default function MarketOutcomes({
               expandableOutcomes.off.map(outcome => +outcome.id)
             )}
             value={expandableOutcomes.onseted[0].id}
+            token={market.token}
+            outcomesWithShares={outcomesWithShares}
             onClick={handleOutcomeClick}
             {...expandableOutcomes.offseted}
           />

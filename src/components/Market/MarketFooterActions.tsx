@@ -1,7 +1,10 @@
 import cn from 'classnames';
 import { Market } from 'models/market';
 
-import { CheckIcon, WarningIcon } from 'assets/icons';
+import {
+  // CheckIcon,
+  WarningIcon
+} from 'assets/icons';
 
 import FavoriteMarket from 'components/FavoriteMarket';
 import Icon from 'components/Icon';
@@ -17,11 +20,12 @@ type MarketFooterActionsProps = {
 };
 
 const status = {
-  success: (
-    <span className={cn(styles.predicted, styles.predictedSuccess)}>
-      <CheckIcon className={styles.predictedIcon} /> Predicted
-    </span>
-  ),
+  // success: (
+  //   <span className={cn(styles.predicted, styles.predictedSuccess)}>
+  //     <CheckIcon className={styles.predictedIcon} /> Predicted
+  //   </span>
+  // ),
+  success: null,
   failed: (
     <span className={cn(styles.predicted, styles.predictedFailed)}>
       <WarningIcon className={styles.predictedIcon} /> Failed

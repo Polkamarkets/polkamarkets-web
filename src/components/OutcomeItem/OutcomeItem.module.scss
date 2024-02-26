@@ -16,6 +16,45 @@
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center center;
+
+  &Status {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 4px;
+
+    padding: 4px 6px;
+    margin-top: -1px;
+
+    border-radius: 4px 4px 0px 0px;
+
+    &Title,
+    &Performance {
+      font-size: 1rem;
+      font-weight: 600;
+      line-height: normal;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+
+      color: white;
+    }
+
+    &Performance {
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      word-break: break-all;
+
+      overflow: hidden;
+    }
+
+    &Icon {
+      height: 10px;
+      width: 10px;
+
+      fill: white;
+    }
+  }
 }
 
 .size {
@@ -84,14 +123,20 @@
 }
 
 .state {
-  --border-width: 2px;
+  --border-width: 1px;
 
   &Success {
-    border-color: $primary-500 !important;
+    border-color: rgba(87, 81, 252, 0.5) !important;
+
+    .rootStatus {
+      background-color: $primary-500;
+    }
   }
+
   &Pending {
     border-color: #9f9dff !important;
   }
+
   &Failed {
     border-color: #ef4444 !important;
   }

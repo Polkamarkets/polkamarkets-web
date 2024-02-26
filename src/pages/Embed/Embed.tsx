@@ -90,6 +90,7 @@ export default function Embed() {
                 image={outcome.imageUrl}
                 value={outcome.id}
                 data={outcome.data}
+                token={market.token}
                 primary={outcome.title}
                 className={embedClasses.outcomesItem}
                 secondary={{
@@ -113,6 +114,7 @@ export default function Embed() {
               $size="sm"
               $variant="dashed"
               value={expandableOutcomes.onseted[0].id}
+              token={market.token}
               className={embedClasses.outcomesItem}
               {...expandableOutcomes.offseted}
             />

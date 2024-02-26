@@ -1,7 +1,10 @@
+import { useMemo } from 'react';
+
 import cn from 'classnames';
 import { features } from 'config';
 import { roundNumber } from 'helpers/math';
 import { kebabCase, uniqueId } from 'lodash';
+import { Market } from 'models/market';
 import { Line } from 'rc-progress';
 import type { UserOperation } from 'types/user';
 import { Avatar, useTheme } from 'ui';
@@ -22,6 +25,15 @@ export type OutcomeProps = Pick<
 > &
   Partial<Record<'primary' | 'image' | 'activeColor', string>> &
   Partial<Record<'invested', number>> & {
+    token: Market['token'];
+    outcomesWithShares?: {
+      id: string;
+      title: string;
+      imageUrl: string;
+      shares: any;
+      buyValue: number;
+      value: number;
+    }[];
     $state?: UserOperation['status'];
     isActive?: boolean;
     data?: AreaDataPoint[];
@@ -55,11 +67,21 @@ export default function OutcomeItem({
   resolved,
   className,
   $state,
+  token,
+  outcomesWithShares = [],
   ...props
 }: OutcomeProps) {
   const theme = useTheme();
   const isSm = $size === 'sm';
   const isMd = $size === 'md';
+
+  const outcomeWithShares = useMemo(
+    () =>
+      outcomesWithShares.find(
+        outcome => outcome.id.toString() === props.value?.toString()
+      ),
+    [outcomesWithShares, props.value]
+  );
 
   return (
     <button
@@ -93,6 +115,23 @@ export default function OutcomeItem({
       }}
       {...props}
     >
+      {$state === 'success' && (
+        <div className={outcomeItemClasses.rootStatus}>
+          <CheckIcon className={outcomeItemClasses.rootStatusIcon} />
+          <span className={outcomeItemClasses.rootStatusTitle}>Predicted</span>
+          {outcomeWithShares ? (
+            <span className={outcomeItemClasses.rootStatusPerformance}>
+              (
+              {`${
+                outcomeWithShares.value > outcomeWithShares.buyValue ? '+' : ''
+              }${(outcomeWithShares.value - outcomeWithShares.buyValue).toFixed(
+                1
+              )} ${token.symbol}`}
+              )
+            </span>
+          ) : null}
+        </div>
+      )}
       <div className={outcomeItemClasses.content}>
         {image && isMd && (
           <div className={outcomeItemClasses.itemStart}>

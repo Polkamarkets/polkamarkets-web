@@ -37,7 +37,10 @@ export default function Markets() {
               show={show}
               resetStatesDropdown={!ui.filters.enabled}
             />
-            <MarketList filtersVisible={show} />
+            <MarketList
+              filtersVisible={show}
+              classNames={{ root: styles.list }}
+            />
           </div>
         </div>
       </Route>
