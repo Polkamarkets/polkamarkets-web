@@ -1,0 +1,52 @@
+.root {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-direction: row-reverse;
+  flex: 1 0 auto;
+
+  @media (min-width: 1024px) {
+    flex-direction: unset;
+    margin-right: unset;
+  }
+}
+
+.signout,
+.transactions {
+  padding: var(--size-12) !important;
+  margin-left: auto;
+  color: white !important;
+
+  @media (min-width: 1024px) {
+    margin-left: unset;
+  }
+
+  &Icon {
+    fill: white !important;
+  }
+}
+.wrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+.avatar img {
+  width: 30px;
+  height: 30px;
+}
+
+@media (min-width: 1024px) {
+  .avatar img {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+.profileMenu {
+  background-color: #0A0B0E;
+  border: 1px solid  #202939;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+}

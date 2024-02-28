@@ -1,0 +1,22 @@
+.wrapper {
+    position: relative;
+}
+.badge {
+    width: 16px;
+    height: 16px;
+    border-radius: 100%;
+    background-color: #F63D68;
+    color: #FFF;
+    text-align: center;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: -4px;
+    right: -6px;
+}
+

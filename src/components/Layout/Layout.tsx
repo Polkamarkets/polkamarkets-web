@@ -14,7 +14,7 @@ import SEO from 'components/SEO';
 import UserOperations from 'components/UserOperations';
 import WrongNetwork from 'components/WrongNetwork';
 
-import { useAppSelector, useMarketPath, useNetwork } from 'hooks';
+import { useAppSelector, useNetwork } from 'hooks';
 
 import layoutClasses from './Layout.module.scss';
 
@@ -22,12 +22,10 @@ export default function Layout({ children }: React.PropsWithChildren<{}>) {
   const { network } = useNetwork();
   const isLoggedIn = useAppSelector(state => state.polkamarkets.isLoggedIn);
   const location = useLocation();
-  const marketPath = useMarketPath();
   const [page] = Object.values(pages).filter(
     ({ pathname }) => pathname === location.pathname
   );
-  const isHomePathname =
-    location.pathname === pages.home.pathname || marketPath;
+
   const isAllowedNetwork =
     !isLoggedIn || Object.keys(environment.NETWORKS).includes(network.id);
 
@@ -54,7 +52,7 @@ export default function Layout({ children }: React.PropsWithChildren<{}>) {
           <UserOperations />
         </Drawer>
       )}
-      <Header $gutterBottom={!isHomePathname} />
+      <Header />
       {children}
       <Footer />
       <div id="toast-notification-portal" />

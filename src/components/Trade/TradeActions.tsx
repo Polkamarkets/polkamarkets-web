@@ -14,7 +14,7 @@ import { PolkamarketsApiService } from 'services';
 import TWarningIcon from 'assets/icons/TWarningIcon';
 
 import { AlertMinimal } from 'components/Alert';
-import ProfileSignin from 'components/ProfileSignin';
+import ProfileSignin from 'components/Header/ProfileSignin';
 
 import {
   useAppDispatch,

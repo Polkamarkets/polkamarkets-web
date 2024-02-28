@@ -1,15 +1,15 @@
+import ProfileSignin from 'components/Header/ProfileSignin';
 import Icon from 'components/Icon';
-import ProfileSignin from 'components/ProfileSignin';
-import ProfileSignout from 'components/ProfileSignout';
 
-import Text from '../Text';
+import Text from '../../Text';
+import ProfileMenu from '../ProfileMenu/ProfileMenu';
 
 type ProfileProps = {
   isLoggedIn: boolean;
 };
 
 export default function Profile({ isLoggedIn }: ProfileProps) {
-  if (isLoggedIn) return <ProfileSignout />;
+  if (isLoggedIn) return <ProfileMenu />;
   return (
     <ProfileSignin variant="normal" color="primary" size="xs">
       <Icon name="Profile" size="md" />

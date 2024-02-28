@@ -10,13 +10,13 @@ import { RemoveOutlinedIcon } from 'assets/icons';
 import { Button } from 'components/Button';
 import type { ButtonProps } from 'components/Button';
 import ConnectMetamask from 'components/ConnectMetamask';
+import ProfileSigninEmail from 'components/Header/ProfileSigninEmail';
 import Icon from 'components/Icon';
 import Modal from 'components/Modal';
 import ModalContent from 'components/ModalContent';
 import ModalHeader from 'components/ModalHeader';
 import ModalHeaderTitle from 'components/ModalHeaderTitle';
 import ModalSection from 'components/ModalSection';
-import ProfileSigninEmail from 'components/ProfileSigninEmail';
 import Text from 'components/Text';
 
 import { useAppDispatch, usePolkamarketsService } from 'hooks';

@@ -11,7 +11,7 @@ import imageClasses from './Image.module.scss';
 export type ImageProps = React.PropsWithChildren<
   Pick<
     React.ComponentPropsWithRef<'img'>,
-    'src' | 'alt' | 'className' | 'ref'
+    'src' | 'alt' | 'className' | 'ref' | 'onClick'
   > & {
     $size?: 'x2s' | 'xs' | 'sm' | 'md' | 'lg';
     $radius?: 'xs' | 'sm' | 'md' | 'lg';

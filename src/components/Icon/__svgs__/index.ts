@@ -9,6 +9,7 @@ export { ReactComponent as Check } from './Check.svg';
 export { ReactComponent as Checkbox } from './Checkbox.svg';
 export { ReactComponent as CheckboxFilled } from './CheckboxFilled.svg';
 export { ReactComponent as Chevron } from './Chevron.svg';
+export { ReactComponent as ChevronDown } from './ChevronDown.svg';
 export { ReactComponent as Cross } from './Cross.svg';
 export { ReactComponent as CrossFilled } from './CrossFilled.svg';
 export { ReactComponent as Crown } from './Crown.svg';
