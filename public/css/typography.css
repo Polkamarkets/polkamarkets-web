@@ -9,24 +9,24 @@ p {
   line-height: 1.4;
 }
 @font-face {
-  font-family: Gilroy;
-  src: local(''), url('../fonts/Gilroy-Regular.woff2') format('woff2');
+  font-family: Inter;
+  src: local(''), url('../fonts/Inter-Regular.ttf');
   font-weight: 400;
   font-style: normal;
   font-stretch: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: Gilroy;
-  src: local(''), url('../fonts/Gilroy-Medium.woff2') format('woff2');
+  font-family: Inter;
+  src: local(''), url('../fonts/Inter-Medium.ttf');
   font-weight: 500;
   font-style: normal;
   font-stretch: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: Gilroy;
-  src: local(''), url('../fonts/Gilroy-SemiBold.woff2') format('woff2');
+  font-family: Inter;
+  src: local(''), url('../fonts/Inter-SemiBold.ttf');
   font-weight: 600;
   font-style: normal;
   font-stretch: normal;

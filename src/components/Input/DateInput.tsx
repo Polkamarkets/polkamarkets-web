@@ -73,7 +73,7 @@ const StyledDateTimePicker = styled(DateTimePicker)<StyledDateTimePickerProps>`
   .MuiOutlinedInput-input {
     padding: var(--size-16);
 
-    font-family: 'Gilroy', sans-serif;
+    font-family: Inter, sans-serif;
     font-size: 1.5rem;
     font-weight: 500;
     line-height: 1;

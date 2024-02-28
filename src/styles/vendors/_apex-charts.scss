@@ -31,7 +31,7 @@ $apexcharts-tooltip-themes: (
     .apexcharts-tooltip-text-value,
     .apexcharts-tooltip-text-y-label,
     .apexcharts-tooltip-text-y-value {
-      font-family: 'Gilroy', sans-serif !important;
+      font-family: 'Inter', sans-serif !important;
       @extend .caption, .semibold;
     }
 
@@ -61,7 +61,7 @@ $apexcharts-tooltip-themes: (
 .apexcharts-yaxis-label,
 .apexcharts-tooltip-text-label,
 .apexcharts-tooltip-text-date {
-  font-family: 'Gilroy', sans-serif !important;
+  font-family: 'Inter', sans-serif !important;
 }
 
 .apexcharts-tooltip-marker {
