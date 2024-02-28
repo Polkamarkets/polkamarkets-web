@@ -46,7 +46,7 @@ function generateCustomOptions(
         vertical: 2
       },
       fontSize: '14px',
-      fontFamily: 'Gilroy',
+      fontFamily: 'Inter',
       fontWeight: 700,
       labels: {
         colors: theme === 'dark' ? ['#F3F4F6'] : ['#313A4C']
