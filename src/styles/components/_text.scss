@@ -28,6 +28,12 @@
   letter-spacing: -0.012rem;
 }
 
+.caption-uppercase {
+  @extend .caption;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
 .tiny-uppercase {
   @extend .tiny;
   letter-spacing: 0.096rem;

@@ -57,26 +57,6 @@ function Virtuoso({ data }: VirtuosoProps) {
     []
   );
 
-  useEffect(() => {
-    (async function handleMarketColors() {
-      if (data) {
-        try {
-          const { default: buildMarketColors } = await import(
-            'helpers/buildMarketColors'
-          );
-          const { MARKET_COLORS_KEY } = await import('helpers/getMarketColors');
-
-          localStorage.setItem(
-            MARKET_COLORS_KEY,
-            JSON.stringify(await buildMarketColors(data))
-          );
-        } catch (error) {
-          // unsupported
-        }
-      }
-    })();
-  }, [data]);
-
   return (
     <>
       <ReactVirtuoso

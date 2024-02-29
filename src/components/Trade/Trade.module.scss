@@ -21,7 +21,8 @@
       min-width: 435px;
     }
 
-    padding: 40px;
+    padding: var(--size-16) var(--size-32) var(--size-24) var(--size-32);
+
     background: linear-gradient(
         0deg,
         rgb(var(--backdrop-color) / var(--alpha-septenary)) 60%,
@@ -55,15 +56,11 @@
   &Actions {
     display: flex;
     flex-direction: column;
-    gap: 28px;
+    gap: var(--size-24);
   }
 
   &View {
     flex: 1 0 auto;
-
-    @media (min-width: 768px) {
-      min-height: 360px;
-    }
 
     ::-webkit-scrollbar {
       width: 4px;
@@ -78,10 +75,9 @@
   gap: var(--size-8);
 
   &Title {
-    font-size: 2.5rem;
-    line-height: 1.35;
-    font-weight: 700;
-    letter-spacing: -0.01em;
+    font-size: 1.8rem;
+    line-height: normal;
+    font-weight: 600;
     word-break: break-word;
     color: var(--color-trade-market-title);
 
@@ -266,14 +262,17 @@
 
     -ms-overflow-style: none;
     scrollbar-width: none;
+
+    align-items: flex-end;
   }
 
   &NonScroll {
+    align-items: flex-end;
     justify-content: center;
   }
 
   &Item {
-    margin: 0 var(--size-8);
+    margin: 0 5.5px;
 
     &:first-child {
       margin-left: 0;
@@ -320,48 +319,82 @@
   display: flex;
   flex-direction: column;
 
-  background-color: transparent;
-  border: 2px solid var(--color-border);
-  border-radius: var(--size-4);
+  width: 100%;
 
-  width: min-content;
+  background-color: #000000;
+  border: 1px solid var(--color-border);
+  border-radius: var(--size-6);
+
+  opacity: 0.25;
+
+  &Selected {
+    opacity: 1;
+    transition: opacity 0.5s linear;
+  }
+
+  &Multiple {
+    width: 260px;
+  }
 
   &:hover,
-  &:focus,
-  &Selected {
-    border: 2px solid #5d55fa;
+  &:focus {
+    border: 1px solid var(--color-border);
+  }
 
-    transition: border 0.2s ease-in-out;
+  &Predicted {
+    border: 1px solid rgba(87, 81, 252, 0.5);
   }
 
   &Disabled {
     pointer-events: none;
   }
 
-  &Selected {
-    .predictionWithImageDetails {
-      background-color: var(--color-trade-prediction-progress--selected);
+  &PredictedLabel {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 4px;
+
+    width: 100%;
+    padding: 4px 6px;
+    background-color: #3033be;
+    border-radius: 4px 4px 0 0;
+
+    color: #ffffff;
+    font-size: 1rem;
+    line-height: normal;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+
+    &Icon {
+      height: 14px;
+      width: 14px;
+
+      flex-shrink: 0;
     }
+  }
+
+  &Body {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: var(--size-12);
+    padding: var(--size-24) var(--size-16);
   }
 
   &Image {
-    height: 132px;
-    width: 132px;
+    height: 48px;
+    width: 48px;
 
-    border-radius: var(--size-4) var(--size-4) 0 0;
+    aspect-ratio: 1 / 1;
+    flex-shrink: 0;
+
+    border-radius: var(--size-6);
   }
 
   &Progress {
-    position: absolute;
     width: 100%;
-    left: 0;
-    bottom: 0;
-
-    &Wrapper {
-      position: relative;
-    }
-
-    padding: var(--size-4);
 
     :global(.rc-progress-line-trail) {
       stroke: rgba(255, 255, 255, 0.3);
@@ -386,26 +419,30 @@
     }
   }
 
+  &Content {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: var(--size-12);
+
+    width: 100%;
+  }
+
   &Details {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
-    width: 100%;
-
+    align-items: flex-start;
     gap: var(--size-8);
 
-    padding: var(--size-12) var(--size-8);
-    background-color: var(--color-trade-prediction);
-    border-radius: 0 0 var(--size-4) var(--size-4);
-
-    transition: background-color 0.2s ease-in-out;
+    width: 100%;
 
     &Title {
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       font-weight: 600;
-      line-height: 100%;
-      letter-spacing: -0.01em;
+      line-height: 1.32;
+      letter-spacing: -0.014em;
 
       color: var(--color-text-primary);
 
@@ -419,13 +456,40 @@
     }
 
     &Price {
-      font-size: 1.3rem;
+      display: flex;
+      align-items: center;
+      gap: 2px;
+
+      font-size: 1.4rem;
       font-weight: 600;
-      line-height: 100%;
-      letter-spacing: -0.04em;
+      line-height: 1.13;
+      letter-spacing: -0.014em;
 
       color: var(--color-text-secondary);
     }
+  }
+}
+
+.typeSelector {
+  gap: 4px;
+
+  background-color: #414853;
+  border-radius: 6px !important;
+
+  :global(.pm-c-button-group__item.active) {
+    background-color: #191b1f !important;
+  }
+
+  &Button {
+    width: 100%;
+
+    font-size: 1.3rem !important;
+    font-weight: 600 !important;
+    line-height: 1.4 !important;
+    color: #ffffff !important;
+
+    padding: var(--size-8) var(--size-16) !important;
+    border-radius: 4px !important;
   }
 }
 
@@ -470,5 +534,51 @@
     fill: var(--color-text-secondary);
     width: 12px;
     height: 12px;
+  }
+}
+
+.toast {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-8);
+
+  padding: var(--size-16);
+  background-color: var(--color-bg-1);
+  border: 1px solid var(--color-border);
+  border-radius: var(--size-6);
+
+  &Header {
+    display: flex;
+    align-items: center;
+    gap: var(--size-8);
+
+    svg {
+      height: var(--size-16);
+      width: var(--size-16);
+
+      fill: #f0b429;
+    }
+
+    &Title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      line-height: normal;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #fff;
+    }
+  }
+
+  &Description {
+    font-size: 1.4rem;
+    line-height: 1.42;
+    font-weight: 500;
+
+    color: #c5cad3;
+
+    strong {
+      font-weight: 600;
+      color: #fff;
+    }
   }
 }

@@ -47,7 +47,7 @@ function MiniTable({ rows, color = 'default', style }: MiniTableProps) {
     <ul className="pm-c-mini-table" style={style}>
       {rows?.map(item => (
         <li key={item.key} className={`pm-c-mini-table__item--${color}`}>
-          <Text as="span" scale="tiny-uppercase" fontWeight="bold">
+          <Text as="span" scale="caption-uppercase" fontWeight="bold">
             {item.title}
           </Text>
           <div className="fill-empty-space" />

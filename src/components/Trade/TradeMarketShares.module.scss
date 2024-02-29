@@ -1,0 +1,47 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-16);
+
+  padding: var(--size-12);
+
+  background: rgba(93, 85, 250, 0.05);
+  border: 1px solid rgba(136, 136, 252, 0.3);
+
+  border-radius: var(--size-4);
+
+  &Item {
+    @media (min-width: 768px) {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--size-24);
+    }
+
+    &TitleGroup {
+      display: inline-flex;
+      flex-direction: row;
+      align-items: flex-end;
+      gap: var(--size-4);
+
+      vertical-align: bottom;
+
+      &Image {
+        margin-left: 2px;
+      }
+    }
+
+    &Description {
+      font-size: 1.2rem;
+      line-height: 1.5;
+      font-weight: 500;
+      color: var(--color-market-shares-description);
+
+      strong {
+        font-weight: bold;
+        color: var(--color-market-shares-description--bold);
+      }
+    }
+  }
+}
