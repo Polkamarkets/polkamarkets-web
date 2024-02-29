@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import * as realitioLib from '@reality.eth/reality-eth-lib/formatters/question';
-import { features, ui } from 'config';
+import { ui } from 'config';
 import environment, { NetworkConfig } from 'config/environment';
 import * as polkamarketsjs from 'polkamarkets-js';
 
@@ -570,8 +570,6 @@ export default class PolkamarketsService {
   public async isPolkClaimed(): Promise<boolean> {
     if (!this.address) return false;
 
-    if (features.regular.enabled) return true;
-
     let claimed;
 
     try {
@@ -591,8 +589,6 @@ export default class PolkamarketsService {
   }
 
   public async claimPolk(): Promise<boolean> {
-    if (features.regular.enabled) return true;
-
     // ensuring user has wallet connected
     await this.login();
 
@@ -606,8 +602,6 @@ export default class PolkamarketsService {
   }
 
   public async resetBalance(): Promise<boolean> {
-    if (features.regular.enabled) return true;
-
     // ensuring user has wallet connected
     await this.login();
 
@@ -621,8 +615,6 @@ export default class PolkamarketsService {
   }
 
   public async hasUserResetBalance(timestamp: number = 0): Promise<boolean> {
-    if (features.regular.enabled) return false;
-
     // ensuring user has wallet connected
     await this.login();
 

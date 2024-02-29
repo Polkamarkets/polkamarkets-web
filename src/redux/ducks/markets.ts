@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { environment, features, ui } from 'config';
+import { environment, ui } from 'config';
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
 import { toStartEnd } from 'helpers/date';
@@ -27,21 +27,6 @@ dayjs.extend(isBetween);
 
 const AVAILABLE_NETWORKS_IDS = Object.keys(environment.NETWORKS);
 
-const fantasyTokenTicker =
-  features.fantasy.enabled && environment.FEATURE_FANTASY_TOKEN_TICKER
-    ? environment.FEATURE_FANTASY_TOKEN_TICKER
-    : undefined;
-
-const isMarketTokenFantasy = (market: Market) => {
-  return !fantasyTokenTicker || market.token.symbol === fantasyTokenTicker;
-};
-
-const isMarketTokenFromSocialLoginNetwork = (market: Market) => {
-  if (!ui.socialLogin.enabled) return true;
-
-  return market.networkId.toString() === ui.socialLogin.networkId?.toString();
-};
-
 const isMarketFromAvailableNetwork = (market: Market) =>
   AVAILABLE_NETWORKS_IDS.includes(`${market.networkId}`);
 
@@ -58,6 +43,12 @@ const parseTournament = (tournament: string) => {
   }
 
   return null;
+};
+
+const isMarketTokenFromSocialLoginNetwork = (market: Market) => {
+  if (!ui.socialLogin.enabled) return true;
+
+  return market.networkId.toString() === ui.socialLogin.networkId?.toString();
 };
 
 export interface MarketsIntialState {
@@ -147,7 +138,6 @@ const marketsSlice = createSlice({
             type,
             data: data
               .filter(isMarketFromAvailableNetwork)
-              .filter(isMarketTokenFantasy)
               .filter(isMarketTokenFromSocialLoginNetwork)
               .map(market => {
                 const network = getNetworkById(market.networkId);

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 
 import cn from 'classnames';
-import { features, ui } from 'config';
+import { ui } from 'config';
 import { isEmpty, isUndefined } from 'lodash';
 import { setTokenTicker } from 'redux/ducks/market';
 import {
@@ -23,9 +23,10 @@ import {
   useFantasyTokenTicker
 } from 'hooks';
 
+import StepSlider from '../StepSlider';
+
 import { Button } from '../Button';
 import Icon from '../Icon';
-import StepSlider from '../StepSlider';
 import Text from '../Text';
 import ToggleSwitch from '../ToggleSwitch';
 import TradeFormClasses from './TradeForm.module.scss';
@@ -64,8 +65,7 @@ function TradeFormInput() {
 
   const isWrongNetwork =
     !ui.socialLogin.enabled && network.id !== `${marketNetworkId}`;
-
-  const preventBankruptcy = features.fantasy.enabled && ui.socialLogin.enabled;
+  const preventBankruptcy = ui.socialLogin.enabled;
 
   // buy and sell have different maxes
 
@@ -96,16 +96,11 @@ function TradeFormInput() {
     }
     // max for sell actions - number of outcome shares
     else if (type === 'sell') {
-      if (features.fantasy.enabled) {
-        maxAmount = calculateEthAmountSold(
-          market,
-          outcome,
-          portfolio[selectedMarketId]?.outcomes[selectedOutcomeId]?.shares || 0
-        ).totalStake;
-      } else {
-        maxAmount =
-          portfolio[selectedMarketId]?.outcomes[selectedOutcomeId]?.shares || 0;
-      }
+      maxAmount = calculateEthAmountSold(
+        market,
+        outcome,
+        portfolio[selectedMarketId]?.outcomes[selectedOutcomeId]?.shares || 0
+      ).totalStake;
     }
 
     // rounding (down) to 5 decimals
@@ -131,7 +126,6 @@ function TradeFormInput() {
   useEffect(() => {
     dispatch(setTradeAmount(0));
     setAmount(0);
-    setStepAmount(0);
   }, [dispatch, type, wrapped]);
 
   useEffect(() => {
@@ -171,7 +165,6 @@ function TradeFormInput() {
 
     setAmount(newAmount);
     dispatch(setTradeAmount(newAmount || 0));
-    setStepAmount(100 * ((newAmount || 0) / max()));
   }
 
   const handleFocus = useCallback(() => {
@@ -185,7 +178,6 @@ function TradeFormInput() {
 
     setAmount(newMax);
     dispatch(setTradeAmount(newMax));
-    setStepAmount(100);
   }
 
   function handleSetAmount(newAmount: number) {
@@ -238,17 +230,10 @@ function TradeFormInput() {
               <Text as="strong" scale="tiny" fontWeight="semibold">
                 {max()}
               </Text>
-              {features.fantasy.enabled ? (
-                <Text as="span" scale="tiny" fontWeight="semibold">
-                  {' '}
-                  {fantasyTokenTicker || ticker}
-                </Text>
-              ) : (
-                <Text as="span" scale="tiny" fontWeight="semibold">
-                  {' '}
-                  {type === 'buy' ? ticker : 'Shares'}
-                </Text>
-              )}
+              <Text as="span" scale="tiny" fontWeight="semibold">
+                {' '}
+                {fantasyTokenTicker || ticker}
+              </Text>
             </Button>
           </div>
         ) : null}
@@ -297,14 +282,54 @@ function TradeFormInput() {
           {type === 'sell' ? (
             <div className="pm-c-amount-input__logo">
               <Text as="span" scale="caption" fontWeight="bold">
-                {features.fantasy.enabled
-                  ? fantasyTokenTicker || ticker
-                  : 'Shares'}
+                {fantasyTokenTicker || ticker}
               </Text>
             </div>
           ) : null}
         </div>
       </div>
+
+      <ul
+        className={cn(
+          'pm-c-amount-input__actions',
+          TradeFormClasses.inputActions
+        )}
+      >
+        {type === 'buy'
+          ? amountInputButtons.map(button => (
+              <button
+                key={button}
+                type="button"
+                className={cn('pm-c-amount-input__action', {
+                  'pm-c-amount-input__action--active': button === amount
+                })}
+                onClick={() => handleSetAmount(button)}
+                disabled={isWrongNetwork || isLoadingBalance}
+              >
+                <Text as="span" scale="tiny-uppercase" fontWeight="semibold">
+                  {`${button} ${ticker}`}
+                </Text>
+              </button>
+            ))
+          : null}
+        {type === 'sell'
+          ? SELL_STEPS.map(step => (
+              <button
+                key={step}
+                type="button"
+                className={cn('pm-c-amount-input__action', {
+                  'pm-c-amount-input__action--active': step === amount
+                })}
+                onClick={() => handleSetAmount(roundDown(max() * (step / 100)))}
+                disabled={isWrongNetwork}
+              >
+                <Text as="span" scale="tiny-uppercase" fontWeight="semibold">
+                  {`${step}%`}
+                </Text>
+              </button>
+            ))
+          : null}
+      </ul>
       {!preventBankruptcy ? (
         <StepSlider
           currentValue={stepAmount}

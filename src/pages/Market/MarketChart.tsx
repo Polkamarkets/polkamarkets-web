@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import TradingViewWidget, { Themes } from 'react-tradingview-widget';
 
-import { features } from 'config';
 import { roundNumber } from 'helpers/math';
 import sortOutcomes from 'helpers/sortOutcomes';
 import maxBy from 'lodash/maxBy';
@@ -45,25 +44,17 @@ function MarketOverview() {
             {highestPriceOutcome.title.toUpperCase()}
           </Text>
           <Text color="light-gray" scale="heading" fontWeight="semibold">
-            {features.fantasy.enabled ? (
-              <>
-                <span className="notranslate">
-                  {roundNumber(highestPriceOutcome.price * 100, 3)}%
-                </span>
-                <Text
-                  as="span"
-                  scale="tiny-uppercase"
-                  fontWeight="bold"
-                  className="market-chart__view-caption"
-                >
-                  <InfoTooltip text="Probability of an answer occur based on already made predictions." />
-                </Text>
-              </>
-            ) : (
-              <span className="notranslate">
-                {highestPriceOutcome.price} {ticker}
-              </span>
-            )}
+            <span className="notranslate">
+              {roundNumber(highestPriceOutcome.price * 100, 3)}%
+            </span>
+            <Text
+              as="span"
+              scale="tiny-uppercase"
+              fontWeight="bold"
+              className="market-chart__view-caption"
+            >
+              <InfoTooltip text="Probability of an answer occur based on already made predictions." />
+            </Text>
           </Text>
           <Text
             as="span"
@@ -72,14 +63,7 @@ function MarketOverview() {
             fontWeight="semibold"
             className="notranslate"
           >
-            {features.fantasy.enabled ? (
-              <>{highestPriceOutcome.pricesDiff.pct}</>
-            ) : (
-              <>
-                {highestPriceOutcome.pricesDiff.value} {ticker} (
-                {highestPriceOutcome.pricesDiff.pct})
-              </>
-            )}
+            {highestPriceOutcome.pricesDiff.pct}
           </Text>{' '}
           <Text as="span" scale="tiny" color="gray" fontWeight="semibold">
             Since Market Creation

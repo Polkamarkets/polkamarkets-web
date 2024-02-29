@@ -1,14 +1,11 @@
 import { useMemo } from 'react';
 
 import classNames from 'classnames';
-import { features } from 'config';
 import dayjs from 'dayjs';
 import { roundNumber } from 'helpers/math';
-import isEmpty from 'lodash/isEmpty';
 import { Market } from 'models/market';
 import { useTheme } from 'ui';
 
-import Feature from 'components/Feature';
 import Icon from 'components/Icon';
 
 import { useFantasyTokenTicker } from 'hooks';
@@ -33,17 +30,7 @@ export default function MarketFooterStats({
 }: MarketFooterStatsProps) {
   const theme = useTheme();
 
-  const {
-    users,
-    volume,
-    volumeEur,
-    liquidity,
-    liquidityEur,
-    fee,
-    treasuryFee,
-    token,
-    network
-  } = market;
+  const { users, volume, volumeEur, token } = market;
 
   const expiresAt = dayjs(market.expiresAt).utc(true);
 
@@ -73,15 +60,7 @@ export default function MarketFooterStats({
 
   return (
     <div className="pm-c-market-footer__stats">
-      {theme.device.isDesktop && !isEmpty(network.currency) && (
-        <Feature name="regular">
-          <Tooltip text={network.name}>
-            <Icon name={network.currency.iconName} />
-          </Tooltip>
-          <span className="pm-c-divider--circle" />
-        </Feature>
-      )}
-      {!!users && features.fantasy.enabled && (
+      {!!users && (
         <>
           <Text
             as="span"
@@ -121,10 +100,9 @@ export default function MarketFooterStats({
           >
             <Tooltip
               className={marketClasses.footerStatsTooltip}
-              text={`Volume: ${roundNumber(
-                volumeEur,
-                features.fantasy.enabled ? 0 : 3
-              )} ${fantasyTokenTicker || 'EUR'}`}
+              text={`Volume: ${roundNumber(volumeEur, 0)} ${
+                fantasyTokenTicker || 'EUR'
+              }`}
             >
               <Icon
                 name="Stats"
@@ -137,10 +115,7 @@ export default function MarketFooterStats({
                 fontWeight="semibold"
                 className={marketClasses.footerStatsText}
               >
-                {`${roundNumber(
-                  volume,
-                  features.fantasy.enabled ? 0 : 3
-                ).toLocaleString('fr-FR')} `}
+                {`${roundNumber(volume, 0).toLocaleString('fr-FR')} `}
               </Text>
               <Text
                 as="strong"
@@ -157,75 +132,6 @@ export default function MarketFooterStats({
           </Text>
           {theme.device.isDesktop && <span className="pm-c-divider--circle" />}
         </>
-      )}
-      {!!liquidity && (
-        <Feature name="regular">
-          <Text
-            as="span"
-            scale="tiny-uppercase"
-            fontWeight="semibold"
-            className={marketClasses.footerStatsText}
-          >
-            <Tooltip
-              className={marketClasses.footerStatsTooltip}
-              text={`Liquidity: ${roundNumber(liquidityEur, 3)} EUR`}
-            >
-              <Icon
-                name="Liquidity"
-                title="Liquidity"
-                className={marketClasses.footerStatsIcon}
-              />
-              <Text
-                as="strong"
-                scale="tiny-uppercase"
-                fontWeight="semibold"
-                className={marketClasses.footerStatsText}
-              >
-                {`${roundNumber(liquidity, 3)} `}
-              </Text>
-              <Text
-                as="strong"
-                scale="tiny-uppercase"
-                fontWeight="semibold"
-                className={marketClasses.footerStatsText}
-              >{`${token.ticker}`}</Text>
-            </Tooltip>
-          </Text>
-          {theme.device.isDesktop && <span className="pm-c-divider--circle" />}
-        </Feature>
-      )}
-      {theme.device.isDesktop && (
-        <Feature name="regular">
-          <Text
-            as="span"
-            scale="tiny-uppercase"
-            fontWeight="semibold"
-            className={marketClasses.footerStatsText}
-          >
-            <Tooltip
-              className={marketClasses.footerStatsTooltip}
-              text={`Trading Fee: ${roundNumber(
-                (fee + treasuryFee) * 100,
-                1
-              )}%`}
-            >
-              <Icon
-                name="Fee"
-                title="Trading Fee"
-                className={marketClasses.footerStatsIcon}
-              />
-              <Text
-                as="strong"
-                scale="tiny-uppercase"
-                fontWeight="semibold"
-                className={marketClasses.footerStatsText}
-              >
-                {`${roundNumber((fee + treasuryFee) * 100, 1)}%`}
-              </Text>
-            </Tooltip>
-          </Text>
-          <span className="pm-c-divider--circle" />
-        </Feature>
       )}
       {market.expiresAt && (
         <Text as="span" scale="tiny-uppercase" fontWeight="semibold">

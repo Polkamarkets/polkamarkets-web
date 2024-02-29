@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import * as Sentry from '@sentry/react';
-import { features, ui } from 'config';
+import { ui } from 'config';
 import {
   login,
   fetchAditionalData,
@@ -14,6 +14,7 @@ import { PolkamarketsApiService } from 'services';
 import TWarningIcon from 'assets/icons/TWarningIcon';
 
 import { AlertMinimal } from 'components/Alert';
+import ApproveToken from 'components/ApproveToken';
 import ProfileSignin from 'components/ProfileSignin';
 
 import {
@@ -27,7 +28,6 @@ import {
 } from 'hooks';
 import useReloadMarketPrices from 'hooks/useReloadMarketPrices';
 
-import ApproveToken from '../ApproveToken';
 import { ButtonLoading } from '../Button';
 import NetworkSwitch from '../Networks/NetworkSwitch';
 import Text from '../Text';
@@ -336,8 +336,6 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
 
   const isValidAmount = amount > 0 && amount <= maxAmount;
 
-  const preventBankruptcy = features.fantasy.enabled && ui.socialLogin.enabled;
-
   return (
     <div className="pm-c-trade-form-actions__group--column">
       <div className="pm-c-trade-form-actions">
@@ -391,7 +389,7 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
           {type === 'buy' && !needsPricesRefresh && !isWrongNetwork ? (
             <div className="flex-column gap-6 width-full">
               {isValidAmount &&
-              preventBankruptcy &&
+              ui.socialLogin.enabled &&
               amount >= polkBalance / 2 ? (
                 <AlertMinimal
                   variant="warning"
@@ -408,12 +406,12 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
                   Claim {fantasyTokenTicker}
                 </ButtonLoading>
               ) : null}
-              {!features.fantasy.enabled || (isLoggedIn && polkClaimed) ? (
+              {!isLoggedIn && polkClaimed ? (
                 <ApproveToken
                   fullwidth
-                  address={token.address}
-                  ticker={token.ticker}
-                  wrapped={token.wrapped && !wrapped}
+                  // address={token.address}
+                  // ticker={token.ticker}
+                  // wrapped={token.wrapped && !wrapped}
                 >
                   <ButtonLoading
                     color="primary"
@@ -430,7 +428,7 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
                   </ButtonLoading>
                 </ApproveToken>
               ) : null}
-              {!isLoggedIn && features.fantasy.enabled ? (
+              {!isLoggedIn ? (
                 <ProfileSignin
                   fullwidth
                   size="normal"

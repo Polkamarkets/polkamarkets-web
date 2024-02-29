@@ -1,7 +1,6 @@
 import { Fragment, useCallback, useState } from 'react';
 
 import cn from 'classnames';
-import { features } from 'config';
 import {
   Adornment,
   List,
@@ -29,7 +28,7 @@ const modes = {
   System: 'Sparkles'
 };
 
-export default function NetworkSelector() {
+export default function ThemeSelector() {
   const theme = useTheme();
   const [modeStored] = useLocalStorage(THEME_MODE_KEY, THEME_MODE_DEFAULT);
   const [show, setShow] = useState<HTMLButtonElement | null>(null);
@@ -48,9 +47,7 @@ export default function NetworkSelector() {
     },
     [handleHide, theme.device]
   );
-  const iconName =
-    (isThemeDark(theme.device.mode) ? 'Moon' : 'Sun') +
-    (features.fantasy.enabled ? 'Outlined' : '');
+  const iconName = `${isThemeDark(theme.device.mode) ? 'Moon' : 'Sun'}Outlined`;
 
   return (
     <>
@@ -58,18 +55,15 @@ export default function NetworkSelector() {
         aria-label="Switch theme"
         variant="ghost"
         onClick={handleShow}
-        size={features.fantasy.enabled ? 'sm' : undefined}
-        className={cn(themeSelectorClasses.root, {
-          [themeSelectorClasses.finger]: !features.fantasy.enabled
-        })}
+        size="sm"
+        className={cn(themeSelectorClasses.root)}
       >
         <Icon
           className={themeSelectorClasses.icon}
           name={iconName as IconProps['name']}
           size="lg"
         />
-        {features.fantasy.enabled &&
-          (isThemeDark(theme.device.mode) ? 'Dark' : 'Light')}
+        {isThemeDark(theme.device.mode) ? 'Dark' : 'Light'}
       </Button>
       <Popover position="bottomRight" onHide={handleHide} show={show}>
         {!theme.device.isDesktop && (

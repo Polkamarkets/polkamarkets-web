@@ -2,7 +2,6 @@ import { useCallback, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 
 import * as realitioLib from '@reality.eth/reality-eth-lib/formatters/question';
-import { features } from 'config';
 import { Formik, Form, getIn } from 'formik';
 import { fetchAditionalData, login } from 'redux/ducks/polkamarkets';
 import * as marketService from 'services/Polkamarkets/market';
@@ -82,9 +81,7 @@ function CreateMarketForm() {
     const odds = values.outcomes.map(outcome => outcome.probability);
 
     // data format: "category;subcategory;resolutionSource"
-    const data = `${values.category};${values.subcategory};${
-      features.regular.enabled ? values.resolutionSource : ''
-    }`;
+    const data = `${values.category};${values.subcategory};`;
 
     // images format: "market image hash␟outcome image hash,outcome image hash,..."
     const image = `${values.image.hash}${

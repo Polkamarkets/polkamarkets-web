@@ -1,5 +1,4 @@
 import cn from 'classnames';
-import { features } from 'config';
 import dayjs from 'dayjs';
 import { roundNumber } from 'helpers/math';
 import omit from 'lodash/omit';
@@ -23,9 +22,7 @@ export default function MarketAnalytics() {
     '24H volume': roundNumber(market.volume, 3)
   };
 
-  const filteredAnalytics = features.fantasy.enabled
-    ? omit(analytics, ['Liquidity'])
-    : analytics;
+  const filteredAnalytics = omit(analytics, ['Liquidity']);
 
   return (
     <section className={marketClasses.section}>

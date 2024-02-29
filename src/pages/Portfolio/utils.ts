@@ -1,4 +1,3 @@
-import { ui } from 'config';
 import dayjs from 'dayjs';
 import { roundNumber } from 'helpers/math';
 import { Market, Outcome } from 'models/market';
@@ -318,7 +317,7 @@ function formatPortfolioAnalytics(
       },
       backgroundColor: 'pink',
       chartData: generateChartRandomData(),
-      enabled: ui.portfolio.analytics.liquidityProvided.enabled
+      enabled: false
     },
     {
       title: 'Liquidity earnings',
@@ -329,7 +328,7 @@ function formatPortfolioAnalytics(
       },
       backgroundColor: 'orange',
       chartData: generateChartRandomData(),
-      enabled: ui.portfolio.analytics.liquidityFeesEarned.enabled
+      enabled: false
     }
   ];
 }

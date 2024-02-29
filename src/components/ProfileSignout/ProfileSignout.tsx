@@ -1,14 +1,13 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { features, ui } from 'config';
+import { ui } from 'config';
 import { formatNumberToString } from 'helpers/math';
 import shortenAddress from 'helpers/shortenAddress';
 import { changeSocialLoginInfo } from 'redux/ducks/polkamarkets';
 import { useGetLeaderboardByAddressQuery } from 'services/Polkamarkets';
 import { Avatar, Skeleton } from 'ui';
 
-import BankruptBadge from 'components/BankruptBadge';
 import { Button } from 'components/Button';
 import Icon from 'components/Icon';
 import InfoTooltip from 'components/InfoTooltip';
@@ -36,7 +35,6 @@ export default function ProfileSignout() {
   const isPolkLoading = useAppSelector(
     state => state.polkamarkets.isLoading.polk
   );
-  const bankrupt = useAppSelector(state => state.polkamarkets.bankrupt);
   const polkClaimed = useAppSelector(state => state.polkamarkets.polkClaimed);
   const network = useNetwork();
   const leaderboard = useGetLeaderboardByAddressQuery({
@@ -135,11 +133,10 @@ export default function ProfileSignout() {
       <div className="pm-c-wallet-info__profile notranslate">
         <Link
           to={`/user/${
-            (features.fantasy.enabled &&
-              (slug ||
-                leaderboard.data?.slug ||
-                leaderboard.data?.username ||
-                username)) ||
+            slug ||
+            leaderboard.data?.slug ||
+            leaderboard.data?.username ||
+            username ||
             address
           }`}
         >
@@ -182,7 +179,6 @@ export default function ProfileSignout() {
                   {formatNumberToString(polkBalance)} {ticker}
                   <InfoTooltip text={tooltipText} />
                 </Text>
-                <BankruptBadge bankrupt={bankrupt} />
               </div>
             );
           })()}

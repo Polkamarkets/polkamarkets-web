@@ -1,4 +1,4 @@
-import { features, ui } from 'config';
+import { ui } from 'config';
 import { Container, Hero } from 'ui';
 
 import { Button, ProfileSignin, Text } from 'components';
@@ -58,7 +58,7 @@ export default function HomeHero() {
               {ui.hero.action.title}
             </Button>
           ) : null}
-          {!hasCta && features.fantasy.enabled && !isLoggedIn && (
+          {!hasCta && !isLoggedIn && (
             <ProfileSignin variant="normal" color="primary">
               Sign In
             </ProfileSignin>

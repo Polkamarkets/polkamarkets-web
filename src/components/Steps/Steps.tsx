@@ -1,10 +1,9 @@
 import cn from 'classnames';
 import { useFormikContext } from 'formik';
-import type { Token } from 'types/token';
 
 import { Button, ButtonLoading } from 'components/Button';
 
-import { useAppSelector, useNetwork } from 'hooks';
+import { useAppSelector } from 'hooks';
 
 import ApproveToken from '../ApproveToken';
 import StepsClasses from './Steps.module.scss';
@@ -26,23 +25,10 @@ function Steps({
   isRequiredField
 }: StepsProps) {
   const { isValid, touched, isSubmitting } = useFormikContext();
-  const { network } = useNetwork();
-
-  const createMarketToken = useAppSelector(
-    state => state.polkamarkets.createMarketToken
-  );
 
   const walletConnected = useAppSelector(
     state => state.polkamarkets.isLoggedIn
   );
-
-  let address = '';
-
-  const token = createMarketToken || network.currency;
-
-  if (createMarketToken && (createMarketToken as Token).addresses) {
-    address = (createMarketToken as Token).addresses[network.key];
-  }
 
   const isCurrentStepValid =
     currentStepFields.filter(isRequiredField).every(field => touched[field]) &&
@@ -95,7 +81,7 @@ function Steps({
             </Button>
           ) : null}
           {current === steps.length - 1 ? (
-            <ApproveToken address={address} ticker={token.ticker}>
+            <ApproveToken>
               <ButtonLoading
                 type="submit"
                 variant="normal"

@@ -18,7 +18,7 @@ import {
   RankStableIcon
 } from 'assets/icons/pages/leaderboard';
 
-import { BankruptBadge, Icon, Tooltip } from 'components';
+import { Icon, Tooltip } from 'components';
 
 import LeaderboardClasses from './Leaderboard.module.scss';
 import { Achievement, LeaderboardTableRow } from './types';
@@ -90,7 +90,6 @@ type WalletColumnRenderArgs = {
   explorerURL: string;
   achievements: Achievement[];
   malicious?: boolean;
-  bankrupt?: boolean | null;
 } & Record<'username' | 'userImageUrl' | 'slug', string | null>;
 
 function walletColumnRender({
@@ -101,8 +100,7 @@ function walletColumnRender({
   username,
   slug,
   userImageUrl,
-  malicious,
-  bankrupt
+  malicious
 }: WalletColumnRenderArgs) {
   const walletPlace = WALLET_PLACES[place] || {
     icon: null,
@@ -139,7 +137,6 @@ function walletColumnRender({
             <span className="caption semibold text-3"> (You)</span>
           )}
         </p>
-        <BankruptBadge bankrupt={bankrupt} />
         {!isEmpty(achievements)
           ? achievementsColumnRender(
               achievements,
@@ -487,15 +484,9 @@ type TopWalletRenderArgs = {
   address: string;
   slug: string | null;
   place: number;
-  bankrupt?: boolean | null;
 };
 
-function topWalletColumnRender({
-  address,
-  slug,
-  place,
-  bankrupt
-}: TopWalletRenderArgs) {
+function topWalletColumnRender({ address, slug, place }: TopWalletRenderArgs) {
   const walletPlace = WALLET_PLACES[place] || {
     icon: null,
     textColor: '1'
@@ -515,7 +506,6 @@ function topWalletColumnRender({
               )}`
             : address}
         </Link>
-        <BankruptBadge bankrupt={bankrupt} />
       </div>
     </div>
   );

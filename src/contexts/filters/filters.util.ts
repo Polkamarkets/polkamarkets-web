@@ -1,4 +1,4 @@
-import { environment, features, ui, pages } from 'config';
+import { environment, ui, pages } from 'config';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { camelize } from 'humps';
@@ -13,10 +13,9 @@ dayjs.extend(utc);
 
 const extraFilters = ui.filters.extra.filters;
 
-const fantasyTokenTicker =
-  features.fantasy.enabled && environment.FEATURE_FANTASY_TOKEN_TICKER
-    ? environment.FEATURE_FANTASY_TOKEN_TICKER
-    : undefined;
+const fantasyTokenTicker = environment.FEATURE_FANTASY_TOKEN_TICKER
+  ? environment.FEATURE_FANTASY_TOKEN_TICKER
+  : undefined;
 
 const defaultRangeOptions: Option[] = [
   { label: 'Any', value: 'any' },
@@ -101,7 +100,7 @@ const filters: Filters = {
       title: 'Network',
       options: [],
       multiple: true,
-      enabled: features.regular.enabled
+      enabled: false
     },
     tokens: {
       title: 'Token',
@@ -116,7 +115,7 @@ const filters: Filters = {
         }
       ],
       multiple: true,
-      enabled: features.regular.enabled
+      enabled: false
     },
     volume: {
       title: 'Volume',
@@ -128,7 +127,7 @@ const filters: Filters = {
       title: 'Liquidity',
       options: defaultRangeOptions,
       multiple: false,
-      enabled: features.regular.enabled
+      enabled: false
     },
     endDate: {
       title: 'End Date',
@@ -177,7 +176,7 @@ function addTournaments(tournaments: GetTournamentsData | undefined): Filters {
       }`
     })) || [];
 
-  if (features.fantasy.enabled && pages.tournaments.enabled) {
+  if (pages.tournaments.enabled) {
     return set(filters, 'dropdowns.tournaments.enabled', false);
   }
 

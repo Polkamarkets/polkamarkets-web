@@ -8,7 +8,6 @@ import {
 } from 'pages/Leaderboard/Leaderboard.util';
 
 import environment from './environment';
-import features from './features';
 import { parseFiltersFromEnv, parseNavbarItemsFromEnv } from './ui.utils';
 
 const providers = [
@@ -37,9 +36,6 @@ const ui = {
       items: parseNavbarItemsFromEnv(environment.UI_NAVBAR_ITEMS)
     },
     header: {
-      networkSelector: {
-        enabled: features.regular.enabled
-      },
       helpUrl: environment.UI_HELP_URL,
       communityUrls: {
         enabled: isTrue(environment.UI_COMMUNITY_URLS),
@@ -53,9 +49,6 @@ const ui = {
     },
     onboarding: {
       steps: environment.UI_ONBOARDING
-    },
-    disclaimer: {
-      enabled: features.regular.enabled
     },
     alert: {
       enabled: isTrue(environment.FEATURE_ALERT)
@@ -107,14 +100,7 @@ const ui = {
   selectTokenModal: {
     blacklist: environment.UI_TOKEN_BLACKLIST?.split(',')
   },
-  tradeForm: {
-    liquidity: {
-      enabled: features.regular.enabled
-    }
-  },
-  reportForm: {
-    enabled: features.regular.enabled
-  },
+
   leaderboard: {
     columns: intersection(
       environment.UI_LEADERBOARD_COLUMNS?.split(',') ||
@@ -144,31 +130,6 @@ const ui = {
   comments: {
     enabled: !isTrue(environment.UI_COMMENTS_DISABLED)
   },
-  profile: {
-    summary: {
-      liquidityProvided: {
-        enabled: features.regular.enabled
-      }
-    }
-  },
-  portfolio: {
-    analytics: {
-      liquidityProvided: {
-        enabled: features.regular.enabled
-      },
-      liquidityFeesEarned: {
-        enabled: features.regular.enabled
-      }
-    },
-    tabs: {
-      liquidityPositions: {
-        enabled: features.regular.enabled
-      },
-      reportPositions: {
-        enabled: features.regular.enabled
-      }
-    }
-  },
   market: {
     news: {
       enabled: isTrue(environment.FEATURE_NEWS)
@@ -192,7 +153,7 @@ const ui = {
   },
   socialLogin: {
     hasAutoClaim: isTrue(environment.UI_SOCIAL_LOGIN_AUTO_CLAIM),
-    enabled: isTrue(environment.FEATURE_SOCIAL_LOGIN),
+    enabled: true,
     networkId: environment.FEATURE_SOCIAL_LOGIN_NETWORK_ID,
     isTestnet: isTrue(environment.FEATURE_SOCIAL_LOGIN_IS_TESTNET),
     providers:

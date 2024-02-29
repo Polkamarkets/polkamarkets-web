@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 
-import { features } from 'config';
 import sortOutcomes from 'helpers/sortOutcomes';
 import type { Market } from 'models/market';
 import { reset } from 'redux/ducks/trade';
@@ -91,25 +90,7 @@ export default function MarketOutcomes({
 
         setOutcome(isOutcomeActive ? '' : value);
 
-        if (features.fantasy.enabled) {
-          setTradeVisible(true);
-        } else {
-          if (market.state === 'closed') {
-            const { openReportForm } = await import('redux/ducks/ui');
-
-            dispatch(openReportForm());
-          } else {
-            const { openTradeForm } = await import('redux/ducks/ui');
-
-            dispatch(openTradeForm());
-          }
-          if (isOutcomeActive) {
-            const { closeTradeForm } = await import('redux/ducks/ui');
-
-            dispatch(closeTradeForm());
-          }
-          history.push(`/markets/${market.slug}`, { from: location.pathname });
-        }
+        setTradeVisible(true);
       }
     },
     [
@@ -118,9 +99,7 @@ export default function MarketOutcomes({
       setOutcome,
       history,
       market.slug,
-      market.state,
-      location.pathname,
-      dispatch
+      location.pathname
     ]
   );
 
@@ -139,7 +118,7 @@ export default function MarketOutcomes({
   useEffect(() => {
     (async function getOutcomeSelected() {
       try {
-        if ('SELECTED_OUTCOME' in localStorage && features.fantasy.enabled) {
+        if ('SELECTED_OUTCOME' in localStorage) {
           const selectedOutcome =
             localStorage.getItem('SELECTED_OUTCOME') || '{}';
           const persistIds = JSON.parse(selectedOutcome) as Record<

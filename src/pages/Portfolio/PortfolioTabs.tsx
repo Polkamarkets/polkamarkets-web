@@ -1,26 +1,15 @@
 import { useState, useMemo, memo, useEffect } from 'react';
 
-import { ui, features } from 'config';
 import { isEmpty } from 'lodash';
 import { setFilter } from 'redux/ducks/portfolio';
 import { useGetMarketsByIdsQuery } from 'services/Polkamarkets';
 import { useTheme } from 'ui';
 
-import {
-  ButtonGroup,
-  PortfolioLiquidityTable,
-  PortfolioMarketTable,
-  PortfolioReportTable,
-  Filter
-} from 'components';
+import { PortfolioMarketTable, Filter } from 'components';
 
 import { useAppDispatch, useNetwork, usePolkamarketsService } from 'hooks';
 
-import {
-  formatLiquidityPositions,
-  formatMarketPositions,
-  formatReportPositions
-} from './utils';
+import { formatMarketPositions } from './utils';
 
 function TabsFilter() {
   const dispatch = useAppDispatch();
@@ -73,8 +62,6 @@ function PortfolioTabs({ user, isLoadingUser }: PortfolioTabsProps) {
   const theme = useTheme();
   const { network } = useNetwork();
   const polkamarketsService = usePolkamarketsService();
-
-  const [currentTab, setCurrentTab] = useState('marketPositions');
 
   const [state, setState] = useState<{
     bonds: Object;
@@ -150,8 +137,7 @@ function PortfolioTabs({ user, isLoadingUser }: PortfolioTabsProps) {
     actions: isLoadingActions
   } = isLoading;
 
-  const { bonds, portfolio, actions, marketsWithActions, marketsWithBonds } =
-    state;
+  const { portfolio, actions, marketsWithActions, marketsWithBonds } = state;
 
   const marketsIds = [...marketsWithActions, ...marketsWithBonds];
 
@@ -162,10 +148,7 @@ function PortfolioTabs({ user, isLoadingUser }: PortfolioTabsProps) {
         networkId: network.id
       },
       {
-        skip:
-          (ui.portfolio.tabs.reportPositions.enabled && isLoadingBonds) ||
-          isLoadingActions ||
-          isEmpty(marketsIds)
+        skip: isLoadingBonds || isLoadingActions || isEmpty(marketsIds)
       }
     );
 
@@ -173,22 +156,6 @@ function PortfolioTabs({ user, isLoadingUser }: PortfolioTabsProps) {
     () => formatMarketPositions(user.isLoggedIn, portfolio, actions, markets),
     [actions, markets, portfolio, user.isLoggedIn]
   );
-
-  const liquidityPositions = useMemo(() => {
-    if (ui.portfolio.tabs.liquidityPositions.enabled) {
-      return formatLiquidityPositions(user.isLoggedIn, portfolio, markets);
-    }
-
-    return undefined;
-  }, [markets, portfolio, user.isLoggedIn]);
-
-  const reportPositions = useMemo(() => {
-    if (ui.portfolio.tabs.reportPositions.enabled) {
-      return formatReportPositions(user.isLoggedIn, bonds, markets);
-    }
-
-    return undefined;
-  }, [bonds, markets, user.isLoggedIn]);
 
   const positions = theme.device.isDesktop
     ? marketPositions
@@ -199,66 +166,19 @@ function PortfolioTabs({ user, isLoadingUser }: PortfolioTabsProps) {
   return (
     <div className="portfolio-tabs">
       <div className="portfolio-tabs__header">
-        {features.regular.enabled ? (
-          <ButtonGroup
-            defaultActiveId="marketPositions"
-            buttons={[
-              {
-                id: 'marketPositions',
-                name: 'Market Positions',
-                color: 'default'
-              },
-              {
-                id: 'liquidityPositions',
-                name: 'Liquidity Positions',
-                color: 'default'
-              },
-              {
-                id: 'reportPositions',
-                name: 'Reports',
-                color: 'default'
-              }
-            ]}
-            onChange={setCurrentTab}
-            style={{ width: 'fit-content' }}
-          />
-        ) : null}
         <PortfolioTabsFilter />
       </div>
       <div className="portfolio-tabs__content">
-        {currentTab === 'marketPositions' ? (
-          <PortfolioMarketTable
-            rows={positions.rows}
-            headers={positions.headers}
-            isLoadingData={
-              isLoadingUser ||
-              isLoadingMarkets ||
-              isLoadingPortfolio ||
-              isLoadingActions
-            }
-          />
-        ) : null}
-        {liquidityPositions && currentTab === 'liquidityPositions' ? (
-          <PortfolioLiquidityTable
-            rows={liquidityPositions.rows}
-            headers={liquidityPositions.headers}
-            isLoadingData={
-              isLoadingUser || isLoadingMarkets || isLoadingPortfolio
-            }
-          />
-        ) : null}
-        {reportPositions && currentTab === 'reportPositions' ? (
-          <PortfolioReportTable
-            rows={reportPositions.rows}
-            headers={reportPositions.headers}
-            isLoadingData={
-              isLoadingUser ||
-              isLoadingMarkets ||
-              isLoadingPortfolio ||
-              isLoadingBonds
-            }
-          />
-        ) : null}
+        <PortfolioMarketTable
+          rows={positions.rows}
+          headers={positions.headers}
+          isLoadingData={
+            isLoadingUser ||
+            isLoadingMarkets ||
+            isLoadingPortfolio ||
+            isLoadingActions
+          }
+        />
       </div>
     </div>
   );

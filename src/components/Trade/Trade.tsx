@@ -1,7 +1,6 @@
 import { CSSProperties, useCallback, useMemo } from 'react';
 
 import cn from 'classnames';
-import { features } from 'config';
 import getMarketColors from 'helpers/getMarketColors';
 import type { Outcome } from 'models/market';
 import { changeTradeType, selectOutcome } from 'redux/ducks/trade';
@@ -150,15 +149,13 @@ function Trade({ view = 'default', onTradeFinished }: TradeProps) {
           filterBy={hasSharesOfOtherOutcomes ? filterByHaveShares : undefined}
         />
       </div>
-      {features.fantasy.enabled && (isLoadingLogin || isLoadingPortfolio) ? (
+      {isLoadingLogin || isLoadingPortfolio ? (
         <div className="flex-row justify-center align-center padding-y-10 padding-x-6 border-solid border-1 border-radius-medium">
           <span className="spinner--primary" />
         </div>
       ) : (
         <div className={styles.rootActions}>
-          {features.fantasy.enabled &&
-          hasSharesOfOtherOutcomes &&
-          prediction ? (
+          {hasSharesOfOtherOutcomes && prediction ? (
             <div className="flex-column gap-5 width-full">
               <AlertMini
                 variant="warning"

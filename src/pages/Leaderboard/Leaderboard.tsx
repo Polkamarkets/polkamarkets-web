@@ -1,34 +1,22 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useLocation, useParams, matchPath } from 'react-router-dom';
 
 import cn from 'classnames';
-import { ui, pages, features } from 'config';
+import { ui, pages } from 'config';
 import { defaultMetadata, metadataByPage } from 'config/pages';
-import { isNull } from 'lodash';
 import {
   useGetLeaderboardByTimeframeQuery,
   useGetLeaderboardGroupBySlugQuery,
-  useGetTournamentBySlugQuery,
-  useJoinLeaderboardGroupMutation
+  useGetTournamentBySlugQuery
 } from 'services/Polkamarkets';
-import { Container, Image, useTheme } from 'ui';
+import { Container, useTheme } from 'ui';
 
-import {
-  CreateLeaderboardGroup,
-  InfoTooltip,
-  Link,
-  SEO,
-  Tabs
-} from 'components';
-import { ButtonLoading } from 'components/Button';
+import { InfoTooltip, SEO, Tabs } from 'components';
 import { Dropdown } from 'components/new';
 
 import { useAppSelector, useFantasyTokenTicker, useNetwork } from 'hooks';
 
-import {
-  buildLeaderboardData,
-  sanitizePreviousCreateLeaderboardFormValues
-} from './Leaderboard.util';
+import { buildLeaderboardData } from './Leaderboard.util';
 import LeaderboardHeader from './LeaderboardHeader';
 import LeaderboardMyLeaderboards from './LeaderboardMyLeaderboards';
 import LeaderboardRewards from './LeaderboardRewards';
@@ -44,10 +32,7 @@ import {
   volumeColumnRender,
   walletColumnRender
 } from './prepare';
-import type {
-  LeaderboardTableColumn,
-  CreateLeaderboardGroupState
-} from './types';
+import type { LeaderboardTableColumn } from './types';
 import { tournamentRewards } from './utils';
 
 const tabs = [
@@ -302,8 +287,7 @@ function Leaderboard() {
   const {
     data: leaderboardGroup,
     isLoading: isLoadingLeaderboardGroup,
-    isFetching: isFetchingLeaderboardGroup,
-    refetch: refetchLeaderboardGroup
+    isFetching: isFetchingLeaderboardGroup
   } = useGetLeaderboardGroupBySlugQuery(
     {
       slug: slug || ''
@@ -316,12 +300,6 @@ function Leaderboard() {
 
   const isLoadingGetLeaderboardGroupBySlugQuery =
     isLoadingLeaderboardGroup || isFetchingLeaderboardGroup;
-
-  // Mutations
-  const [joinLeaderboard, { isLoading: isLoadingJoinLeaderboardGroup }] =
-    useJoinLeaderboardGroupMutation();
-
-  const isLoadingJoinLeaderboardGroupMutation = isLoadingJoinLeaderboardGroup;
 
   // Loading state
 
@@ -366,65 +344,13 @@ function Leaderboard() {
   );
 
   // filtering data by only users with username
-  if (features.fantasy.enabled) {
-    data = data.filter(row => row.username);
-  }
 
-  // Users
-  const usersInLeaderboard = useMemo(() => data.map(row => row.user), [data]);
+  data = data.filter(row => row.username);
 
   // User
   const userEthAddress = walletConnected ? ethAddress : undefined;
 
-  const userInLeaderboard = useMemo(
-    () =>
-      userEthAddress ? usersInLeaderboard.includes(userEthAddress) : false,
-    [userEthAddress, usersInLeaderboard]
-  );
-
-  const leaderboardCreatedByUser =
-    leaderboardGroup &&
-    leaderboardGroup.createdBy.toLowerCase() === ethAddress.toLowerCase();
-
-  // Features
-
-  // Join leaderboard
-  const joinGroupState = {
-    visible: !!leaderboardGroup,
-    disabled:
-      !walletConnected ||
-      userInLeaderboard ||
-      isLoadingGetLeaderboardGroupBySlugQuery,
-    joined: userInLeaderboard
-  };
-
-  // Create/Edit leaderboard
-  const createGroupState: CreateLeaderboardGroupState = {
-    visible: walletConnected,
-    mode: leaderboardCreatedByUser ? 'edit' : 'create',
-    previousValues: leaderboardCreatedByUser
-      ? sanitizePreviousCreateLeaderboardFormValues(leaderboardGroup)
-      : undefined,
-    slug: leaderboardGroup ? leaderboardGroup.slug : undefined
-  };
-
   // Handlers
-
-  const handleJoinLeaderboardGroup = useCallback(async () => {
-    if (leaderboardGroup && userEthAddress) {
-      await joinLeaderboard({
-        slug: leaderboardGroup.slug,
-        user: userEthAddress
-      });
-
-      await refetchLeaderboardGroup();
-    }
-  }, [
-    joinLeaderboard,
-    leaderboardGroup,
-    refetchLeaderboardGroup,
-    userEthAddress
-  ]);
 
   return (
     <Container className="pm-p-leaderboard max-width-screen-xl">
@@ -437,84 +363,15 @@ function Leaderboard() {
             : defaultMetadata.description
         }
       />
-      {features.fantasy.enabled ? (
-        <LeaderboardHeader
-          imageUrl={leaderboardImageUrl}
-          title={leaderboardTitle}
-          slug={tournamentBySlug?.slug}
-          isTournament={leaderboardType.tournament}
-          description={
-            leaderboardType.tournament ? tournamentBySlug?.description : ''
-          }
-        />
-      ) : (
-        <div className="pm-p-leaderboard__header">
-          <div className="flex-row gap-5 align-start">
-            {!isNull(leaderboardImageUrl) && (
-              <Image
-                $size="md"
-                $radius="sm"
-                alt={leaderboardTitle}
-                src={leaderboardImageUrl}
-              />
-            )}
-            <div className="flex-column gap-3">
-              <div className="flex-row gap-5 align-center">
-                <h1 className="heading semibold text-1">{leaderboardTitle}</h1>
-                {leaderboardType.club &&
-                createGroupState.visible &&
-                createGroupState.mode === 'edit' ? (
-                  <CreateLeaderboardGroup
-                    mode={createGroupState.mode}
-                    previousValues={createGroupState.previousValues}
-                    slug={slug}
-                    disabled={isLoadingQuery}
-                    size="xs"
-                  />
-                ) : null}
-              </div>
-              {leaderboardType.club ? (
-                <p className="tiny medium text-2">
-                  {`Play with your friends, coworkers and community. `}
-                  <Link
-                    title="Learn more"
-                    scale="tiny"
-                    fontWeight="medium"
-                    href="https://docs.v2.polkamarkets.com/"
-                    target="_blank"
-                  />
-                </p>
-              ) : null}
-              {leaderboardType.tournament && tournamentBySlug ? (
-                <p className="tiny medium text-2 whitespace-pre-line">
-                  {tournamentBySlug.description}
-                </p>
-              ) : null}
-            </div>
-          </div>
-          {leaderboardType.club &&
-          createGroupState.visible &&
-          !joinGroupState.visible ? (
-            <CreateLeaderboardGroup
-              mode={createGroupState.mode}
-              previousValues={createGroupState.previousValues}
-              slug={slug}
-              disabled={isLoadingQuery}
-            />
-          ) : null}
-          {leaderboardType.club && joinGroupState.visible ? (
-            <ButtonLoading
-              size="sm"
-              color="default"
-              onClick={handleJoinLeaderboardGroup}
-              loading={isLoadingJoinLeaderboardGroupMutation}
-              disabled={joinGroupState.disabled}
-            >
-              {joinGroupState.joined ? 'Joined' : 'Join Club'}
-            </ButtonLoading>
-          ) : null}
-        </div>
-      )}
+      <LeaderboardHeader
+        imageUrl={leaderboardImageUrl}
+        title={leaderboardTitle}
+        slug={tournamentBySlug?.slug}
+        isTournament={leaderboardType.tournament}
+        description={
+          leaderboardType.tournament ? tournamentBySlug?.description : ''
+        }
+      />
       {leaderboardType.tournament ? (
         <div
           className={cn('gap-6 justify-space-between align-start width-full', {
@@ -550,7 +407,7 @@ function Leaderboard() {
                 isLoading={isLoadingQuery}
               />
             )}
-            {features.fantasy.enabled && !!rewards?.length && (
+            {!!rewards?.length && (
               <LeaderboardRewards>
                 <LeaderboardRewardsList rewards={rewards} />
               </LeaderboardRewards>

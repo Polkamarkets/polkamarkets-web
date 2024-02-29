@@ -1,7 +1,6 @@
 import { useCallback } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
-import { features } from 'config';
 import { isNull } from 'lodash';
 import { Market as MarketInterface } from 'models/market';
 import { Avatar, useTheme } from 'ui';
@@ -33,21 +32,9 @@ function Market({
 
   const handleNavigation = useCallback(async () => {
     const { clearMarket } = await import('redux/ducks/market');
-    const { openTradeForm } = await import('redux/ducks/ui');
-    const { selectOutcome } = await import('redux/ducks/trade');
-
-    if (features.regular.enabled) {
-      dispatch(
-        selectOutcome(market.id, market.networkId, market.outcomes[0].id)
-      );
-    }
 
     dispatch(clearMarket());
-
-    if (features.regular.enabled) {
-      dispatch(openTradeForm());
-    }
-  }, [dispatch, market.id, market.networkId, market.outcomes]);
+  }, [dispatch]);
 
   return (
     <Link

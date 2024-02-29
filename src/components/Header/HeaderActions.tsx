@@ -1,16 +1,14 @@
 import { Fragment, useEffect } from 'react';
 
 import cn from 'classnames';
-import { features, ui } from 'config';
+import { ui } from 'config';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Container, Skeleton, useTheme } from 'ui';
 
 import HelpButton from 'components/HelpButton';
 import HowToPlayButton from 'components/HowToPlayButton';
-import NetworkSelector from 'components/NetworkSelector';
 import Profile from 'components/Profile';
 import ThemeSelector from 'components/ThemeSelector';
-import Wallet from 'components/Wallet';
 
 import { useAppSelector, usePortal } from 'hooks';
 
@@ -29,14 +27,6 @@ function HeaderActionsWrapper(
   }, [Portal]);
 
   return <Portal {...props} />;
-}
-function HeaderActionsGroup(
-  props: React.PropsWithChildren<Record<string, unknown>>
-) {
-  return <div className={headerActionsClasses.actionsGroup} {...props} />;
-}
-function SkeletonWallet() {
-  return <Skeleton style={{ height: 46, width: 192 }} />;
 }
 function SkeletonProfile() {
   const theme = useTheme();
@@ -119,57 +109,34 @@ export default function HeaderActions() {
   const theme = useTheme();
   const Root = theme.device.isDesktop ? Fragment : HeaderActionsWrapper;
   const Wrapper = theme.device.isDesktop ? 'div' : Container;
-  const ActionLoadingComponent = features.fantasy.enabled
-    ? SkeletonProfile
-    : SkeletonWallet;
-  const HeaderActionComponent = features.fantasy.enabled ? Profile : Wallet;
-  const HeaderActionsGroupComponent = features.fantasy.enabled
-    ? Fragment
-    : HeaderActionsGroup;
 
   return (
     <Root>
-      <HeaderActionsAnimate show={!features.fantasy.enabled || isLoggedIn}>
+      <HeaderActionsAnimate show={isLoggedIn}>
         <Wrapper
           className={cn(
             headerActionsClasses.root,
             headerActionsClasses.gutterActions,
+            headerActionsClasses.reverse,
             {
-              [headerClasses.container]: !theme.device.isDesktop,
-              [headerActionsClasses.reverse]: features.fantasy.enabled
+              [headerClasses.container]: !theme.device.isDesktop
             }
           )}
         >
-          <HeaderActionsGroupComponent>
-            {ui.layout.header.networkSelector.enabled &&
-              theme.device.isDesktop && (
-                <NetworkSelector
-                  size="sm"
-                  responsive
-                  className={headerActionsClasses.network}
-                />
-              )}
-            {isLoading ? (
-              <ActionLoadingComponent />
-            ) : (
-              <HeaderActionComponent isLoggedIn={isLoggedIn} />
-            )}
-          </HeaderActionsGroupComponent>
-          {!features.fantasy.enabled && <ThemeSelector />}
+          {isLoading ? (
+            <SkeletonProfile />
+          ) : (
+            <Profile isLoggedIn={isLoggedIn} />
+          )}
+          <ThemeSelector />
           {ui.layout.header.helpUrl && (
             <HelpButton
-              className={cn({
-                [headerActionsClasses.help]: features.fantasy.enabled
-              })}
+              className={cn(headerActionsClasses.help)}
               href={ui.layout.header.helpUrl}
             />
           )}
           {ui.layout.onboarding.steps && (
-            <HowToPlayButton
-              className={cn({
-                [headerActionsClasses.howToPlay]: features.fantasy.enabled
-              })}
-            />
+            <HowToPlayButton className={cn(headerActionsClasses.howToPlay)} />
           )}
         </Wrapper>
       </HeaderActionsAnimate>

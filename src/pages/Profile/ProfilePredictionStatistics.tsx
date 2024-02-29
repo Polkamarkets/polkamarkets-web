@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
 
-import { features } from 'config';
 import omit from 'lodash/omit';
 
 import { InfoTooltip } from 'components';
@@ -64,19 +63,14 @@ function ProfilePredictionStatistics({
 
   const filteredColumns = useMemo(
     () =>
-      features.fantasy.enabled
-        ? columns.filter(
-            column => !['marketsCreated', 'liquidityAdded'].includes(column.key)
-          )
-        : columns,
+      columns.filter(
+        column => !['marketsCreated', 'liquidityAdded'].includes(column.key)
+      ),
     [columns]
   );
 
   const filteredRow = useMemo(
-    () =>
-      features.fantasy.enabled
-        ? omit(row, ['marketsCreated', 'liquidityAdded'])
-        : row,
+    () => omit(row, ['marketsCreated', 'liquidityAdded']),
     [row]
   );
 

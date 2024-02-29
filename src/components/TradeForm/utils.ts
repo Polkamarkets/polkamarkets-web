@@ -1,6 +1,5 @@
 import { newtonRaphson } from '@fvictorio/newton-raphson-method';
 import Big from 'big.js';
-import { features } from 'config';
 import { roundNumber } from 'helpers/math';
 import { Market, Outcome } from 'models/market';
 import { TradeDetails } from 'redux/ducks/trade';
@@ -268,10 +267,7 @@ function calculateSharesSold(
 
 function calculateTradeDetails(action, market, outcome, amount): TradeDetails {
   if (action === 'sell') {
-    if (features.fantasy.enabled) {
-      return calculateSharesSold(market, outcome, amount);
-    }
-    return calculateEthAmountSold(market, outcome, amount);
+    return calculateSharesSold(market, outcome, amount);
   }
 
   return calculateSharesBought(market, outcome, amount);

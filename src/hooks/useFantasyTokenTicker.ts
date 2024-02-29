@@ -1,7 +1,7 @@
-import { environment, features } from 'config';
+import { environment } from 'config';
 
 function useFantasyTokenTicker() {
-  if (features.fantasy.enabled && environment.FEATURE_FANTASY_TOKEN_TICKER) {
+  if (environment.FEATURE_FANTASY_TOKEN_TICKER) {
     return environment.FEATURE_FANTASY_TOKEN_TICKER;
   }
 
