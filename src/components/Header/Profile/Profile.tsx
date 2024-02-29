@@ -9,13 +9,17 @@ type ProfileProps = {
 };
 
 export default function Profile({ isLoggedIn }: ProfileProps) {
-  if (isLoggedIn) return <ProfileMenu />;
   return (
-    <ProfileSignin variant="normal" color="primary" size="xs">
-      <Icon name="Profile" size="md" />
-      <Text as="span" scale="caption">
-        Sign In
-      </Text>
-    </ProfileSignin>
+    <>
+      {!isLoggedIn && (
+        <ProfileSignin variant="normal" color="primary" size="xs">
+          <Icon name="Profile" size="md" />
+          <Text as="span" scale="caption">
+            Connect
+          </Text>
+        </ProfileSignin>
+      )}
+      <ProfileMenu />
+    </>
   );
 }

@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import * as Popover from '@radix-ui/react-popover';
-import { features } from 'config';
 import { changeSocialLoginInfo } from 'redux/ducks/polkamarkets';
 import { useGetLeaderboardByAddressQuery } from 'services/Polkamarkets';
 import { Avatar } from 'ui';
@@ -20,6 +19,8 @@ import styles from './ProfileMenu.module.scss';
 
 export default function ProfileMenu() {
   const dispatch = useAppDispatch();
+  const isLoggedIn = useAppSelector(state => state.polkamarkets.isLoggedIn);
+
   const polkamarketsService = usePolkamarketsService();
   const address = useAppSelector(state => state.polkamarkets.ethAddress);
   const network = useNetwork();
@@ -47,6 +48,7 @@ export default function ProfileMenu() {
   const [hasUpdatedSocialLoginInfo, setHasUpdatedSocialLoginInfo] =
     useState(false);
   useEffect(() => {
+    if (!isLoggedIn) return;
     async function handleSocialLogin() {
       const { updateSocialLoginInfo } = await import(
         'services/Polkamarkets/user'
@@ -84,37 +86,116 @@ export default function ProfileMenu() {
     }
 
     handleSocialLogin();
-  }, [socialLoginInfo, address, dispatch, hasUpdatedSocialLoginInfo]);
+  }, [
+    socialLoginInfo,
+    address,
+    dispatch,
+    hasUpdatedSocialLoginInfo,
+    isLoggedIn
+  ]);
 
   return (
     <Popover.Root>
       <Popover.Trigger asChild>
         <div className={styles.wrapper}>
-          <Avatar
-            $radius="lg"
-            className={styles.avatar}
-            src={socialLoginInfo?.profileImage}
-            alt={username || 'avatar'}
-          />
-          <Icon name="ChevronDown" size="md" />
+          {isLoggedIn ? (
+            <>
+              <Avatar
+                $radius="lg"
+                className={styles.avatar}
+                src={socialLoginInfo?.profileImage}
+                alt={username || 'avatar'}
+              />
+              <Icon name="ChevronDown" size="md" />
+            </>
+          ) : (
+            <Button variant="outline" size="sm">
+              <Icon name="MoreHoriz" size="md" />
+            </Button>
+          )}
         </div>
       </Popover.Trigger>
       <Popover.Portal>
-        <Popover.Content align="end" sideOffset={5}>
+        <Popover.Content
+          align="end"
+          sideOffset={12}
+          onOpenAutoFocus={e => e.preventDefault()}
+        >
           <div className={styles.profileMenu}>
+            {isLoggedIn && (
+              <>
+                <div className={styles.menuProfileAvatar}>
+                  <Avatar
+                    $radius="lg"
+                    className={styles.menuAvatar}
+                    src={socialLoginInfo?.profileImage}
+                    alt={username || 'avatar'}
+                  />
+                  <div className={styles.menuProfileInfo}>
+                    <span className={styles.menuUserName}>Unamed</span>
+                    <span className={styles.menuUserAddress}>
+                      0x25256230...ca49
+                      <Icon
+                        name="Copy"
+                        onClick={() =>
+                          navigator.clipboard.writeText('0x25256230...ca49')
+                        }
+                      />
+                    </span>
+                  </div>
+                </div>
+                <div className={styles.divider} />
+              </>
+            )}
             <Link
               to={`/user/${
-                (features.fantasy.enabled &&
-                  (slug ||
-                    leaderboard.data?.slug ||
-                    leaderboard.data?.username ||
-                    username)) ||
+                slug ||
+                leaderboard.data?.slug ||
+                leaderboard.data?.username ||
+                username ||
                 address
               }`}
+              className={styles.menuItem}
             >
-              Go To profile
+              <Icon name="Profile" />
+              Profile
             </Link>
-            <Button onClick={handleSocialLogout}>Logout</Button>
+
+            <Link to="/#" className={styles.menuItem}>
+              <Icon name="Settings" />
+              Account Settings
+            </Link>
+            <div className={styles.divider} />
+            {!isLoggedIn && (
+              <Link to="/#" className={styles.menuItem}>
+                <Icon name="NewsPaper" />
+                Blog
+              </Link>
+            )}
+            {!isLoggedIn && (
+              <Link to="/#" className={styles.menuItem}>
+                <Icon name="Planet" />
+                Company
+              </Link>
+            )}
+            <Link to="/#" className={styles.menuItem}>
+              <Icon name="Help" />
+              Help Center
+            </Link>
+            <Link to="/#" className={styles.menuItem}>
+              <Icon name="CommentAlert" color="transparent" />
+              Send Feedback
+            </Link>
+            {isLoggedIn && (
+              <Link
+                to="/#"
+                className={styles.menuItem}
+                onClick={handleSocialLogout}
+              >
+                <Icon name="Logout" />
+                Disconnect
+              </Link>
+            )}
           </div>
         </Popover.Content>
       </Popover.Portal>
