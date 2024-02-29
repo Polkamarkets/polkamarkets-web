@@ -2,7 +2,6 @@ import { useCallback, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import cn from 'classnames';
-import { ui } from 'config';
 import { defaultMetadata, metadataByPage } from 'config/pages';
 import isError404 from 'helpers/isError404';
 import {
@@ -103,40 +102,38 @@ export default function Tournament() {
           }
         />
       )}
-      {ui.hero.enabled && (
-        <TournamentHero
-          landName={data?.land?.title}
-          landSlug={data?.land?.slug}
-          landImageUrl={data?.land?.imageUrl}
-          landBannerUrl={data?.land?.bannerUrl}
-          tournamentName={data?.title}
-          tournamentDescription={data?.description}
-          tournamentSlug={data?.slug}
-          tournamentImageUrl={data?.imageUrl}
-          topUsers={
-            <TournamentTopUsers
-              isLoading={
-                isLoadingTournamentBySlugQuery ||
-                isLoadingLeaderboardByTimeframeQuery
-              }
-              rankingRows={prepareTournamentTopUsersRow({
-                rows: leaderboardByTimeframe?.filter(row => row.username)
-              })}
-              rewardsButton={
-                <TournamentTopUsersRewards>
-                  <LeaderboardRewardsList rewards={tournamentRewards(data)} />
-                </TournamentTopUsersRewards>
-              }
-              rewardsRows={tournamentRewards(data, true)}
-            />
-          }
-          questions={marketsIds.length}
-          users={data?.users}
-          rewards={data?.rewards}
-          criteria={tournamentCriteria}
-          rules={data?.rules}
-        />
-      )}
+      <TournamentHero
+        landName={data?.land?.title}
+        landSlug={data?.land?.slug}
+        landImageUrl={data?.land?.imageUrl}
+        landBannerUrl={data?.land?.bannerUrl}
+        tournamentName={data?.title}
+        tournamentDescription={data?.description}
+        tournamentSlug={data?.slug}
+        tournamentImageUrl={data?.imageUrl}
+        topUsers={
+          <TournamentTopUsers
+            isLoading={
+              isLoadingTournamentBySlugQuery ||
+              isLoadingLeaderboardByTimeframeQuery
+            }
+            rankingRows={prepareTournamentTopUsersRow({
+              rows: leaderboardByTimeframe?.filter(row => row.username)
+            })}
+            rewardsButton={
+              <TournamentTopUsersRewards>
+                <LeaderboardRewardsList rewards={tournamentRewards(data)} />
+              </TournamentTopUsersRewards>
+            }
+            rewardsRows={tournamentRewards(data, true)}
+          />
+        }
+        questions={marketsIds.length}
+        users={data?.users}
+        rewards={data?.rewards}
+        criteria={tournamentCriteria}
+        rules={data?.rules}
+      />
       <Container ref={ref} className={styles.nav}>
         <TournamentNav
           onFilterClick={theme.device.isDesktop ? handleToggle : handleShow}
