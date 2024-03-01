@@ -72,7 +72,8 @@ const environmentConfigVariables = [
   'HOMEPAGE_URL',
   'DEFAULT_LANGUAGE',
   'UI_SOCIAL_LOGIN_AUTO_CLAIM',
-  'EXTERNAL_JS_URL'
+  'EXTERNAL_JS_URL',
+  'LANDING_PAGE_URL'
 ] as const;
 
 export type EnvironmentConfigVariable =
