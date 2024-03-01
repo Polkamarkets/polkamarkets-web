@@ -79,11 +79,14 @@ export default class PolkamarketsService {
       web3EventsProvider: WEB3_EVENTS_PROVIDER,
       isSocialLogin: ui.socialLogin.enabled,
       socialLoginParams: {
+        useCustomModal: true,
         isTestnet: ui.socialLogin.isTestnet,
+        urls: [],
         networkConfig: {
           chainId: Number(
             process.env.REACT_APP_FEATURE_SOCIAL_LOGIN_NETWORK_ID
           ),
+          dappAPIKey: process.env.REACT_APP_FEATURE_SOCIAL_LOGIN_DAPP,
           particleProjectId:
             process.env.REACT_APP_FEATURE_SOCIAL_LOGIN_PARTICLE_PROJECT_ID,
           particleClientKey:
@@ -185,6 +188,36 @@ export default class PolkamarketsService {
     this.polkamarkets.socialLoginLogout();
     this.loggedIn = false;
     this.address = '';
+  }
+
+  public async socialLoginGoogle() {
+    await this.polkamarkets.socialLogin.init();
+    return this.polkamarkets.socialLoginGoogle();
+  }
+
+  public async socialLoginFacebook() {
+    await this.polkamarkets.socialLogin.init();
+    return this.polkamarkets.socialLoginFacebook();
+  }
+
+  public async socialLoginTwitter() {
+    await this.polkamarkets.socialLogin.init();
+    return this.polkamarkets.socialLoginTwitter();
+  }
+
+  public async socialLoginGithub() {
+    await this.polkamarkets.socialLogin.init();
+    return this.polkamarkets.socialLoginGithub();
+  }
+
+  public async socialLoginDiscord() {
+    await this.polkamarkets.socialLogin.init();
+    return this.polkamarkets.socialLoginDiscord();
+  }
+
+  public async socialLoginEmail(email) {
+    await this.polkamarkets.socialLogin.init();
+    return this.polkamarkets.socialLoginEmail(email);
   }
 
   public async socialLoginWithJWT(id, jwtToken) {
