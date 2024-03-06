@@ -4,6 +4,7 @@ require('dotenv').config();
 const express = require('express');
 const helmet = require('helmet');
 const NodeCache = require('node-cache');
+const cookieParser = require('cookie-parser');
 
 const app = express();
 const cache = new NodeCache();
@@ -41,6 +42,7 @@ const {
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, './embed'));
 app.use('/public', express.static(path.resolve(__dirname, '..', 'public')));
+app.use(cookieParser());
 
 const port = process.env.PORT || 5000;
 
@@ -181,6 +183,13 @@ const buildImageUrl = (imageUrl, defaultImage, request) => {
 };
 
 app.get('/', (request, response) => {
+  if (
+    request.cookies.isLoggedIn !== 'true' &&
+    process.env.REACT_APP_LANDING_PAGE_URL
+  ) {
+    return response.redirect(process.env.REACT_APP_LANDING_PAGE_URL);
+  }
+
   fs.readFile(indexPath, 'utf8', async (error, htmlData) => {
     if (error) {
       return response.status(404).end();

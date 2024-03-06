@@ -1,4 +1,4 @@
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
 import { pages, ui, environment } from 'config';
@@ -8,8 +8,26 @@ import { Layout } from 'components';
 
 import { useWhitelist } from 'contexts/whitelist';
 
+import { useAppSelector, useCookie } from 'hooks';
+
 export default function AppRoutes() {
   const { isEnabled } = useWhitelist();
+
+  const isLoggedIn = useAppSelector(state => state.polkamarkets.isLoggedIn);
+  const isLoadingLogin = useAppSelector(
+    state => state.polkamarkets.isLoading.login
+  );
+
+  const [_loggedInCookie, setLoggedInCookie] = useCookie(
+    'isLoggedIn',
+    isLoggedIn ? 'true' : 'false'
+  );
+
+  useEffect(() => {
+    if (!isLoadingLogin) {
+      setLoggedInCookie(isLoggedIn ? 'true' : 'false');
+    }
+  }, [isLoadingLogin, isLoggedIn, setLoggedInCookie]);
 
   return (
     <Suspense fallback={<Spinner />}>

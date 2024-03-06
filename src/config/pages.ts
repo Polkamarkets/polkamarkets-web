@@ -1,5 +1,6 @@
 import { lazy } from 'react';
 
+import environment from './environment';
 import features from './features';
 import ui from './ui';
 
@@ -186,6 +187,15 @@ const pages = {
     name: 'Home',
     meta: defaultMetadata,
     enabled: features.fantasy.enabled && ui.tournaments.enabled
+  },
+  homeMirror: {
+    pathname: '/home',
+    Component: lazy(() => import('pages/Home')),
+    exact: true,
+    navigation: false,
+    name: 'Home',
+    meta: defaultMetadata,
+    enabled: !!environment.LANDING_PAGE_URL
   },
   markets: {
     pathname:
