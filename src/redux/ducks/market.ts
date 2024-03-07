@@ -6,8 +6,7 @@ import { Currency } from 'types/currency';
 import { Network } from 'types/network';
 
 const chartViewsEnum = [
-  { id: 'marketOverview', name: 'Market Overview', color: 'default' },
-  { id: 'tradingView', name: 'TradingView', color: 'default' }
+  { id: 'marketOverview', name: 'Market Overview', color: 'default' }
 ];
 
 function toHex(value: string) {
@@ -110,7 +109,6 @@ const initialState: MarketInitialState = {
         imageUrl: ''
       }
     ],
-    tradingViewSymbol: null,
     fee: 0,
     treasuryFee: 0,
     treasury: '0x0000000000000000000000000000000000000000',
