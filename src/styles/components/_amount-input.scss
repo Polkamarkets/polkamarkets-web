@@ -2,7 +2,7 @@
   @include themes($amount-input-themes) {
     display: flex;
     flex-direction: column;
-    gap: 0.3rem;
+    gap: 8px;
 
     width: 100%;
 
@@ -32,16 +32,16 @@
 
       background-color: unset;
 
-      font-size: 2rem;
+      font-size: 2.1rem;
       font-stretch: normal;
       font-style: normal;
-      font-weight: 400;
+      font-weight: 500;
 
-      line-height: 1.4;
+      line-height: 1.47;
       letter-spacing: normal;
       text-align: left;
 
-      color: themed('amount-input-value-color');
+      color: #fafafa;
 
       ::placeholder {
         color: themed('amount-input-placeholder-color');
@@ -55,28 +55,42 @@
       align-items: center;
 
       &-title {
-        @extend .tiny, .bold;
-        color: themed('amount-input-title-color');
+        font-size: 1.2rem;
+        line-height: normal;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #d2d5da;
       }
 
       &-wallet {
         display: inline-flex;
         align-items: center;
-        gap: 0.2rem;
+        gap: 2px;
+
+        strong,
+        span {
+          font-size: 1.3rem;
+          line-height: normal;
+          font-weight: bold;
+          letter-spacing: 0.08em;
+        }
 
         strong {
-          color: themed('amount-input-currency-name-color');
+          color: #ffffff;
         }
 
         span {
-          color: themed('amount-input-title-secondary-color');
+          color: #637084;
         }
 
         figure {
-          margin-right: 0.4rem;
+          display: flex;
+          align-items: center;
+          margin-right: 4px;
 
           svg {
-            fill: themed('amount-input-title-secondary-color');
+            fill: #a5bee4;
           }
         }
       }
@@ -101,8 +115,7 @@
       border: none;
 
       margin: $amount-input-action-margin-y $amount-input-action-margin-x;
-      padding: $amount-input-action-button-padding-y
-        $amount-input-action-button-padding-x;
+      padding: var(--size-8) var(--size-6);
       background-color: themed('amount-input-action-button-background-color');
 
       @extend .tiny-uppercase, .bold;

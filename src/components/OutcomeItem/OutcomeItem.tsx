@@ -1,12 +1,22 @@
+import { useMemo } from 'react';
+
 import cn from 'classnames';
 import { features } from 'config';
 import { roundNumber } from 'helpers/math';
-import { kebabCase, uniqueId } from 'lodash';
+import isUndefined from 'lodash/isUndefined';
+import kebabCase from 'lodash/kebabCase';
+import uniqueId from 'lodash/uniqueId';
+import { Market } from 'models/market';
 import { Line } from 'rc-progress';
 import type { UserOperation } from 'types/user';
 import { Avatar, useTheme } from 'ui';
 
-import { CheckIcon, RemoveIcon, RepeatCycleIcon } from 'assets/icons';
+import {
+  CheckIcon,
+  RemoveIcon,
+  RepeatCycleIcon,
+  TrophyIcon
+} from 'assets/icons';
 
 import Icon from 'components/Icon';
 import MiniTable from 'components/MiniTable';
@@ -22,6 +32,15 @@ export type OutcomeProps = Pick<
 > &
   Partial<Record<'primary' | 'image' | 'activeColor', string>> &
   Partial<Record<'invested', number>> & {
+    token: Market['token'];
+    outcomesWithShares?: {
+      id: string;
+      title: string;
+      imageUrl: string;
+      shares: any;
+      buyValue: number;
+      value: number;
+    }[];
     $state?: UserOperation['status'];
     isActive?: boolean;
     data?: AreaDataPoint[];
@@ -55,11 +74,27 @@ export default function OutcomeItem({
   resolved,
   className,
   $state,
+  token,
+  outcomesWithShares = [],
   ...props
 }: OutcomeProps) {
   const theme = useTheme();
   const isSm = $size === 'sm';
   const isMd = $size === 'md';
+
+  const outcomeWithShares = useMemo(
+    () =>
+      outcomesWithShares.find(
+        outcome => outcome.id.toString() === props.value?.toString()
+      ),
+    [outcomesWithShares, props.value]
+  );
+
+  const isResolved = !isUndefined(resolved);
+  const isPredicted =
+    !isUndefined(outcomeWithShares) && !isResolved && $state === 'success';
+  const isWon = !isUndefined(outcomeWithShares) && resolved === 'won';
+  const isLost = !isUndefined(outcomeWithShares) && resolved === 'lost';
 
   return (
     <button
@@ -79,9 +114,14 @@ export default function OutcomeItem({
           [outcomeItemClasses.sizeSm]: isSm,
           [outcomeItemClasses.sizeMd]: isMd,
           [outcomeItemClasses.state]: $state,
-          [outcomeItemClasses.stateSuccess]: $state === 'success',
-          [outcomeItemClasses.statePending]: $state === 'pending',
-          [outcomeItemClasses.stateFailed]: $state === 'failed',
+          [outcomeItemClasses.stateSuccess]:
+            !isResolved && $state === 'success',
+          [outcomeItemClasses.statePending]:
+            !isResolved && $state === 'pending',
+          [outcomeItemClasses.stateFailed]: !isResolved && $state === 'failed',
+          [outcomeItemClasses.rootStatusPredicted]: isPredicted,
+          [outcomeItemClasses.rootStatusWon]: isWon,
+          [outcomeItemClasses.rootStatusLost]: isLost,
           active: isActive
         },
         className
@@ -93,6 +133,37 @@ export default function OutcomeItem({
       }}
       {...props}
     >
+      {isPredicted && (
+        <div className={outcomeItemClasses.rootStatus}>
+          <CheckIcon className={outcomeItemClasses.rootStatusIcon} />
+          <span className={outcomeItemClasses.rootStatusTitle}>Predicted</span>
+          {outcomeWithShares ? (
+            <span className={outcomeItemClasses.rootStatusPerformance}>
+              (
+              {`${
+                outcomeWithShares.value > outcomeWithShares.buyValue ? '+' : ''
+              }${(outcomeWithShares.value - outcomeWithShares.buyValue).toFixed(
+                Math.abs(outcomeWithShares.value - outcomeWithShares.buyValue) <
+                  1
+                  ? 1
+                  : 0
+              )} ${token.symbol}`}
+              )
+            </span>
+          ) : null}
+        </div>
+      )}
+      {isWon && (
+        <div className={outcomeItemClasses.rootStatus}>
+          <TrophyIcon className={outcomeItemClasses.rootStatusIcon} />
+          <span className={outcomeItemClasses.rootStatusTitle}>You won</span>
+        </div>
+      )}
+      {isLost && (
+        <div className={outcomeItemClasses.rootStatus}>
+          <span className={outcomeItemClasses.rootStatusTitle}>You lost</span>
+        </div>
+      )}
       <div className={outcomeItemClasses.content}>
         {image && isMd && (
           <div className={outcomeItemClasses.itemStart}>

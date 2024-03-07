@@ -3,22 +3,12 @@
   flex-direction: column;
   gap: var(--size-16);
 
-  padding: var(--size-16);
-  margin-bottom: var(--size-40);
+  padding: var(--size-12);
 
-  background: rgba(93, 85, 250, 0.1);
+  background: rgba(93, 85, 250, 0.05);
   border: 1px solid rgba(136, 136, 252, 0.3);
 
-  border-radius: var(--size-8);
-
-  &Resolved {
-    border: 1px solid rgba(242, 240, 255, 0.3);
-    background: rgba(242, 240, 255, 0.05);
-
-    .rootItemDescription {
-      color: #d2d5da;
-    }
-  }
+  border-radius: var(--size-4);
 
   &Item {
     @media (min-width: 768px) {
@@ -32,7 +22,7 @@
     &TitleGroup {
       display: inline-flex;
       flex-direction: row;
-      align-items: center;
+      align-items: flex-end;
       gap: var(--size-4);
 
       vertical-align: bottom;
@@ -43,27 +33,14 @@
     }
 
     &Description {
-      font-size: 1.5rem;
-      line-height: 1.6;
+      font-size: 1.2rem;
+      line-height: 1.5;
       font-weight: 500;
       color: var(--color-market-shares-description);
 
-      @media (max-width: 767px) {
-        margin-bottom: 16px;
-      }
-
       strong {
+        font-weight: bold;
         color: var(--color-market-shares-description--bold);
-      }
-
-      &Performance {
-        &Positive {
-          color: #3ebd93 !important;
-        }
-
-        &Negative {
-          color: #e12d39 !important;
-        }
       }
     }
   }

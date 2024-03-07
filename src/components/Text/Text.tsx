@@ -34,6 +34,7 @@ type TextScale =
   | 'heading'
   | 'body'
   | 'caption'
+  | 'caption-uppercase'
   | 'tiny'
   | 'tiny-uppercase';
 

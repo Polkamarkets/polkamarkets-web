@@ -16,9 +16,12 @@ import { Line } from 'rc-progress';
 import { selectOutcome } from 'redux/ducks/trade';
 import { Image } from 'ui';
 
-import { useAppDispatch, useAppSelector } from 'hooks';
+import { CheckIcon } from 'assets/icons';
+
+import { useAppDispatch, useAppSelector, useOperation } from 'hooks';
 
 import Icon from '../Icon';
+import Text from '../Text';
 import styles from './Trade.module.scss';
 
 function LeftArrow() {
@@ -62,11 +65,11 @@ function TradePredictionsWithImages({
 }: TradePredictionsWithImagesProps) {
   const dispatch = useAppDispatch();
 
-  const { id, networkId } = useAppSelector(state => state.market.market);
+  const market = useAppSelector(state => state.market.market);
+  const { id, networkId } = market;
+  const { selectedOutcomeId } = useAppSelector(state => state.trade);
 
-  const { selectedOutcomeId, selectedMarketId } = useAppSelector(
-    state => state.trade
-  );
+  const { predictedOutcome } = useOperation(market);
 
   const apiRef = useRef({} as scrollVisibilityApiType);
 
@@ -82,7 +85,7 @@ function TradePredictionsWithImages({
         );
 
         if (item) {
-          apiRef.current.scrollToItem(item, 'auto', 'center');
+          apiRef.current.scrollToItem(item, 'smooth', 'center');
         }
       }
     }
@@ -138,22 +141,55 @@ function TradePredictionsWithImages({
           title={prediction.title}
           className={cn(styles.predictionWithImage, {
             [styles.predictionWithImageSelected]:
-              prediction.id.toString() === selectedOutcomeId.toString() &&
-              prediction.marketId.toString() === selectedMarketId.toString(),
-            [styles.predictionWithImageDisabled]: predictions.length === 1
+              prediction.id.toString() === selectedOutcomeId.toString(),
+            [styles.predictionWithImageMultiple]: multiple,
+            [styles.predictionWithImageDisabled]: predictions.length === 1,
+            [styles.predictionWithImagePredicted]:
+              prediction.id.toString() === predictedOutcome?.id.toString()
           })}
           value={prediction.id.toString()}
           onClick={handleSelectPrediction}
         >
-          <div className={styles.predictionWithImageProgressWrapper}>
-            <Image
-              className={styles.predictionWithImageImage}
-              alt={prediction.title}
-              src={prediction.imageUrl}
-            />
+          {prediction.id.toString() === predictedOutcome?.id.toString() && (
+            <span className={styles.predictionWithImagePredictedLabel}>
+              <CheckIcon
+                className={styles.predictionWithImagePredictedLabelIcon}
+              />{' '}
+              Predicted
+            </span>
+          )}
+          <div className={styles.predictionWithImageBody}>
+            <div className={styles.predictionWithImageContent}>
+              {prediction.imageUrl ? (
+                <Image
+                  className={styles.predictionWithImageImage}
+                  alt={prediction.title}
+                  src={prediction.imageUrl}
+                />
+              ) : null}
+              <div className={styles.predictionWithImageDetails}>
+                <p className={styles.predictionWithImageDetailsTitle}>
+                  {prediction.title}
+                </p>
+                <p className={styles.predictionWithImageDetailsPrice}>
+                  {`${roundNumber(+prediction.price * 100, 3)}%`}
+                  <Text
+                    as="span"
+                    scale="tiny"
+                    color={prediction.isPriceUp ? 'success' : 'danger'}
+                  >
+                    <Icon
+                      name="Arrow"
+                      size="sm"
+                      dir={prediction.isPriceUp ? 'up' : 'down'}
+                    />
+                  </Text>
+                </p>
+              </div>
+            </div>
             <Line
-              trailWidth={6}
-              strokeWidth={6}
+              trailWidth={2}
+              strokeWidth={2}
               percent={prediction.price * 100}
               className={cn(styles.predictionWithImageProgress, {
                 [styles.predictionWithImageProgressWinning]:
@@ -162,14 +198,6 @@ function TradePredictionsWithImages({
                   !prediction.isPriceUp
               })}
             />
-          </div>
-          <div className={styles.predictionWithImageDetails}>
-            <p className={styles.predictionWithImageDetailsTitle}>
-              {prediction.title}
-            </p>
-            <p
-              className={styles.predictionWithImageDetailsPrice}
-            >{`${roundNumber(+prediction.price * 100, 3)}%`}</p>
           </div>
         </button>
       ))}

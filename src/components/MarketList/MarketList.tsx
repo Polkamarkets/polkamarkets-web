@@ -57,26 +57,6 @@ function Virtuoso({ data }: VirtuosoProps) {
     []
   );
 
-  useEffect(() => {
-    (async function handleMarketColors() {
-      if (data) {
-        try {
-          const { default: buildMarketColors } = await import(
-            'helpers/buildMarketColors'
-          );
-          const { MARKET_COLORS_KEY } = await import('helpers/getMarketColors');
-
-          localStorage.setItem(
-            MARKET_COLORS_KEY,
-            JSON.stringify(await buildMarketColors(data))
-          );
-        } catch (error) {
-          // unsupported
-        }
-      }
-    })();
-  }, [data]);
-
   return (
     <>
       <ReactVirtuoso
@@ -110,12 +90,14 @@ type MarketListProps = {
     networkId: number;
   };
   showOpenMarketsAtTheTop?: boolean;
+  classNames?: Partial<Record<'root', string>>;
 };
 
 export default function MarketList({
   filtersVisible,
   fetchByIds,
-  showOpenMarketsAtTheTop = false
+  showOpenMarketsAtTheTop = false,
+  classNames
 }: MarketListProps) {
   const { data, fetch, state } = useMarkets(fetchByIds);
 
@@ -140,9 +122,13 @@ export default function MarketList({
 
   return (
     <div
-      className={cn('pm-c-market-list', {
-        'pm-c-market-list--filters-visible': filtersVisible
-      })}
+      className={cn(
+        'pm-c-market-list',
+        {
+          'pm-c-market-list--filters-visible': filtersVisible
+        },
+        classNames?.root
+      )}
     >
       {
         {

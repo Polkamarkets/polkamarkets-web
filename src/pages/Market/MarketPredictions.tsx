@@ -73,7 +73,7 @@ function MarketPredictions() {
         </p>
         <TradePredictions
           view="default"
-          size="lg"
+          size={theme.device.isDesktop ? 'lg' : 'md'}
           onPredictionSelected={handlePredictionSelected}
         />
         <Modal

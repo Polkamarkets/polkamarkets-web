@@ -8,7 +8,9 @@ import { Outcome } from 'models/market';
 import { selectOutcome } from 'redux/ducks/trade';
 import { Image } from 'ui';
 
-import { useAppDispatch, useAppSelector } from 'hooks';
+import { CheckIcon, TrophyIcon } from 'assets/icons';
+
+import { useAppDispatch, useAppSelector, useOperation } from 'hooks';
 
 import styles from './Trade.module.scss';
 import { View } from './Trade.types';
@@ -18,34 +20,47 @@ type TradePredictionsProps = {
   view: View;
   size?: 'md' | 'lg';
   onPredictionSelected?: () => void;
-  filterBy?: (outcome: Outcome) => boolean;
 };
 
 function TradePredictions({
   view,
   size = 'md',
-  onPredictionSelected,
-  filterBy
+  onPredictionSelected
 }: TradePredictionsProps) {
   const dispatch = useAppDispatch();
 
-  const {
-    id,
-    outcomes: marketOutcomes,
-    networkId
-  } = useAppSelector(state => state.market.market);
+  const market = useAppSelector(state => state.market.market);
+  const { id, outcomes, networkId } = market;
 
   const { selectedOutcomeId, selectedMarketId } = useAppSelector(
     state => state.trade
   );
 
-  const outcomes = useMemo(() => {
-    if (filterBy) {
-      return marketOutcomes.filter(filterBy);
-    }
+  const { predictedOutcome } = useOperation(market);
 
-    return marketOutcomes;
-  }, [marketOutcomes, filterBy]);
+  const getResolvedStatus = useCallback(
+    (outcome: Outcome) => {
+      if (market.voided) return 'voided';
+      if (market.resolvedOutcomeId === outcome.id) return 'won';
+      if (market.state === 'resolved') return 'lost';
+      return undefined;
+    },
+    [market]
+  );
+
+  const getOutcomeStatus = useCallback(
+    (outcome: Outcome) => {
+      if (
+        !predictedOutcome ||
+        predictedOutcome.id.toString() !== outcome.id.toString()
+      )
+        return undefined;
+
+      const resolved = getResolvedStatus(outcome);
+      return resolved === 'won' || resolved === 'lost' ? resolved : 'predicted';
+    },
+    [getResolvedStatus, predictedOutcome]
+  );
 
   const handleSelectOutcome = useCallback(
     (event: MouseEvent<HTMLButtonElement>) => {
@@ -71,18 +86,24 @@ function TradePredictions({
 
   const listHeight = Math.min(
     Math.ceil(window.innerHeight * (view === 'modal' ? 0.25 : 0.35)),
-    predictions.length * (size === 'md' ? 60 : 82)
+    predictions.length * (size === 'md' ? 64 : 82)
   );
 
-  if (view === 'default' || (view === 'modal' && !withImages)) {
-    return (
-      <div>
-        <Virtuoso
-          style={{
-            height: listHeight
-          }}
-          data={predictions}
-          itemContent={(index, outcome) => (
+  if (view === 'modal')
+    return <TradePredictionsWithImages predictions={predictions} />;
+
+  return (
+    <div>
+      <Virtuoso
+        style={{
+          height: listHeight
+        }}
+        data={predictions}
+        itemContent={(index, outcome) => {
+          const resolved = getResolvedStatus(outcome);
+          const status = getOutcomeStatus(outcome);
+
+          return (
             <button
               type="button"
               className={cn(styles.prediction, {
@@ -91,18 +112,43 @@ function TradePredictions({
                   index !== predictions.length - 1,
                 [styles.predictionGutterBottomLg]: size === 'lg',
                 [styles.predictionSelected]:
-                  view === 'modal' &&
                   outcome.id.toString() === selectedOutcomeId.toString() &&
                   outcome.marketId.toString() === selectedMarketId.toString(),
-                [styles.predictionDisabled]: predictions.length === 1
+                [styles.predictionDisabled]:
+                  resolved || predictions.length === 1,
+                [styles.predictionStatusPredicted]: status === 'predicted',
+                [styles.predictionStatusWon]:
+                  resolved === 'won' || status === 'won',
+                [styles.predictionStatusLost]: status === 'lost'
               })}
               value={outcome.id.toString()}
               onClick={handleSelectOutcome}
             >
+              {status === 'predicted' && (
+                <div className={styles.predictionStatus}>
+                  <CheckIcon className={styles.predictionStatusIcon} />
+                  <span className={styles.predictionStatusTitle}>
+                    Predicted
+                  </span>
+                </div>
+              )}
+              {status === 'won' && (
+                <div className={styles.predictionStatus}>
+                  <TrophyIcon className={styles.predictionStatusIcon} />
+                  <span className={styles.predictionStatusTitle}>You won</span>
+                </div>
+              )}
+              {status === 'lost' && (
+                <div className={styles.predictionStatus}>
+                  <span className={styles.predictionStatusTitle}>You lost</span>
+                </div>
+              )}
               <div
                 className={cn(styles.predictionProgress, {
-                  [styles.predictionProgressWinning]: outcome.isPriceUp,
-                  [styles.predictionProgressLosing]: !outcome.isPriceUp
+                  [styles.predictionProgressWinning]:
+                    !resolved && outcome.isPriceUp,
+                  [styles.predictionProgressLosing]:
+                    !resolved && !outcome.isPriceUp
                 })}
                 style={{
                   width: `${outcome.price * 100}%`
@@ -126,13 +172,11 @@ function TradePredictions({
                 )}%`}</p>
               </div>
             </button>
-          )}
-        />
-      </div>
-    );
-  }
-
-  return <TradePredictionsWithImages predictions={predictions} />;
+          );
+        }}
+      />
+    </div>
+  );
 }
 
 export default TradePredictions;

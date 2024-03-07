@@ -11,7 +11,7 @@ import {
   setTradeDetails
 } from 'redux/ducks/trade';
 
-import { TokenIcon, WalletIcon } from 'assets/icons';
+import { WalletIcon } from 'assets/icons';
 
 import InfoTooltip from 'components/InfoTooltip';
 
@@ -24,7 +24,6 @@ import {
 } from 'hooks';
 
 import { Button } from '../Button';
-import Icon from '../Icon';
 import StepSlider from '../StepSlider';
 import Text from '../Text';
 import ToggleSwitch from '../ToggleSwitch';
@@ -33,14 +32,18 @@ import { calculateEthAmountSold, calculateTradeDetails } from './utils';
 
 const SELL_STEPS = [10, 25, 50, 100];
 
-function TradeFormInput() {
+type TradeFormInputProps = {
+  startAtMax?: boolean;
+};
+
+function TradeFormInput({ startAtMax = false }: TradeFormInputProps) {
   const dispatch = useAppDispatch();
   const { network } = useNetwork();
   const fantasyTokenTicker = useFantasyTokenTicker();
   const { currency } = network;
 
   const token = useAppSelector(state => state.market.market.token);
-  const { name, ticker, iconName, address, wrapped: tokenWrapped } = token;
+  const { ticker, address, wrapped: tokenWrapped } = token;
 
   const marketNetworkId = useAppSelector(
     state => state.market.market.networkId
@@ -129,10 +132,16 @@ function TradeFormInput() {
   }, [dispatch, max, type]);
 
   useEffect(() => {
-    dispatch(setTradeAmount(0));
-    setAmount(0);
-    setStepAmount(0);
-  }, [dispatch, type, wrapped]);
+    if (startAtMax) {
+      dispatch(setTradeAmount(max()));
+      setAmount(max());
+      setStepAmount(100);
+    } else {
+      dispatch(setTradeAmount(0));
+      setAmount(0);
+      setStepAmount(0);
+    }
+  }, [dispatch, max, startAtMax, type, wrapped]);
 
   useEffect(() => {
     if (
@@ -282,13 +291,6 @@ function TradeFormInput() {
           ) : null}
           {type === 'buy' ? (
             <div className="pm-c-amount-input__logo">
-              <figure aria-label={name}>
-                {iconName === 'Token' ? (
-                  <TokenIcon ticker={ticker} />
-                ) : (
-                  <Icon name={iconName} />
-                )}
-              </figure>
               <Text as="span" scale="caption" fontWeight="bold">
                 {ticker}
               </Text>
@@ -341,10 +343,13 @@ function TradeFormInput() {
                   key={step}
                   type="button"
                   className={cn('pm-c-amount-input__action', {
-                    'pm-c-amount-input__action--active': step === amount
+                    'pm-c-amount-input__action--active':
+                      max() * (step / 100) === amount
                   })}
                   onClick={() =>
-                    handleSetAmount(roundDown(max() * (step / 100)))
+                    handleSetAmount(
+                      step === 100 ? max() : roundDown(max() * (step / 100))
+                    )
                   }
                   disabled={isWrongNetwork}
                 >
