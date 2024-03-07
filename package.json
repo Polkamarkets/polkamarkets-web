@@ -15,8 +15,6 @@
     "@reduxjs/toolkit": "^1.9.7",
     "@sentry/cli": "^2.21.5",
     "@sentry/react": "^7.81.1",
-    "@storybook/react": "^6.5.12",
-    "@storybook/testing-library": "^0.0.13",
     "@testing-library/jest-dom": "^5.11.8",
     "@testing-library/react": "^11.2.2",
     "@testing-library/react-hooks": "^8.0.1",
@@ -93,24 +91,12 @@
     "eject": "react-scripts eject",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx src --color",
     "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx,scss,css,json}'",
-    "storybook": "start-storybook -p 6006 -s public",
-    "build-storybook": "build-storybook -s public",
     "sentry:sourcemaps": "sentry-cli sourcemaps inject --org polkamarkets --project javascript-react ./build && sentry-cli sourcemaps upload --org polkamarkets --project javascript-react ./build"
   },
   "eslintConfig": {
     "extends": [
       "react-app",
       "react-app/jest"
-    ],
-    "overrides": [
-      {
-        "files": [
-          "**/*.stories.*"
-        ],
-        "rules": {
-          "import/no-anonymous-default-export": "off"
-        }
-      }
     ]
   },
   "browserslist": {
@@ -135,14 +121,6 @@
     "@babel/plugin-proposal-optional-chaining": "^7.21.0",
     "@babel/plugin-proposal-private-methods": "^7.18.6",
     "@babel/runtime": "^7.21.5",
-    "@storybook/addon-actions": "^6.5.12",
-    "@storybook/addon-essentials": "^6.5.12",
-    "@storybook/addon-interactions": "^6.5.12",
-    "@storybook/addon-links": "^6.5.12",
-    "@storybook/builder-webpack4": "^6.5.12",
-    "@storybook/manager-webpack4": "^6.5.12",
-    "@storybook/node-logger": "^6.5.12",
-    "@storybook/preset-create-react-app": "^3.2.0",
     "@types/classnames": "^2.2.11",
     "@types/lodash": "^4.14.168",
     "@types/react-router-dom": "^5.1.7",
@@ -160,7 +138,6 @@
     "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-react": "^7.23.1",
     "eslint-plugin-react-hooks": "^4.2.0",
-    "eslint-plugin-storybook": "^0.6.6",
     "prettier": "^2.2.1"
   },
   "resolutions": {
