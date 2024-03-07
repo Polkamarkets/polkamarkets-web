@@ -41,7 +41,6 @@
     "express": "^4.17.1",
     "formik": "^2.4.2",
     "framer-motion": "^3.10.5",
-    "geoip-country": "^4.0.76",
     "helmet": "^6.0.0",
     "humps": "^2.0.1",
     "jest-canvas-mock": "^2.4.0",
