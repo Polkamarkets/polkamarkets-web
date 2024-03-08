@@ -42,24 +42,19 @@ export default function ProfileSignin({ onClick, ...props }: ButtonProps) {
       try {
         setLoad(name);
 
-        throw new Error('Not implemented');
+        const success = await polkamarketsService[`socialLogin${name}`]();
 
-        // const jwtToken = await getJWTForUser('teste'); // TODO grab userid from cookies
+        if (success) {
+          const { login } = await import('redux/ducks/polkamarkets');
 
-        // const success = await polkamarketsService[`socialLogin${name}`]('teste',
-        //   jwtToken.data);
-
-        // if (success) {
-        //   const { login } = await import('redux/ducks/polkamarkets');
-
-        //   dispatch(login(polkamarketsService));
-        // }
+          dispatch(login(polkamarketsService));
+        }
       } finally {
         setLoad('');
         setShow(false);
       }
     },
-    []
+    [dispatch, polkamarketsService]
   );
 
   const handleObservadorClick = useCallback(async () => {
@@ -137,24 +132,23 @@ export default function ProfileSignin({ onClick, ...props }: ButtonProps) {
       if (event.target[0].value) {
         try {
           setLoad('Email');
-          throw new Error('Not implemented');
 
-          // const success = await polkamarketsService.socialLoginEmail(
-          //   event.target[0].value
-          // );
+          const success = await polkamarketsService.socialLoginEmail(
+            event.target[0].value
+          );
 
-          // if (success) {
-          //   const { login } = await import('redux/ducks/polkamarkets');
+          if (success) {
+            const { login } = await import('redux/ducks/polkamarkets');
 
-          //   dispatch(login(polkamarketsService));
-          // }
+            dispatch(login(polkamarketsService));
+          }
         } finally {
           setLoad('');
           setShow(false);
         }
       }
     },
-    []
+    [dispatch, polkamarketsService]
   );
 
   const renderProviders = useCallback(

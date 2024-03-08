@@ -125,7 +125,7 @@ export default function ProfileSignout() {
         socialLoginInfo.typeOfLogin,
         address,
         socialLoginInfo.profileImage,
-        socialLoginInfo.oAuthIdToken
+        socialLoginInfo.oAuthIdToken || socialLoginInfo.oAuthAccessToken
       );
 
       if (res.data?.user?.username) {
