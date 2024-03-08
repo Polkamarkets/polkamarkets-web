@@ -3,6 +3,7 @@ export { default as Adornment } from './Adornment';
 export { default as Banner } from './Banner';
 
 export { default as ButtonBase } from './ButtonBase';
+export { default as Button } from './Button';
 
 export { default as Avatar } from './Avatar';
 export type { AvatarProps } from './Avatar';
