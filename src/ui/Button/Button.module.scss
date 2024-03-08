@@ -6,4 +6,8 @@
 .primaryFilled {
   color: #ffffff;
   background-color: #2970ff;
+
+  &:hover {
+    background-color: #004eeb;
+  }
 }
