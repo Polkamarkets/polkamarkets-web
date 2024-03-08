@@ -1,0 +1,24 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  padding: 32px;
+
+  background-color: rgba(10, 11, 14, 0.32);
+
+  border: 1px solid #202939;
+  border-radius: 32px;
+
+  backdrop-filter: blur(2px);
+}
+
+.title {
+  font-size: 2.8rem;
+  line-height: 1.28;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: -0.014em;
+
+  color: #f9fafb;
+}
