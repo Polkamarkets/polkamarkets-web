@@ -6,8 +6,8 @@ import ButtonBase, { ButtonBaseProps } from 'ui/ButtonBase';
 import styles from './Button.module.scss';
 
 export type ButtonProps = ButtonBaseProps & {
-  color?: 'primary';
-  variant?: 'filled';
+  color?: 'primary' | 'gray';
+  variant?: 'filled' | 'outlined';
 };
 
 function Button(
@@ -27,6 +27,9 @@ function Button(
           styles.root,
           {
             [styles.primaryFilled]: color === 'primary' && variant === 'filled'
+          },
+          {
+            [styles.grayOutlined]: color === 'gray' && variant === 'outlined'
           },
           rootClassName
         ),
