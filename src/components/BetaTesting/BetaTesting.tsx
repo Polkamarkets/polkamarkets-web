@@ -18,15 +18,8 @@ export default function BetaTesting({ network }: BetaTestingProps) {
 
   return (
     <Banner $type="info" $variant="subtle" onHide={() => setShow(false)}>
-      <Link
-        variant="information"
-        title="Votómetro Legislativas 2024"
-        scale="caption"
-        fontWeight="medium"
-        href="https://observador.pt/interativo/votometro-legislativas-2024/"
-        target="_blank"
-      />
-      : Responda e veja também os partidos mais próximos de si.
+      Os vencedores do Previsómetro serão anunciados e contactados quando todas
+      as 20 perguntas estiverem resolvidas.
     </Banner>
   );
 }
