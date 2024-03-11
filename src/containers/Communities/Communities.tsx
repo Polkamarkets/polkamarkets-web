@@ -23,7 +23,7 @@ function Communities() {
 
   return (
     <div className={styles.root}>
-      {lands?.map(land => (
+      {lands?.slice(0, 12)?.map(land => (
         <CommunityCard land={land} key={land.id} />
       ))}
     </div>
