@@ -1,4 +1,6 @@
 .root {
+  position: relative;
+
   display: flex;
   flex-direction: column;
 
@@ -8,6 +10,22 @@
   background-color: rgba(18, 25, 38, 0.4);
   border: 1px solid #202939;
   border-radius: 16px;
+
+  transition-property: background-color;
+  transition-duration: 0.15s;
+  transition-timing-function: ease;
+
+  &:hover {
+    background-color: #121926;
+
+    .footer {
+      background-color: #121926;
+    }
+
+    .overlay {
+      opacity: 1;
+    }
+  }
 }
 
 .banner {
@@ -74,10 +92,13 @@
 
 .footer {
   padding: 16px;
-  background-color: rgba(10, 11, 14, 0.4);
 
   border: 1px solid #202939;
   border-radius: 8px;
+
+  transition-property: background-color;
+  transition-duration: 0.15s;
+  transition-timing-function: ease;
 
   &Stats {
     display: flex;
@@ -112,4 +133,30 @@
   border-radius: 50%;
 
   background-color: #4b5565;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  height: 100%;
+  width: 100%;
+
+  opacity: 0;
+
+  transition-property: opacity;
+  transition-duration: 0.15s;
+  transition-timing-function: ease;
+}
+
+.viewButton {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -40%);
+  -ms-transform: translate(-50%, -40%);
+  text-align: center;
 }

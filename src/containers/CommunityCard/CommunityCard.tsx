@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import formatImageAlt from 'helpers/formatImageAlt';
 import { Land } from 'types/land';
-import { Avatar } from 'ui';
+import { Avatar, Button } from 'ui';
 
 import styles from './CommunityCard.module.scss';
 
@@ -29,7 +29,19 @@ function CommunityCard({ land }: CommunityCardProps) {
   }, [land.tournaments, land.users]);
 
   return (
-    <Link to={`/${land.slug}`} className={styles.root}>
+    <div className={styles.root}>
+      <div className={styles.overlay}>
+        <Link to={`/${land.slug}`}>
+          <Button
+            size="md"
+            color="secondary gray"
+            variant="filled"
+            className={{ root: styles.viewButton }}
+          >
+            View Land
+          </Button>
+        </Link>
+      </div>
       <div
         className={styles.banner}
         style={
@@ -66,7 +78,7 @@ function CommunityCard({ land }: CommunityCardProps) {
           </span>
         </div>
       </div>
-    </Link>
+    </div>
   );
 }
 
