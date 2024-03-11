@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 
+import classNames from 'classnames';
 import dayjs from 'dayjs';
 import { Tournament } from 'types/tournament';
 import { Avatar } from 'ui';
@@ -32,6 +33,10 @@ function ContestCard({ tournament }: ContestCardProps) {
     // tournament.rewards
   ]);
 
+  const isContestEnded = dayjs()
+    .utc()
+    .isAfter(dayjs(tournament.expiresAt).utc());
+
   return (
     <Link to={`/tournaments/${tournament.slug}`} className={styles.root}>
       <div
@@ -41,7 +46,19 @@ function ContestCard({ tournament }: ContestCardProps) {
             '--background-image': `url(${tournament.imageUrl})`
           } as React.CSSProperties
         }
-      />
+      >
+        <div
+          className={classNames(styles.status, {
+            [styles.statusLive]: !isContestEnded,
+            [styles.statusEnded]: isContestEnded
+          })}
+        >
+          <span className={styles.statusDot} />
+          <span className={styles.statusTitle}>
+            {isContestEnded ? 'Ended' : 'Live now'}
+          </span>
+        </div>
+      </div>
       <div className={styles.info}>
         <h3 className={styles.infoName}>{tournament.title}</h3>
         {tournament.land && (
