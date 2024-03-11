@@ -22,3 +22,12 @@
     background-color: #202939;
   }
 }
+
+.secondaryGrayFilled {
+  color: #0a0b0e;
+  background-color: #ffffff;
+
+  &:hover {
+    background-color: #e3e8ef;
+  }
+}

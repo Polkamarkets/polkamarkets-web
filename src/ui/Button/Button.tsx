@@ -6,7 +6,7 @@ import ButtonBase, { ButtonBaseProps } from 'ui/ButtonBase';
 import styles from './Button.module.scss';
 
 export type ButtonProps = ButtonBaseProps & {
-  color?: 'primary' | 'primary gray';
+  color?: 'primary' | 'primary gray' | 'secondary gray';
   variant?: 'filled' | 'outlined';
 };
 
@@ -31,6 +31,10 @@ function Button(
           {
             [styles.primaryGrayOutlined]:
               color === 'primary gray' && variant === 'outlined'
+          },
+          {
+            [styles.secondaryGrayFilled]:
+              color === 'secondary gray' && variant === 'filled'
           },
           rootClassName
         ),
