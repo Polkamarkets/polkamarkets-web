@@ -27,8 +27,10 @@
 
 .info {
   display: flex;
-  flex-direction: row;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 4px;
 
   height: 100%;
   padding: 8px;
@@ -48,6 +50,50 @@
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     word-break: break-all;
+  }
+
+  &Land {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+
+    &Avatar {
+      flex-shrink: 0;
+
+      height: 16px;
+      width: 16px;
+
+      &Fallback {
+        background-color: #4e3df6;
+
+        strong {
+          font-size: 0.8rem;
+          line-height: 1.4;
+          font-weight: 600;
+          color: #ffffff;
+
+          vertical-align: middle;
+        }
+      }
+    }
+
+    &Name {
+      font-size: 1.2rem;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 1.33;
+
+      color: #ffffff;
+
+      text-overflow: ellipsis;
+      overflow: hidden;
+
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      word-break: break-all;
+    }
   }
 }
 

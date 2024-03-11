@@ -3,11 +3,12 @@ import { Link } from 'react-router-dom';
 
 import dayjs from 'dayjs';
 import { Tournament } from 'types/tournament';
+import { Avatar } from 'ui';
 
 import styles from './ContestCard.module.scss';
 
 type ContestCardProps = {
-  tournament: Omit<Tournament, 'land'>;
+  tournament: Tournament;
 };
 
 function ContestCard({ tournament }: ContestCardProps) {
@@ -43,6 +44,22 @@ function ContestCard({ tournament }: ContestCardProps) {
       />
       <div className={styles.info}>
         <h3 className={styles.infoName}>{tournament.title}</h3>
+        {tournament.land && (
+          <div className={styles.infoLand}>
+            {!(tournament.land.imageUrl === null) && (
+              <Avatar
+                $size="xs"
+                $radius="lg"
+                src={tournament.land.imageUrl}
+                alt={tournament.land.title}
+                className={styles.infoLandAvatar}
+              />
+            )}
+            <span
+              className={styles.infoLandName}
+            >{`By ${tournament.land.title}`}</span>
+          </div>
+        )}
       </div>
       <div className={styles.footer}>
         <div className={styles.footerStats}>
