@@ -1,4 +1,19 @@
 .root {
+  background: linear-gradient(
+      0deg,
+      rgba(16, 18, 24, 0.18) -5.92%,
+      rgba(16, 18, 24, 0.35) 28.75%,
+      rgba(3, 3, 5, 0.88) 88.54%
+    ),
+    var(--background-image), no-repeat;
+  background-clip: border-box;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  transition: background-color 300ms ease-in;
+}
+
+.content {
   display: flex;
   flex-direction: column;
   gap: var(--size-24);
