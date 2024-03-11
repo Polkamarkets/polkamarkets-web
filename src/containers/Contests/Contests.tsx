@@ -24,7 +24,7 @@ function Contests() {
 
   return (
     <div className={styles.root}>
-      {tournaments?.map(tournament => (
+      {tournaments?.slice(0, 12)?.map(tournament => (
         <ContestCard tournament={tournament} key={tournament.id} />
       ))}
     </div>
