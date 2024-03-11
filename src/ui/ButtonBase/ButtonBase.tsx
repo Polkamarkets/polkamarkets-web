@@ -10,7 +10,9 @@ export type ButtonBaseProps = Pick<
   'type' | 'name' | 'onClick' | 'children'
 > & {
   size?: 'md' | 'lg';
-  className?: Partial<Record<'root', string>>;
+  className?: Partial<Record<'root' | 'itemStart' | 'itemEnd', string>>;
+  itemStart?: React.ReactNode;
+  itemEnd?: React.ReactNode;
   fullWidth?: boolean;
 };
 
@@ -19,6 +21,8 @@ function ButtonBase(
     type = 'button',
     size = 'md',
     className,
+    itemStart,
+    itemEnd,
     fullWidth,
     children,
     ...props
@@ -42,7 +46,17 @@ function ButtonBase(
       )}
       {...props}
     >
+      {itemStart && (
+        <span className={classNames(styles.itemStart, className?.itemStart)}>
+          {itemStart}
+        </span>
+      )}
       {children}
+      {itemEnd && (
+        <span className={classNames(styles.itemEnd, className?.itemEnd)}>
+          {itemEnd}
+        </span>
+      )}
     </button>
   );
 }
