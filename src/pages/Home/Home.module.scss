@@ -16,10 +16,10 @@
 .content {
   display: flex;
   flex-direction: column;
-  gap: var(--size-24);
+  gap: 40px;
 
   @media (min-width: 1024px) {
-    gap: var(--size-40);
+    gap: 80px;
   }
 
   padding-top: var(--size-24);
