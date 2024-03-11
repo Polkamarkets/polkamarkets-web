@@ -23,4 +23,11 @@
   width: 100%;
   padding: 24px;
   margin-top: 24px;
+
+  &Button {
+    &Icon {
+      height: 20px;
+      width: 20px;
+    }
+  }
 }

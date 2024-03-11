@@ -5,6 +5,8 @@ import ContestCard from 'containers/ContestCard';
 import { useGetTournamentsQuery } from 'services/Polkamarkets';
 import { Button } from 'ui';
 
+import { Icon } from 'components';
+
 import styles from './Contests.module.scss';
 
 function Contests() {
@@ -38,7 +40,18 @@ function Contests() {
       {hiddenTournaments && hiddenTournaments.length > 0 && (
         <div className={styles.footer}>
           <Link to="/contests">
-            <Button size="lg" color="primary gray" variant="outlined">
+            <Button
+              size="lg"
+              color="primary gray"
+              variant="outlined"
+              itemEnd={
+                <Icon
+                  name="Arrow"
+                  dir="right"
+                  className={styles.footerButtonIcon}
+                />
+              }
+            >
               View all Contests
             </Button>
           </Link>
