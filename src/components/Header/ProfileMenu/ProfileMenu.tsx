@@ -186,15 +186,17 @@ export default function ProfileMenu() {
               <Icon name="CommentAlert" color="transparent" />
               Send Feedback
             </Link>
-            {isLoggedIn && (
-              <Link
-                to="/#"
-                className={styles.menuItem}
-                onClick={handleSocialLogout}
-              >
-                <Icon name="Logout" />
-                Disconnect
-              </Link>
+            {isLoggedIn && (<>
+                <div className={styles.divider} />
+                <Link
+                  to="/#"
+                  className={styles.menuItem}
+                  onClick={handleSocialLogout}
+                >
+                  <Icon name="Logout" />
+                  Disconnect
+                </Link>
+              </>
             )}
           </div>
         </Popover.Content>
