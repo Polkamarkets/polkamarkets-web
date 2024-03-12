@@ -10,7 +10,8 @@ import { Input, SelectInput, DateInput, TextArea } from '../Input';
 import CreateMarketFormDetailsClasses from './CreateMarketFormDetails.module.scss';
 
 // TODO: replace with actual community slug of the community
-const COMMUNITY_SLUG = 'politics';
+const COMMUNITY_SLUG = 'todo';
+// TODO: fetch community token and trigger changeCreateMarketToken
 
 function CreateMarketFormDetails() {
   const { setFieldValue, setFieldTouched, values } =
