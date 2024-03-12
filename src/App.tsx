@@ -3,6 +3,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 
 import DayjsUtils from '@date-io/dayjs';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import store from 'redux/store';
 import Routes from 'routes';
 import { ThemeProvider } from 'ui';
@@ -22,34 +23,36 @@ import { PolkamarketsServiceProvider } from 'hooks/usePolkamarketsService';
 
 export default function App() {
   return (
-    <ThemeProvider>
-      <ExternalJS />
-      <SeoIcons />
-      <Provider store={store}>
-        <Router>
-          <MuiPickersUtilsProvider utils={DayjsUtils}>
-            <WhitelistProvider>
-              <LanguageProvider>
-                <NetworkProvider>
-                  <PolkamarketsServiceProvider>
-                    <NetworksProvider>
-                      <FiltersProvider>
-                        <FavoriteMarketsProvider>
-                          <VoteProvider>
-                            <TradeProvider>
-                              <Routes />
-                            </TradeProvider>
-                          </VoteProvider>
-                        </FavoriteMarketsProvider>
-                      </FiltersProvider>
-                    </NetworksProvider>
-                  </PolkamarketsServiceProvider>
-                </NetworkProvider>
-              </LanguageProvider>
-            </WhitelistProvider>
-          </MuiPickersUtilsProvider>
-        </Router>
-      </Provider>
-    </ThemeProvider>
+    <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID!}>
+      <ThemeProvider>
+        <ExternalJS />
+        <SeoIcons />
+        <Provider store={store}>
+          <Router>
+            <MuiPickersUtilsProvider utils={DayjsUtils}>
+              <WhitelistProvider>
+                <LanguageProvider>
+                  <NetworkProvider>
+                    <PolkamarketsServiceProvider>
+                      <NetworksProvider>
+                        <FiltersProvider>
+                          <FavoriteMarketsProvider>
+                            <VoteProvider>
+                              <TradeProvider>
+                                <Routes />
+                              </TradeProvider>
+                            </VoteProvider>
+                          </FavoriteMarketsProvider>
+                        </FiltersProvider>
+                      </NetworksProvider>
+                    </PolkamarketsServiceProvider>
+                  </NetworkProvider>
+                </LanguageProvider>
+              </WhitelistProvider>
+            </MuiPickersUtilsProvider>
+          </Router>
+        </Provider>
+      </ThemeProvider>
+    </GoogleOAuthProvider>
   );
 }

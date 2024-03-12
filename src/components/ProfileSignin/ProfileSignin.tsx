@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 
+import { useGoogleLogin } from '@react-oauth/google';
 import classNames from 'classnames';
 import { ui } from 'config';
 import type { Providers } from 'config';
@@ -23,6 +24,7 @@ import Text from 'components/Text';
 
 import { useAppDispatch, useAppSelector, usePolkamarketsService } from 'hooks';
 
+import { apiGoogleLogin } from '../../services/Polkamarkets/auth';
 import { getJWTForUser } from '../../services/Polkamarkets/jwt';
 import profileSigninClasses from './ProfileSignin.module.scss';
 
@@ -60,6 +62,37 @@ export default function ProfileSignin({ onClick, ...props }: ButtonProps) {
       }
     },
     []
+  );
+
+  const googleLogin = useGoogleLogin({
+    onSuccess: tokenResponse => {
+      handleGoogle(tokenResponse.access_token);
+    }
+  });
+
+  const handleGoogle = useCallback(
+    async accessToken => {
+      try {
+        setLoad('Google');
+
+        const userData = await apiGoogleLogin(accessToken);
+
+        const success = await polkamarketsService.socialLoginWithJWT(
+          userData.data.data.userId,
+          userData.data.data.token
+        );
+
+        if (success) {
+          const { login } = await import('redux/ducks/polkamarkets');
+
+          dispatch(login(polkamarketsService));
+        }
+      } finally {
+        setLoad('');
+        setShow(false);
+      }
+    },
+    [dispatch, polkamarketsService]
   );
 
   const handleObservadorClick = useCallback(async () => {
@@ -243,6 +276,21 @@ export default function ProfileSignin({ onClick, ...props }: ButtonProps) {
           </ConnectMetamask>
         );
 
+      if (provider === 'Google')
+        return (
+          <Button
+            variant="outline"
+            color="default"
+            size="sm"
+            key={provider}
+            name={provider}
+            className={className}
+            onClick={() => googleLogin()}
+            disabled={isDisabled}
+          >
+            {child}
+          </Button>
+        );
       return (
         <Button
           variant="outline"
@@ -258,7 +306,7 @@ export default function ProfileSignin({ onClick, ...props }: ButtonProps) {
         </Button>
       );
     },
-    [handleClick, handleSubmit, load, handleObservadorClick]
+    [handleClick, handleSubmit, load, handleObservadorClick, googleLogin]
   );
 
   function handleHide() {
