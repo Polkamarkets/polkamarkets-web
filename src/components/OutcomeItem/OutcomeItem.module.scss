@@ -54,6 +54,30 @@
 
       fill: white;
     }
+
+    &Predicted {
+      border-color: rgba(87, 81, 252, 0.5) !important;
+
+      .rootStatus {
+        background-color: #5751fc;
+      }
+    }
+
+    &Won {
+      border-color: #008860 !important;
+
+      .rootStatus {
+        background-color: #008860;
+      }
+    }
+
+    &Lost {
+      border-color: rgba(225, 45, 57, 0.5) !important;
+
+      .rootStatus {
+        background-color: #e12d39;
+      }
+    }
   }
 }
 
@@ -126,11 +150,7 @@
   --border-width: 1px;
 
   &Success {
-    border-color: rgba(87, 81, 252, 0.5) !important;
-
-    .rootStatus {
-      background-color: $primary-500;
-    }
+    border-color: $primary-500 !important;
   }
 
   &Pending {

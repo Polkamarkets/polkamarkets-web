@@ -6,6 +6,7 @@ import type { Outcome, PriceChart } from 'models/market';
 export type SortOutcomes = {
   timeframe: string;
   outcomes: Outcome[];
+  predictedOutcome?: { id: Outcome['id']; newIndex: number };
 };
 
 function getPricesDiff(priceChart?: PriceChart) {
@@ -31,7 +32,7 @@ function getPricesDiff(priceChart?: PriceChart) {
 }
 
 export default function sortOutcomes(args: SortOutcomes) {
-  return [...args.outcomes]
+  const sortedOutcomes = [...args.outcomes]
     .sort((compareA, compareB) => {
       if (ui.market.outcomes.sorting.alphabetically.enabled) {
         const exclude = ui.market.outcomes.sorting.alphabetically.exclude || [];
@@ -57,6 +58,23 @@ export default function sortOutcomes(args: SortOutcomes) {
         data: fromPriceChartToLineChartSeries(priceChart?.prices || [])
       };
     });
+
+  if (args.predictedOutcome) {
+    const { id, newIndex } = args.predictedOutcome;
+    const predictedOutcomeIndex = sortedOutcomes.findIndex(
+      outcome => outcome.id === id
+    );
+
+    if (predictedOutcomeIndex !== -1) {
+      const [predictedOutcome] = sortedOutcomes.splice(
+        predictedOutcomeIndex,
+        1
+      );
+      sortedOutcomes.splice(newIndex, 0, predictedOutcome);
+    }
+  }
+
+  return sortedOutcomes;
 }
 
 export type SortedOutcomes = ReturnType<typeof sortOutcomes>;

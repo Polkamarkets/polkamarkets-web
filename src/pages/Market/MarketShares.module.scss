@@ -3,13 +3,22 @@
   flex-direction: column;
   gap: var(--size-16);
 
-  padding: var(--size-24);
+  padding: var(--size-16);
   margin-bottom: var(--size-40);
 
   background: rgba(93, 85, 250, 0.1);
   border: 1px solid rgba(136, 136, 252, 0.3);
 
-  border-radius: var(--size-4);
+  border-radius: var(--size-8);
+
+  &Resolved {
+    border: 1px solid rgba(242, 240, 255, 0.3);
+    background: rgba(242, 240, 255, 0.05);
+
+    .rootItemDescription {
+      color: #d2d5da;
+    }
+  }
 
   &Item {
     @media (min-width: 768px) {
@@ -45,6 +54,16 @@
 
       strong {
         color: var(--color-market-shares-description--bold);
+      }
+
+      &Performance {
+        &Positive {
+          color: #3ebd93 !important;
+        }
+
+        &Negative {
+          color: #e12d39 !important;
+        }
       }
     }
   }

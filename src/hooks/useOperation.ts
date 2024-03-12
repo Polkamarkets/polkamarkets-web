@@ -128,6 +128,7 @@ export default function useOperation(
 
   return {
     data,
+    predictedOutcomes,
     getOutcomeStatus,
     getMultipleOutcomesStatus,
     getMarketStatus

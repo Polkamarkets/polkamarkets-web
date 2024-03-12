@@ -208,7 +208,7 @@ function MarketUI() {
         <MarketHead />
         <Container $enableGutters>
           <Feature name="fantasy">
-            {market.state === 'open' ? <MarketPredictions /> : null}
+            {!market.voided ? <MarketPredictions /> : null}
           </Feature>
           {market.tradingViewSymbol && (
             <div className="pm-p-market__view">

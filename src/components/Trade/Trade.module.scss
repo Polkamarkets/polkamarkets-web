@@ -136,7 +136,76 @@
   border: 1px solid transparent;
   border-radius: var(--size-4);
 
+  &TitleGroup {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--size-12);
+  }
+
+  &Status {
+    position: absolute;
+
+    top: 0;
+    right: 0;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 4px;
+
+    height: 18px;
+    padding: 0px 8px;
+    margin-top: -1px;
+
+    border-radius: 0px 4px 0px 4px;
+
+    &Title {
+      font-size: 1rem;
+      font-weight: 600;
+      line-height: normal;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+
+      color: white;
+    }
+
+    &Icon {
+      height: 10px;
+      width: 10px;
+
+      fill: white;
+    }
+
+    &Predicted {
+      border-color: rgba(87, 81, 252, 0.5) !important;
+
+      .predictionStatus {
+        background-color: #5751fc;
+      }
+    }
+
+    &Won {
+      background-color: rgba(0, 136, 96, 0.16);
+      border-color: #008860 !important;
+
+      .predictionStatus {
+        background-color: #008860;
+      }
+    }
+
+    &Lost {
+      border-color: rgba(225, 45, 57, 0.5) !important;
+
+      .predictionStatus {
+        background-color: #e12d39;
+      }
+    }
+  }
+
   &Lg {
+    height: var(--size-64);
+
     .predictionContent {
       padding: var(--size-16);
     }
@@ -222,6 +291,8 @@
     align-items: center;
     gap: var(--size-16);
     padding: 10px;
+
+    height: 100%;
   }
 
   &Title {
