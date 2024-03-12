@@ -3,8 +3,6 @@ import { useState } from 'react';
 import type { Network } from 'types/network';
 import { Banner } from 'ui';
 
-import Link from 'components/Link';
-
 type BetaTestingProps = {
   network: Network;
 };
