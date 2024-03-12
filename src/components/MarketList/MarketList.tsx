@@ -23,9 +23,11 @@ import marketListClasses from './MarketList.module.scss';
 type VirtuosoProps = Omit<
   ReactVirtuosoProps<Market, unknown>,
   'useWindowScroll' | 'itemContent' | 'rangeChanged' | 'ref'
->;
+> & {
+  maxVisibleItems?: number;
+};
 
-function Virtuoso({ data }: VirtuosoProps) {
+function Virtuoso({ data, maxVisibleItems }: VirtuosoProps) {
   const isLoggedIn = useAppSelector(state => state.polkamarkets.isLoggedIn);
 
   const virtuoso = useRef<VirtuosoHandle>(null);
@@ -66,19 +68,21 @@ function Virtuoso({ data }: VirtuosoProps) {
         rangeChanged={handleRangeChange}
         data={data}
       />
-      <div
-        className={cn(marketListClasses.back, {
-          [marketListClasses.backShow]: renderBack,
-          [marketListClasses.backShowAlongHeader]:
-            renderBack && (!features.fantasy.enabled || isLoggedIn),
-          [marketListClasses.backHide]: !renderBack
-        })}
-        aria-hidden={renderBack ? undefined : 'true'}
-      >
-        <Button variant="ghost" size="xs" onClick={handleBackClick}>
-          Back to Top
-        </Button>
-      </div>
+      {!maxVisibleItems && (
+        <div
+          className={cn(marketListClasses.back, {
+            [marketListClasses.backShow]: renderBack,
+            [marketListClasses.backShowAlongHeader]:
+              renderBack && (!features.fantasy.enabled || isLoggedIn),
+            [marketListClasses.backHide]: !renderBack
+          })}
+          aria-hidden={renderBack ? undefined : 'true'}
+        >
+          <Button variant="ghost" size="xs" onClick={handleBackClick}>
+            Back to Top
+          </Button>
+        </div>
+      )}
     </>
   );
 }
@@ -90,6 +94,7 @@ type MarketListProps = {
     networkId: number;
   };
   showOpenMarketsAtTheTop?: boolean;
+  maxVisibleItems?: number;
   classNames?: Partial<Record<'root', string>>;
 };
 
@@ -97,6 +102,7 @@ export default function MarketList({
   filtersVisible,
   fetchByIds,
   showOpenMarketsAtTheTop = false,
+  maxVisibleItems,
   classNames
 }: MarketListProps) {
   const { data, fetch, state } = useMarkets(fetchByIds);
@@ -119,6 +125,10 @@ export default function MarketList({
       ...data.filter(market => market.state !== 'open')
     ];
   }, [data, showOpenMarketsAtTheTop]);
+
+  const visibleMarkets = maxVisibleItems
+    ? markets.slice(0, maxVisibleItems)
+    : markets;
 
   return (
     <div
@@ -174,7 +184,9 @@ export default function MarketList({
               </div>
             </div>
           ),
-          success: <Virtuoso data={markets} />
+          success: (
+            <Virtuoso data={visibleMarkets} maxVisibleItems={maxVisibleItems} />
+          )
         }[state]
       }
     </div>
