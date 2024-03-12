@@ -2,7 +2,6 @@
   display: flex;
   flex-direction: column;
   gap: var(--size-36);
-  margin-bottom: var(--size-64);
 }
 
 .append {
@@ -12,14 +11,14 @@
   gap: var(--size-32);
 
   margin: calc(-1 * var(--size-32));
-  background-color: var(--color-create-market-preview-background);
-  border-radius: 0 0 var(--size-8) var(--size-8);
+  border-radius: var(--size-18);
+  background-color: rgba(23, 27, 35, 0.50);
 
   &Title {
     font-size: 1.8rem;
     line-height: 1.45;
     font-weight: 500;
-    color: #65d6ad;
+    color: white;
   }
 }
 
