@@ -2,10 +2,11 @@ import { Link } from 'react-router-dom';
 
 import { environment } from 'config';
 import ContestCard from 'containers/ContestCard';
+import isEmpty from 'lodash/isEmpty';
 import { useGetTournamentsQuery } from 'services/Polkamarkets';
 import { Button } from 'ui';
 
-import { Icon } from 'components';
+import { AlertMini, Icon } from 'components';
 
 import styles from './Contests.module.scss';
 
@@ -26,6 +27,19 @@ function Contests() {
         <span className="spinner--primary" />
       </div>
     );
+
+  if (!isLoadingGetTournamentsQuery && isEmpty(tournaments)) {
+    return (
+      <div className="padding-y-5 padding-x-4 width-full border-solid border-1 border-radius-small">
+        <AlertMini
+          style={{ border: 'none' }}
+          styles="outline"
+          variant="information"
+          description="No contests available at the moment."
+        />
+      </div>
+    );
+  }
 
   const visibleTournaments = tournaments?.slice(0, 12);
 
