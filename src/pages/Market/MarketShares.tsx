@@ -134,9 +134,9 @@ function MarketShares({ onSellSelected }: MarketSharesProps) {
           market.state === 'resolved'
             ? outcomeShares.shares * outcome.price
             : outcomeShares && outcomeShares.shares > 0
-            ? calculateEthAmountSold(market, outcome, outcomeShares.shares)
-                .totalStake
-            : 0
+              ? calculateEthAmountSold(market, outcome, outcomeShares.shares)
+                  .totalStake
+              : 0
       };
     });
 

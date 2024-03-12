@@ -36,7 +36,7 @@ function TradePredictions({
     state => state.trade
   );
 
-  const { predictedOutcome } = useOperation(market);
+  const operation = useOperation(market);
 
   const getResolvedStatus = useCallback(
     (outcome: Outcome) => {
@@ -50,16 +50,13 @@ function TradePredictions({
 
   const getOutcomeStatus = useCallback(
     (outcome: Outcome) => {
-      if (
-        !predictedOutcome ||
-        predictedOutcome.id.toString() !== outcome.id.toString()
-      )
+      if (operation.getOutcomeStatus(+outcome.id.toString()) !== 'success')
         return undefined;
 
       const resolved = getResolvedStatus(outcome);
       return resolved === 'won' || resolved === 'lost' ? resolved : 'predicted';
     },
-    [getResolvedStatus, predictedOutcome]
+    [getResolvedStatus, operation]
   );
 
   const handleSelectOutcome = useCallback(

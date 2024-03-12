@@ -43,7 +43,7 @@ const tabs = {
   ranking: 'Ranking'
 } as const;
 
-type Tabs = typeof tabs[keyof typeof tabs];
+type Tabs = (typeof tabs)[keyof typeof tabs];
 
 type TournamentTopUsersProps = {
   isLoading: boolean;
