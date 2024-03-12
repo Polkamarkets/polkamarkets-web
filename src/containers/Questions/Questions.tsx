@@ -1,12 +1,16 @@
 import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 import { setSorter } from 'redux/ducks/markets';
+import { Button } from 'ui';
 
-import { MarketList } from 'components';
+import { Icon, MarketList } from 'components';
 
 import { Dropdowns, filtersInitialState } from 'contexts/filters';
 
 import { useAppDispatch, useFilters } from 'hooks';
+
+import styles from './Questions.module.scss';
 
 function Questions() {
   const dispatch = useAppDispatch();
@@ -36,7 +40,29 @@ function Questions() {
     );
   }, [dispatch]);
 
-  return <MarketList filtersVisible={false} />;
+  return (
+    <>
+      <MarketList filtersVisible={false} maxVisibleItems={6} />
+      <div className={styles.footer}>
+        <Link to="/questions">
+          <Button
+            size="lg"
+            color="primary gray"
+            variant="outlined"
+            itemEnd={
+              <Icon
+                name="Arrow"
+                dir="right"
+                className={styles.footerButtonIcon}
+              />
+            }
+          >
+            View all Questions
+          </Button>
+        </Link>
+      </div>
+    </>
+  );
 }
 
 export default Questions;
