@@ -56,7 +56,7 @@ export default function Layout({ children }: React.PropsWithChildren<{}>) {
       )}
       <Header $gutterBottom={!isHomePathname} />
       {children}
-      <Footer $gutterTop={!isHomePathname} />
+      <Footer />
       <div id="toast-notification-portal" />
     </div>
   );
