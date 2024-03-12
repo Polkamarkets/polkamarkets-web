@@ -28,7 +28,6 @@ function Contests() {
     );
 
   const visibleTournaments = tournaments?.slice(0, 12);
-  const hiddenTournaments = tournaments?.slice(12);
 
   return (
     <>
@@ -37,26 +36,24 @@ function Contests() {
           <ContestCard tournament={tournament} key={tournament.id} />
         ))}
       </div>
-      {hiddenTournaments && hiddenTournaments.length > 0 && (
-        <div className={styles.footer}>
-          <Link to="/contests">
-            <Button
-              size="lg"
-              color="primary gray"
-              variant="outlined"
-              itemEnd={
-                <Icon
-                  name="Arrow"
-                  dir="right"
-                  className={styles.footerButtonIcon}
-                />
-              }
-            >
-              View all Contests
-            </Button>
-          </Link>
-        </div>
-      )}
+      <div className={styles.footer}>
+        <Link to="/contests">
+          <Button
+            size="lg"
+            color="primary gray"
+            variant="outlined"
+            itemEnd={
+              <Icon
+                name="Arrow"
+                dir="right"
+                className={styles.footerButtonIcon}
+              />
+            }
+          >
+            View all Contests
+          </Button>
+        </Link>
+      </div>
     </>
   );
 }
