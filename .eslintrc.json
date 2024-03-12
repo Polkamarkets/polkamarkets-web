@@ -10,7 +10,6 @@
     "plugin:react-hooks/recommended",
     "plugin:prettier/recommended",
     "plugin:jsx-a11y/recommended",
-    "plugin:storybook/recommended",
     "prettier/react"
   ],
   "parser": "@typescript-eslint/parser",

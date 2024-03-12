@@ -1,11 +1,9 @@
 import { useState } from 'react';
-import TradingViewWidget, { Themes } from 'react-tradingview-widget';
 
 import { features } from 'config';
 import { roundNumber } from 'helpers/math';
 import sortOutcomes from 'helpers/sortOutcomes';
 import maxBy from 'lodash/maxBy';
-import { useTheme } from 'ui';
 
 import { ChartHeader, InfoTooltip, LineChart, Text } from 'components';
 
@@ -98,27 +96,9 @@ function MarketOverview() {
   );
 }
 export default function MarketChart() {
-  const theme = useTheme();
-  const chartViewType = useAppSelector(state => state.market.chartViewType);
-  const tradingViewSymbol = useAppSelector(
-    state => state.market.market.tradingViewSymbol
-  );
-
   return (
     <div className="market-chart__view">
-      {
-        {
-          marketOverview: <MarketOverview />,
-          tradingView: tradingViewSymbol ? (
-            <TradingViewWidget
-              theme={Themes[theme.device.mode.toUpperCase()]}
-              width="100%"
-              height={454}
-              symbol={tradingViewSymbol}
-            />
-          ) : null
-        }[chartViewType]
-      }
+      <MarketOverview />
     </div>
   );
 }

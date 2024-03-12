@@ -14,7 +14,6 @@ import {
   Text,
   SEO,
   AlertMini,
-  ButtonGroup,
   RightSidebar,
   Modal,
   Button,
@@ -100,24 +99,14 @@ function SidebarWrapper({
 }
 function MarketUI() {
   const network = useNetwork();
-  const dispatch = useAppDispatch();
   const theme = useTheme();
   const hasSidebar = useAppSelector(state => state.ui.rightSidebar.visible);
   const actions = useAppSelector(state => state.polkamarkets.actions);
   const bondActions = useAppSelector(state => state.polkamarkets.bondActions);
   const market = useAppSelector(state => state.market.market);
-  const chartViews = useAppSelector(state => state.market.chartViews);
+
   const [tab, setTab] = useState(
     features.fantasy.enabled ? 'relatedQuestions' : 'positions'
-  );
-
-  const handleChartChange = useCallback(
-    async (type: string) => {
-      const { setChartViewType } = await import('redux/ducks/market');
-
-      dispatch(setChartViewType(type));
-    },
-    [dispatch]
   );
 
   const columns = useMemo(
@@ -210,17 +199,6 @@ function MarketUI() {
           <Feature name="fantasy">
             {!market.voided ? <MarketPredictions /> : null}
           </Feature>
-          {market.tradingViewSymbol && (
-            <div className="pm-p-market__view">
-              <div className="market-chart__view-selector">
-                <ButtonGroup
-                  buttons={chartViews}
-                  defaultActiveId="marketOverview"
-                  onChange={handleChartChange}
-                />
-              </div>
-            </div>
-          )}
           <MarketChart />
           <Feature name="regular">
             {market.resolutionSource && (

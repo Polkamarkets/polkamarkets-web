@@ -74,7 +74,6 @@ export interface Market {
   questionId: string;
   resolvedOutcomeId: number;
   outcomes: Outcome[];
-  tradingViewSymbol: any;
   fee: number;
   treasuryFee: number;
   treasury: string;
