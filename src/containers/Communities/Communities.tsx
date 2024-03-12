@@ -25,7 +25,6 @@ function Communities() {
   }
 
   const visibleLands = lands?.slice(0, 12);
-  const hiddenLands = lands?.slice(12);
 
   return (
     <>
@@ -34,15 +33,13 @@ function Communities() {
           <CommunityCard land={land} key={land.id} />
         ))}
       </div>
-      {hiddenLands && hiddenLands.length > 0 && (
-        <div className={styles.footer}>
-          <Link to="/communities">
-            <Button size="lg" color="primary gray" variant="outlined">
-              View all Communities
-            </Button>
-          </Link>
-        </div>
-      )}
+      <div className={styles.footer}>
+        <Link to="/communities">
+          <Button size="lg" color="primary gray" variant="outlined">
+            View all Communities
+          </Button>
+        </Link>
+      </div>
     </>
   );
 }
