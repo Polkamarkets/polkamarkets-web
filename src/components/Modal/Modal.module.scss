@@ -11,9 +11,7 @@
 }
 
 .overlay {
-  background-color: var(--color-background-secondary);
-  -webkit-backdrop-filter: blur(2px);
-  backdrop-filter: blur(2px);
+  background: rgba(38, 46, 58, 0.48);
 }
 
 .dialog {
@@ -31,7 +29,7 @@
 }
 
 .sm {
-  width: 400px;
+  width: 460px;
 }
 
 .md {

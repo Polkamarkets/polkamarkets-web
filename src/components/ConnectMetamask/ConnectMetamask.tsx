@@ -1,9 +1,10 @@
 import { useCallback, useState } from 'react';
 
+import { Button } from 'ui/Button';
+import type { ButtonProps } from 'ui/Button';
+
 import { WarningOutlinedIcon } from 'assets/icons';
 
-import { Button } from 'components/Button';
-import type { ButtonProps } from 'components/Button';
 import Icon from 'components/Icon';
 import Modal from 'components/Modal';
 import ModalContent from 'components/ModalContent';
@@ -80,12 +81,7 @@ export default function ConnectMetamask({
             </ModalSectionText>
           </ModalSection>
           <ModalFooter>
-            <Button
-              fullwidth
-              color="primary"
-              variant="outline"
-              onClick={handleTryAgain}
-            >
+            <Button variant="primary" onClick={handleTryAgain}>
               Try Again
             </Button>
             <a
@@ -100,9 +96,8 @@ export default function ConnectMetamask({
         </ModalContent>
       </Modal>
       <Button
-        variant="outline"
-        color="default"
-        size="sm"
+        variant="light"
+        size="lg"
         onClick={!window.ethereum ? handleMetamaskModal : handleMetamaskLogin}
         {...props}
       >

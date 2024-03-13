@@ -1,12 +1,8 @@
-.root {
+.formRoot {
   --border-color: var(--color-text-secondary);
   display: flex;
   flex-direction: column;
   gap: 12px;
-}
-
-.disabled {
-  --border-color: var(--color-text-quinary);
 }
 
 .input {
@@ -37,4 +33,17 @@
   font-style: normal;
   font-weight: 500;
   line-height: 20px; /* 142.857% */
+}
+
+.terms {
+  color: var(--Color-Grey-300, #CDD5DF);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px; /* 133.333% */
+  margin-top: var(--spacing-xl, 24px);
+  margin-bottom: var(--spacing-3xl, 40px);
+}
+
+.resetButton {
+ margin-top: 24px;
 }

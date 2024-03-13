@@ -1,4 +1,5 @@
-import ProfileSignin from 'components/Header/ProfileSignin';
+import AuthModal from 'components/AuthModal';
+import Icon from 'components/Icon';
 
 import Text from '../../Text';
 import ProfileMenu from '../ProfileMenu/ProfileMenu';
@@ -11,11 +12,12 @@ export default function Profile({ isLoggedIn }: ProfileProps) {
   return (
     <>
       {!isLoggedIn && (
-        <ProfileSignin variant="normal" color="primary" size="xs">
+        <AuthModal>
+          <Icon name="Profile" size="md" />
           <Text as="span" scale="caption">
-            Connect
+            Sign In
           </Text>
-        </ProfileSignin>
+        </AuthModal>
       )}
       <ProfileMenu />
     </>

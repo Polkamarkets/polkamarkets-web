@@ -30,7 +30,6 @@ function LandCard({ land }: LandCardProps) {
 
   return (
     <div className={styles.root}>
-      
       <div
         className={styles.banner}
         style={
@@ -66,12 +65,7 @@ function LandCard({ land }: LandCardProps) {
       </div>
       <div className={styles.overlay}>
         <Link to={`/${land.slug}`}>
-          <Button
-            size="md"
-            color="secondary gray"
-            variant="filled"
-            className={{ root: styles.viewButton }}
-          >
+          <Button variant="light" className={styles.viewButton}>
             View Land
           </Button>
         </Link>

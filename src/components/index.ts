@@ -216,9 +216,7 @@ export { default as Onboarding } from './Onboarding';
 
 export { default as Operation } from './Operation';
 
-export { default as Profile } from './Header/Profile';
-
-export { default as ProfileSignin } from './Header/ProfileSignin';
+export { default as AuthModal } from './AuthModal';
 
 export { default as ProfileSigninEmail } from './Header/ProfileSigninEmail';
 

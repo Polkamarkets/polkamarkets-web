@@ -1,48 +1,49 @@
-import { forwardRef } from 'react';
+import { forwardRef, ComponentPropsWithRef } from 'react';
 
 import classNames from 'classnames';
-import ButtonBase, { ButtonBaseProps } from 'ui/ButtonBase';
 
 import styles from './Button.module.scss';
 
-export type ButtonProps = ButtonBaseProps & {
-  color?: 'primary' | 'primary gray' | 'secondary gray';
-  variant?: 'filled' | 'outlined';
+export type ButtonVariant = 'primary' | 'secondary' | 'outlined' | 'light';
+
+type ButtonSize = 'md' | 'sm' | 'lg';
+
+export type ButtonProps = ComponentPropsWithRef<'button'> & {
+  variant?: ButtonVariant;
+  size?: ButtonSize;
+  danger?: boolean;
 };
 
-function Button(
-  {
-    className: { root: rootClassName, ...className } = {},
-    color = 'primary',
-    variant = 'filled',
-    ...props
-  }: ButtonProps,
-  ref: React.ForwardedRef<HTMLButtonElement>
-) {
-  return (
-    <ButtonBase
-      ref={ref}
-      className={{
-        root: classNames(
-          styles.root,
-          {
-            [styles.primaryFilled]: color === 'primary' && variant === 'filled'
-          },
-          {
-            [styles.primaryGrayOutlined]:
-              color === 'primary gray' && variant === 'outlined'
-          },
-          {
-            [styles.secondaryGrayFilled]:
-              color === 'secondary gray' && variant === 'filled'
-          },
-          rootClassName
-        ),
-        ...className
-      }}
-      {...props}
-    />
-  );
-}
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+  function Button(
+    {
+      type = 'button',
+      variant = 'primary',
+      size = 'md',
+      children,
+      className,
+      danger = false,
+      ...props
+    }: ButtonProps,
+    ref
+  ) {
+    return (
+      <button
+        ref={ref}
+        type={type}
+        className={classNames(
+          styles.button,
+          styles[`button-${variant}`],
+          styles[`button-${size}`],
+          danger && styles['button-danger'],
+          className
+        )}
+        {...props}
+      >
+        {children}
+      </button>
+    );
+  }
+);
 
-export default forwardRef(Button);
+export default Button;

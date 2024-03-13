@@ -14,7 +14,7 @@ import { PolkamarketsApiService } from 'services';
 import TWarningIcon from 'assets/icons/TWarningIcon';
 
 import { AlertMinimal } from 'components/Alert';
-import ProfileSignin from 'components/Header/ProfileSignin';
+import AuthModal from 'components/AuthModal';
 
 import {
   useAppDispatch,
@@ -431,14 +431,9 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
                 </ApproveToken>
               ) : null}
               {!isLoggedIn && features.fantasy.enabled ? (
-                <ProfileSignin
-                  fullwidth
-                  size="normal"
-                  color="primary"
-                  onClick={handleLoginToPredict}
-                >
+                <AuthModal variant="primary" onClick={handleLoginToPredict}>
                   Sign in to Predict
-                </ProfileSignin>
+                </AuthModal>
               ) : null}
             </div>
           ) : null}

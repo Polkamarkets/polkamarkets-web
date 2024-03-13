@@ -7,8 +7,8 @@ import { useTheme } from 'ui';
 
 import * as Logos from 'assets/icons';
 
+import AuthModal from 'components/AuthModal';
 import { Button } from 'components/Button';
-import ProfileSignin from 'components/Header/ProfileSignin';
 import Icon from 'components/Icon';
 import Modal from 'components/Modal';
 import NetworkSelector from 'components/NetworkSelector';
@@ -116,12 +116,12 @@ export default function HeaderNav() {
         <NetworkSelector size="sm" responsive className={styles.network} />
       )}
       {!theme.device.isDesktop && features.fantasy.enabled && !isLoggedIn && (
-        <ProfileSignin variant="normal" color="primary" size="xs">
+        <AuthModal variant="primary" size="sm">
           <Icon name="Profile" size="md" />
           <Text as="span" scale="caption">
             Sign In
           </Text>
-        </ProfileSignin>
+        </AuthModal>
       )}
       {!theme.device.isDesktop &&
         ((features.fantasy.enabled &&

@@ -1,10 +1,14 @@
 .root {
-  padding: 3.2rem;
-  background-color: var(--color-surface-primary);
-  border: 0.1rem solid var(--color-border);
-  border-radius: 0.4rem;
-  box-shadow: 0rem 0.4rem 2.4rem var(--color-shadow);
+  position: relative;
+  padding: var(--spacing-xl, 24px);
 
   max-height: 100dvh;
   overflow-y: auto;
+
+  border-radius: var(--rounded-xl, 24px);
+  border: 1px solid rgba(32, 41, 57, 0.40);
+
+  background: var(--Color-Grey-950, #0A0B0E);
+  /* Shadows/shadow-4xl */
+  box-shadow: 0px 12px 16px 0px rgba(16, 24, 40, 0.08), 0px 64px 64px -24px rgba(16, 24, 40, 0.24);
 }
