@@ -1,5 +1,6 @@
 import { Tabs, TabList, Tab, TabPanel } from 'react-aria-components';
 
+import classNames from 'classnames';
 import Communities from 'containers/Communities';
 import Contests from 'containers/Contests';
 import Questions from 'containers/Questions';
@@ -8,7 +9,7 @@ import styles from './HomeDiscover.module.scss';
 
 function HomeDiscover() {
   return (
-    <div className={styles.root}>
+    <div className={classNames('max-width-screen-lg', styles.root)}>
       <div className={styles.header}>
         <h2 className={styles.title}>Discover</h2>
       </div>
