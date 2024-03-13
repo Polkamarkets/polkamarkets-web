@@ -1,4 +1,6 @@
 .root {
+  position: relative;
+
   display: flex;
   flex-direction: column;
 
@@ -8,6 +10,18 @@
   background-color: rgba(18, 25, 38, 0.4);
   border: 1px solid #202939;
   border-radius: 16px;
+
+  transition-property: background-color;
+  transition-duration: 0.15s;
+  transition-timing-function: ease;
+
+  &:hover {
+    background-color: #121926;
+
+    .overlay {
+      opacity: 1;
+    }
+  }
 }
 
 .banner {
@@ -176,4 +190,31 @@
       box-shadow: 0px 0px 0px 3px rgba(118, 131, 147, 0.32);
     }
   }
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+
+  height: 100%;
+  width: 100%;
+
+  opacity: 0;
+
+  transition-property: opacity;
+  transition-duration: 0.15s;
+  transition-timing-function: ease;
+}
+
+.playButton {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -40%);
+  -ms-transform: translate(-50%, -40%);
+  text-align: center;
 }
