@@ -197,6 +197,15 @@ const pages = {
     meta: defaultMetadata,
     enabled: !!environment.LANDING_PAGE_URL
   },
+  contests: {
+    pathname: '/questions',
+    Component: lazy(() => import('pages/Questions')),
+    exact: true,
+    navigation: false,
+    name: 'Questions',
+    meta: defaultMetadata,
+    enabled: true
+  },
   markets: {
     pathname:
       features.fantasy.enabled && ui.tournaments.enabled ? '/markets' : '/',
