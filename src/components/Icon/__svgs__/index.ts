@@ -22,6 +22,7 @@ export { ReactComponent as Gear } from './Gear.svg';
 export { ReactComponent as GitHub } from './GitHub.svg';
 export { ReactComponent as Google } from './Google.svg';
 export { ReactComponent as Grid } from './Grid.svg';
+export { ReactComponent as Info } from './Info.svg';
 export { ReactComponent as Legal } from './Legal.svg';
 export { ReactComponent as LinkedIn } from './LinkedIn.svg';
 export { ReactComponent as Liquidity } from './Liquidity.svg';
