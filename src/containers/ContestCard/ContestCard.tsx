@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
 import { Tournament } from 'types/tournament';
-import { Avatar } from 'ui';
+import { Avatar, Button } from 'ui';
 
 import styles from './ContestCard.module.scss';
 
@@ -38,7 +38,19 @@ function ContestCard({ tournament }: ContestCardProps) {
     .isAfter(dayjs(tournament.expiresAt).utc());
 
   return (
-    <Link to={`/tournaments/${tournament.slug}`} className={styles.root}>
+    <div className={styles.root}>
+      <div className={styles.overlay}>
+        <Link to={`/${tournament.slug}`}>
+          <Button
+            size="md"
+            color="secondary gray"
+            variant="filled"
+            className={{ root: styles.playButton }}
+          >
+            Play Contest
+          </Button>
+        </Link>
+      </div>
       <div
         className={styles.banner}
         style={
@@ -91,7 +103,7 @@ function ContestCard({ tournament }: ContestCardProps) {
           </span>
         </div>
       </div>
-    </Link>
+    </div>
   );
 }
 
