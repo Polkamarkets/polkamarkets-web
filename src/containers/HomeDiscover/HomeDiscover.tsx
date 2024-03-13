@@ -29,7 +29,7 @@ function HomeDiscover() {
           <Communities />
         </TabPanel>
         <TabPanel className={styles.tabPanel} id="contests">
-          <Contests />
+          <Contests viewMode="compact" />
         </TabPanel>
         <TabPanel className={styles.tabPanel} id="questions">
           <Questions />
