@@ -197,6 +197,15 @@ const pages = {
     meta: defaultMetadata,
     enabled: !!environment.LANDING_PAGE_URL
   },
+  communities: {
+    pathname: '/communities',
+    Component: lazy(() => import('pages/Communities')),
+    exact: true,
+    navigation: false,
+    name: 'Communities',
+    meta: defaultMetadata,
+    enabled: true
+  },
   markets: {
     pathname:
       features.fantasy.enabled && ui.tournaments.enabled ? '/markets' : '/',
