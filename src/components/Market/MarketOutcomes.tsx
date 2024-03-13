@@ -112,7 +112,7 @@ export default function MarketOutcomes({
       };
     });
 
-    return sharesByOutcome.filter(outcome => outcome.shares > 1e-5);
+    return sharesByOutcome.filter(outcome => outcome.shares > 1e0);
   }, [isLoadingPortfolio, portfolio, market]);
 
   const getOutcomeActive = useCallback(
