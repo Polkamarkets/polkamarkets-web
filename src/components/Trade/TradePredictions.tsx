@@ -4,6 +4,7 @@ import { Virtuoso } from 'react-virtuoso';
 import cn from 'classnames';
 import { roundNumber } from 'helpers/math';
 import sortOutcomes from 'helpers/sortOutcomes';
+import { isUndefined } from 'lodash';
 import { Outcome } from 'models/market';
 import { selectOutcome } from 'redux/ducks/trade';
 import { Image } from 'ui';
@@ -164,7 +165,10 @@ function TradePredictions({
                   <p className={styles.predictionTitle}>{outcome.title}</p>
                 </div>
                 <p className={styles.predictionPrice}>{`${roundNumber(
-                  +outcome.price * 100,
+                  (market.state === 'resolved' &&
+                  !isUndefined(outcome.closingPrice)
+                    ? +outcome.closingPrice.toFixed(3)
+                    : outcome.price) * 100,
                   3
                 )}%`}</p>
               </div>
