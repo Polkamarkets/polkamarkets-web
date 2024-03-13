@@ -10,7 +10,11 @@ import { AlertMini, Icon } from 'components';
 
 import styles from './Contests.module.scss';
 
-function Contests() {
+type ContestsProps = {
+  viewMode?: 'default' | 'compact';
+};
+
+function Contests({ viewMode = 'default' }: ContestsProps) {
   const {
     data: tournaments,
     isFetching,
@@ -41,7 +45,8 @@ function Contests() {
     );
   }
 
-  const visibleTournaments = tournaments?.slice(0, 12);
+  const visibleTournaments =
+    viewMode === 'compact' ? tournaments?.slice(0, 12) : tournaments;
 
   return (
     <>
@@ -50,24 +55,26 @@ function Contests() {
           <ContestCard tournament={tournament} key={tournament.id} />
         ))}
       </div>
-      <div className={styles.footer}>
-        <Link to="/contests">
-          <Button
-            size="lg"
-            color="primary gray"
-            variant="outlined"
-            itemEnd={
-              <Icon
-                name="Arrow"
-                dir="right"
-                className={styles.footerButtonIcon}
-              />
-            }
-          >
-            View all Contests
-          </Button>
-        </Link>
-      </div>
+      {viewMode === 'compact' && (
+        <div className={styles.footer}>
+          <Link to="/contests">
+            <Button
+              size="lg"
+              color="primary gray"
+              variant="outlined"
+              itemEnd={
+                <Icon
+                  name="Arrow"
+                  dir="right"
+                  className={styles.footerButtonIcon}
+                />
+              }
+            >
+              View all Contests
+            </Button>
+          </Link>
+        </div>
+      )}
     </>
   );
 }
