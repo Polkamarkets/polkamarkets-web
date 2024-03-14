@@ -132,7 +132,9 @@ export default function ProfileMenu() {
                     alt={username || 'avatar'}
                   />
                   <div className={styles.menuProfileInfo}>
-                    <span className={styles.menuUserName}>Unamed</span>
+                    <span className={styles.menuUserName}>
+                      {username || 'Unnamed'}
+                    </span>
                     <span className={styles.menuUserAddress}>
                       0x25256230...ca49
                       <Icon
@@ -186,7 +188,8 @@ export default function ProfileMenu() {
               <Icon name="CommentAlert" color="transparent" />
               Send Feedback
             </Link>
-            {isLoggedIn && (<>
+            {isLoggedIn && (
+              <>
                 <div className={styles.divider} />
                 <Link
                   to="/#"
