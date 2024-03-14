@@ -24,6 +24,7 @@ export { ReactComponent as GitHub } from './GitHub.svg';
 export { ReactComponent as Google } from './Google.svg';
 export { ReactComponent as Grid } from './Grid.svg';
 export { ReactComponent as Legal } from './Legal.svg';
+export { ReactComponent as Instagram } from './Instagram.svg';
 export { ReactComponent as LinkedIn } from './LinkedIn.svg';
 export { ReactComponent as Liquidity } from './Liquidity.svg';
 export { ReactComponent as List } from './List.svg';

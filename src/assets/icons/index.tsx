@@ -29,6 +29,7 @@ import GamingConsoleIcon from './GamingConsoleIcon';
 import GitHubIcon from './GitHubIcon';
 import HamburguerMenuIcon from './HamburguerMenuIcon';
 import InfoIcon from './InfoIcon';
+import InstagramIcon from './InstagramIcon';
 import LaptopIcon from './LaptopIcon';
 import LineChartIcon from './LineChartIcon';
 import LinkedInIcon from './LinkedInIcon';
@@ -103,6 +104,7 @@ export {
   GamingConsoleIcon,
   GitHubIcon,
   InfoIcon,
+  InstagramIcon,
   HamburguerMenuIcon,
   LaptopIcon,
   LineChartIcon,
