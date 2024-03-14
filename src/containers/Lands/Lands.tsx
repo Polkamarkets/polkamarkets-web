@@ -1,20 +1,20 @@
 import { Link } from 'react-router-dom';
 
 import { environment } from 'config';
-import CommunityCard from 'containers/CommunityCard';
+import LandCard from 'containers/LandCard';
 import isEmpty from 'lodash/isEmpty';
 import { useGetLandsQuery } from 'services/Polkamarkets';
 import { Button } from 'ui';
 
-import { AlertMini } from 'components';
+import { AlertMini, Icon } from 'components';
 
-import styles from './Communities.module.scss';
+import styles from './Lands.module.scss';
 
-type CommunitiesProps = {
+type LandsProps = {
   viewMode?: 'default' | 'compact';
 };
 
-function Communities({ viewMode = 'default' }: CommunitiesProps) {
+function Lands({ viewMode = 'default' }: LandsProps) {
   const {
     data: lands,
     isLoading: isLoadingLands,
@@ -38,7 +38,7 @@ function Communities({ viewMode = 'default' }: CommunitiesProps) {
           style={{ border: 'none' }}
           styles="outline"
           variant="information"
-          description="No communities available at the moment."
+          description="No lands available at the moment."
         />
       </div>
     );
@@ -50,14 +50,25 @@ function Communities({ viewMode = 'default' }: CommunitiesProps) {
     <>
       <div className={styles.root}>
         {visibleLands?.map(land => (
-          <CommunityCard land={land} key={land.id} />
+          <LandCard land={land} key={land.id} />
         ))}
       </div>
       {viewMode === 'compact' && (
         <div className={styles.footer}>
-          <Link to="/communities">
-            <Button size="lg" color="primary gray" variant="outlined">
-              View all Communities
+          <Link to="/lands">
+            <Button
+              size="lg"
+              color="primary gray"
+              variant="outlined"
+              itemEnd={
+                <Icon
+                  name="Arrow"
+                  dir="right"
+                  className={styles.footerButtonIcon}
+                />
+              }
+            >
+              View all Lands
             </Button>
           </Link>
         </div>
@@ -66,4 +77,4 @@ function Communities({ viewMode = 'default' }: CommunitiesProps) {
   );
 }
 
-export default Communities;
+export default Lands;

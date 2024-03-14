@@ -197,12 +197,12 @@ const pages = {
     meta: defaultMetadata,
     enabled: !!environment.LANDING_PAGE_URL
   },
-  communities: {
-    pathname: '/communities',
-    Component: lazy(() => import('pages/Communities')),
+  lands: {
+    pathname: '/lands',
+    Component: lazy(() => import('pages/Lands')),
     exact: true,
     navigation: false,
-    name: 'Communities',
+    name: 'Lands',
     meta: defaultMetadata,
     enabled: true
   },

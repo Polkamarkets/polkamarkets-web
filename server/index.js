@@ -427,7 +427,7 @@ app.get('/clubs/:slug', async (request, response, next) => {
   });
 });
 
-app.get('/communities', (request, response) => {
+app.get('/lands', (request, response) => {
   fs.readFile(indexPath, 'utf8', async (error, htmlData) => {
     if (error) {
       return response.status(404).end();

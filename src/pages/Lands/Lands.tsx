@@ -1,10 +1,10 @@
-import { Communities } from 'containers';
+import { Lands } from 'containers';
 
 import { Icon, Tooltip } from 'components';
 
-import styles from './Communities.module.scss';
+import styles from './Lands.module.scss';
 
-function CommunitiesPage() {
+function LandsPage() {
   return (
     <div className="max-width-screen-lg">
       <div className={styles.root}>
@@ -14,10 +14,10 @@ function CommunitiesPage() {
             <Icon name="Info" className={styles.headerIcon} />
           </Tooltip>
         </div>
-        <Communities />
+        <Lands />
       </div>
     </div>
   );
 }
 
-export default CommunitiesPage;
+export default LandsPage;

@@ -5,13 +5,13 @@ import formatImageAlt from 'helpers/formatImageAlt';
 import { Land } from 'types/land';
 import { Avatar, Button } from 'ui';
 
-import styles from './CommunityCard.module.scss';
+import styles from './LandCard.module.scss';
 
-type CommunityCardProps = {
+type LandCardProps = {
   land: Land;
 };
 
-function CommunityCard({ land }: CommunityCardProps) {
+function LandCard({ land }: LandCardProps) {
   const avatarAltFormatter = useCallback(formatImageAlt, []);
 
   const stats = useMemo(() => {
@@ -82,4 +82,4 @@ function CommunityCard({ land }: CommunityCardProps) {
   );
 }
 
-export default CommunityCard;
+export default LandCard;
