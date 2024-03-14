@@ -24,9 +24,15 @@ export default function Footer({ className }: FooterProps) {
       </div>
       <div className={styles.navigation}>
         {ui.footer.links.map(link => (
-          <Link key={link.title} to={link.href}>
-            {link.title}
-          </Link>
+          <li key={link.title}>
+            <a
+              href={link.href}
+              target={link.href.startsWith('http') ? '_blank' : '_self'}
+              rel="noreferrer"
+            >
+              {link.title}
+            </a>
+          </li>
         ))}
         {ui.footer.links.length === 0 && (
           <>
