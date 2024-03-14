@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { ReactNode, useRef, useState } from 'react';
 
@@ -88,6 +90,7 @@ function ImageUploadInput({
   initialImagePreviewURL,
   notUploadedActionLabel,
   uploadedActionLabel,
+  value,
   ...props
 }: ImageUploadInputProps & React.InputHTMLAttributes<HTMLInputElement>) {
   const { setFieldValue, setFieldTouched } = useFormikContext<ImageContext>();
@@ -101,6 +104,8 @@ function ImageUploadInput({
     undefined | string
   >(undefined);
 
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const isValidImage = imageType =>
     ['image/png', 'image/jpg', 'image/jpeg'].includes(imageType);
 
@@ -112,6 +117,7 @@ function ImageUploadInput({
       hash: '',
       isUploaded: false
     });
+    if (inputRef.current) inputRef.current.value = '';
   }
 
   async function handleImageUpload(event: React.ChangeEvent<HTMLInputElement>) {
@@ -139,8 +145,6 @@ function ImageUploadInput({
           'Format not supported. Please upload in jpg or png format'
         );
       }
-    } else {
-      clearImage();
     }
   }
 
@@ -178,6 +182,12 @@ function ImageUploadInput({
     setIsCroppingImage(false);
   }
 
+  const handleDelete = (event: React.MouseEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+    clearImage();
+  };
+
   const uploadActionLabel = field.value.isUploaded
     ? uploadedActionLabel
     : notUploadedActionLabel;
@@ -206,6 +216,7 @@ function ImageUploadInput({
           {...props}
           onChange={handleImageUpload}
           hidden
+          ref={inputRef}
         />
         <div className="pm-c-file-upload-input__actions">
           {as === 'button' ? (
@@ -235,25 +246,32 @@ function ImageUploadInput({
             </>
           ) : (
             <>
-              {croppedImagePreviewURL || initialImagePreviewURL ? (
+              {croppedImagePreviewURL || initialImagePreviewURL || value ? (
                 <label
                   htmlFor={name}
                   className={styles.reuploadButtonContainer}
                 >
                   <img
                     alt="Thumbnail"
-                    src={croppedImagePreviewURL || initialImagePreviewURL}
+                    src={
+                      croppedImagePreviewURL ||
+                      initialImagePreviewURL ||
+                      (value as string)
+                    }
                     width={52}
                     height={52}
                     className={styles.reuploadButtonImage}
                   />
-                  <div className={styles.reuploadButtonOverlay}>
-                    <Icon name="Camera" className={styles.buttonIcon} />
+                  <div
+                    className={styles.reuploadButtonOverlay}
+                    onClick={handleDelete}
+                  >
+                    <Icon name="Trash" className={styles.buttonIcon} />
                   </div>
                 </label>
               ) : (
                 <label htmlFor={name} className={styles.button}>
-                  <Icon name="Camera" className={styles.buttonIcon} />
+                  <Icon name="AddImage" className={styles.buttonIcon} />
                 </label>
               )}
             </>

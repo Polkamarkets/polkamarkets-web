@@ -1,26 +1,21 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import ui from 'config/ui';
-import { useField } from 'formik';
+import { useFormikContext } from 'formik';
+import { useGetLandBySlugQuery } from 'services/Polkamarkets';
 
-import Feature from 'components/Feature';
+import { CreateMarketFormData } from 'components/CreateMarketForm/CreateMarketForm.type';
 
-import {
-  Input,
-  ImageUploadInput,
-  SelectInput,
-  DateInput,
-  TextArea
-} from '../Input';
+import { Input, SelectInput, DateInput, TextArea } from '../Input';
 import CreateMarketFormDetailsClasses from './CreateMarketFormDetails.module.scss';
 
+// TODO: replace with actual community slug of the community
+const COMMUNITY_SLUG = 'todo';
+// TODO: fetch community token and trigger changeCreateMarketToken
+
 function CreateMarketFormDetails() {
-  const [field] = useField('image');
-
-  const uploadedImageURL = field.value.isUploaded
-    ? `https://polkamarkets.infura-ipfs.io/ipfs/${field.value.hash}`
-    : undefined;
-
+  const { setFieldValue, setFieldTouched, values } =
+    useFormikContext<CreateMarketFormData>();
   const categories = useMemo(
     () =>
       ui.filters.categories.options.map(category => ({
@@ -30,12 +25,65 @@ function CreateMarketFormDetails() {
     []
   );
 
+  const { data: community } = useGetLandBySlugQuery({ slug: COMMUNITY_SLUG });
+  const communityOptions = [
+    ...(community ? [{ name: community.title, value: community.slug }] : [])
+  ];
+  const contestOptions = [
+    ...(community?.tournaments?.length
+      ? community.tournaments.map(t => ({
+          name: t.title,
+          value: t.slug
+        }))
+      : [])
+  ];
+  useEffect(() => {
+    if (!community?.slug) return;
+    setFieldValue('communityName', community?.title);
+    setFieldTouched('communityName', true);
+    setFieldValue('communitySlug', community?.slug);
+    setFieldTouched('communitySlug', true);
+    setFieldValue('communityImageUrl', community?.imageUrl);
+    setFieldTouched('communityImageUrl', true);
+  }, [community, setFieldTouched, setFieldValue]);
+
+  useEffect(() => {
+    if (!values?.contestSlug) return;
+    const contest = community?.tournaments?.find(
+      t => t.slug === values?.contestSlug
+    );
+    if (!contest) return;
+    setFieldValue('contestName', contest.title);
+    setFieldTouched('contestName', true);
+  }, [
+    community?.tournaments,
+    setFieldTouched,
+    setFieldValue,
+    values?.contestSlug
+  ]);
+
   return (
     <div className={CreateMarketFormDetailsClasses.root}>
+      <SelectInput
+        label="Your Community"
+        name="communitySlug"
+        placeholder="Select Community"
+        options={communityOptions}
+        defaultValue={communityOptions?.[0]?.value}
+        required
+        disabled
+      />
+      <SelectInput
+        label="Choose Contest"
+        name="contestSlug"
+        placeholder="Select Contest"
+        options={contestOptions}
+        required
+      />
       <Input
         name="question"
         label="Question"
-        placeholder="What would you like to see the world predict?"
+        placeholder="Write your question"
         description="eg: Will the Democracts win the 2024 US presidential election?"
         required
       />
@@ -43,8 +91,8 @@ function CreateMarketFormDetails() {
         rows={5}
         name="description"
         label="Description"
-        placeholder="Write the market details here"
-        description="Provide background info and market resolution criteria here."
+        placeholder="Write the question details here"
+        description="Provide background info and question resolution criteria here."
         className={CreateMarketFormDetailsClasses.textArea}
         required
       />
@@ -56,31 +104,13 @@ function CreateMarketFormDetails() {
           options={categories}
           required
         />
-        <Input
-          name="subcategory"
-          label="Subcategory"
-          placeholder="Subcategory"
-          required
-        />
-      </div>
-      <Feature name="regular">
-        <Input
-          name="resolutionSource"
-          label="Resolution Source"
-          placeholder="https://www.google.com/"
-          required
-        />
-      </Feature>
-      <div className={CreateMarketFormDetailsClasses.groupRow}>
         <DateInput label="Closing Date - Local Time" name="closingDate" />
-        <ImageUploadInput
-          label="Thumbnail"
-          name="image"
-          notUploadedActionLabel="Upload Image"
-          uploadedActionLabel="Re-Upload"
-          initialImagePreviewURL={uploadedImageURL}
-        />
       </div>
+      <Input
+        name="resolutionSource"
+        label="Resolution Source"
+        placeholder="https://www.google.com/"
+      />
     </div>
   );
 }

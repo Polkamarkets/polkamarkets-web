@@ -31,6 +31,7 @@ const SelectInput = React.forwardRef<
       options,
       placeholder,
       required = false,
+      defaultValue,
       ...props
     },
     ref
@@ -62,7 +63,7 @@ const SelectInput = React.forwardRef<
             'pm-c-select-input--empty': !field.value
           })}
         >
-          <option value="" disabled selected>
+          <option value="" disabled selected={!defaultValue}>
             {placeholder}
           </option>
           {options.map(option => (

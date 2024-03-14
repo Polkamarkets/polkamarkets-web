@@ -4,7 +4,7 @@
     background-color: themed('body-background-color');
     box-shadow: themed('shadow');
     border: 0.1rem solid themed('border-color');
-    border-radius: 0.4rem 0.4rem 0.4rem 0.4rem;
+    border-radius: 0.8rem 0.8rem 0.8rem 0.8rem;
     transition: all 0.2s ease-in-out 0s;
 
     &--gutter {
@@ -24,7 +24,7 @@
       padding-left: var(--grid-margin);
       height: 36px;
       background-color: themed('footer-background-color');
-      border-radius: 0rem 0rem 0.4rem 0.4rem;
+      border-radius: 0rem 0rem 0.8rem 0.8rem;
       transition: all 0.2s ease-in-out 0s;
     }
   }

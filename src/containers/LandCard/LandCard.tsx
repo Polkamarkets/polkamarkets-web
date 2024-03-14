@@ -5,13 +5,13 @@ import formatImageAlt from 'helpers/formatImageAlt';
 import { Land } from 'types/land';
 import { Avatar, Button } from 'ui';
 
-import styles from './CommunityCard.module.scss';
+import styles from './LandCard.module.scss';
 
-type CommunityCardProps = {
+type LandCardProps = {
   land: Land;
 };
 
-function CommunityCard({ land }: CommunityCardProps) {
+function LandCard({ land }: LandCardProps) {
   const avatarAltFormatter = useCallback(formatImageAlt, []);
 
   const stats = useMemo(() => {
@@ -65,16 +65,13 @@ function CommunityCard({ land }: CommunityCardProps) {
       <div className={styles.footer}>
         <div className={styles.footerStats}>
           <span className={styles.footerStatsItem}>
-            Members: <strong className="notranslate">{stats.members}</strong>
+            Members <strong className="notranslate">{stats.members}</strong>
           </span>
-          <span className={styles.divider} />
           <span className={styles.footerStatsItem}>
-            Contests: <strong className="notranslate">{stats.contests}</strong>
+            Contests <strong className="notranslate">{stats.contests}</strong>
           </span>
-          <span className={styles.divider} />
           <span className={styles.footerStatsItem}>
-            Questions:{' '}
-            <strong className="notranslate">{stats.questions}</strong>
+            Questions <strong className="notranslate">{stats.questions}</strong>
           </span>
         </div>
       </div>
@@ -82,4 +79,4 @@ function CommunityCard({ land }: CommunityCardProps) {
   );
 }
 
-export default CommunityCard;
+export default LandCard;

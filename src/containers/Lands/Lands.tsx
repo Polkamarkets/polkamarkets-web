@@ -1,16 +1,20 @@
 import { Link } from 'react-router-dom';
 
 import { environment } from 'config';
-import CommunityCard from 'containers/CommunityCard';
+import LandCard from 'containers/LandCard';
 import isEmpty from 'lodash/isEmpty';
 import { useGetLandsQuery } from 'services/Polkamarkets';
 import { Button } from 'ui';
 
-import { AlertMini } from 'components';
+import { AlertMini, Icon } from 'components';
 
-import styles from './Communities.module.scss';
+import styles from './Lands.module.scss';
 
-function Communities() {
+type LandsProps = {
+  viewMode?: 'default' | 'compact';
+};
+
+function Lands({ viewMode = 'default' }: LandsProps) {
   const {
     data: lands,
     isLoading: isLoadingLands,
@@ -34,30 +38,43 @@ function Communities() {
           style={{ border: 'none' }}
           styles="outline"
           variant="information"
-          description="No communities available at the moment."
+          description="No lands available at the moment."
         />
       </div>
     );
   }
 
-  const visibleLands = lands?.slice(0, 12);
+  const visibleLands = viewMode === 'compact' ? lands?.slice(0, 12) : lands;
 
   return (
     <>
       <div className={styles.root}>
         {visibleLands?.map(land => (
-          <CommunityCard land={land} key={land.id} />
+          <LandCard land={land} key={land.id} />
         ))}
       </div>
-      <div className={styles.footer}>
-        <Link to="/communities">
-          <Button size="lg" color="primary gray" variant="outlined">
-            View all Communities
-          </Button>
-        </Link>
-      </div>
+      {viewMode === 'compact' && (
+        <div className={styles.footer}>
+          <Link to="/lands">
+            <Button
+              size="lg"
+              color="primary gray"
+              variant="outlined"
+              itemEnd={
+                <Icon
+                  name="Arrow"
+                  dir="right"
+                  className={styles.footerButtonIcon}
+                />
+              }
+            >
+              View all Lands
+            </Button>
+          </Link>
+        </div>
+      )}
     </>
   );
 }
 
-export default Communities;
+export default Lands;

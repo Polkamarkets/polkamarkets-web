@@ -1,35 +1,23 @@
 import cn from 'classnames';
 import dayjs from 'dayjs';
 import { useFormikContext } from 'formik';
-import { roundNumber } from 'helpers/math';
 import { Avatar } from 'ui';
 
-import { useNetwork } from 'hooks';
-
-import Breadcrumb from '../../Breadcrumb';
 import type { CreateMarketFormData } from '../../CreateMarketForm';
 import Icon from '../../Icon';
 import Text from '../../Text';
 import MarketPreviewClasses from './MarketPreview.module.scss';
 import MarketPreviewOutcomes from './MarketPreviewOutcomes';
 
-type MarketPreviewProps = {
-  token: any;
-};
-
-function MarketPreview({ token }: MarketPreviewProps) {
+function MarketPreview() {
   const { values } = useFormikContext<CreateMarketFormData>();
-  const { network } = useNetwork();
 
   const {
-    image,
+    communityName,
+    communityImageUrl,
+    contestName,
     question,
-    category,
-    subcategory,
     closingDate,
-    liquidity,
-    fee,
-    treasuryFee,
     outcomes
   } = values;
 
@@ -37,20 +25,26 @@ function MarketPreview({ token }: MarketPreviewProps) {
     <div className="prediction-card">
       <div className={MarketPreviewClasses.body}>
         <div className={MarketPreviewClasses.bodyHeader}>
-          {image.isUploaded ? (
-            <Avatar
-              $radius="sm"
-              $size="md"
-              alt="Market"
-              src={`https://polkamarkets.infura-ipfs.io/ipfs/${image.hash}`}
-              className={MarketPreviewClasses.bodyHeaderImage}
-            />
-          ) : null}
           <div className="pm-c-market__body-details">
-            <Breadcrumb>
-              <Breadcrumb.Item>{category}</Breadcrumb.Item>
-              <Breadcrumb.Item>{subcategory}</Breadcrumb.Item>
-            </Breadcrumb>
+            <div className={cn(MarketPreviewClasses.header)}>
+              <Avatar
+                $radius="lg"
+                $size="x2s"
+                alt="Market"
+                src={communityImageUrl}
+                className={MarketPreviewClasses.bodyHeaderImage}
+              />
+              <span className={cn(MarketPreviewClasses.community)}>
+                {communityName}
+              </span>{' '}
+              <span className={cn(MarketPreviewClasses.connection)}>
+                &#x2022; asked at
+              </span>{' '}
+              <span className={cn(MarketPreviewClasses.context)}>
+                {contestName}
+              </span>
+            </div>
+
             {question ? (
               <Text as="p" scale="body" fontWeight="medium">
                 {question}
@@ -58,15 +52,13 @@ function MarketPreview({ token }: MarketPreviewProps) {
             ) : null}
           </div>
         </div>
-        <MarketPreviewOutcomes outcomes={outcomes} ticker={token.ticker} />
+        <MarketPreviewOutcomes outcomes={outcomes} />
       </div>
       <div className="prediction-card__footer">
         <div className={cn('pm-c-market-footer', MarketPreviewClasses.footer)}>
           <div className="pm-c-market-footer__stats">
-            <Icon name={network.currency.iconName} size="lg" />
             {closingDate && (
               <>
-                <span className="pm-c-divider--circle" />
                 <Text
                   as="span"
                   scale="tiny-uppercase"
@@ -89,64 +81,6 @@ function MarketPreview({ token }: MarketPreviewProps) {
                 </Text>
               </>
             )}
-            {!!liquidity && (
-              <>
-                <span className="pm-c-divider--circle" />
-                <Text
-                  as="span"
-                  scale="tiny-uppercase"
-                  fontWeight="semibold"
-                  className={MarketPreviewClasses.statsText}
-                >
-                  <Icon
-                    name="Liquidity"
-                    title="Liquidity"
-                    className={MarketPreviewClasses.statsIcon}
-                  />
-                  <Text
-                    as="strong"
-                    scale="tiny-uppercase"
-                    fontWeight="semibold"
-                    className={MarketPreviewClasses.statsText}
-                  >
-                    {`${roundNumber(liquidity, 3)} `}
-                  </Text>
-                  <Text
-                    as="strong"
-                    scale="tiny-uppercase"
-                    fontWeight="semibold"
-                    className={MarketPreviewClasses.statsText}
-                  >
-                    {token.ticker}
-                  </Text>
-                </Text>
-              </>
-            )}
-            {fee ? (
-              <>
-                <span className="pm-c-divider--circle" />
-                <Text
-                  as="span"
-                  scale="tiny-uppercase"
-                  fontWeight="semibold"
-                  className={MarketPreviewClasses.statsText}
-                >
-                  <Icon
-                    name="Fee"
-                    title="Trading Fee"
-                    className={MarketPreviewClasses.statsIcon}
-                  />
-                  <Text
-                    as="strong"
-                    scale="tiny-uppercase"
-                    fontWeight="semibold"
-                    className={MarketPreviewClasses.statsText}
-                  >
-                    {`${roundNumber(fee + treasuryFee, 1)}%`}
-                  </Text>
-                </Text>
-              </>
-            ) : null}
           </div>
         </div>
       </div>
