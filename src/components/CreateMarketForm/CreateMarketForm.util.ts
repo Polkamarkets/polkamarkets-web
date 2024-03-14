@@ -12,6 +12,11 @@ const initialValues: CreateMarketFormData = {
   question: '',
   description: '',
   answerType: 'binary',
+  communityName: '',
+  communitySlug: '',
+  communityImageUrl: '',
+  contestName: '',
+  contestSlug: '',
   outcomes: [
     {
       id: uuid(),
@@ -40,24 +45,23 @@ const initialValues: CreateMarketFormData = {
     isUploaded: false
   },
   category: '',
-  subcategory: '',
-  closingDate: dayjs().toString(),
-  liquidity: features.fantasy.enabled ? 5000 : 0,
-  fee: features.fantasy.enabled ? 0 : 2,
-  treasuryFee: features.fantasy.enabled ? 0 : 1,
-  ...(features.regular.enabled && {
-    resolutionSource: ''
-  })
+  closingDate: dayjs().toString()
+  // fee: features.fantasy.enabled ? 0 : 2,
+  //   treasuryFee: features.fantasy.enabled ? 0 : 1,
+  //   ...(features.regular.enabled && {
+  //     resolutionSource: ''
+  //   })
 };
 
 const validationSchema = [
   Yup.object().shape({
-    question: Yup.string().required('Market Question is required.'),
+    communityName: Yup.string().required('Community is required.'),
+    contestName: Yup.string().required('Contest is required.'),
+    question: Yup.string().required('Question is required.'),
     description: Yup.string()
-      .min(50, 'Market Description must be at least 50 characters long.')
-      .required('Market Description is required.'),
+      .min(50, 'Question description must be at least 50 characters long.')
+      .required('Question Description is required.'),
     category: Yup.string().required('Category is required.'),
-    subcategory: Yup.string().required('Subcategory is required.'),
     ...(features.regular.enabled && {
       resolutionSource: Yup.string()
         .url('Please enter a valid url.')
@@ -108,17 +112,6 @@ const validationSchema = [
         const sumOfProbabilities = sum(probabilities);
         return almost(sumOfProbabilities, 100);
       })
-  }),
-  Yup.object().shape({
-    liquidity: Yup.number().moreThan(0).required('Liquidity is required.'),
-    fee: Yup.number()
-      .min(0, 'Fee must be greater than or equal to 0%')
-      .max(5, 'Fee must be less than or equal to 5%')
-      .required('Fee is required.'),
-    treasuryFee: Yup.number()
-      .min(0, 'Creator fee must be greater than or equal to 0%')
-      .max(5, 'Creator fee must be less than or equal to 5%')
-      .required('Creator fee is required.')
   })
 ];
 
