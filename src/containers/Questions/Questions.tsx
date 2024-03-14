@@ -12,7 +12,11 @@ import { useAppDispatch, useFilters } from 'hooks';
 
 import styles from './Questions.module.scss';
 
-function Questions() {
+type QuestionsProps = {
+  viewMode?: 'default' | 'compact';
+};
+
+function Questions({ viewMode = 'default' }: QuestionsProps) {
   const dispatch = useAppDispatch();
   const { controls } = useFilters();
   const { updateDropdown } = controls;
@@ -40,27 +44,31 @@ function Questions() {
     );
   }, [dispatch]);
 
+  const maxVisibleItems = viewMode === 'compact' ? 6 : undefined;
+
   return (
     <>
-      <MarketList filtersVisible={false} maxVisibleItems={6} />
-      <div className={styles.footer}>
-        <Link to="/questions">
-          <Button
-            size="lg"
-            color="primary gray"
-            variant="outlined"
-            itemEnd={
-              <Icon
-                name="Arrow"
-                dir="right"
-                className={styles.footerButtonIcon}
-              />
-            }
-          >
-            View all Questions
-          </Button>
-        </Link>
-      </div>
+      <MarketList filtersVisible={false} maxVisibleItems={maxVisibleItems} />
+      {viewMode === 'compact' && (
+        <div className={styles.footer}>
+          <Link to="/questions">
+            <Button
+              size="lg"
+              color="primary gray"
+              variant="outlined"
+              itemEnd={
+                <Icon
+                  name="Arrow"
+                  dir="right"
+                  className={styles.footerButtonIcon}
+                />
+              }
+            >
+              View all Questions
+            </Button>
+          </Link>
+        </div>
+      )}
     </>
   );
 }
