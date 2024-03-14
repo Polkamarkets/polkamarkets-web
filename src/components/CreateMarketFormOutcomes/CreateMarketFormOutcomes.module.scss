@@ -11,15 +11,6 @@
   background-color: inherit;
 }
 
-.header {
-  display: grid;
-
-  grid-template-columns: 7fr 1.5fr 2fr;
-  gap: var(--size-16);
-  align-items: flex-start;
-  margin-bottom: 2px;
-}
-
 .distribuitionTypeSelector {
   color: var(--color-main-primary);
 
@@ -28,36 +19,25 @@
   }
 }
 
-.answerTypeSelector {
-  width: fit-content;
 
-  &Button {
-    padding: var(--size-12) var(--size-32) !important;
-    font-size: 1.5rem !important;
-    line-height: 1 !important;
-    font-weight: 600 !important;
+.headerOutcomes {
+  grid-column: span 2;
+}
 
-    @media (max-width: 576px) {
-      padding: var(--size-8) var(--size-16) !important;
-      font-size: 1.2rem !important;
-    }
-  }
+.headerProbability {
+  grid-column: span 2;
 }
 
 .outcomes {
   display: grid;
 
-  grid-template-columns: 7fr 3fr auto;
+  grid-template-columns: auto 1fr auto auto;
   gap: var(--size-16);
   align-items: flex-start;
   margin-bottom: var(--size-16);
 
   @media (max-width: 576px) {
     overflow-x: scroll;
-  }
-
-  &WithImages {
-    grid-template-columns: auto 7fr 3fr auto;
   }
 }
 

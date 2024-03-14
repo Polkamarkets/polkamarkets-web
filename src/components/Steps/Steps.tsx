@@ -86,8 +86,9 @@ function Steps({
         <div className={StepsClasses.controls}>
           {current > 0 ? (
             <Button
-              variant="ghost"
+              variant="outline"
               color="default"
+              size="sm"
               onClick={() => onChange(current - 1)}
               disabled={isSubmitting}
             >
@@ -99,7 +100,8 @@ function Steps({
               <ButtonLoading
                 type="submit"
                 variant="normal"
-                color="success"
+                color="primary"
+                size="sm"
                 loading={isSubmitting}
                 disabled={
                   !walletConnected || !isCurrentStepValid || isSubmitting
@@ -110,8 +112,9 @@ function Steps({
             </ApproveToken>
           ) : (
             <Button
-              variant="subtle"
-              color="default"
+              variant="normal"
+              color="primary"
+              size="sm"
               onClick={() => onChange(current + 1)}
               disabled={current === steps.length - 1 || !isCurrentStepValid}
             >

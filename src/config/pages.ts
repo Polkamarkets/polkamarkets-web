@@ -206,6 +206,15 @@ const pages = {
     meta: defaultMetadata,
     enabled: true
   },
+  lands: {
+    pathname: '/lands',
+    Component: lazy(() => import('pages/Lands')),
+    exact: true,
+    navigation: false,
+    name: 'Lands',
+    meta: defaultMetadata,
+    enabled: true
+  },
   markets: {
     pathname:
       features.fantasy.enabled && ui.tournaments.enabled ? '/markets' : '/',

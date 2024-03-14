@@ -1,8 +1,8 @@
 import { Tabs, TabList, Tab, TabPanel } from 'react-aria-components';
 
 import classNames from 'classnames';
-import Communities from 'containers/Communities';
 import Contests from 'containers/Contests';
+import Lands from 'containers/Lands';
 import Questions from 'containers/Questions';
 
 import styles from './HomeDiscover.module.scss';
@@ -26,7 +26,7 @@ function HomeDiscover() {
           </Tab>
         </TabList>
         <TabPanel className={styles.tabPanel} id="lands">
-          <Communities />
+          <Lands viewMode="compact" />
         </TabPanel>
         <TabPanel className={styles.tabPanel} id="contests">
           <Contests viewMode="compact" />

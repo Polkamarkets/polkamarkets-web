@@ -1,64 +1,57 @@
-import { Fragment, useMemo } from 'react';
+import { Link } from 'react-router-dom';
 
 import cn from 'classnames';
-import { ui } from 'config';
-import { Container } from 'ui';
 
-import Text from 'components/Text';
+import { PolkamarketsIcon, TwitterIcon } from 'assets/icons';
+import DiscordIcon from 'assets/icons/DiscordIcon';
+import InstagramIcon from 'assets/icons/InstagramIcon';
 
 import styles from './Footer.module.scss';
-import { defaultFooterText, getFooterItems } from './Footer.utils';
 
-export interface FooterProps
-  extends Pick<React.ComponentPropsWithoutRef<'footer'>, 'className'> {
-  $gutterTop?: boolean;
-}
+type FooterProps = {
+  className?: string;
+};
 
-export default function Footer({ className, $gutterTop }: FooterProps) {
-  const text = ui.layout.footer.text || defaultFooterText;
-
-  const items = useMemo(() => getFooterItems(text), [text]);
-
+export default function Footer({ className }: FooterProps) {
+  const year = new Date().getFullYear();
   return (
-    <footer
-      className={cn(
-        styles.root,
-        {
-          [styles.gutterTop]: $gutterTop
-        },
-        className
-      )}
-    >
-      <Container className={styles.container}>
-        <Text
-          as="p"
-          scale="caption"
-          fontWeight="medium"
-          className="pm-l-footer__terms-text-secondary"
+    <footer className={cn(styles.root, className)}>
+      <div className={styles.copyRight}>
+        <PolkamarketsIcon />
+        <p>&#9400; {year} Polkamarkets Labs</p>
+      </div>
+      <div className={styles.navigation}>
+        <Link to="/#">About</Link>
+        <Link to="/#">Protocol</Link>
+        <Link to="/#">Help</Link>
+        <Link to="/#">Blog</Link>
+        <Link to="/#">Terms</Link>
+        <Link to="/#">Privacy</Link>
+      </div>
+
+      <div className={styles.social}>
+        <a
+          href="https://twitter.com/polkamarkets"
+          target="_blank"
+          rel="noreferrer"
         >
-          {items.map(item => (
-            <Fragment key={item.text}>
-              {item.isLink ? (
-                <a
-                  className={cn('caption medium', {
-                    [styles.itemLinkDefault]:
-                      !item.color || item.color === 'default',
-                    [styles.itemLinkPrimary]: item.color === 'primary',
-                    [styles.itemLinkUnderline]: item.underline
-                  })}
-                  href={item.url!}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  {item.text}
-                </a>
-              ) : (
-                item.text
-              )}
-            </Fragment>
-          ))}
-        </Text>
-      </Container>
+          <TwitterIcon />
+        </a>
+        <a
+          href="https://discord.gg/polkamarkets"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <DiscordIcon />
+        </a>
+        <a
+          href="https://www.instagram.com/polkamarkets"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <InstagramIcon />
+        </a>
+      </div>
     </footer>
   );
 }

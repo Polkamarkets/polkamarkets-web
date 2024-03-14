@@ -82,7 +82,7 @@ function CreateMarketForm() {
     const odds = values.outcomes.map(outcome => outcome.probability);
 
     // data format: "category;subcategory;resolutionSource"
-    const data = `${values.category};${values.subcategory};${
+    const data = `${values.category};${
       features.regular.enabled ? values.resolutionSource : ''
     }`;
 
@@ -98,12 +98,15 @@ function CreateMarketForm() {
       closingDate,
       outcomes,
       data,
-      values.liquidity,
+      // values.liquidity,
+      0,
       odds,
-      values.fee,
+      // values.fee,
+      0,
       token,
       wrapped,
-      values.treasuryFee
+      // values.treasuryFee
+      0
     );
 
     show('createMarket');
@@ -138,6 +141,8 @@ function CreateMarketForm() {
     },
     [currentValidationSchema]
   );
+
+  const fields = Object.keys(currentValidationSchema?.fields || {});
 
   return (
     <>
@@ -178,7 +183,7 @@ function CreateMarketForm() {
             />
             <Steps
               current={currentStep}
-              currentStepFields={Object.keys(currentValidationSchema.fields)}
+              currentStepFields={fields}
               isRequiredField={isRequiredField}
               steps={[
                 {
@@ -192,8 +197,8 @@ function CreateMarketForm() {
                   component: <CreateMarketFormOutcomes />
                 },
                 {
-                  id: 'fund',
-                  title: 'Funding Information',
+                  id: 'preview',
+                  title: 'Preview Question',
                   component: <CreateMarketFormFund />
                 }
               ]}
