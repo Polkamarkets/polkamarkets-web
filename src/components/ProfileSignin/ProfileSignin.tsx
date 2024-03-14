@@ -1,8 +1,10 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import classNames from 'classnames';
 import { ui } from 'config';
 import type { Providers } from 'config';
+import { jwtVerify, importSPKI } from 'jose';
+import Cookies from 'js-cookie';
 import { Spinner } from 'ui';
 
 import { RemoveOutlinedIcon } from 'assets/icons';
@@ -19,12 +21,14 @@ import ModalSection from 'components/ModalSection';
 import ProfileSigninEmail from 'components/ProfileSigninEmail';
 import Text from 'components/Text';
 
-import { useAppDispatch, usePolkamarketsService } from 'hooks';
+import { useAppDispatch, useAppSelector, usePolkamarketsService } from 'hooks';
 
+import { getJWTForUser } from '../../services/Polkamarkets/jwt';
 import profileSigninClasses from './ProfileSignin.module.scss';
 
 const hasSingleProvider = ui.socialLogin.providers.length === 1;
 const singleProviderName = ui.socialLogin.providers[0];
+const autoClaimEnabled = ui.socialLogin.hasAutoClaim;
 
 export default function ProfileSignin({ onClick, ...props }: ButtonProps) {
   const dispatch = useAppDispatch();
@@ -38,20 +42,94 @@ export default function ProfileSignin({ onClick, ...props }: ButtonProps) {
       try {
         setLoad(name);
 
-        const success = await polkamarketsService[`socialLogin${name}`]();
+        throw new Error('Not implemented');
 
-        if (success) {
-          const { login } = await import('redux/ducks/polkamarkets');
+        // const jwtToken = await getJWTForUser('teste'); // TODO grab userid from cookies
 
-          dispatch(login(polkamarketsService));
-        }
+        // const success = await polkamarketsService[`socialLogin${name}`]('teste',
+        //   jwtToken.data);
+
+        // if (success) {
+        //   const { login } = await import('redux/ducks/polkamarkets');
+
+        //   dispatch(login(polkamarketsService));
+        // }
       } finally {
         setLoad('');
         setShow(false);
       }
     },
-    [dispatch, polkamarketsService]
+    []
   );
+
+  const handleObservadorClick = useCallback(async () => {
+    const getUserData = async (userJwt: string) => {
+      const publicKey = await importSPKI(
+        process.env.REACT_APP_OBSERVADOR_LOGIN_PUBLIC_KEY || '',
+        'RS256'
+      );
+
+      const { payload: userData } = await jwtVerify(userJwt, publicKey);
+
+      return userData;
+    };
+
+    const loginObservador = async userData => {
+      const userId = userData.uid as string;
+
+      const jwtToken = await getJWTForUser(
+        userId,
+        userData.email || `${userId}@observador.pt`,
+        userData.name as string,
+        userData.picture as string
+      );
+
+      const success = await polkamarketsService.socialLoginWithJWT(
+        userId,
+        jwtToken.data
+      );
+
+      if (success) {
+        const { login } = await import('redux/ducks/polkamarkets');
+
+        dispatch(login(polkamarketsService, autoClaimEnabled));
+      }
+
+      setLoad('');
+      setShow(false);
+    };
+
+    setLoad('Observador');
+
+    let userJwt = Cookies.get('obs_foreland');
+    if (userJwt) {
+      const userData = await getUserData(userJwt as string);
+      await loginObservador(userData);
+      return;
+    }
+
+    const popup = window.open(
+      'https://observador.pt/login-popup/',
+      'Observador',
+      'width=500, height=500'
+    );
+
+    window.addEventListener('message', async message => {
+      if (message.data.event === 'login-success' && popup) {
+        popup.close();
+
+        // TODO need to test if the refresh is needed or not
+        // refresh the page to rerender with cookie obs_foreland seted
+
+        userJwt = Cookies.get('obs_foreland');
+
+        const userData = await getUserData(userJwt as string);
+
+        await loginObservador(userData);
+      }
+    });
+  }, [dispatch, polkamarketsService]);
+
   const handleSubmit = useCallback(
     async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
@@ -59,24 +137,26 @@ export default function ProfileSignin({ onClick, ...props }: ButtonProps) {
       if (event.target[0].value) {
         try {
           setLoad('Email');
+          throw new Error('Not implemented');
 
-          const success = await polkamarketsService.socialLoginEmail(
-            event.target[0].value
-          );
+          // const success = await polkamarketsService.socialLoginEmail(
+          //   event.target[0].value
+          // );
 
-          if (success) {
-            const { login } = await import('redux/ducks/polkamarkets');
+          // if (success) {
+          //   const { login } = await import('redux/ducks/polkamarkets');
 
-            dispatch(login(polkamarketsService));
-          }
+          //   dispatch(login(polkamarketsService));
+          // }
         } finally {
           setLoad('');
           setShow(false);
         }
       }
     },
-    [dispatch, polkamarketsService]
+    []
   );
+
   const renderProviders = useCallback(
     (provider: Providers) => {
       const isLoading = !!load && load === provider;
@@ -87,23 +167,29 @@ export default function ProfileSignin({ onClick, ...props }: ButtonProps) {
             ''
           ) : (
             <>
-              {hasSingleProvider && (
+              {hasSingleProvider ? (
                 <>
-                  <Icon
-                    name="LogIn"
-                    size="lg"
-                    className={profileSigninClasses.signinIcon}
-                  />
-                  Login with{' '}
+                  <Icon name="Profile" size="md" />
+                  <Text as="span" scale="caption">
+                    Sign In
+                  </Text>
                 </>
+              ) : (
+                provider
               )}
-              {provider}
             </>
           )}
           {isLoading ? (
             <Spinner $size="md" />
           ) : (
-            <Icon size="lg" name={provider === 'Email' ? 'LogIn' : provider} />
+            <>
+              {!hasSingleProvider && (
+                <Icon
+                  size="lg"
+                  name={provider === 'Email' ? 'LogIn' : provider}
+                />
+              )}
+            </>
           )}
         </>
       );
@@ -118,6 +204,22 @@ export default function ProfileSignin({ onClick, ...props }: ButtonProps) {
           [profileSigninClasses.socialMetaMask]: provider === 'MetaMask'
         }
       );
+
+      if (provider === 'Observador') {
+        return (
+          <Button
+            color="primary"
+            size="xs"
+            key={provider}
+            name={provider}
+            className={profileSigninClasses.signin}
+            onClick={handleObservadorClick}
+            disabled={isDisabled}
+          >
+            {child}
+          </Button>
+        );
+      }
 
       if (provider === 'Email')
         return (
@@ -156,12 +258,28 @@ export default function ProfileSignin({ onClick, ...props }: ButtonProps) {
         </Button>
       );
     },
-    [handleClick, handleSubmit, load]
+    [handleClick, handleSubmit, load, handleObservadorClick]
   );
 
   function handleHide() {
     setShow(false);
   }
+
+  const { isLoggedIn, isLoggedOut } = useAppSelector(
+    state => state.polkamarkets
+  );
+
+  useEffect(() => {
+    // triggering observador login if the user is already logged in
+    if (
+      !isLoggedIn &&
+      !isLoggedOut &&
+      Cookies.get('obs_foreland') &&
+      singleProviderName === 'Observador'
+    ) {
+      handleObservadorClick();
+    }
+  }, [isLoggedIn, handleObservadorClick, isLoggedOut]);
 
   return (
     <>

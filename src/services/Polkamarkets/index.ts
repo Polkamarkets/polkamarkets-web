@@ -284,8 +284,31 @@ const polkamarketsApi = createApi({
       GetUserOperationsByAddressArgs
     >({
       query: ({ address }) => `/user_operations?from=${address}`,
-      transformResponse: (response: GetUserOperationsByAddressData) =>
-        camelize(response)
+      transformResponse: (response: GetUserOperationsByAddressData) => {
+        // sorting by timestamp
+        let userOperations = camelize(response);
+
+        userOperations = userOperations.sort(
+          (a, b) => b.timestamp - a.timestamp
+        );
+
+        // removing failed operations from array
+        userOperations = userOperations.filter((operation, _index) => {
+          if (operation.status !== 'failed') return true;
+
+          // only showing failed operation if there is no successful operation after it on same marketId
+          return !userOperations.some((op, _i) => {
+            return (
+              op.marketId === operation.marketId &&
+              op.timestamp > operation.timestamp - 300 && // giving a 5 minute buffer
+              op.status === 'success' &&
+              op.action === operation.action
+            );
+          });
+        });
+
+        return userOperations;
+      }
     })
   })
 });

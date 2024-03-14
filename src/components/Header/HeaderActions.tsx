@@ -164,7 +164,7 @@ export default function HeaderActions() {
               href={ui.layout.header.helpUrl}
             />
           )}
-          {ui.layout.onboarding.steps && (
+          {ui.layout.onboarding.steps && theme.device.isDesktop && (
             <HowToPlayButton
               className={cn({
                 [headerActionsClasses.howToPlay]: features.fantasy.enabled

@@ -39,11 +39,11 @@ const columns: TournamentTopUsersColumn[] = [
 ];
 
 const tabs = {
-  ranking: 'Ranking',
-  rewards: 'Rewards'
+  rewards: 'Rewards',
+  ranking: 'Ranking'
 } as const;
 
-type Tabs = typeof tabs[keyof typeof tabs];
+type Tabs = (typeof tabs)[keyof typeof tabs];
 
 type TournamentTopUsersProps = {
   isLoading: boolean;
@@ -125,21 +125,24 @@ function TournamentTopUsers({
               />
             ) : (
               <ul className={styles.list}>
-                {rewardsRows.map(reward => (
-                  <li key={reward.title} className={styles.listItem}>
-                    <Text
-                      as="span"
-                      scale="caption"
-                      fontWeight="medium"
-                      color="lighter-gray-50"
-                    >
-                      {reward.title} -{' '}
-                    </Text>
-                    <Text as="span" scale="caption" color="light-gray">
-                      {reward.description}
-                    </Text>
-                  </li>
-                ))}
+                {
+                  // only showing top 3 rewards
+                  rewardsRows.slice(0, 3).map(reward => (
+                    <li key={reward.title} className={styles.listItem}>
+                      <Text
+                        as="span"
+                        scale="caption"
+                        fontWeight="medium"
+                        color="lighter-gray-50"
+                      >
+                        {reward.title} -{' '}
+                      </Text>
+                      <Text as="span" scale="caption" color="light-gray">
+                        {reward.description}
+                      </Text>
+                    </li>
+                  ))
+                }
               </ul>
             )
           }[currentTab];

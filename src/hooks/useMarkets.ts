@@ -3,7 +3,6 @@ import { useCallback, useMemo } from 'react';
 import { camelize } from 'humps';
 import isEmpty from 'lodash/isEmpty';
 import {
-  getFavoriteMarkets,
   getMarkets,
   getMarketsByIds,
   marketsSelector
@@ -64,9 +63,8 @@ export default function useMarkets(fetchByIds?: {
       dispatch(getMarkets('open'));
       dispatch(getMarkets('closed'));
       dispatch(getMarkets('resolved'));
-      dispatch(getFavoriteMarkets(favoriteMarkets));
     }
-  }, [dispatch, favoriteMarkets, fetchByIds]);
+  }, [dispatch, fetchByIds]);
 
   const state = useMemo(() => {
     if (Object.values(isLoading).some(Boolean)) return 'loading';

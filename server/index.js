@@ -273,7 +273,10 @@ app.get('/embed/markets/:slug', async (request, response) => {
             }),
             off: off.length > 0 && {
               title: `${
-                off.length === 1 ? '1+ Outcome' : `${off.length}+ Outcomes`
+                // TODO: use useLanguage
+                off.length === 1
+                  ? '1+ Possibilidade'
+                  : `${off.length}+ Possibilidades`
               }`,
               subtitle: `${off.map(outcome => outcome.title).join(', ')}`,
               price: roundNumber(

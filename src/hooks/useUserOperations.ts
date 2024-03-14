@@ -46,11 +46,26 @@ function useUserOperations() {
     [dispatch, userAddress]
   );
 
+  const addOperation = useCallback(
+    (operation: UserOperation): void =>
+      dispatch(
+        polkamarketsApi.util.updateQueryData(
+          'getUserOperationsByAddress',
+          { address: userAddress },
+          operations => {
+            return [operation, ...operations];
+          }
+        )
+      ),
+    [dispatch, userAddress]
+  );
+
   return {
     data,
     isLoading: isLoading || isFetching,
     refetch,
-    updateOperationStatus
+    updateOperationStatus,
+    addOperation
   };
 }
 

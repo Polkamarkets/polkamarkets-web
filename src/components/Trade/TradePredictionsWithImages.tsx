@@ -69,7 +69,7 @@ function TradePredictionsWithImages({
   const { id, networkId } = market;
   const { selectedOutcomeId } = useAppSelector(state => state.trade);
 
-  const { predictedOutcome } = useOperation(market);
+  const { getOutcomeStatus } = useOperation(market);
 
   const apiRef = useRef({} as scrollVisibilityApiType);
 
@@ -145,12 +145,12 @@ function TradePredictionsWithImages({
             [styles.predictionWithImageMultiple]: multiple,
             [styles.predictionWithImageDisabled]: predictions.length === 1,
             [styles.predictionWithImagePredicted]:
-              prediction.id.toString() === predictedOutcome?.id.toString()
+              getOutcomeStatus(+prediction.id) === 'success'
           })}
           value={prediction.id.toString()}
           onClick={handleSelectPrediction}
         >
-          {prediction.id.toString() === predictedOutcome?.id.toString() && (
+          {getOutcomeStatus(+prediction.id) === 'success' && (
             <span className={styles.predictionWithImagePredictedLabel}>
               <CheckIcon
                 className={styles.predictionWithImagePredictedLabelIcon}

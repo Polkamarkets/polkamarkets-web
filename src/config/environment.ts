@@ -65,21 +65,26 @@ const environmentConfigVariables = [
   'UI_TOURNAMENTS_TABS_ENABLED',
   'UI_TWITTER_SHARE_INTENT',
   'UI_ONBOARDING',
+  'UI_SLIPPAGE',
+  'UI_SOCIAL_LOGIN_AUTO_CLAIM',
   'UI_TRANSACTIONS_QUEUE',
   'SENTRY_DSN',
   'FAVICON_URL',
   'TOUCHICON_URL',
   'HOMEPAGE_URL',
   'DEFAULT_LANGUAGE',
-  'UI_SOCIAL_LOGIN_AUTO_CLAIM',
+  'EXTERNAL_JS_URL',
+  'MAINTENANCE_MODE',
   'EXTERNAL_JS_URL'
 ] as const;
 
 export type EnvironmentConfigVariable =
-  typeof environmentConfigVariables[number];
+  (typeof environmentConfigVariables)[number];
 
 export type EnvironmentConfig = {
-  [_variable in typeof environmentConfigVariables[number]]: string | undefined;
+  [_variable in (typeof environmentConfigVariables)[number]]:
+    | string
+    | undefined;
 };
 
 function getEnvironmentConfigVariable(
@@ -107,7 +112,10 @@ type NetworkConfigVariable =
   | 'ERC20_CONTRACT_ADDRESS'
   | 'NETWORK_ID'
   | 'PREDICTION_MARKET_CONTRACT_ADDRESS'
+  | 'PREDICTION_MARKET_MANAGER_CONTRACT_ADDRESS'
+  | 'PREDICTION_MARKET_IS_V3'
   | 'REALITIO_ERC20_CONTRACT_ADDRESS'
+  | 'REALITIO_ERC20_TIMEOUT'
   | 'ACHIEVEMENTS_CONTRACT_ADDRESS'
   | 'VOTING_CONTRACT_ADDRESS'
   | 'ARBITRATION_CONTRACT_ADDRESS'
@@ -121,7 +129,10 @@ export type NetworkConfig = {
   ERC20_CONTRACT_ADDRESS: string;
   NETWORK_ID: string | number;
   PREDICTION_MARKET_CONTRACT_ADDRESS: string;
+  PREDICTION_MARKET_MANAGER_CONTRACT_ADDRESS?: string;
+  PREDICTION_MARKET_IS_V3?: boolean;
   REALITIO_ERC20_CONTRACT_ADDRESS: string;
+  REALITIO_ERC20_TIMEOUT?: number;
   ACHIEVEMENTS_CONTRACT_ADDRESS?: string;
   VOTING_CONTRACT_ADDRESS?: string;
   ARBITRATION_CONTRACT_ADDRESS?: string;

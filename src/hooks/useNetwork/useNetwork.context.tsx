@@ -115,6 +115,7 @@ function NetworkProvider({ children }: NetworkProviderProps) {
   const isAnAvailableNetwork = AVAILABLE_NETWORKS.includes(network.id);
   const networkConfig =
     environment.NETWORKS[network.id] || DEFAULT_NETWORK_CONFIG;
+  const autoClaimEnabled = ui.socialLogin.hasAutoClaim;
 
   const polkamarketService = useMemo(
     () => new PolkamarketsService(networkConfig),
@@ -125,10 +126,16 @@ function NetworkProvider({ children }: NetworkProviderProps) {
     dispatch(
       login(
         polkamarketService,
-        ui.socialLogin.hasAutoClaim && (!isEnabled || isWhitelisted)
+        autoClaimEnabled && (!isEnabled || isWhitelisted)
       )
     );
-  }, [dispatch, isEnabled, isWhitelisted, polkamarketService]);
+  }, [
+    dispatch,
+    isEnabled,
+    isWhitelisted,
+    polkamarketService,
+    autoClaimEnabled
+  ]);
 
   useEffect(() => {
     async function fetchUserData() {

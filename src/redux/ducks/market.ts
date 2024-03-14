@@ -176,7 +176,7 @@ const marketSlice = createSlice({
             },
             outcomes: market.outcomes.map(outcome => ({
               ...outcome,
-              price: Number(outcome.price.toFixed(3))
+              price: Number(outcome.price.toFixed(4))
             }))
           }
         };
@@ -214,7 +214,7 @@ const marketSlice = createSlice({
             },
             outcomes: market.outcomes.map(outcome => ({
               ...outcome,
-              price: Number(outcome.price.toFixed(3))
+              price: Number(outcome.price.toFixed(4))
             }))
           }
         };

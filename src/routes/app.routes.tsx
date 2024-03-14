@@ -11,6 +11,23 @@ import { useWhitelist } from 'contexts/whitelist';
 export default function AppRoutes() {
   const { isEnabled } = useWhitelist();
 
+  const isInMantenanceMode = ui.maintenance.enabled;
+
+  if (isInMantenanceMode) {
+    return (
+      <Suspense fallback={<Spinner />}>
+        <Switch>
+          <Route
+            exact={pages.maintenance.exact}
+            path={pages.maintenance.pathname}
+            component={pages.maintenance.Component}
+          />
+        </Switch>
+        <Redirect to={pages.maintenance.pathname} />
+      </Suspense>
+    );
+  }
+
   return (
     <Suspense fallback={<Spinner />}>
       <Switch>

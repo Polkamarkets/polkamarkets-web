@@ -19,9 +19,15 @@ export default class PolkamarketsService {
 
   public predictionMarketContractAddress: string;
 
+  public predictionMarketManagerContractAddress: string | undefined;
+
+  public predictionMarketIsV3: boolean;
+
   public erc20ContractAddress: string;
 
   public realitioErc20ContractAddress: string;
+
+  public realitioErc20Timeout: number;
 
   public achievementsContractAddress: string | undefined;
 
@@ -43,8 +49,11 @@ export default class PolkamarketsService {
   constructor(
     {
       PREDICTION_MARKET_CONTRACT_ADDRESS,
+      PREDICTION_MARKET_MANAGER_CONTRACT_ADDRESS,
+      PREDICTION_MARKET_IS_V3,
       ERC20_CONTRACT_ADDRESS,
       REALITIO_ERC20_CONTRACT_ADDRESS,
+      REALITIO_ERC20_TIMEOUT,
       ACHIEVEMENTS_CONTRACT_ADDRESS,
       VOTING_CONTRACT_ADDRESS,
       ARBITRATION_CONTRACT_ADDRESS,
@@ -54,7 +63,11 @@ export default class PolkamarketsService {
     }: NetworkConfig = environment.NETWORKS[environment.NETWORK_ID || 42]
   ) {
     this.predictionMarketContractAddress = PREDICTION_MARKET_CONTRACT_ADDRESS;
+    this.predictionMarketManagerContractAddress =
+      PREDICTION_MARKET_MANAGER_CONTRACT_ADDRESS;
+    this.predictionMarketIsV3 = PREDICTION_MARKET_IS_V3 || false;
     this.erc20ContractAddress = ERC20_CONTRACT_ADDRESS;
+    this.realitioErc20Timeout = REALITIO_ERC20_TIMEOUT || 3600;
     this.realitioErc20ContractAddress = REALITIO_ERC20_CONTRACT_ADDRESS;
     this.achievementsContractAddress = ACHIEVEMENTS_CONTRACT_ADDRESS;
     this.votingContractAddress = VOTING_CONTRACT_ADDRESS;
@@ -66,17 +79,25 @@ export default class PolkamarketsService {
       web3EventsProvider: WEB3_EVENTS_PROVIDER,
       isSocialLogin: ui.socialLogin.enabled,
       socialLoginParams: {
-        useCustomModal: true,
         isTestnet: ui.socialLogin.isTestnet,
-        urls: [],
         networkConfig: {
           chainId: Number(
             process.env.REACT_APP_FEATURE_SOCIAL_LOGIN_NETWORK_ID
           ),
-          dappAPIKey: process.env.REACT_APP_FEATURE_SOCIAL_LOGIN_DAPP
+          particleProjectId:
+            process.env.REACT_APP_FEATURE_SOCIAL_LOGIN_PARTICLE_PROJECT_ID,
+          particleClientKey:
+            process.env.REACT_APP_FEATURE_SOCIAL_LOGIN_PARTICLE_CLIENT_KEY,
+          particleAppId:
+            process.env.REACT_APP_FEATURE_SOCIAL_LOGIN_PARTICLE_APP_ID,
+          bundlerRPC: process.env.REACT_APP_FEATURE_SOCIAL_LOGIN_BUNDLER_RPC,
+          bundlerAPI: process.env.REACT_APP_POLKAMARKETS_API_URL
         },
         web3AuthConfig: {
           clientId: process.env.REACT_APP_WEB3AUTH_CLIENT_ID,
+          jwt: {
+            customVerifier: process.env.REACT_APP_WEB3AUTH_JWT_CUSTOM_VERIFIER
+          },
           discord: {
             customVerifier:
               process.env.REACT_APP_WEB3AUTH_DISCORD_CUSTOM_VERIFIER,
@@ -108,9 +129,13 @@ export default class PolkamarketsService {
   }
 
   public getPredictionMarketContract() {
-    this.contracts.pm = this.polkamarkets.getPredictionMarketV2Contract({
-      contractAddress: this.predictionMarketContractAddress
-    });
+    this.contracts.pm = this.predictionMarketIsV3
+      ? this.polkamarkets.getPredictionMarketV3Contract({
+          contractAddress: this.predictionMarketContractAddress
+        })
+      : this.polkamarkets.getPredictionMarketV2Contract({
+          contractAddress: this.predictionMarketContractAddress
+        });
   }
 
   public getERC20Contract() {
@@ -150,40 +175,20 @@ export default class PolkamarketsService {
       });
   }
 
+  public getPredictionMarketManagerContract() {
+    this.contracts.pm = this.polkamarkets.getPredictionMarketV3ManagerContract({
+      contractAddress: this.predictionMarketManagerContractAddress
+    });
+  }
+
   public logoutSocialLogin() {
     this.polkamarkets.socialLoginLogout();
     this.loggedIn = false;
     this.address = '';
   }
 
-  public async socialLoginGoogle() {
-    await this.polkamarkets.socialLogin.init();
-    return this.polkamarkets.socialLoginGoogle();
-  }
-
-  public async socialLoginFacebook() {
-    await this.polkamarkets.socialLogin.init();
-    return this.polkamarkets.socialLoginFacebook();
-  }
-
-  public async socialLoginTwitter() {
-    await this.polkamarkets.socialLogin.init();
-    return this.polkamarkets.socialLoginTwitter();
-  }
-
-  public async socialLoginGithub() {
-    await this.polkamarkets.socialLogin.init();
-    return this.polkamarkets.socialLoginGithub();
-  }
-
-  public async socialLoginDiscord() {
-    await this.polkamarkets.socialLogin.init();
-    return this.polkamarkets.socialLoginDiscord();
-  }
-
-  public async socialLoginEmail(email) {
-    await this.polkamarkets.socialLogin.init();
-    return this.polkamarkets.socialLoginEmail(email);
+  public async socialLoginWithJWT(id, jwtToken) {
+    return this.polkamarkets.socialLoginWithJWT(id, jwtToken);
   }
 
   public async socialLoginMetamask() {
@@ -245,6 +250,11 @@ export default class PolkamarketsService {
   // PredictionMarket contract functions
 
   public async getMinimumRequiredBalance(): Promise<number> {
+    // TOOD improve this: don't call function when on v3
+    if (this.predictionMarketIsV3) {
+      return 0;
+    }
+
     const requiredBalance = await this.contracts.pm.getMinimumRequiredBalance();
 
     return requiredBalance;
@@ -288,6 +298,16 @@ export default class PolkamarketsService {
       treasuryFee: (treasuryFee * 1e16).toString(),
       treasury: this.address
     };
+
+    if (this.predictionMarketIsV3) {
+      return this.contracts.pm.mintAndCreateMarket({
+        ...args,
+        token,
+        realitioAddress: this.realitioErc20ContractAddress,
+        realitioTimeout: this.realitioErc20Timeout,
+        PM3ManagerAddress: this.predictionMarketManagerContractAddress
+      });
+    }
 
     if (wrapped) {
       response = await this.contracts.pm.createMarketWithETH(args);
@@ -377,11 +397,10 @@ export default class PolkamarketsService {
     return response;
   }
 
-  public async checkPortfolioAndClaimWinnings() {
+  public async checkPortfolioAndClaimWinnings(portfolio: any) {
     // ensuring user has wallet connected
     await this.login();
 
-    const portfolio = await this.getPortfolio();
     let hasClaimed = false;
 
     // eslint-disable-next-line no-restricted-syntax
@@ -809,11 +828,15 @@ export default class PolkamarketsService {
   }
 
   public async getUserBonds(_user: string): Promise<Object> {
+    if (!this.contracts.realitio.getContract()._address) return {};
+
     // TODO: use correct user
     return this.getBonds();
   }
 
   public async getBonds(): Promise<Object> {
+    if (!this.contracts.realitio.getContract()._address) return {};
+
     // ensuring user has wallet connected
     await this.login();
     if (!this.address) return {};
@@ -835,6 +858,8 @@ export default class PolkamarketsService {
   }
 
   public async getUserBondMarketsIds(_user: string): Promise<string[]> {
+    if (!this.contracts.realitio.getContract()._address) return [];
+
     // TODO: use correct user
     return this.getBondMarketIds();
   }

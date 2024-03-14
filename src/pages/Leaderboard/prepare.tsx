@@ -148,7 +148,7 @@ function walletColumnRender({
             )
           : null}
       </Link>
-      {!isUndefined(ui.leaderboard.wallet.suspiciousActivityUrl) &&
+      {!!ui.leaderboard.wallet.suspiciousActivityUrl &&
       !isUndefined(malicious) &&
       malicious ? (
         <Tooltip
@@ -266,11 +266,7 @@ function earningsColumnRender({ earnings, ticker }: EarningsColumnRenderArgs) {
       }
     >
       <span className="pm-c-leaderboard-table__liquidity caption semibold text-1 notranslate">
-        {`${
-          earnings && earnings.open && earnings.closed
-            ? (earnings.open + earnings.closed).toFixed(1)
-            : 0
-        } `}
+        {`${earnings && earnings.total ? earnings.total.toFixed(1) : 0} `}
         <strong className="caption semibold text-3">{ticker}</strong>
       </span>
     </Tooltip>

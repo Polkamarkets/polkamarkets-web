@@ -23,7 +23,8 @@ import {
   useFantasyTokenTicker,
   useNetwork,
   usePolkamarketsService,
-  useTrade
+  useTrade,
+  useUserOperations
 } from 'hooks';
 import useReloadMarketPrices from 'hooks/useReloadMarketPrices';
 
@@ -31,6 +32,7 @@ import ApproveToken from '../ApproveToken';
 import { ButtonLoading } from '../Button';
 import NetworkSwitch from '../Networks/NetworkSwitch';
 import Text from '../Text';
+import { calculateEthAmountSold } from '../TradeForm/utils';
 
 type TradeActionsProps = {
   onTradeFinished: () => void;
@@ -42,7 +44,7 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
   const { network } = useNetwork();
   const polkamarketsService = usePolkamarketsService();
   const fantasyTokenTicker = useFantasyTokenTicker();
-  const { status, trade, set: setTrade } = useTrade();
+  const { status, set: setTrade } = useTrade();
 
   // Market selectors
   const type = useAppSelector(state => state.trade.type);
@@ -54,6 +56,7 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
   const marketNetworkId = useAppSelector(
     state => state.market.market.networkId
   );
+  const market = useAppSelector(state => state.market.market);
   const marketSlug = useAppSelector(state => state.market.market.slug);
   const marketTitle = useAppSelector(state => state.market.market.title);
   const predictionId = useAppSelector(state => state.trade.selectedOutcomeId);
@@ -81,6 +84,9 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
 
   const [needsPricesRefresh, setNeedsPricesRefresh] = useState(false);
   const { refreshBalance } = useERC20Balance(address);
+
+  const userOperations = useUserOperations();
+
   const reloadMarketPrices = useReloadMarketPrices({ id: marketId });
 
   useEffect(() => {
@@ -123,9 +129,20 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
     setIsLoading(true);
     setNeedsPricesRefresh(false);
 
+    // random unique txid added to userOperations, while tx is processing
+    const fakeTxHash = `
+      0x000000000000000000000000000000000000000000000000000000000000${(
+        Math.random() *
+        0xfffff *
+        1000000
+      )
+        .toString(16)
+        .slice(0, 4)}
+      `;
+
     try {
-      // adding a 1% slippage due to js floating numbers rounding
-      const minShares = shares * 0.999;
+      // adding slippage due to js floating numbers rounding
+      const minShares = shares * (1 - ui.market.slippage);
 
       // calculating shares amount from smart contract
       const sharesToBuy = await polkamarketsService.calcBuyAmount(
@@ -134,28 +151,27 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
         amount
       );
 
-      // will refresh form if there's a slippage > 1%
-      if (Math.abs(sharesToBuy - minShares) / sharesToBuy > 0.01) {
-        setIsLoading(false);
-        setNeedsPricesRefresh(true);
+      // disabling refresh prices form temporarily
+      // will refresh form if > slippage
+      // if (Math.abs(sharesToBuy - minShares) / sharesToBuy > 0.1) {
+      //   setIsLoading(false);
+      //   setNeedsPricesRefresh(true);
 
-        return false;
-      }
+      //   return false;
+      // }
 
       setTimeout(() => {
         if (!needsPricesRefresh) {
           // Dispatch data to Redux
           const newPolkBalance = polkBalance - amount;
           dispatch(changePolkBalance(newPolkBalance));
-
           const newActions = actions.concat({
             action: 'Buy',
             marketId: parseInt(marketId, 10),
             outcomeId: parseInt(predictionId, 10),
             shares: sharesToBuy,
             timestamp: Date.now() / 1000,
-            transactionHash:
-              '0x0000000000000000000000000000000000000000000000000000000000000000',
+            transactionHash: fakeTxHash,
             value: amount
           });
           dispatch(changeActions(newActions));
@@ -177,6 +193,25 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
           }
           dispatch(changePortfolio(newPortfolio));
 
+          userOperations.addOperation({
+            action: 'buy',
+            marketId: parseInt(marketId, 10),
+            outcomeId: parseInt(predictionId, 10),
+            shares: sharesToBuy,
+            timestamp: Date.now() / 1000,
+            transactionHash: '',
+            userOperationHash: fakeTxHash,
+            value: amount,
+            marketTitle,
+            outcomeTitle: predictionTitle,
+            marketSlug,
+            ticker,
+            networkId: parseInt(network.id, 10),
+            status: 'pending',
+            user: ethAddress,
+            imageUrl: ''
+          });
+
           setIsLoading(false);
           onTradeFinished();
           setTrade({ status: 'success' });
@@ -192,6 +227,11 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
         tokenWrapped && !wrapped
       );
 
+      userOperations.updateOperationStatus({
+        userOperationHash: fakeTxHash,
+        status: 'success'
+      });
+
       setTrade({ status: 'completed' });
 
       // triggering market prices redux update
@@ -206,7 +246,14 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
       await refreshBalance();
     } catch (error) {
       setTrade({ status: 'error' });
-      Sentry.captureException(error);
+      // TODO: improve this
+      const extraData = (error as any)?.data as any;
+      Sentry.captureException(error, { extra: extraData });
+
+      userOperations.updateOperationStatus({
+        userOperationHash: fakeTxHash,
+        status: 'failed'
+      });
 
       // restoring wallet data on error too
       await updateWallet();
@@ -234,10 +281,21 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
     setIsLoading(true);
     setNeedsPricesRefresh(false);
 
+    // random unique txid added to userOperations, while tx is processing
+    const fakeTxHash = `
+      0x000000000000000000000000000000000000000000000000000000000000${(
+        Math.random() *
+        0xfffff *
+        1000000
+      )
+        .toString(16)
+        .slice(0, 4)}
+      `;
+
     try {
-      // adding a 1% slippage due to js floating numbers rounding
-      const ethAmount = totalStake - fee;
-      const minShares = shares * 1.001;
+      // adding a slippage due to js floating numbers rounding
+      let ethAmount = totalStake - fee;
+      const maxShares = shares * (1 + ui.market.slippage);
 
       // calculating shares amount from smart contract
       const sharesToSell = await polkamarketsService.calcSellAmount(
@@ -246,13 +304,33 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
         ethAmount
       );
 
-      // will refresh form if there's a slippage > 2%
-      if (Math.abs(sharesToSell - minShares) / sharesToSell > 0.01) {
-        setIsLoading(false);
-        setNeedsPricesRefresh(true);
+      // lowering ethAmount if it exceeds the amount on users portfolio
+      if (sharesToSell > portfolio[marketId]?.outcomes[predictionId].shares) {
+        // TODO: improve this: re-fetching market prices
+        const marketData = await polkamarketsService.getMarketData(marketId);
+        // creating market copy
+        const newMarket = JSON.parse(JSON.stringify(market));
+        marketData.outcomes.forEach((outcomeData, outcomeId) => {
+          newMarket.outcomes[outcomeId].shares = outcomeData.shares;
+        });
 
-        return false;
+        // lowering the amount sent to tx
+        const maxTradeDetails = calculateEthAmountSold(
+          newMarket,
+          newMarket.outcomes[predictionId],
+          portfolio[marketId]?.outcomes[predictionId].shares
+        );
+        ethAmount = maxTradeDetails.totalStake;
       }
+
+      // disabling refresh prices form temporarily
+      // will refresh form if there's a slippage > 2%
+      // if (Math.abs(sharesToSell - maxShares) / sharesToSell > 0.01) {
+      //   setIsLoading(false);
+      //   setNeedsPricesRefresh(true);
+
+      //   return false;
+      // }
 
       setTimeout(() => {
         if (!needsPricesRefresh) {
@@ -266,8 +344,7 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
             outcomeId: parseInt(predictionId, 10),
             shares: sharesToSell,
             timestamp: Date.now() / 1000,
-            transactionHash:
-              '0x0000000000000000000000000000000000000000000000000000000000000000',
+            transactionHash: fakeTxHash,
             value: ethAmount
           });
           dispatch(changeActions(newActions));
@@ -281,20 +358,58 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
             dispatch(changePortfolio(newPortfolio));
           }
 
+          userOperations.addOperation({
+            action: 'sell',
+            marketId: parseInt(marketId, 10),
+            outcomeId: parseInt(predictionId, 10),
+            shares: sharesToSell,
+            timestamp: Date.now() / 1000,
+            transactionHash: '',
+            userOperationHash: fakeTxHash,
+            value: amount,
+            marketTitle,
+            outcomeTitle: predictionTitle,
+            marketSlug,
+            ticker,
+            networkId: parseInt(network.id, 10),
+            status: 'pending',
+            user: ethAddress,
+            imageUrl: ''
+          });
+
           setIsLoading(false);
           onTradeFinished();
           setTrade({ status: 'success' });
         }
       }, 200);
 
-      // performing sell action on smart contract
-      await polkamarketsService.sell(
-        marketId,
-        predictionId,
-        ethAmount,
-        minShares,
-        tokenWrapped && !wrapped
-      );
+      // TODO: improve this
+      // performing 3 tries while lowering ethAmount value
+      const maxTries = 3;
+      for (let i = 0; i < maxTries; i += 1) {
+        try {
+          // performing sell action on smart contract
+          // eslint-disable-next-line no-await-in-loop
+          await polkamarketsService.sell(
+            marketId,
+            predictionId,
+            ethAmount,
+            maxShares,
+            tokenWrapped && !wrapped
+          );
+
+          break;
+        } catch (error) {
+          // lowering the amount sent to tx
+          ethAmount *= 0.99;
+          if (i === maxTries - 1) throw error;
+        }
+      }
+
+      userOperations.updateOperationStatus({
+        userOperationHash: fakeTxHash,
+        status: 'success'
+      });
 
       setTrade({ status: 'completed' });
 
@@ -310,7 +425,14 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
       await refreshBalance();
     } catch (error) {
       setTrade({ status: 'error' });
-      Sentry.captureException(error);
+      // TODO: improve this
+      const extraData = (error as any)?.data as any;
+      Sentry.captureException(error, { extra: extraData });
+
+      userOperations.updateOperationStatus({
+        userOperationHash: fakeTxHash,
+        status: 'failed'
+      });
 
       // restoring wallet data on error too
       await updateWallet();
@@ -376,13 +498,13 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
           </div>
         ) : null}
         <div className="flex-column gap-4 width-full">
-          {status === 'error' ? (
+          {status === 'retry' ? (
             <AlertMinimal
               variant="danger"
               description="Sorry, we failed to record your prediction. Please try again."
             />
           ) : null}
-          {status === 'success' && trade.market === marketId ? (
+          {status === 'success' ? (
             <AlertMinimal
               variant="information"
               description="We're recording your previous prediction. Hang on..."
@@ -420,9 +542,7 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
                     fullwidth
                     onClick={handleBuy}
                     disabled={
-                      !isValidAmount ||
-                      isLoading ||
-                      (status === 'success' && trade.market === marketId)
+                      !isValidAmount || isLoading || status === 'success'
                     }
                     loading={isLoading}
                   >
@@ -447,11 +567,7 @@ function TradeActions({ onTradeFinished }: TradeActionsProps) {
               color="danger"
               fullwidth
               onClick={handleSell}
-              disabled={
-                !isValidAmount ||
-                isLoading ||
-                (status === 'success' && trade.market === marketId)
-              }
+              disabled={!isValidAmount || isLoading || status === 'success'}
               loading={isLoading}
             >
               Sell

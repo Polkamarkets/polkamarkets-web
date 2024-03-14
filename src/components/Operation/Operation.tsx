@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 
 import classNames from 'classnames';
+import { roundNumber } from 'helpers/math';
 import type { UserOperation } from 'types/user';
 
 import { CheckIcon, InfoIcon, RemoveOutlinedIcon } from 'assets/icons';
@@ -86,6 +87,8 @@ function Operation({
     open();
   }, [dismissable, onDismiss, open]);
 
+  const valueToShow = value ? roundNumber(value, 2) : value;
+
   return (
     <div
       className={classNames(styles.root, {
@@ -130,15 +133,15 @@ function Operation({
       {action === 'buy' && (
         <p className={styles.action}>
           {language === 'pt'
-            ? `Previu ${outcomeTitle} com ${value} ${ticker}`
-            : `Bought ${value} ${ticker} of outcome ${outcomeTitle}`}
+            ? `Previu ${outcomeTitle} com ${valueToShow} ${ticker}`
+            : `Bought ${valueToShow} ${ticker} of outcome ${outcomeTitle}`}
         </p>
       )}
       {action === 'sell' && (
         <p className={styles.action}>
           {language === 'pt'
-            ? `Vendeu ${value} ${ticker} de ${outcomeTitle}`
-            : `Sold ${value} ${ticker} of outcome ${outcomeTitle}`}
+            ? `Vendeu ${valueToShow} ${ticker} de ${outcomeTitle}`
+            : `Sold ${valueToShow} ${ticker} of outcome ${outcomeTitle}`}
         </p>
       )}
       {action === 'claimAndApproveTokens' && (

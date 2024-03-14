@@ -161,10 +161,9 @@ function HeaderNavMenuModal() {
       {handleHide => (
         <HeaderNavMenu onMenuItemClick={handleHide}>
           {features.fantasy.enabled &&
-            !isLoggedIn &&
             (ui.layout.header.helpUrl || ui.layout.onboarding) && (
               <>
-                {ui.layout.header.helpUrl && (
+                {ui.layout.header.helpUrl && !isLoggedIn && (
                   <li className={headerNavClasses.item}>
                     <HelpButton
                       $outline

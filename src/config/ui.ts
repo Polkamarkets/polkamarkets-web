@@ -17,7 +17,8 @@ const providers = [
   'Discord',
   'MetaMask',
   'Twitter',
-  'Email'
+  'Email',
+  'Observador'
 ] as const;
 
 const categories = [
@@ -29,9 +30,12 @@ const categories = [
   'Other'
 ];
 
-export type Providers = typeof providers[number];
+export type Providers = (typeof providers)[number];
 
 const ui = {
+  maintenance: {
+    enabled: isTrue(environment.MAINTENANCE_MODE)
+  },
   layout: {
     navbar: {
       items: parseNavbarItemsFromEnv(environment.UI_NAVBAR_ITEMS)
@@ -189,7 +193,10 @@ const ui = {
             )
         }
       }
-    }
+    },
+    slippage: environment.UI_SLIPPAGE
+      ? parseFloat(environment.UI_SLIPPAGE)
+      : 0.003
   },
   socialLogin: {
     hasAutoClaim: isTrue(environment.UI_SOCIAL_LOGIN_AUTO_CLAIM),

@@ -18,6 +18,7 @@ export type Votes = { [key: string]: { upvoted: boolean; downvoted: boolean } };
 
 export type PolkamarketsInitialState = {
   isLoggedIn: boolean;
+  isLoggedOut: boolean;
   ethAddress: string;
   ethBalance: number;
   polkBalance: number;
@@ -41,6 +42,7 @@ export type PolkamarketsInitialState = {
 
 const initialState: PolkamarketsInitialState = {
   isLoggedIn: false,
+  isLoggedOut: false,
   ethAddress: '',
   ethBalance: 0,
   polkBalance: 0,
@@ -73,6 +75,10 @@ const polkamarketsSlice = createSlice({
     changeIsLoggedIn: (state, action: PayloadAction<boolean>) => ({
       ...state,
       isLoggedIn: action.payload
+    }),
+    changeIsLoggedOut: (state, action: PayloadAction<boolean>) => ({
+      ...state,
+      isLoggedOut: action.payload
     }),
     changeEthAddress: (state, action: PayloadAction<string>) => ({
       ...state,
@@ -173,6 +179,7 @@ export default polkamarketsSlice.reducer;
 
 const {
   changeIsLoggedIn,
+  changeIsLoggedOut,
   changeEthAddress,
   changeEthBalance,
   changePolkBalance,
@@ -193,6 +200,8 @@ const {
 
 function claim(polkamarketsService: PolkamarketsService) {
   return async dispatch => {
+    let success = false;
+
     dispatch(
       changeLoading({
         key: 'polk',
@@ -203,6 +212,7 @@ function claim(polkamarketsService: PolkamarketsService) {
     try {
       const polkClaimed = await polkamarketsService.claimPolk();
       dispatch(changePolkClaimed(polkClaimed));
+      success = true;
     } catch (error) {
       // it should be non-blocking
     }
@@ -220,6 +230,8 @@ function claim(polkamarketsService: PolkamarketsService) {
         value: false
       })
     );
+
+    return success;
   };
 }
 
@@ -302,6 +314,7 @@ function login(
 
 function logout() {
   return async dispatch => {
+    dispatch(changeIsLoggedOut(true));
     dispatch(changeIsLoggedIn(false));
     dispatch(changeEthAddress(''));
     dispatch(changeEthBalance(0));
@@ -355,13 +368,13 @@ function fetchAditionalData(polkamarketsService: PolkamarketsService) {
           if (features.fantasy.enabled) {
             // claiming winnings if any pending
             polkamarketsService
-              .checkPortfolioAndClaimWinnings()
+              .checkPortfolioAndClaimWinnings(portfolio)
               .then(hasClaimed => {
                 if (hasClaimed) {
                   polkamarketsService
                     .getPortfolio()
-                    .then(_portfolio => {
-                      dispatch(changePortfolio(_portfolio));
+                    .then(newPortfolio => {
+                      dispatch(changePortfolio(newPortfolio));
                     })
                     .catch(() => {});
 
@@ -446,6 +459,7 @@ function fetchAditionalData(polkamarketsService: PolkamarketsService) {
 export {
   changeLoading,
   changeIsLoggedIn,
+  changeIsLoggedOut,
   changeEthAddress,
   changeEthBalance,
   changePolkBalance,

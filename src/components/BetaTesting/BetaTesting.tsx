@@ -3,10 +3,6 @@ import { useState } from 'react';
 import type { Network } from 'types/network';
 import { Banner } from 'ui';
 
-import { Link } from 'components';
-
-import betaTesting from './BetaTesting.module.scss';
-
 type BetaTestingProps = {
   network: Network;
 };
@@ -20,16 +16,8 @@ export default function BetaTesting({ network }: BetaTestingProps) {
 
   return (
     <Banner $type="info" $variant="subtle" onHide={() => setShow(false)}>
-      Welcome to the brand new <strong>Polkamarkets V2</strong> 🎉 if you want
-      to use V1 use the following{' '}
-      <Link
-        className={betaTesting.link}
-        title="link"
-        target="_blank"
-        rel="noreferrer noopener"
-        href="//v1.polkamarkets.com"
-      />
-      .
+      Os vencedores do Previsómetro serão anunciados e contactados quando todas
+      as 20 perguntas estiverem resolvidas.
     </Banner>
   );
 }

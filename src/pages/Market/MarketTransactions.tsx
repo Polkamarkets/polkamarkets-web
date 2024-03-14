@@ -5,7 +5,7 @@ import { Image, useTheme } from 'ui';
 
 import { Button } from 'components';
 
-import { useAppSelector, useOperation, useTrade } from 'hooks';
+import { useAppSelector, useLanguage, useOperation, useTrade } from 'hooks';
 
 import styles from './MarketTransactions.module.scss';
 
@@ -13,6 +13,8 @@ function MarketTransactions() {
   const theme = useTheme();
   const trade = useTrade();
   const market = useAppSelector(state => state.market.market);
+
+  const language = useLanguage();
 
   const operation = useOperation(market);
   const operationStatus = operation.getMarketStatus();
@@ -40,26 +42,52 @@ function MarketTransactions() {
       <div className={classNames(styles.root, styles.rootPending)}>
         <div className={styles.rootItem}>
           <p className={`${styles.rootItemDescription} notranslate`}>
-            <>
-              You have a pending prediction of{' '}
-              <strong>
-                {pendingTransaction.value?.toFixed(1)}{' '}
-                {pendingTransaction.ticker}{' '}
-              </strong>
-              of{' '}
-              <div className={styles.rootItemTitleGroup}>
-                {pendingTransaction.imageUrl ? (
-                  <Image
-                    className={styles.rootItemTitleGroupImage}
-                    $radius="xs"
-                    alt={pendingTransaction.outcomeTitle || ''}
-                    $size="x2s"
-                    src={pendingTransaction.imageUrl}
-                  />
-                ) : null}
-                <strong>{pendingTransaction.outcomeTitle}</strong>
-              </div>
-            </>
+            {language === 'pt' ? (
+              <>
+                Está a processar uma{' '}
+                {pendingTransaction.action === 'buy' ? 'previsão' : 'venda'} de{' '}
+                <strong>
+                  {pendingTransaction.value?.toFixed(1)}{' '}
+                  {pendingTransaction.ticker}{' '}
+                </strong>
+                de{' '}
+                <div className={styles.rootItemTitleGroup}>
+                  {pendingTransaction.imageUrl ? (
+                    <Image
+                      className={styles.rootItemTitleGroupImage}
+                      $radius="xs"
+                      alt={pendingTransaction.outcomeTitle || ''}
+                      $size="x2s"
+                      src={pendingTransaction.imageUrl}
+                    />
+                  ) : null}
+                  <strong>{pendingTransaction.outcomeTitle}</strong>
+                </div>
+              </>
+            ) : (
+              <>
+                A {pendingTransaction.action === 'buy' ? 'prediction' : 'sell'}{' '}
+                of{' '}
+                <strong>
+                  {pendingTransaction.value?.toFixed(1)}{' '}
+                  {pendingTransaction.ticker}{' '}
+                </strong>
+                of{' '}
+                <div className={styles.rootItemTitleGroup}>
+                  {pendingTransaction.imageUrl ? (
+                    <Image
+                      className={styles.rootItemTitleGroupImage}
+                      $radius="xs"
+                      alt={pendingTransaction.outcomeTitle || ''}
+                      $size="x2s"
+                      src={pendingTransaction.imageUrl}
+                    />
+                  ) : null}
+                  <strong>{pendingTransaction.outcomeTitle}</strong>
+                  is processing
+                </div>
+              </>
+            )}
           </p>
         </div>
       </div>
@@ -70,25 +98,51 @@ function MarketTransactions() {
       <div className={classNames(styles.root, styles.rootFailed)}>
         <div className={styles.rootItem}>
           <p className={`${styles.rootItemDescription} notranslate`}>
-            <>
-              Your have a failed prediction of{' '}
-              <strong>
-                {failedTransaction.value?.toFixed(1)} {failedTransaction.ticker}{' '}
-              </strong>
-              of{' '}
-              <div className={styles.rootItemTitleGroup}>
-                {failedTransaction.imageUrl ? (
-                  <Image
-                    className={styles.rootItemTitleGroupImage}
-                    $radius="xs"
-                    alt={failedTransaction.outcomeTitle || ''}
-                    $size="x2s"
-                    src={failedTransaction.imageUrl}
-                  />
-                ) : null}
-                <strong>{failedTransaction.outcomeTitle}</strong>
-              </div>
-            </>
+            {language === 'pt' ? (
+              <>
+                Falhou a{' '}
+                {failedTransaction.action === 'buy' ? 'previsão' : 'venda'} de{' '}
+                <strong>
+                  {failedTransaction.value?.toFixed(1)}{' '}
+                  {failedTransaction.ticker}{' '}
+                </strong>
+                de{' '}
+                <div className={styles.rootItemTitleGroup}>
+                  {failedTransaction.imageUrl ? (
+                    <Image
+                      className={styles.rootItemTitleGroupImage}
+                      $radius="xs"
+                      alt={failedTransaction.outcomeTitle || ''}
+                      $size="x2s"
+                      src={failedTransaction.imageUrl}
+                    />
+                  ) : null}
+                  <strong>{failedTransaction.outcomeTitle}</strong>
+                </div>
+              </>
+            ) : (
+              <>
+                Your have a failed{' '}
+                {failedTransaction.action === 'buy' ? 'prediction' : 'sell'} of{' '}
+                <strong>
+                  {failedTransaction.value?.toFixed(1)}{' '}
+                  {failedTransaction.ticker}{' '}
+                </strong>
+                of{' '}
+                <div className={styles.rootItemTitleGroup}>
+                  {failedTransaction.imageUrl ? (
+                    <Image
+                      className={styles.rootItemTitleGroupImage}
+                      $radius="xs"
+                      alt={failedTransaction.outcomeTitle || ''}
+                      $size="x2s"
+                      src={failedTransaction.imageUrl}
+                    />
+                  ) : null}
+                  <strong>{failedTransaction.outcomeTitle}</strong>
+                </div>
+              </>
+            )}
           </p>
           <Button
             size="sm"

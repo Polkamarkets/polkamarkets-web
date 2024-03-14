@@ -11,7 +11,7 @@ export interface AdornmentProps
     React.ComponentPropsWithoutRef<'span'>,
     'children' | 'className'
   > {
-  $edge: typeof adornmentProps.$edge[number];
+  $edge: (typeof adornmentProps.$edge)[number];
   $size?: 'sm' | 'md';
 }
 

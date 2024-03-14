@@ -1,8 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import uuid from 'react-uuid';
 
-import { features } from 'config';
-
 const defaultBinaryOutcomes = [
   {
     id: uuid(),

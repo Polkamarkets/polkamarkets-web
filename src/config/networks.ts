@@ -5,7 +5,7 @@ import environment from './environment';
 
 const { ERC20_CONTRACT_ADDRESS } = environment;
 
-const { DEV, ETH, MOVR, GLMR, MATIC } = currencies;
+const { DEV, ETH, MOVR, GLMR, MATIC, XDAI } = currencies;
 
 const networks: {
   [key: string]: Network;
@@ -60,6 +60,16 @@ const networks: {
     explorerURL: 'https://kovan.etherscan.io',
     rpcUrls: [],
     buyEc20Url: `//app.uniswap.org/#/swap?outputCurrency=${ERC20_CONTRACT_ADDRESS}&inputCurrency=ETH`
+  },
+  '0x64': {
+    id: '100',
+    name: 'Gnosis',
+    key: 'gnosis',
+    colorAccent: 'blue',
+    currency: XDAI,
+    decimals: 18,
+    explorerURL: 'https://gnosisscan.io',
+    rpcUrls: ['https://rpc.gnosischain.com']
   },
   '0x501': {
     id: '1281',
@@ -153,6 +163,16 @@ const networks: {
     decimals: 18,
     explorerURL: 'https://etherscan.io',
     rpcUrls: []
+  },
+  '0x27d8': {
+    id: '10200',
+    name: 'Chiado',
+    key: 'chiado',
+    colorAccent: 'blue',
+    currency: XDAI,
+    decimals: 18,
+    explorerURL: 'https://gnosis-chiado.blockscout.com/',
+    rpcUrls: ['https://rpc.chiadochain.net']
   },
   '0x13881': {
     id: '80001',

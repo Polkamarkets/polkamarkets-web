@@ -9,8 +9,8 @@ import popoverClasses from './Popover.module.scss';
 const positionBlock = ['top', 'bottom'] as const;
 const positionInline = ['Right', 'Left'] as const;
 
-type PositionBlock = typeof positionBlock[number];
-type PositionInline = typeof positionInline[number];
+type PositionBlock = (typeof positionBlock)[number];
+type PositionInline = (typeof positionInline)[number];
 export interface PopoverProps<E extends HTMLElement>
   extends Omit<
     ModalProps,

@@ -95,6 +95,15 @@ const pages = {
     meta: defaultMetadata,
     enabled: false
   },
+  maintenance: {
+    pathname: '/',
+    Component: lazy(() => import('pages/Maintenance')),
+    exact: true,
+    navigation: false,
+    name: '',
+    meta: defaultMetadata,
+    enabled: ui.maintenance.enabled
+  },
   profile: {
     pathname: '/user/:address',
     Component: lazy(() => import('pages/Profile')),

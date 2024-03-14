@@ -18,6 +18,7 @@ import {
   useExpandableOutcomes,
   useOperation
 } from 'hooks';
+import useReloadMarketPrices from 'hooks/useReloadMarketPrices';
 
 import Modal from '../Modal';
 import ModalContent from '../ModalContent';
@@ -46,6 +47,7 @@ export default function MarketOutcomes({
 
   // Custom hooks
   const theme = useTheme();
+  const reloadMarketPrices = useReloadMarketPrices({ id: market.id });
   const dispatch = useAppDispatch();
   const operation = useOperation(market);
   const { getOutcomeStatus, getMultipleOutcomesStatus } = operation;
@@ -69,11 +71,11 @@ export default function MarketOutcomes({
         outcomes: market.outcomes,
         timeframe: '7d',
         predictedOutcome:
-          market.outcomes.length > 3 && operation.predictedOutcome
-            ? { id: operation.predictedOutcome.id, newIndex: 1 }
+          market.outcomes.length > 3 && operation.predictedOutcomes.length > 0
+            ? { id: operation.predictedOutcomes[0].id, newIndex: 0 }
             : undefined
       }),
-    [market.outcomes, operation.predictedOutcome]
+    [market.outcomes, operation.predictedOutcomes]
   );
 
   const expandableOutcomes = useExpandableOutcomes({
@@ -110,7 +112,7 @@ export default function MarketOutcomes({
       };
     });
 
-    return sharesByOutcome.filter(outcome => outcome.shares > 1e-5);
+    return sharesByOutcome.filter(outcome => outcome.shares > 1e0);
   }, [isLoadingPortfolio, portfolio, market]);
 
   const getOutcomeActive = useCallback(
@@ -144,6 +146,7 @@ export default function MarketOutcomes({
         const { value } = event.currentTarget;
 
         const isOutcomeActive = getOutcomeActive(value);
+        reloadMarketPrices();
 
         setOutcome(isOutcomeActive ? '' : value);
 
@@ -170,6 +173,7 @@ export default function MarketOutcomes({
       market.slug,
       market.state,
       location.pathname,
+      reloadMarketPrices,
       dispatch
     ]
   );
