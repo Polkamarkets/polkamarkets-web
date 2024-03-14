@@ -27,6 +27,7 @@ const environmentConfigVariables = [
   'FEATURE_SOCIAL_LOGIN_PROVIDERS',
   'PUBLIC_URL',
   'UI_NAVBAR_ITEMS',
+  'UI_FOOTER_ITEMS',
   'UI_HERO_IMAGE',
   'UI_HERO_IMAGE_URL',
   'UI_HERO_HEADER',

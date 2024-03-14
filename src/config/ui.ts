@@ -9,7 +9,7 @@ import {
 
 import environment from './environment';
 import features from './features';
-import { parseFiltersFromEnv, parseNavbarItemsFromEnv } from './ui.utils';
+import { parseFiltersFromEnv, parseLinkItemsFromEnv } from './ui.utils';
 
 const providers = [
   'Google',
@@ -34,7 +34,7 @@ export type Providers = typeof providers[number];
 const ui = {
   layout: {
     navbar: {
-      items: parseNavbarItemsFromEnv(environment.UI_NAVBAR_ITEMS)
+      items: parseLinkItemsFromEnv(environment.UI_NAVBAR_ITEMS)
     },
     header: {
       networkSelector: {
@@ -186,6 +186,9 @@ const ui = {
         }
       }
     }
+  },
+  footer: {
+    links: parseLinkItemsFromEnv(environment.UI_FOOTER_ITEMS)
   },
   socialLogin: {
     hasAutoClaim: isTrue(environment.UI_SOCIAL_LOGIN_AUTO_CLAIM),

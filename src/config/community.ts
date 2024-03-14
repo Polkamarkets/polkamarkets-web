@@ -1,5 +1,4 @@
 import { ui } from 'config';
-import isUndefined from 'lodash/isUndefined';
 
 import { IconProps } from 'components';
 
@@ -32,6 +31,6 @@ const community = [
     name: 'GitHub',
     href: communityUrls.github
   }
-].filter(({ href }) => !isUndefined(href)) as Community;
+].filter(({ href }) => href) as Community;
 
 export default community;
