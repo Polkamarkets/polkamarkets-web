@@ -1,0 +1,51 @@
+.root {
+  cursor: pointer;
+  user-select: none;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+  font-style: normal;
+  font-size: 1.6rem;
+  line-height: 1.5;
+  font-weight: 500;
+
+  white-space: nowrap;
+  border-radius: 999px;
+
+  transition-property: border-color, background-color, color, transform,
+    box-shadow;
+  transition-duration: 0.15s;
+  transition-timing-function: ease;
+}
+
+.md {
+  height: 36px;
+
+  padding-left: 12px;
+  padding-right: 12px;
+
+  font-size: 1.4rem;
+  line-height: 1.42;
+}
+
+.lg {
+  height: 48px;
+
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.itemStart {
+  margin-right: 8px;
+}
+
+.itemEnd {
+  margin-left: 8px;
+}

@@ -1,0 +1,146 @@
+.root {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+
+  height: 100%;
+  padding: 8px;
+
+  background-color: rgba(18, 25, 38, 0.4);
+  border: 1px solid #202939;
+  border-radius: 16px;
+
+  transition-property: background-color;
+  transition-duration: 0.15s;
+  transition-timing-function: ease;
+
+  &:hover {
+    background-color: #121926;
+
+    .overlay {
+      opacity: 1;
+    }
+  }
+}
+
+.banner {
+  height: 160px;
+  width: 100%;
+  flex-shrink: 0;
+
+  background: var(--background-image), transparent;
+  background-clip: border-box;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  transition: background-color 300ms ease-in;
+
+  border-radius: 8px;
+}
+
+.info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  height: 100%;
+  padding: 12px 8px;
+
+  &Avatar {
+    flex-shrink: 0;
+
+    height: 40px;
+    width: 40px;
+
+    margin-right: 8px;
+
+    &Fallback {
+      background-color: #4e3df6;
+
+      strong {
+        font-size: 1.6rem;
+        line-height: 1.4;
+        font-weight: 600;
+        color: #ffffff;
+      }
+    }
+  }
+
+  &Name {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 1.8rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 1.33;
+
+    color: #ffffff;
+
+    text-overflow: ellipsis;
+    overflow: hidden;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    word-break: break-all;
+  }
+}
+
+.footer {
+  padding: 12px;
+
+  background-color: rgba(10, 11, 14, 0.4);
+  border: 1px solid #202939;
+  border-radius: 8px;
+
+  &Stats {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    &Item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+
+      font-size: 1.2rem;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 1.33;
+
+      color: #768393;
+
+      strong {
+        font-weight: 500;
+        color: #ffffff;
+      }
+    }
+  }
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  height: 100%;
+  width: 100%;
+
+  opacity: 0;
+
+  transition-property: opacity;
+  transition-duration: 0.15s;
+  transition-timing-function: ease;
+}
+
+.viewButton {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -40%);
+  -ms-transform: translate(-50%, -40%);
+  text-align: center;
+}

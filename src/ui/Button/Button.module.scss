@@ -1,0 +1,33 @@
+.root {
+  border-width: 1px;
+  border-style: solid;
+  border-color: transparent;
+}
+
+.primaryFilled {
+  color: #ffffff;
+  background-color: #2970ff;
+
+  &:hover {
+    background-color: #004eeb;
+  }
+}
+
+.primaryGrayOutlined {
+  color: #ffffff;
+  background-color: transparent;
+  border-color: #768393;
+
+  &:hover {
+    background-color: #202939;
+  }
+}
+
+.secondaryGrayFilled {
+  color: #0a0b0e;
+  background-color: #ffffff;
+
+  &:hover {
+    background-color: #e3e8ef;
+  }
+}

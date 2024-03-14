@@ -1,0 +1,87 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+
+  padding: 32px;
+
+  background-color: rgba(10, 11, 14, 0.32);
+
+  border: 1px solid #202939;
+  border-radius: 32px;
+
+  backdrop-filter: blur(2px);
+}
+
+.header,
+.tabList {
+  padding: 0 8px;
+}
+
+.title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 2.8rem;
+  line-height: 1.28;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: -0.014em;
+
+  color: #f9fafb;
+}
+
+.tabs {
+  display: flex;
+  width: 100%;
+
+  &[data-orientation='horizontal'] {
+    flex-direction: column;
+  }
+}
+
+.tabList {
+  display: flex;
+  gap: 40px;
+
+  &[data-orientation='horizontal'] {
+    border-bottom: 1px solid #202939;
+
+    .tab {
+      border-bottom: 3px solid var(--border-color);
+    }
+  }
+}
+
+.tab {
+  position: relative;
+  cursor: pointer;
+
+  padding-bottom: 16px;
+
+  font-size: 1.4rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.42;
+  color: #768393;
+
+  outline: none;
+  transition: color 0.2s;
+
+  --border-color: transparent;
+  forced-color-adjust: none;
+
+  &[data-hovered],
+  &[data-focused] {
+    color: #fcfcfd;
+  }
+
+  &[data-selected] {
+    --border-color: #2970ff;
+    color: #fcfcfd;
+  }
+}
+
+.tabPanel {
+  margin-top: 24px;
+  outline: none;
+}
