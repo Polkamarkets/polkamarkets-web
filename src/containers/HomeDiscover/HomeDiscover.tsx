@@ -32,7 +32,7 @@ function HomeDiscover() {
           <Contests viewMode="compact" />
         </TabPanel>
         <TabPanel className={styles.tabPanel} id="questions">
-          <Questions />
+          <Questions viewMode="compact" />
         </TabPanel>
       </Tabs>
     </div>
