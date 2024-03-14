@@ -10,7 +10,11 @@ import { AlertMini } from 'components';
 
 import styles from './Communities.module.scss';
 
-function Communities() {
+type CommunitiesProps = {
+  viewMode?: 'default' | 'compact';
+};
+
+function Communities({ viewMode = 'default' }: CommunitiesProps) {
   const {
     data: lands,
     isLoading: isLoadingLands,
@@ -40,7 +44,7 @@ function Communities() {
     );
   }
 
-  const visibleLands = lands?.slice(0, 12);
+  const visibleLands = viewMode === 'compact' ? lands?.slice(0, 12) : lands;
 
   return (
     <>
@@ -49,13 +53,15 @@ function Communities() {
           <CommunityCard land={land} key={land.id} />
         ))}
       </div>
-      <div className={styles.footer}>
-        <Link to="/communities">
-          <Button size="lg" color="primary gray" variant="outlined">
-            View all Communities
-          </Button>
-        </Link>
-      </div>
+      {viewMode === 'compact' && (
+        <div className={styles.footer}>
+          <Link to="/communities">
+            <Button size="lg" color="primary gray" variant="outlined">
+              View all Communities
+            </Button>
+          </Link>
+        </div>
+      )}
     </>
   );
 }
