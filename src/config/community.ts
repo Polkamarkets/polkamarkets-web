@@ -30,6 +30,14 @@ const community = [
   {
     name: 'GitHub',
     href: communityUrls.github
+  },
+  {
+    name: 'Discord',
+    href: communityUrls.discord
+  },
+  {
+    name: 'Instagram',
+    href: communityUrls.instagram
   }
 ].filter(({ href }) => href) as Community;
 

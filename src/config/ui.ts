@@ -48,7 +48,9 @@ const ui = {
         telegram: environment.UI_COMMUNITY_TELEGRAM_URL,
         youtube: environment.UI_COMMUNITY_YOUTUBE_URL,
         linkedin: environment.UI_COMMUNITY_LINKEDIN_URL,
-        github: environment.UI_COMMUNITY_GITHUB_URL
+        github: environment.UI_COMMUNITY_GITHUB_URL,
+        discord: environment.UI_COMMUNITY_DISCORD_URL,
+        instagram: environment.UI_COMMUNITY_INSTAGRAM_URL
       }
     },
     onboarding: {

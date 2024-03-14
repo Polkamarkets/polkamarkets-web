@@ -3,9 +3,7 @@ import { Link } from 'react-router-dom';
 import cn from 'classnames';
 import { ui, community } from 'config';
 
-import { PolkamarketsIcon, TwitterIcon } from 'assets/icons';
-import DiscordIcon from 'assets/icons/DiscordIcon';
-import InstagramIcon from 'assets/icons/InstagramIcon';
+import { PolkamarketsIcon } from 'assets/icons';
 
 import { Icon } from 'components';
 
