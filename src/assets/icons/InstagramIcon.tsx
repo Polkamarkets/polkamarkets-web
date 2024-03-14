@@ -1,3 +1,5 @@
+import React from 'react';
+
 function InstagramIcon() {
   return (
     <svg
@@ -19,4 +21,4 @@ function InstagramIcon() {
   );
 }
 
-export default InstagramIcon;
+export default React.memo(InstagramIcon);
