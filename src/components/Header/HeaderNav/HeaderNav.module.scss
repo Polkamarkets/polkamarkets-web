@@ -1,7 +1,11 @@
 .root {
-  display: inherit;
-  flex-grow: 1;
+  display: flex;
   align-items: center;
+  gap: 16px;
+  @media (max-width: 1024px) {
+    justify-content: space-between;
+    width: 100%;
+  }
 }
 .menu {
   margin-left: 16px;
@@ -29,19 +33,11 @@
   }
 }
 .link {
-  display: flex;
-  height: 48px;
-  align-items: center;
-  color: var(--color-neutral-primary);
-  font-size: 2rem;
-  letter-spacing: 0.08em;
-  text-decoration: none;
-  font-weight: 700;
-  text-transform: uppercase;
-  transition: color 0.3s ease 0s;
-  @media (min-width: 1440px) {
-    font-size: 1.3rem;
-  }
+  color: #FFF;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 24px; /* 150% */
 }
 .active {
   color: var(--color-text-primary);

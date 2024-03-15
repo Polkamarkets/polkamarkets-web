@@ -36,8 +36,6 @@ export { default as useOperation } from './useOperation';
 
 export { default as useMarketForms } from './useMarketForms';
 
-export { default as useMarketPath } from './useMarketPath';
-
 export { default as useMount } from './useMount';
 
 export { default as usePortal } from './usePortal';

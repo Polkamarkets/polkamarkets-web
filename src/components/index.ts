@@ -168,8 +168,6 @@ export { default as Drawer } from './Drawer';
 
 export { default as ExternalJS } from './ExternalJS';
 
-export { default as HowToPlayButton } from './HowToPlayButton';
-
 export { default as Icon, IconClasses } from './Icon';
 export type { IconProps } from './Icon';
 
@@ -218,13 +216,11 @@ export { default as Onboarding } from './Onboarding';
 
 export { default as Operation } from './Operation';
 
-export { default as Profile } from './Profile';
+export { default as Profile } from './Header/Profile';
 
-export { default as ProfileSignin } from './ProfileSignin';
+export { default as ProfileSignin } from './Header/ProfileSignin';
 
-export { default as ProfileSigninEmail } from './ProfileSigninEmail';
-
-export { default as ProfileSignout } from './ProfileSignout';
+export { default as ProfileSigninEmail } from './Header/ProfileSigninEmail';
 
 export { default as SeoIcons } from './SeoIcons';
 
@@ -238,7 +234,7 @@ export { default as ThemeSelector } from './ThemeSelector';
 
 export { default as Trade } from './Trade';
 
-export { default as TransactionsButton } from './TransactionsButton';
+export { default as TransactionsButton } from './Header/TransactionsButton';
 
 export { default as UserOperations } from './UserOperations';
 

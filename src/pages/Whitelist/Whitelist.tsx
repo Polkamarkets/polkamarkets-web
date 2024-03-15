@@ -97,7 +97,7 @@ export default function Whitelist() {
                   className={styles.contentAction}
                   onClick={handleLogout}
                 >
-                  <Icon name="LogOut" size="lg" />
+                  <Icon name="Logout" size="lg" />
                   Login with different account
                 </Button>
               </>
