@@ -168,8 +168,6 @@ export { default as Drawer } from './Drawer';
 
 export { default as ExternalJS } from './ExternalJS';
 
-export { default as HowToPlayButton } from './HowToPlayButton';
-
 export { default as Icon, IconClasses } from './Icon';
 export type { IconProps } from './Icon';
 

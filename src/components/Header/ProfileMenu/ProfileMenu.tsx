@@ -147,39 +147,28 @@ export default function ProfileMenu() {
                   </div>
                 </div>
                 <div className={styles.divider} />
+                <Link
+                  to={`/user/${
+                    slug ||
+                    leaderboard.data?.slug ||
+                    leaderboard.data?.username ||
+                    username ||
+                    address
+                  }`}
+                  className={styles.menuItem}
+                >
+                  <Icon name="Profile" />
+                  Profile
+                </Link>
+
+                <Link to="/#" className={styles.menuItem}>
+                  <Icon name="Settings" />
+                  Account Settings
+                </Link>
+                <div className={styles.divider} />
               </>
             )}
-            <Link
-              to={`/user/${
-                slug ||
-                leaderboard.data?.slug ||
-                leaderboard.data?.username ||
-                username ||
-                address
-              }`}
-              className={styles.menuItem}
-            >
-              <Icon name="Profile" />
-              Profile
-            </Link>
 
-            <Link to="/#" className={styles.menuItem}>
-              <Icon name="Settings" />
-              Account Settings
-            </Link>
-            <div className={styles.divider} />
-            {!isLoggedIn && (
-              <Link to="/#" className={styles.menuItem}>
-                <Icon name="NewsPaper" />
-                Blog
-              </Link>
-            )}
-            {!isLoggedIn && (
-              <Link to="/#" className={styles.menuItem}>
-                <Icon name="Planet" />
-                Company
-              </Link>
-            )}
             <Link to="/#" className={styles.menuItem}>
               <Icon name="Help" />
               Help Center
@@ -188,6 +177,16 @@ export default function ProfileMenu() {
               <Icon name="CommentAlert" color="transparent" />
               Send Feedback
             </Link>
+            <div className={styles.divider} />
+            <Link to="/#" className={styles.menuItem}>
+              <Icon name="NewsPaper" />
+              Blog
+            </Link>
+            <Link to="/#" className={styles.menuItem}>
+              <Icon name="Planet" />
+              About
+            </Link>
+
             {isLoggedIn && (
               <>
                 <div className={styles.divider} />

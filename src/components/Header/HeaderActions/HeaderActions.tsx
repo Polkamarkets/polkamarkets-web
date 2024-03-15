@@ -9,7 +9,6 @@ import { Skeleton, useTheme } from 'ui';
 import { Button, Icon } from 'components';
 import Profile from 'components/Header/Profile';
 import TransactionsButton from 'components/Header/TransactionsButton';
-import HowToPlayButton from 'components/HowToPlayButton';
 import NetworkSelector from 'components/NetworkSelector';
 
 import { useAppSelector, usePortal } from 'hooks';
@@ -42,7 +41,7 @@ function SkeletonProfile() {
       <Skeleton
         style={{
           height: 32,
-          width: 96
+          width: 46
         }}
       />
       <Skeleton
@@ -108,14 +107,6 @@ export default function HeaderActions() {
     <Root>
       <HeaderActionsAnimate show={!features.fantasy.enabled || isLoggedIn}>
         <div className={cn(styles.root)}>
-          {ui.layout.onboarding.steps && (
-            <HowToPlayButton
-              className={cn({
-                [styles.howToPlay]: features.fantasy.enabled
-              })}
-            />
-          )}
-
           {isLoading ? (
             <SkeletonProfile />
           ) : (
@@ -125,7 +116,6 @@ export default function HeaderActions() {
                   <Link to="/markets/create" aria-label="Create Market">
                     <Button variant="ghost" className={styles.createButton}>
                       <Icon name="Plus" size="lg" />
-                      Create
                     </Button>
                   </Link>
                   {ui.layout.transactionsQueue && <TransactionsButton />}

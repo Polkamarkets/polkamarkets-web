@@ -11,9 +11,7 @@ import * as Logos from 'assets/icons';
 import { Button } from 'components/Button';
 import CreateMarket from 'components/CreateMarket';
 import Feature from 'components/Feature';
-import HelpButton from 'components/Header/HelpButton';
 import ProfileSignin from 'components/Header/ProfileSignin';
-import HowToPlayButton from 'components/HowToPlayButton';
 import Icon from 'components/Icon';
 import Modal from 'components/Modal';
 import NetworkSelector from 'components/NetworkSelector';
@@ -143,35 +141,9 @@ function HeaderNavMenu({
   );
 }
 function HeaderNavMenuModal() {
-  const isLoggedIn = useAppSelector(state => state.polkamarkets.isLoggedIn);
-
   return (
     <HeaderNavModal>
-      {handleHide => (
-        <HeaderNavMenu onMenuItemClick={handleHide}>
-          {features.fantasy.enabled &&
-            !isLoggedIn &&
-            (ui.layout.header.helpUrl || ui.layout.onboarding) && (
-              <>
-                {ui.layout.header.helpUrl && (
-                  <li className={styles.item}>
-                    <HelpButton
-                      $outline
-                      $fullWidth
-                      onClick={handleHide}
-                      href={ui.layout.header.helpUrl}
-                    />
-                  </li>
-                )}
-                {!!ui.layout.onboarding && (
-                  <li className={styles.item}>
-                    <HowToPlayButton $outline $fullWidth />
-                  </li>
-                )}
-              </>
-            )}
-        </HeaderNavMenu>
-      )}
+      {handleHide => <HeaderNavMenu onMenuItemClick={handleHide} />}
     </HeaderNavModal>
   );
 }
@@ -184,6 +156,26 @@ export default function HeaderNav() {
     !!headerNavMenu.length &&
     !!ui.layout.navbar.items.length;
 
+  const headerLogo = () => {
+    const LogoDesktopComponent = ui.logo.desktop
+      ? Logos[ui.logo.desktop]
+      : null;
+    const LogoMobileComponent = ui.logo.mobile ? Logos[ui.logo.mobile] : null;
+    if (LogoDesktopComponent && !LogoMobileComponent) {
+      return <LogoDesktopComponent />;
+    }
+
+    if (theme.device.isDesktop && LogoDesktopComponent) {
+      return <LogoDesktopComponent />;
+    }
+
+    if (!theme.device.isDesktop && LogoMobileComponent) {
+      return <LogoMobileComponent />;
+    }
+
+    return <Logos.PolkamarketsLogo />;
+  };
+
   return (
     <nav className={styles.root}>
       {showLeftMenu && <HeaderNavMenuModal />}
@@ -194,7 +186,7 @@ export default function HeaderNav() {
           [styles.logosGutter]: showLeftMenu
         })}
       >
-        <Logos.PolkamarketsLogo />
+        {headerLogo()}
       </Link>
       {theme.device.isTv && <HeaderNavMenu />}
       {!theme.device.isDesktop && ui.layout.header.networkSelector.enabled && (

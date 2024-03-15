@@ -29,7 +29,7 @@ export default function TransactionsButton({
   return (
     <Button onClick={openDrawer} {...props} variant="ghost">
       <div className={styles.wrapper}>
-        <Icon name="Transactions" size="lg" />
+        <Icon name="Bell" size="lg" />
         {openTransactions > 0 && (
           <div className={styles.badge}>{openTransactions}</div>
         )}

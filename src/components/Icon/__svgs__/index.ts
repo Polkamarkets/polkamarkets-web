@@ -1,6 +1,7 @@
 export { ReactComponent as AddImage } from './AddImage.svg';
 export { ReactComponent as Arrow } from './Arrow.svg';
 export { ReactComponent as Ban } from './Ban.svg';
+export { ReactComponent as Bell } from './Bell.svg';
 export { ReactComponent as Binance } from './Binance.svg';
 export { ReactComponent as Bitcoin } from './Bitcoin.svg';
 export { ReactComponent as Calendar } from './Calendar.svg';
