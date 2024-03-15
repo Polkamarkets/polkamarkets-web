@@ -1,5 +1,4 @@
 import ProfileSignin from 'components/Header/ProfileSignin';
-import Icon from 'components/Icon';
 
 import Text from '../../Text';
 import ProfileMenu from '../ProfileMenu/ProfileMenu';

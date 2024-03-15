@@ -19,6 +19,7 @@ import styles from './ProfileMenu.module.scss';
 
 export default function ProfileMenu() {
   const dispatch = useAppDispatch();
+  const [menuOpen, setMenuOpen] = useState(false);
   const isLoggedIn = useAppSelector(state => state.polkamarkets.isLoggedIn);
 
   const polkamarketsService = usePolkamarketsService();
@@ -95,7 +96,7 @@ export default function ProfileMenu() {
   ]);
 
   return (
-    <Popover.Root>
+    <Popover.Root open={menuOpen} onOpenChange={setMenuOpen}>
       <Popover.Trigger asChild>
         <div className={styles.wrapper}>
           {isLoggedIn ? (
@@ -120,6 +121,7 @@ export default function ProfileMenu() {
           align="end"
           sideOffset={12}
           onOpenAutoFocus={e => e.preventDefault()}
+          onClick={() => setMenuOpen(false)}
         >
           <div className={styles.profileMenu}>
             {isLoggedIn && (

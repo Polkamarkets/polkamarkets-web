@@ -1,16 +1,13 @@
 import { useCallback, useState } from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import cn from 'classnames';
-import { pages, community, ui, features } from 'config';
-import isEmpty from 'lodash/isEmpty';
+import { pages, ui, features } from 'config';
 import { useTheme } from 'ui';
 
 import * as Logos from 'assets/icons';
 
 import { Button } from 'components/Button';
-import CreateMarket from 'components/CreateMarket';
-import Feature from 'components/Feature';
 import ProfileSignin from 'components/Header/ProfileSignin';
 import Icon from 'components/Icon';
 import Modal from 'components/Modal';
@@ -19,6 +16,7 @@ import Text from 'components/Text';
 
 import useAppSelector from 'hooks/useAppSelector';
 
+import { ExploreMenu } from '../ExploreMenu/ExploreMenu';
 import styles from './HeaderNav.module.scss';
 
 const headerNavMenu = Object.values(pages)
@@ -62,90 +60,15 @@ function HeaderNavModal({
           </Button>
         </header>
         {children(handleHide)}
-        <footer className={styles.footer}>
-          {ui.layout.header.communityUrls.enabled && !isEmpty(community) ? (
-            <div>
-              <Text
-                color="gray"
-                scale="tiny-uppercase"
-                fontWeight="bold"
-                className={styles.title}
-              >
-                Join our community
-              </Text>
-              <ul className={styles.socials}>
-                {community.map(social => (
-                  <li key={social.name}>
-                    <Text
-                      // @ts-ignore
-                      as="a"
-                      href={social.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={styles.social}
-                    >
-                      <Icon
-                        title={social.name}
-                        name={social.name}
-                        className={styles.icon}
-                      />
-                    </Text>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ) : null}
-          <Feature name="regular">
-            <CreateMarket
-              fullwidth
-              className={styles.createMarket}
-              onCreateClick={handleHide}
-            />
-          </Feature>
-        </footer>
       </Modal>
     </>
   );
 }
-function HeaderNavMenu({
-  onMenuItemClick,
-  children
-}: React.PropsWithChildren<{
-  onMenuItemClick?(): void;
-}>) {
-  return (
-    <ul className={styles.list}>
-      <li className={styles.item}>
-        <NavLink
-          to="/"
-          className={styles.link}
-          activeClassName={styles.active}
-          onClick={onMenuItemClick}
-        >
-          Communities
-        </NavLink>
-      </li>
-      <li className={styles.item}>
-        <NavLink
-          to="/"
-          className={styles.link}
-          activeClassName={styles.active}
-          onClick={onMenuItemClick}
-        >
-          Contests
-        </NavLink>
-      </li>
-
-      {children}
-    </ul>
-  );
+function HeaderNavMenu() {
+  return <ExploreMenu />;
 }
 function HeaderNavMenuModal() {
-  return (
-    <HeaderNavModal>
-      {handleHide => <HeaderNavMenu onMenuItemClick={handleHide} />}
-    </HeaderNavModal>
-  );
+  return <HeaderNavModal>{_handleHide => <HeaderNavMenu />}</HeaderNavModal>;
 }
 export default function HeaderNav() {
   const isLoggedIn = useAppSelector(state => state.polkamarkets.isLoggedIn);
