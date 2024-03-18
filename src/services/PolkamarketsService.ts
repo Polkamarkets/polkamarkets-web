@@ -397,6 +397,28 @@ export default class PolkamarketsService {
     return response;
   }
 
+  public async checkPortfolioPendingClaims(portfolio: any) {
+    // ensuring user has wallet connected
+    await this.login();
+
+    let pendingAmount = 0;
+
+    // eslint-disable-next-line no-restricted-syntax
+    for (const marketId of Object.keys(portfolio)) {
+      const position = portfolio[marketId];
+      if (
+        position.claimStatus.winningsToClaim &&
+        !position.claimStatus.winningsClaimed
+      ) {
+        // eslint-disable-next-line no-await-in-loop
+        const marketData = await this.contracts.pm.getMarketData({ marketId });
+        pendingAmount += position.outcomes[marketData.resolvedOutcomeId].shares;
+      }
+    }
+
+    return pendingAmount;
+  }
+
   public async checkPortfolioAndClaimWinnings(portfolio: any) {
     // ensuring user has wallet connected
     await this.login();

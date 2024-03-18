@@ -366,6 +366,21 @@ function fetchAditionalData(polkamarketsService: PolkamarketsService) {
           dispatch(changePortfolio(portfolio));
 
           if (features.fantasy.enabled) {
+            // virtually adding winnings to balance if still not claimed
+            polkamarketsService
+              .getPolkBalance()
+              .then(polkBalance => {
+                polkamarketsService
+                  .checkPortfolioPendingClaims(portfolio)
+                  .then(pendingAmount => {
+                    if (pendingAmount) {
+                      dispatch(changePolkBalance(polkBalance + pendingAmount));
+                    }
+                  })
+                  .catch(() => {});
+              })
+              .catch(() => {});
+
             // claiming winnings if any pending
             polkamarketsService
               .checkPortfolioAndClaimWinnings(portfolio)
