@@ -8,7 +8,7 @@ export type UserOperation = {
   networkId: number;
   shares: number | null;
   status: 'success' | 'failed' | 'pending';
-  action: 'buy' | 'sell' | 'claimAndApproveTokens';
+  action: 'buy' | 'sell' | 'claimAndApproveTokens' | 'claimWinnings';
   ticker: string | undefined;
   timestamp: number;
   transactionHash: string | null;
