@@ -412,7 +412,10 @@ export default class PolkamarketsService {
       ) {
         // eslint-disable-next-line no-await-in-loop
         const marketData = await this.contracts.pm.getMarketData({ marketId });
-        pendingAmount += position.outcomes[marketData.resolvedOutcomeId].shares;
+        if (position.outcomes[marketData.resolvedOutcomeId].shares > 1e0) {
+          pendingAmount +=
+            position.outcomes[marketData.resolvedOutcomeId].shares;
+        }
       }
     }
 
@@ -432,9 +435,13 @@ export default class PolkamarketsService {
         position.claimStatus.winningsToClaim &&
         !position.claimStatus.winningsClaimed
       ) {
-        hasClaimed = true;
         // eslint-disable-next-line no-await-in-loop
-        await this.claimWinnings(marketId);
+        const marketData = await this.contracts.pm.getMarketData({ marketId });
+        if (position.outcomes[marketData.resolvedOutcomeId].shares > 1e0) {
+          hasClaimed = true;
+          // eslint-disable-next-line no-await-in-loop
+          await this.claimWinnings(marketId);
+        }
       }
 
       if (
