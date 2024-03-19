@@ -1,0 +1,40 @@
+.root {
+    border-radius: var(--Radius-rounded-full, 360px);
+    border: 1px solid var(--Color-Grey-800, #202939);
+    background: rgba(54, 65, 82, 0.40);
+    padding: var(--Spacing-spacing-md, 12px) var(--Spacing-spacing-lg, 16px);
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: var(--Spacing-spacing-md, 12px);
+    width: 400px;
+    align-items: center;
+    position: relative;
+}
+
+.root input {
+    padding: 0;
+	background: none;
+	border: none;
+	border-radius: 0;
+	outline: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+    font-family: Inter;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+
+}
+
+.root input::placeholder {
+    color: var(--Color-Grey-500, #768393);
+}
+
+.clearIcon {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+

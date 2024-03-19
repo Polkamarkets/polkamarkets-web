@@ -1,0 +1,59 @@
+.root {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    padding: var(--Spacing-spacing-sm, 8px);
+    cursor: pointer;
+    border-radius: var(--Radius-rounded-lg, 12px);
+}
+
+.root:hover, .root:focus{
+    outline: none;
+    background: rgba(54, 65, 82, 0.40);
+}
+
+.questionTitle {
+    color: var(--Color-Grey-25, #FCFCFD);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+}
+
+.metadata {
+    display: grid;
+    grid-template-columns: auto auto auto auto 1fr;
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 400;
+    gap: 8px;
+}
+
+.metadata img {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+}
+
+.landTitle {
+    color: var(--Color-Grey-400, #9AA4B2);
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 120px;
+}
+
+.askedAt {
+    color: var(--Color-Grey-500, #768393); 
+}
+
+.contestName {
+    color: var(--Color-Grey-300, #CDD5DF);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+} 
