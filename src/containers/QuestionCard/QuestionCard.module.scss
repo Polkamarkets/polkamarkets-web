@@ -1,0 +1,144 @@
+.root {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 16px;
+
+  padding: 24px 24px 16px 16px;
+
+  background-color: rgba(18, 25, 38, 0.4);
+  border: 1px solid #202939;
+  border-radius: 24px;
+}
+
+.gutter {
+  padding-bottom: 24px;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.title {
+  font-family: 'Plus Jakarta Sans';
+  font-size: 1.8rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 1.33;
+
+  color: #fcfcfd;
+
+  margin-bottom: 8px;
+}
+
+.land {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+
+  &Avatar {
+    width: 40px;
+    height: 40px;
+
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  &Body {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  &Title {
+    font-size: 1.4rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 1.42;
+
+    color: #fcfcfd;
+  }
+}
+
+.details {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+
+  font-size: 1.2rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.33;
+
+  color: #768393;
+
+  strong {
+    color: #cdd5df;
+  }
+
+  svg {
+    fill: #fac515;
+  }
+}
+
+.status {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+
+  font-size: 1.2rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.33;
+
+  color: #768393;
+}
+
+.hotTag {
+  font-size: 1.2rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.33;
+
+  color: #cdd5df;
+}
+
+.actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 24px;
+
+  &Button {
+    gap: 8px;
+    padding: 8px;
+
+    font-size: 1.2rem !important;
+    font-style: normal !important;
+    font-weight: 400 !important;
+    line-height: 1.33 !important;
+
+    color: #768393;
+
+    svg {
+      fill: #cdd5df;
+    }
+
+    strong {
+      color: #cdd5df;
+    }
+  }
+}
