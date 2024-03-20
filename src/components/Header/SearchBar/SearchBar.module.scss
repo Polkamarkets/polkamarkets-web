@@ -13,17 +13,18 @@
 
 .root input {
     padding: 0;
-	background: none;
-	border: none;
-	border-radius: 0;
-	outline: none;
-	-webkit-appearance: none;
-	-moz-appearance: none;
-	appearance: none;
+    background: none;
+    border: none;
+    border-radius: 0;
+    outline: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
     font-family: Inter;
     font-size: 14px;
     font-weight: 400;
     line-height: 20px;
+    color: var(--Color-White-100, #ffffff);
 
 }
 
@@ -36,5 +37,3 @@
     height: 20px;
     cursor: pointer;
 }
-
-

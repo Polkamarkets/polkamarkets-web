@@ -23,7 +23,7 @@ export const QuestionItem: React.FC<QuestionItemProps> = ({ question }) => {
           {(question.tournaments.length && question.tournaments[0].title) ||
             'Contest Title'}
         </span>
-        <Icon name="Bell" />
+        <Icon name="Cup" />
         <div />
       </div>
     </a>
