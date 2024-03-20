@@ -1,0 +1,15 @@
+.badge {
+    display: flex;
+    padding: var(--spacing-xxs, 2px) var(--spacing-md, 8px);
+    align-items: center;
+    border-radius: var(--Radius-rounded-full, 9999px);
+    border: 1px solid var(--Color-Grey-800, #202939);
+    background: var(--Color-Grey-900, #121926);
+    width: max-content;
+    color: var(--Color-Grey-300, #CDD5DF);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    /* 142.857% */
+    text-transform: capitalize;
+}

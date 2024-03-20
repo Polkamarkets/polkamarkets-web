@@ -1,5 +1,3 @@
-import { memo } from 'react';
-
 import cn from 'classnames';
 
 import * as Svgs from './__svgs__';
@@ -14,7 +12,14 @@ export interface IconProps extends React.ComponentPropsWithRef<'svg'> {
   title?: string;
 }
 
-function Icon({ size = 'md', name, dir, className, ...props }: IconProps) {
+function Icon({
+  size = 'md',
+  name,
+  dir,
+  className,
+  fill,
+  ...props
+}: IconProps) {
   const { title } = props;
   const Svg = Svgs[name];
 
@@ -31,13 +36,15 @@ function Icon({ size = 'md', name, dir, className, ...props }: IconProps) {
           [IconClasses.left]: dir === 'left',
           [IconClasses.up]: dir === 'up',
           [IconClasses.right]: dir === 'right',
-          [IconClasses.down]: dir === 'down'
+          [IconClasses.down]: dir === 'down',
+          [IconClasses.currentColor]: !fill
         },
         className
       )}
       {...(!title && {
         'aria-hidden': 'true'
       })}
+      fill={fill}
       {...props}
     />
   );
@@ -45,4 +52,4 @@ function Icon({ size = 'md', name, dir, className, ...props }: IconProps) {
 
 Icon.displayName = 'Icon';
 
-export default memo(Icon, Object.is);
+export default Icon;

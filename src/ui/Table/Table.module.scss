@@ -1,0 +1,62 @@
+.root {
+    position: relative;
+    width: 100%;
+    overflow: auto;
+}
+
+.table {
+    width: 100%;
+
+    color: var(--Color-Grey-25, #FCFCFD);
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+    caption-side: bottom;
+    table-layout: auto
+}
+
+.tableHeader {
+    border-bottom: solid 1px var(--Color-Grey-800, #202939);
+    color: var(--Color-Grey-500, #768393);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+
+}
+
+.tableHeader tr:hover {
+    background: none;
+}
+
+.tableBody {}
+
+.tableFooter {}
+
+.tableRow {
+    border-radius: 12px;
+}
+
+.tableRow:hover>.tableCell:first-child {
+    border-radius: 12px 0 0 12px;
+}
+
+.tableRow:hover>.tableCell:last-child {
+    border-radius: 0 12px 12px 0;
+}
+
+.tableRow:hover>.tableCell {
+    background: var(--Color-Grey-900, #121926);
+}
+
+.tableHead {
+    text-align: start;
+    padding: 8px 8px 8px 8px;
+}
+
+.tableCell {
+    padding: 16px var(--Spacing-spacing-md, 12px);
+    vertical-align: middle;
+}
+
+
+.tableCaption {}

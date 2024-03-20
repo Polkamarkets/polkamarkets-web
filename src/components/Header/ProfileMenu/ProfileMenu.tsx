@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 
-import * as Popover from '@radix-ui/react-popover';
 import { changeSocialLoginInfo } from 'redux/ducks/polkamarkets';
 import { useGetLeaderboardByAddressQuery } from 'services/Polkamarkets';
 import { Avatar, useTheme } from 'ui';
-import { Button } from 'ui/Button';
+import { ButtonIcon } from 'ui/Button/ButtonIcon';
+import * as Menu from 'ui/Menu/Menu';
 
 import { Icon } from 'components';
 
@@ -19,11 +19,12 @@ import {
 import * as Drawer from '../Drawer/Drawer';
 import styles from './ProfileMenu.module.scss';
 
-export default function ProfileMenu() {
+export const ProfileMenu = () => {
   const dispatch = useAppDispatch();
   const [menuOpen, setMenuOpen] = useState(false);
   const isLoggedIn = useAppSelector(state => state.polkamarkets.isLoggedIn);
   const themes = useTheme();
+  const history = useHistory();
 
   const polkamarketsService = usePolkamarketsService();
   const address = useAppSelector(state => state.polkamarkets.ethAddress);
@@ -98,6 +99,16 @@ export default function ProfileMenu() {
     isLoggedIn
   ]);
 
+  const profileLink = `/user/
+    ${
+      slug ||
+      leaderboard.data?.slug ||
+      leaderboard.data?.username ||
+      username ||
+      address
+    }
+  `;
+
   if (themes.device.isMobileDevice && isLoggedIn) {
     return (
       <Drawer.Root>
@@ -135,15 +146,7 @@ export default function ProfileMenu() {
           </div>
           <Drawer.Separator />
 
-          <Link
-            to={`/user/${
-              slug ||
-              leaderboard.data?.slug ||
-              leaderboard.data?.username ||
-              username ||
-              address
-            }`}
-          >
+          <Link to={profileLink}>
             <Drawer.Item className={styles.mobileMenuItem}>
               <Icon name="Profile" />
               Profile
@@ -179,115 +182,90 @@ export default function ProfileMenu() {
   if (themes.device.isMobileDevice) return null;
 
   return (
-    <Popover.Root open={menuOpen} onOpenChange={setMenuOpen}>
-      <Popover.Trigger asChild>
-        <div className={styles.wrapper}>
-          {isLoggedIn ? (
-            <>
+    <Menu.Root open={menuOpen} onOpenChange={setMenuOpen}>
+      <Menu.Trigger asChild>
+        {isLoggedIn ? (
+          <div className={styles.avatarContainer}>
+            <Avatar
+              $radius="lg"
+              className={styles.avatar}
+              src={socialLoginInfo?.profileImage}
+              alt={username || 'avatar'}
+            />
+            <Icon name="ChevronDown" size="md" />
+          </div>
+        ) : (
+          <ButtonIcon variant="outlined">
+            <Icon name="MoreHoriz" size="md" />
+          </ButtonIcon>
+        )}
+      </Menu.Trigger>
+      <Menu.Content align="end" sideOffset={12}>
+        {isLoggedIn && (
+          <>
+            <div className={styles.menuProfileAvatar}>
               <Avatar
                 $radius="lg"
-                className={styles.avatar}
+                className={styles.menuAvatar}
                 src={socialLoginInfo?.profileImage}
                 alt={username || 'avatar'}
               />
-              <Icon name="ChevronDown" size="md" />
-            </>
-          ) : (
-            <Button variant="outlined">
-              <Icon name="MoreHoriz" size="md" />
-            </Button>
-          )}
-        </div>
-      </Popover.Trigger>
-      <Popover.Portal>
-        <Popover.Content
-          align="end"
-          sideOffset={12}
-          onOpenAutoFocus={e => e.preventDefault()}
-          onClick={() => setMenuOpen(false)}
-        >
-          <div className={styles.profileMenu}>
-            {isLoggedIn && (
-              <>
-                <div className={styles.menuProfileAvatar}>
-                  <Avatar
-                    $radius="lg"
-                    className={styles.menuAvatar}
-                    src={socialLoginInfo?.profileImage}
-                    alt={username || 'avatar'}
+              <div className={styles.menuProfileInfo}>
+                <span className={styles.menuUserName}>
+                  {username || 'Unnamed'}
+                </span>
+                <span className={styles.menuUserAddress}>
+                  0x25256230...ca49
+                  <Icon
+                    name="Copy"
+                    onClick={() =>
+                      navigator.clipboard.writeText('0x25256230...ca49')
+                    }
                   />
-                  <div className={styles.menuProfileInfo}>
-                    <span className={styles.menuUserName}>
-                      {username || 'Unnamed'}
-                    </span>
-                    <span className={styles.menuUserAddress}>
-                      0x25256230...ca49
-                      <Icon
-                        name="Copy"
-                        onClick={() =>
-                          navigator.clipboard.writeText('0x25256230...ca49')
-                        }
-                      />
-                    </span>
-                  </div>
-                </div>
-                <div className={styles.divider} />
-                <Link
-                  to={`/user/${
-                    slug ||
-                    leaderboard.data?.slug ||
-                    leaderboard.data?.username ||
-                    username ||
-                    address
-                  }`}
-                  className={styles.menuItem}
-                >
-                  <Icon name="Profile" />
-                  Profile
-                </Link>
-
-                <Link to="/#" className={styles.menuItem}>
-                  <Icon name="Settings" />
-                  Account Settings
-                </Link>
-                <div className={styles.divider} />
-              </>
-            )}
-
-            <Link to="/#" className={styles.menuItem}>
-              <Icon name="Help" />
-              Help Center
-            </Link>
-            <Link to="/#" className={styles.menuItem}>
-              <Icon name="CommentAlert" color="transparent" />
-              Send Feedback
-            </Link>
-            <div className={styles.divider} />
-            <Link to="/#" className={styles.menuItem}>
-              <Icon name="NewsPaper" />
-              Blog
-            </Link>
-            <Link to="/#" className={styles.menuItem}>
-              <Icon name="Planet" />
-              About
-            </Link>
-
-            {isLoggedIn && (
-              <>
-                <div className={styles.divider} />
-                <Link
-                  to="/#"
-                  className={styles.menuItem}
-                  onClick={handleSocialLogout}
-                >
-                  <Icon name="Logout" />
-                  Disconnect
-                </Link>
-              </>
-            )}
-          </div>
-        </Popover.Content>
-      </Popover.Portal>
-    </Popover.Root>
+                </span>
+              </div>
+            </div>
+            <Menu.Separator />
+            <Menu.Item onClick={() => history.push(profileLink)}>
+              <Icon name="Profile" />
+              Profile
+            </Menu.Item>
+            <Menu.Item>
+              <Icon name="Settings" />
+              Account Settings
+            </Menu.Item>
+            <Menu.Separator />
+          </>
+        )}
+        <Menu.Item>
+          <Icon name="Help" />
+          Help Center
+        </Menu.Item>
+        <Menu.Item>
+          <Icon name="CommentAlert" color="transparent" />
+          Send Feedback
+        </Menu.Item>
+        <Menu.Separator />
+        <Menu.Item>
+          <Icon name="NewsPaper" />
+          Blog
+        </Menu.Item>
+        <Menu.Item>
+          <Icon name="Planet" />
+          About
+        </Menu.Item>
+        {isLoggedIn && (
+          <>
+            <Menu.Separator />
+            <Menu.Item onClick={handleSocialLogout}>
+              <Icon name="Logout" />
+              Disconnect
+            </Menu.Item>
+          </>
+        )}
+      </Menu.Content>
+    </Menu.Root>
   );
-}
+};
+
+export default ProfileMenu;

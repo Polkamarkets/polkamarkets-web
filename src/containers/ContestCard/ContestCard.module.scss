@@ -145,6 +145,41 @@
   }
 }
 
+@keyframes pulse-orange {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(230, 46, 5, 0.72);
+  }
+
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 5px rgba(230, 46, 5, 0);
+  }
+
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(230, 46, 5, 0);
+  }
+}
+
+@keyframes pulse-green {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(9, 146, 80, 0.72);
+  }
+
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 5px rgba(9, 146, 80, 0);
+  }
+
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(9, 146, 80, 0);
+  }
+}
+
+
 .status {
   position: absolute;
   left: 8px;
@@ -180,7 +215,8 @@
   &Live {
     .statusDot {
       background-color: #16b364;
-      box-shadow: 0px 0px 0px 3px rgba(9, 146, 80, 0.32);
+      box-shadow: 0px 0px 0px 3px rgba(9, 146, 80, 0.72);
+      animation: pulse-green 2s infinite;
     }
   }
 
@@ -188,6 +224,14 @@
     .statusDot {
       background-color: #768393;
       box-shadow: 0px 0px 0px 3px rgba(118, 131, 147, 0.32);
+    }
+  }
+
+  &EndingSoon {
+    .statusDot {
+      background-color: #FF692E;
+      box-shadow: 0px 0px 0px 5px rgba(230, 46, 5, 0.72);
+      animation: pulse-orange 2s infinite;
     }
   }
 }

@@ -100,6 +100,7 @@ export type GetLeaderboardByTimeframeArgs = {
   timeframe: LeaderboardTimeframe;
   networkId: string;
   tournamentId?: string;
+  landId?: string;
 };
 
 // getLeaderboardByAddress

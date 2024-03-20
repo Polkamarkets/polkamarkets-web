@@ -1,6 +1,6 @@
 import { forwardRef, ComponentPropsWithRef } from 'react';
 
-import classNames from 'classnames';
+import cn from 'classnames';
 
 import styles from './Button.module.scss';
 
@@ -31,7 +31,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       <button
         ref={ref}
         type={type}
-        className={classNames(
+        className={cn(
           styles.button,
           styles[`button-${variant}`],
           styles[`button-${size}`],
