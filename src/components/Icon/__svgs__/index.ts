@@ -1,5 +1,7 @@
 export { ReactComponent as AddImage } from './AddImage.svg';
 export { ReactComponent as Arrow } from './Arrow.svg';
+export { ReactComponent as ArrowTopRight } from './ArrowTopRight.svg';
+export { ReactComponent as ArrowBottomRight } from './ArrowBottomRight.svg';
 export { ReactComponent as Ban } from './Ban.svg';
 export { ReactComponent as BarChart } from './BarChart.svg';
 export { ReactComponent as Binance } from './Binance.svg';
