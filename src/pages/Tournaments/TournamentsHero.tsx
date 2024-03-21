@@ -1,7 +1,7 @@
 import { features, ui } from 'config';
 import { Container, Hero } from 'ui';
 
-import { Button, ProfileSignin, Text } from 'components';
+import { Button, AuthModal, Text } from 'components';
 
 import { useAppSelector } from 'hooks';
 
@@ -59,9 +59,7 @@ export default function HomeHero() {
             </Button>
           ) : null}
           {!hasCta && features.fantasy.enabled && !isLoggedIn && (
-            <ProfileSignin variant="normal" color="primary">
-              Sign In
-            </ProfileSignin>
+            <AuthModal variant="primary">Sign In</AuthModal>
           )}
         </div>
       </Hero>

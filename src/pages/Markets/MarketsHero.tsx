@@ -1,7 +1,7 @@
 import { features, ui } from 'config';
 import { Container, Hero } from 'ui';
 
-import { Button, ProfileSignin, Text } from 'components';
+import { Button, AuthModal, Text } from 'components';
 
 import useAppSelector from 'hooks/useAppSelector';
 
@@ -61,9 +61,7 @@ export default function MarketsHero() {
             </Button>
           )}
           {!hasCta && features.fantasy.enabled && !isLoggedIn && (
-            <ProfileSignin variant="normal" color="primary">
-              Login
-            </ProfileSignin>
+            <AuthModal variant="primary">Login</AuthModal>
           )}
         </div>
       </Hero>

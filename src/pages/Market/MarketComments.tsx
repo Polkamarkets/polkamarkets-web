@@ -12,7 +12,7 @@ import { useAddCommentMutation } from 'services/Polkamarkets';
 import type { Comment } from 'types/market';
 import Avatar from 'ui/Avatar';
 
-import { Icon, ProfileSignin } from 'components';
+import { Icon, AuthModal } from 'components';
 import { ButtonLoading } from 'components/Button';
 
 import { useAppDispatch, useAppSelector, useLanguage } from 'hooks';
@@ -133,14 +133,14 @@ function MarketNewComment() {
           />
           <div className={styles.newCommentBoxFooter}>
             {!isLoadingUser && !isLoggedIn ? (
-              <ProfileSignin size="xs" color="primary">
+              <AuthModal size="sm" variant="primary">
                 <Icon
                   name="LogIn"
                   size="md"
                   className={styles.newCommentBoxFooterSigninIcon}
                 />
                 Sign In
-              </ProfileSignin>
+              </AuthModal>
             ) : null}
             {isLoadingUser || (!isLoadingUser && isLoggedIn) ? (
               <ButtonLoading

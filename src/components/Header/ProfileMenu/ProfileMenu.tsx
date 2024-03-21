@@ -5,8 +5,9 @@ import * as Popover from '@radix-ui/react-popover';
 import { changeSocialLoginInfo } from 'redux/ducks/polkamarkets';
 import { useGetLeaderboardByAddressQuery } from 'services/Polkamarkets';
 import { Avatar } from 'ui';
+import { Button } from 'ui/Button';
 
-import { Button, Icon } from 'components';
+import { Icon } from 'components';
 
 import {
   useAppDispatch,
@@ -110,7 +111,7 @@ export default function ProfileMenu() {
               <Icon name="ChevronDown" size="md" />
             </>
           ) : (
-            <Button variant="outline" size="sm">
+            <Button variant="outlined">
               <Icon name="MoreHoriz" size="md" />
             </Button>
           )}
