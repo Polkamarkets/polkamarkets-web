@@ -92,6 +92,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({ className }) => {
           contests={contests}
           questions={questions}
           loading={isLoading}
+          onClose={() => setSearch('')}
         />
       )}
     </div>

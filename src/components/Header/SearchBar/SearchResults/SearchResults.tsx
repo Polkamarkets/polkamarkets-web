@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Tabs, TabList, Tab, TabPanel } from 'react-aria-components';
 
 import { Market } from 'models/market';
@@ -15,14 +16,27 @@ export type SearchResultsProps = {
   contests?: GetTournamentsData;
   questions?: Market[];
   loading?: boolean;
+  onClose?: () => void;
 };
 export const SearchResults: React.FC<SearchResultsProps> = ({
   searchValue,
   loading,
   lands,
   contests,
-  questions
+  questions,
+  onClose
 }) => {
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose?.();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
   if (loading) {
     return (
       <div className={styles.root}>
