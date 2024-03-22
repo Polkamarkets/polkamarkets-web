@@ -1,16 +1,21 @@
 .root {
-  border-bottom: 1px solid var(--color-border);
-  display: flex;
+  border-bottom: 1px solid #252C3B;
+  display: grid;
   grid-area: header;
-}
-
-.container {
   align-items: center;
   min-height: var(--header-y);
+  grid-template-columns: 1fr auto 1fr;
+  padding: var(--Spacing-spacing-lg, 16px) var(--Spacing-spacing-2xl, 32px);
+
 }
 
-.gutter {
-  &Bottom {
-    margin-bottom: var(--size-24);
+
+@media (max-width: 1023px) {
+  .root {
+    grid-template-columns: 1fr 1fr;
+  }
+  .searchBar {
+    display: none;
   }
 }
+

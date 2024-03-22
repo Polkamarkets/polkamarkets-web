@@ -10,12 +10,9 @@ type InputProps = {
   name: string;
   description?: string;
   required?: boolean;
-};
+} & React.InputHTMLAttributes<HTMLInputElement>;
 
-const Input = React.forwardRef<
-  HTMLInputElement,
-  InputProps & React.InputHTMLAttributes<HTMLInputElement>
->(
+const Input = React.forwardRef<HTMLInputElement, InputProps>(
   (
     { label, name, description, className, required = false, ...props },
     ref

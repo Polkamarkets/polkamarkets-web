@@ -1,5 +1,3 @@
-import has from 'lodash/has';
-
 type Filter = {
   name: string;
   values: string[];

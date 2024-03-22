@@ -1,0 +1,86 @@
+.root {
+    border-radius: 16px;
+    border: 1px solid var(--Color-Grey-800, #202939);
+    background: var(--Color-Grey-900, #121926);
+    padding: var(--Spacing-spacing-lg, 16px) 8px 8px 8px;
+    position: absolute;
+    top: 50px;
+    width: 100%;
+    z-index: 1;
+}
+
+.tabs {
+    display: flex;
+    width: 100%;
+    padding: var(--Spacing-spacing-sm, 8px);
+
+    &[data-orientation='horizontal'] {
+        flex-direction: column;
+    }
+}
+
+.tabList {
+    display: flex;
+    gap: 40px;
+
+    &[data-orientation='horizontal'] {
+        border-bottom: 1px solid #202939;
+    }
+
+}
+
+.tab {
+    position: relative;
+    cursor: pointer;
+
+    padding-bottom: 16px;
+
+    font-size: 1.4rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 1.42;
+    color: #768393;
+
+    transition: color 0.2s;
+    outline: none;
+    forced-color-adjust: none;
+
+    &[data-hovered],
+    &[data-focused] {
+        color: #fcfcfd;
+        outline: none;
+    }
+
+    &[data-selected] {
+        border-bottom: 3px solid var(--Color-Blue-500, #2970FF);
+        color: #fcfcfd;
+    }
+}
+
+.tabPanel {
+    margin-top: 8px;
+
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+
+.loadingRoot {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    gap: 16px;
+    padding: 10px;
+    color: var(--Color-Grey-500, #768393); 
+}
+
+.noResults {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    gap: 16px;
+    padding: 10px;
+    color: var(--Color-Grey-500, #768393); 
+}

@@ -131,7 +131,7 @@ function MarketShares({ onSellSelected }: MarketSharesProps) {
           ? outcomeShares.shares * outcomeShares.price
           : 0,
         value:
-          market.state === 'resolved'
+          market.state === 'resolved' && outcomeShares
             ? outcomeShares.shares * outcome.price
             : outcomeShares && outcomeShares.shares > 0
             ? calculateEthAmountSold(market, outcome, outcomeShares.shares)

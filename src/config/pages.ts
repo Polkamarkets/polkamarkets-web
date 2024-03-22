@@ -183,7 +183,7 @@ const pages = {
     pathname: '/',
     Component: lazy(() => import('pages/Home')),
     exact: true,
-    navigation: !features.fantasy.enabled,
+    navigation: true,
     name: 'Home',
     meta: defaultMetadata,
     enabled: features.fantasy.enabled && ui.tournaments.enabled
@@ -238,7 +238,7 @@ const pages = {
         pathname: '/markets/create',
         Component: lazy(() => import('pages/CreateMarket')),
         exact: false,
-        navigation: false,
+        navigation: true,
         name: '',
         meta: defaultMetadata,
         enabled: true

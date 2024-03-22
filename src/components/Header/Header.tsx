@@ -1,31 +1,16 @@
 import cn from 'classnames';
-import { Container } from 'ui';
-import type { ContainerProps } from 'ui';
 
-import headerClasses from './Header.module.scss';
-import HeaderActions from './HeaderActions';
-import HeaderNav from './HeaderNav';
+import styles from './Header.module.scss';
+import HeaderActions from './HeaderActions/HeaderActions';
+import HeaderNav from './HeaderNav/HeaderNav';
+import { SearchBar } from './SearchBar/SearchBar';
 
-export interface HeaderProps
-  extends Pick<ContainerProps<'header'>, 'className'> {
-  $gutterBottom?: boolean;
-}
-
-export default function Header({ className, $gutterBottom }: HeaderProps) {
+export default function Header() {
   return (
-    <Container
-      $as="header"
-      className={cn(
-        headerClasses.root,
-        headerClasses.container,
-        {
-          [headerClasses.gutterBottom]: $gutterBottom
-        },
-        className
-      )}
-    >
+    <header className={cn(styles.root)}>
       <HeaderNav />
+      <SearchBar className={styles.searchBar} />
       <HeaderActions />
-    </Container>
+    </header>
   );
 }

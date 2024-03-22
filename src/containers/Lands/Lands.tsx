@@ -56,19 +56,13 @@ function Lands({ viewMode = 'default' }: LandsProps) {
       {viewMode === 'compact' && (
         <div className={styles.footer}>
           <Link to="/lands">
-            <Button
-              size="lg"
-              color="primary gray"
-              variant="outlined"
-              itemEnd={
-                <Icon
-                  name="Arrow"
-                  dir="right"
-                  className={styles.footerButtonIcon}
-                />
-              }
-            >
+            <Button size="lg" variant="outlined">
               View all Lands
+              <Icon
+                name="Arrow"
+                dir="right"
+                className={styles.footerButtonIcon}
+              />
             </Button>
           </Link>
         </div>

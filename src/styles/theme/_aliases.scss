@@ -4,9 +4,7 @@
   --color-neutral--rgb: var(--neutral-500--rgb);
   --color-surface--rgb: var(--neutral-100--rgb);
 
-  --color-background-primary: rgb(
-    var(--color-background--rgb) / var(--alpha-primary)
-  );
+  --color-background-primary: #0A0B0E;
   --color-background-secondary: rgb(
     var(--color-background--rgb) / var(--alpha-secondary)
   );

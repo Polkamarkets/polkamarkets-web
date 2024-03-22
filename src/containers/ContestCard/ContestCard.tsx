@@ -39,18 +39,6 @@ function ContestCard({ tournament }: ContestCardProps) {
 
   return (
     <div className={styles.root}>
-      <div className={styles.overlay}>
-        <Link to={`/${tournament.slug}`}>
-          <Button
-            size="md"
-            color="secondary gray"
-            variant="filled"
-            className={{ root: styles.playButton }}
-          >
-            Play Contest
-          </Button>
-        </Link>
-      </div>
       <div
         className={styles.banner}
         style={
@@ -102,6 +90,13 @@ function ContestCard({ tournament }: ContestCardProps) {
             Questions <strong className="notranslate">{stats.questions}</strong>
           </span>
         </div>
+      </div>
+      <div className={styles.overlay}>
+        <Link to={`/${tournament.slug}`}>
+          <Button variant="light" className={styles.playButton}>
+            Play Contest
+          </Button>
+        </Link>
       </div>
     </div>
   );

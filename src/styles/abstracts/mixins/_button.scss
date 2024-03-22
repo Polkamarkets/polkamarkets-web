@@ -119,22 +119,22 @@
 }
 
 @mixin button-ghost-color($background-colors-map, $text-colors-map) {
-  color: map-get($text-colors-map, 'text-color');
+  color: white;
   background-color: map-get($background-colors-map, 'background-color');
   border-color: map-get($background-colors-map, 'background-color');
 
   svg {
-    fill: map-get($text-colors-map, 'text-color');
+    fill: white;
   }
 
   &:hover,
   &:focus {
-    color: map-get($text-colors-map, 'text-color-hover');
+    color: white;
     background-color: map-get($background-colors-map, 'background-color-hover');
     border-color: map-get($background-colors-map, 'background-color-hover');
 
     svg {
-      fill: map-get($text-colors-map, 'text-color-hover');
+      fill: white;
     }
   }
 

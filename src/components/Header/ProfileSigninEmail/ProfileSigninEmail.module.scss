@@ -1,0 +1,40 @@
+.root {
+  --border-color: var(--color-text-secondary);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.disabled {
+  --border-color: var(--color-text-quinary);
+}
+
+.input {
+  width: 100%;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  background: transparent;
+  appearance: none;
+  border: none;
+  outline: none;
+}
+
+.forgotPassword {
+  color: var(--Color-Grey-25, #fcfcfd);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px; /* 142.857% */
+  margin-bottom: 32px;
+}
+
+.forgotPassword a {
+  color: var(--Color-Blue-500, #2970ff);
+
+  /* SM/Medium */
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px; /* 142.857% */
+}

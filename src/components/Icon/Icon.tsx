@@ -5,9 +5,11 @@ import cn from 'classnames';
 import * as Svgs from './__svgs__';
 import IconClasses from './Icon.module.scss';
 
+export type IconNames = keyof typeof Svgs;
+
 export interface IconProps extends React.ComponentPropsWithRef<'svg'> {
   dir?: 'left' | 'up' | 'right' | 'down';
-  name: keyof typeof Svgs;
+  name: IconNames;
   size?: 'sm' | 'md' | 'lg' | 'xl';
   title?: string;
 }

@@ -58,19 +58,13 @@ function Contests({ viewMode = 'default' }: ContestsProps) {
       {viewMode === 'compact' && (
         <div className={styles.footer}>
           <Link to="/contests">
-            <Button
-              size="lg"
-              color="primary gray"
-              variant="outlined"
-              itemEnd={
-                <Icon
-                  name="Arrow"
-                  dir="right"
-                  className={styles.footerButtonIcon}
-                />
-              }
-            >
+            <Button size="lg" variant="outlined">
               View all Contests
+              <Icon
+                name="Arrow"
+                dir="right"
+                className={styles.footerButtonIcon}
+              />
             </Button>
           </Link>
         </div>

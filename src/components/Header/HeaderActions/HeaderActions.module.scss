@@ -1,0 +1,55 @@
+.root {
+  display: flex;
+  align-items: center;
+  border-top: 1px solid var(--color-border);
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  transition: background-color 200ms ease-in-out;
+  background-color: #0A0B0E;
+  justify-content: flex-end;
+  gap: 6px;
+  width: 100%;
+  padding: 0 var(--size-12);
+  color: #FFF;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
+  @media (min-width: 1024px) {
+    transition: unset;
+    margin-left: auto;
+    border-top: unset;
+    position: unset;
+    width: unset;
+    padding: 0;
+  }
+}
+
+.actions {
+  &Group {
+    display: inherit;
+    gap: inherit;
+  }
+}
+.high {
+  z-index: 1300;
+}
+.network {
+  margin-left: auto;
+}
+
+.help,
+.howToPlay,
+.transactions {
+  padding: var(--size-12) !important;
+  margin-left: auto;
+}
+
+.createButton {
+  color: #FFF;
+  font-size: 14px !important;
+  font-style: normal !important;
+  font-weight: 500 !important;
+  line-height: 20px !important;
+}
