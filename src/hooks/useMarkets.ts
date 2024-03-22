@@ -18,7 +18,6 @@ export default function useMarkets(fetchByIds?: {
   ids: string[];
   networkId: number;
 }) {
-  console.log(fetchByIds);
   const dispatch = useAppDispatch();
   const { favoriteMarkets } = useFavoriteMarkets();
   const { state: filtersState } = useFilters();
@@ -46,8 +45,6 @@ export default function useMarkets(fetchByIds?: {
       }, {})
     }
   });
-
-  console.log(selectedMarkets);
 
   const markets = useMemo(() => {
     if (!fetchByIds || isEmpty(fetchByIds.ids)) return selectedMarkets;

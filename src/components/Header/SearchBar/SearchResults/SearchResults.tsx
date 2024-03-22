@@ -36,7 +36,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, []);
+  }, [onClose]);
   if (loading) {
     return (
       <div className={styles.root}>

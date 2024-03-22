@@ -30,7 +30,6 @@ function LandCard({ land }: LandCardProps) {
 
   return (
     <div className={styles.root}>
-      
       <div
         className={styles.banner}
         style={
