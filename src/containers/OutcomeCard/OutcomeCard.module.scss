@@ -1,0 +1,170 @@
+.root {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  width: 100%;
+  padding: 16px;
+
+  background-color: rgba(32, 41, 57, 0.4);
+
+  border: 1px solid rgba(75, 85, 101, 0.4);
+  border-radius: 12px;
+
+  transition: background-color 150ms ease;
+
+  @media (min-width: 1024px) {
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+    width: 170px;
+  }
+
+  &:hover {
+    background-color: rgba(32, 41, 57, 0.72);
+  }
+}
+
+.avatar {
+  width: 56px;
+  height: 56px;
+
+  flex-shrink: 0;
+  border-radius: 8px;
+
+  @media (min-width: 1024px) {
+    width: 40px;
+    height: 40px;
+
+    margin-bottom: auto;
+  }
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  width: 100%;
+}
+
+.title,
+.price,
+.outcomes {
+  text-overflow: ellipsis;
+  overflow: hidden;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  word-break: break-all;
+}
+
+.title {
+  font-size: 1.4rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.42;
+
+  color: #fcfcfd;
+
+  margin-bottom: 8px;
+}
+
+.outcomes {
+  font-size: 1.4rem;
+  font-weight: 600;
+  line-height: 1.42;
+
+  color: #9aa4b2;
+}
+
+.price {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+
+  font-size: 1.2rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.33;
+
+  color: #9aa4b2;
+
+  strong {
+    font-size: 1.4rem;
+    font-weight: 600;
+    line-height: 1.42;
+
+    color: #fcfcfd;
+  }
+
+  &Icon {
+    height: 12px;
+    width: 12px;
+  }
+
+  &Up {
+    color: #3ccb7f;
+  }
+
+  &Down {
+    color: #f63d68;
+  }
+}
+
+.plusButton {
+  flex-shrink: 0 !important;
+
+  height: 56px !important;
+  width: 56px !important;
+  padding: 0 !important;
+
+  background-color: transparent !important;
+  border-radius: 8px !important;
+  border: 1px solid #364152 !important;
+
+  svg {
+    height: 16px;
+    width: 16px;
+    fill: #768393 !important;
+  }
+
+  @media (min-width: 1024px) {
+    width: 40px !important;
+    height: 40px !important;
+
+    margin-bottom: auto !important;
+  }
+}
+
+.progressBar {
+  position: relative;
+
+  height: 4px;
+  width: 100%;
+
+  border-radius: 2px;
+  background-color: #364152;
+
+  margin-top: 4px;
+
+  &Line {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    height: 100%;
+    width: var(--width, 0%);
+
+    border-radius: 2px;
+    background: #9aa4b2;
+
+    transition: width 200ms ease-out;
+
+    &Winning {
+      @extend .progressBarLine;
+      background: linear-gradient(90deg, #43cbff 0%, #7839ee 100%);
+    }
+  }
+}
