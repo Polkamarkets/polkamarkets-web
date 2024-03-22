@@ -1,18 +1,20 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
 import classNames from 'classnames';
+import { features } from 'config';
 import dayjs from 'dayjs';
 import { relativeTimeFromNow } from 'helpers/date';
-import { roundNumber } from 'helpers/math';
 import type { Market } from 'models/market';
-import { Avatar } from 'ui';
+import { Avatar, useTheme } from 'ui';
 
-import { Button, Icon } from 'components';
-import MarketOutcomes from 'components/Market/MarketOutcomes';
+import { Icon } from 'components';
 
-import { useFantasyTokenTicker, useLanguage } from 'hooks';
+import { useAppDispatch, useLanguage } from 'hooks';
 
 import styles from './QuestionCard.module.scss';
+import QuestionCardActions from './QuestionCardActions';
+import QuestionCardOutcomes from './QuestionCardOutcomes';
 
 const hotTags = ['🧨 Booming Now', '✨ Just In', '🔥 Trending', '⌛ Closing'];
 
@@ -22,8 +24,29 @@ type QuestionCardProps = {
 };
 
 function QuestionCard({ market, gutter }: QuestionCardProps) {
+  const dispatch = useAppDispatch();
+  const location = useLocation();
   const language = useLanguage();
-  const fantasyTokenTicker = useFantasyTokenTicker();
+  const theme = useTheme();
+
+  const handleNavigation = useCallback(async () => {
+    const { clearMarket } = await import('redux/ducks/market');
+    const { openTradeForm } = await import('redux/ducks/ui');
+    const { selectOutcome } = await import('redux/ducks/trade');
+
+    if (features.regular.enabled) {
+      dispatch(
+        selectOutcome(market.id, market.networkId, market.outcomes[0].id)
+      );
+    }
+
+    dispatch(clearMarket());
+
+    if (features.regular.enabled) {
+      dispatch(openTradeForm());
+    }
+  }, [dispatch, market.id, market.networkId, market.outcomes]);
+
   const tournament = useMemo(() => {
     if (!market.tournaments) {
       return undefined;
@@ -46,7 +69,14 @@ function QuestionCard({ market, gutter }: QuestionCardProps) {
     >
       <div className={styles.root}>
         <div className={styles.body}>
-          <div className={styles.header}>
+          <Link
+            className={styles.header}
+            to={{
+              pathname: `/markets/${market.slug}`,
+              state: { from: location.pathname }
+            }}
+            onClick={handleNavigation}
+          >
             {tournament && land && (
               <div className={styles.land}>
                 {land.imageUrl && (
@@ -86,27 +116,15 @@ function QuestionCard({ market, gutter }: QuestionCardProps) {
                 </span>
               </p>
             </div>
-          </div>
-          <div className={styles.actions}>
-            <Button size="sm" color="noborder" className={styles.actionsButton}>
-              <Icon name="Comment" />
-              421
-            </Button>
-            <Button size="sm" color="noborder" className={styles.actionsButton}>
-              <Icon name="BarChart" />
-              <strong>{roundNumber(market.volume, 3)}</strong>
-              {fantasyTokenTicker || market.token.ticker}
-            </Button>
-            <Button size="sm" color="noborder" className={styles.actionsButton}>
-              <Icon name="Heart" />
-              563
-            </Button>
-            <Button size="sm" color="noborder" className={styles.actionsButton}>
-              <Icon name="MoreHorizontal" />
-            </Button>
-          </div>
+          </Link>
+          {theme.device.isDesktop ? (
+            <QuestionCardActions market={market} />
+          ) : null}
         </div>
-        <MarketOutcomes market={market} compact />
+        <QuestionCardOutcomes market={market} compact={false} />
+        {!theme.device.isDesktop ? (
+          <QuestionCardActions market={market} />
+        ) : null}
       </div>
     </div>
   );

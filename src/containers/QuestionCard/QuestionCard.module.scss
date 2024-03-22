@@ -1,16 +1,27 @@
 .root {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
 
-  gap: 16px;
+  gap: 12px;
 
-  padding: 24px 24px 16px 16px;
+  padding: 16px 16px 12px 16px;
 
   background-color: rgba(18, 25, 38, 0.4);
   border: 1px solid #202939;
   border-radius: 24px;
+
+  transition: background-color 150ms ease;
+
+  @media (min-width: 1024px) {
+    flex-direction: row;
+    gap: 16px;
+
+    padding: 24px 24px 16px 16px;
+  }
+
+  &:hover {
+    background-color: #121926;
+  }
 }
 
 .gutter {
@@ -20,7 +31,10 @@
 .body {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   gap: 16px;
+
+  width: 100%;
 }
 
 .header {
@@ -30,15 +44,30 @@
 }
 
 .title {
+  text-overflow: ellipsis;
+  overflow: hidden;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  word-break: break-all;
+
   font-family: 'Plus Jakarta Sans';
-  font-size: 1.8rem;
+  font-size: 1.4rem;
   font-style: normal;
-  font-weight: 600;
-  line-height: 1.33;
+  font-weight: 500;
+  line-height: 1.42;
 
   color: #fcfcfd;
 
   margin-bottom: 8px;
+
+  @media (min-width: 1024px) {
+    font-size: 1.8rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 1.33;
+  }
 }
 
 .land {
@@ -62,6 +91,14 @@
   }
 
   &Title {
+    text-overflow: ellipsis;
+    overflow: hidden;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    word-break: break-all;
+
     font-size: 1.4rem;
     font-style: normal;
     font-weight: 500;
@@ -114,31 +151,4 @@
   line-height: 1.33;
 
   color: #cdd5df;
-}
-
-.actions {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 24px;
-
-  &Button {
-    gap: 8px;
-    padding: 8px;
-
-    font-size: 1.2rem !important;
-    font-style: normal !important;
-    font-weight: 400 !important;
-    line-height: 1.33 !important;
-
-    color: #768393;
-
-    svg {
-      fill: #cdd5df;
-    }
-
-    strong {
-      color: #cdd5df;
-    }
-  }
 }
