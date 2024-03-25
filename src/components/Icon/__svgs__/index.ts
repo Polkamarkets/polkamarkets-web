@@ -60,6 +60,7 @@ export { ReactComponent as MoreHorizontal } from './MoreHorizontal.svg';
 export { ReactComponent as Planet } from './Planet.svg';
 export { ReactComponent as Plus } from './Plus.svg';
 export { ReactComponent as PlusOutlined } from './PlusOutlined.svg';
+export { ReactComponent as PlusRectangular } from './PlusRectangular.svg';
 export { ReactComponent as Polk } from './Polk.svg';
 export { ReactComponent as Polygon } from './Polygon.svg';
 export { ReactComponent as Profile } from './Profile.svg';
