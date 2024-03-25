@@ -1,4 +1,6 @@
 .root {
+  cursor: pointer;
+
   display: flex;
   align-items: center;
   gap: 12px;
@@ -22,6 +24,11 @@
 
   &:hover {
     background-color: rgba(32, 41, 57, 0.72);
+  }
+
+  &:disabled {
+    cursor: initial;
+    pointer-events: none;
   }
 }
 

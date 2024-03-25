@@ -56,6 +56,7 @@ function QuestionCard({
       type="button"
       disabled={!!resolved}
       className={classNames(styles.root, className)}
+      value={value}
       {...props}
     >
       {image ? <Avatar src={image} className={styles.avatar} /> : null}
