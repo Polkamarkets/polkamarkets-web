@@ -5,6 +5,7 @@ import { features } from 'config';
 import { OutcomeCard, OutcomeCardProps } from 'containers';
 import sortOutcomes from 'helpers/sortOutcomes';
 import isUndefined from 'lodash/isUndefined';
+import maxBy from 'lodash/maxBy';
 import type { Market } from 'models/market';
 import { marketSelected } from 'redux/ducks/market';
 import { reset, selectOutcome } from 'redux/ducks/trade';
@@ -113,6 +114,8 @@ export default function QuestionCardOutcomes({
 
     return sharesByOutcome.filter(outcome => outcome.shares > 1e-5);
   }, [isLoadingPortfolio, portfolio, market]);
+
+  const highestPriceOutcome = maxBy(sortedOutcomes, 'price') || sortOutcomes[0];
 
   const getOutcomeActive = useCallback(
     (id: string | number) =>
@@ -250,7 +253,9 @@ export default function QuestionCardOutcomes({
           isPriceUp: outcome.isPriceUp,
           priceChange24h: outcome.priceChange24h
         },
-        resolved
+        resolved,
+        isWinningOutcome:
+          outcome.id.toString() === highestPriceOutcome.id.toString()
       } as { id: string } & OutcomeCardProps;
     });
   }, [
@@ -258,6 +263,7 @@ export default function QuestionCardOutcomes({
     getOutcomeActive,
     getOutcomeStatus,
     handleOutcomeClick,
+    highestPriceOutcome.id,
     market.resolvedOutcomeId,
     market.state,
     market.token,
@@ -272,6 +278,10 @@ export default function QuestionCardOutcomes({
       expandableOutcomes.off.map(outcome => +outcome.id)
     );
 
+    const expandableOutcomesIds = expandableOutcomes.off.map(
+      outcome => outcome.id
+    );
+
     return {
       $size: 'sm',
       $variant: 'dashed',
@@ -280,7 +290,10 @@ export default function QuestionCardOutcomes({
       token: market.token,
       outcomesWithShares,
       onClick: handleOutcomeClick,
-      ...expandableOutcomes.offseted
+      ...expandableOutcomes.offseted,
+      isWinningOutcome: expandableOutcomesIds.includes(
+        highestPriceOutcome.id.toString()
+      )
     } as { value: string } & OutcomeCardProps;
   }, [
     expandableOutcomes.off,
@@ -288,6 +301,7 @@ export default function QuestionCardOutcomes({
     expandableOutcomes.onseted,
     getMultipleOutcomesStatus,
     handleOutcomeClick,
+    highestPriceOutcome.id,
     market.token,
     outcomesWithShares
   ]);

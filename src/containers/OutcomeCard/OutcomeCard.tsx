@@ -39,16 +39,17 @@ export type OutcomeCardProps = Pick<
       priceChange24h?: number;
       text?: string;
     };
+    isWinningOutcome?: boolean;
   };
 
 function QuestionCard({
-  value,
   primary,
   secondary,
   $variant,
   image,
   resolved,
   className,
+  isWinningOutcome,
   ...props
 }: OutcomeCardProps) {
   return (
@@ -56,7 +57,6 @@ function QuestionCard({
       type="button"
       disabled={!!resolved}
       className={classNames(styles.root, className)}
-      value={value}
       {...props}
     >
       {image ? <Avatar src={image} className={styles.avatar} /> : null}
@@ -103,7 +103,7 @@ function QuestionCard({
           <div
             className={classNames({
               [styles.progressBarLine]: true,
-              [styles.progressBarLineWinning]: value === 0
+              [styles.progressBarLineWinning]: isWinningOutcome
             })}
             style={
               {
