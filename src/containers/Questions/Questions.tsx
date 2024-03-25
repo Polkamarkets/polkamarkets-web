@@ -48,7 +48,11 @@ function Questions({ viewMode = 'default' }: QuestionsProps) {
 
   return (
     <>
-      <MarketList filtersVisible={false} maxVisibleItems={maxVisibleItems} />
+      <MarketList
+        classNames={{ root: styles.list }}
+        filtersVisible={false}
+        maxVisibleItems={maxVisibleItems}
+      />
       {viewMode === 'compact' && (
         <div className={styles.footer}>
           <Link to="/questions">
