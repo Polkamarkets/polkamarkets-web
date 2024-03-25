@@ -10,4 +10,5 @@ export type Network = {
   explorerURL: string;
   rpcUrls: string[];
   buyEc20Url?: string;
+  viemChain?: any;
 };

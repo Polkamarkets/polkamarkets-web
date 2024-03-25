@@ -295,12 +295,7 @@ function login(
         })
         .catch(() => {});
 
-      polkamarketsService
-        .getSocialLoginUserInfo()
-        .then(userInfo => {
-          dispatch(changeSocialLoginInfo(userInfo));
-        })
-        .catch(() => {});
+      dispatch(changeSocialLoginInfo({}));
     } else {
       dispatch(
         changeLoading({
