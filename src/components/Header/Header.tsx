@@ -9,7 +9,7 @@ export default function Header() {
   return (
     <header className={cn(styles.root)}>
       <HeaderNav />
-      <SearchBar className={styles.searchBar} />
+      <SearchBar />
       <HeaderActions />
     </header>
   );

@@ -9,6 +9,15 @@
     z-index: 1;
 }
 
+@media screen and (max-width: 768px) {
+    .root {
+        position: relative;
+        z-index: unset;
+    }
+
+
+}
+
 .tabs {
     display: flex;
     width: 100%;
@@ -64,6 +73,13 @@
     overflow-y: auto;
 }
 
+@media screen and (max-width: 768px) {
+    .tabPanel {
+        max-height: calc(100vh - 146px);
+    }
+
+}
+
 
 .loadingRoot {
     display: flex;
@@ -72,7 +88,7 @@
     width: 100%;
     gap: 16px;
     padding: 10px;
-    color: var(--Color-Grey-500, #768393); 
+    color: var(--Color-Grey-500, #768393);
 }
 
 .noResults {
@@ -82,5 +98,5 @@
     width: 100%;
     gap: 16px;
     padding: 10px;
-    color: var(--Color-Grey-500, #768393); 
+    color: var(--Color-Grey-500, #768393);
 }

@@ -47,7 +47,7 @@ const ThemeContext = createContext<ThemeProps>({
     isDesktop: false,
     isTablet: false,
     isMobileDevice: false,
-    setMode: () => {}
+    setMode: () => { }
   }
 });
 ThemeContext.displayName = 'Theme';
@@ -78,9 +78,10 @@ export default function ThemeProvider(props: ThemeProviderProps) {
     THEME_MODE_DEFAULT
   );
   const isDark = useMedia('(prefers-color-scheme: dark)');
-  const isTablet = useMedia('(min-width: 512px)');
+  const isTablet = useMedia('(min-width: 768px)');
   const isDesktop = useMedia('(min-width: 1024px)');
   const isTv = useMedia('(min-width: 1440px)');
+  const isMobileDevice = useMedia('screen and (max-width: 767px)');
   const value: ThemeProps = useMemo(
     () => ({
       device: {
@@ -95,11 +96,11 @@ export default function ThemeProvider(props: ThemeProviderProps) {
         isTv,
         isDesktop,
         isTablet,
-        isMobileDevice: /Mobi/i.test(window.navigator.userAgent),
+        isMobileDevice,
         setMode
       }
     }),
-    [isDark, isDesktop, isTablet, isTv, setMode, mode]
+    [isDark, isDesktop, isTablet, isMobileDevice, isTv, setMode, mode]
   );
 
   handleChangeTheme(value.device.mode);

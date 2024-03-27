@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { Tabs, TabList, Tab, TabPanel } from 'react-aria-components';
 
+import cn from 'classnames';
 import { Market } from 'models/market';
 import { GetLandsData, GetTournamentsData } from 'services/Polkamarkets/types';
 import { Spinner } from 'ui';
@@ -17,6 +18,7 @@ export type SearchResultsProps = {
   questions?: Market[];
   loading?: boolean;
   onClose?: () => void;
+  className?: string;
 };
 export const SearchResults: React.FC<SearchResultsProps> = ({
   searchValue,
@@ -24,7 +26,8 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
   lands,
   contests,
   questions,
-  onClose
+  onClose,
+  className
 }) => {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -39,7 +42,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
   }, [onClose]);
   if (loading) {
     return (
-      <div className={styles.root}>
+      <div className={cn(styles.root, className)}>
         <div className={styles.loadingRoot}>
           <Spinner $size="md" />
           Loading...
@@ -67,7 +70,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
         .some(word => question.title.toLowerCase().includes(word.toLowerCase()))
     ) || [];
   return (
-    <div className={styles.root}>
+    <div className={cn(styles.root, className)}>
       <Tabs className={styles.tabs}>
         <TabList className={styles.tabList} aria-label="Discover">
           <Tab className={styles.tab} id="lands">
