@@ -295,7 +295,11 @@ const polkamarketsApi = createApi({
         // removing failed operations from array
         userOperations = userOperations.filter((operation, _index) => {
           // TODO: re-enable displaying claimWinnings operations
-          if (operation.action === 'claimWinnings') return false;
+          if (
+            operation.action === 'claimWinnings' ||
+            operation.action === 'claimVoidedOutcomeShares'
+          )
+            return false;
 
           if (operation.status !== 'failed') return true;
 

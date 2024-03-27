@@ -416,6 +416,27 @@ export default class PolkamarketsService {
           pendingAmount +=
             position.outcomes[marketData.resolvedOutcomeId].shares;
         }
+      } else if (!position.claimStatus.winningsToClaim) {
+        // TODO: improve this
+        // checking if market is voided
+        // eslint-disable-next-line no-await-in-loop
+        const marketData = await this.contracts.pm.getMarketData({ marketId });
+
+        if (marketData.voided) {
+          // eslint-disable-next-line no-restricted-syntax
+          for (const outcomeId of Object.keys(position.outcomes)) {
+            const outcomePosition = position.outcomes[outcomeId];
+            if (outcomePosition.shares > 1e0) {
+              // eslint-disable-next-line no-await-in-loop
+              const outcomeData = await this.contracts.pm.getOutcomeData({
+                marketId,
+                outcomeId
+              });
+
+              pendingAmount += outcomePosition.shares * outcomeData.price;
+            }
+          }
+        }
       }
     }
 

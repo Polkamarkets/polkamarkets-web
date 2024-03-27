@@ -149,7 +149,8 @@ function formatMarketPositions(
           market.voided === true
         ) {
           result = {
-            type: !isLoggedIn ? 'claimed_voided' : 'awaiting_claim_voided'
+            // TODO: revert back to 'claimed_voided' : 'awaiting_claim_voided'
+            type: !isLoggedIn ? 'claimed_voided' : 'claimed_voided'
           };
         } else if (
           // user holds shares of winning outcome
