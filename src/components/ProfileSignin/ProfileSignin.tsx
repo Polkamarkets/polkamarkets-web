@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 
+import { usePrivy, useWallets, useCreateWallet } from '@privy-io/react-auth';
 import classNames from 'classnames';
 import { ui } from 'config';
 import type { Providers } from 'config';
@@ -35,6 +36,33 @@ export default function ProfileSignin({ onClick, ...props }: ButtonProps) {
   const polkamarketsService = usePolkamarketsService();
   const [show, setShow] = useState(false);
   const [load, setLoad] = useState<Providers | ''>('');
+
+  const { login: loginPrivy } = usePrivy();
+
+  const onCompleteFunction = async wallet => {
+    const provider = await wallet.getEthersProvider();
+
+    await polkamarketsService.initSmartAccount(
+      provider.provider,
+      wallet.connectorType === 'injected'
+    );
+
+    const { login } = await import('redux/ducks/polkamarkets');
+
+    dispatch(login(polkamarketsService, false));
+  };
+
+  useCreateWallet({
+    onSuccess: async wallet => {
+      await onCompleteFunction(wallet);
+    }
+  });
+
+  const { wallets } = useWallets();
+  if (wallets.length > 0) {
+    onCompleteFunction(wallets[0]);
+  }
+
   const handleClick = useCallback(
     async (event: React.MouseEvent<HTMLButtonElement>) => {
       const name = event.currentTarget.name as Exclude<Providers, 'Email'>;
@@ -43,17 +71,6 @@ export default function ProfileSignin({ onClick, ...props }: ButtonProps) {
         setLoad(name);
 
         throw new Error('Not implemented');
-
-        // const jwtToken = await getJWTForUser('teste'); // TODO grab userid from cookies
-
-        // const success = await polkamarketsService[`socialLogin${name}`]('teste',
-        //   jwtToken.data);
-
-        // if (success) {
-        //   const { login } = await import('redux/ducks/polkamarkets');
-
-        //   dispatch(login(polkamarketsService));
-        // }
       } finally {
         setLoad('');
         setShow(false);
@@ -138,16 +155,6 @@ export default function ProfileSignin({ onClick, ...props }: ButtonProps) {
         try {
           setLoad('Email');
           throw new Error('Not implemented');
-
-          // const success = await polkamarketsService.socialLoginEmail(
-          //   event.target[0].value
-          // );
-
-          // if (success) {
-          //   const { login } = await import('redux/ducks/polkamarkets');
-
-          //   dispatch(login(polkamarketsService));
-          // }
         } finally {
           setLoad('');
           setShow(false);
@@ -322,9 +329,13 @@ export default function ProfileSignin({ onClick, ...props }: ButtonProps) {
       ) : (
         <Button
           size="sm"
-          onClick={event => {
-            onClick?.(event);
-            setShow(true);
+          onClick={_event => {
+            if (onClick) {
+              onClick?.(_event);
+              setShow(true);
+            } else {
+              loginPrivy();
+            }
           }}
           className={profileSigninClasses.signin}
           {...props}

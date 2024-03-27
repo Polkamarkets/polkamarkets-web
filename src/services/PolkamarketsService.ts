@@ -191,18 +191,13 @@ export default class PolkamarketsService {
     return this.polkamarkets.socialLoginWithJWT(id, jwtToken);
   }
 
-  public async socialLoginMetamask() {
-    await this.polkamarkets.socialLogin.init();
-    return this.polkamarkets.socialLoginMetamask();
-  }
-
-  public async getSocialLoginUserInfo() {
-    return this.polkamarkets.getSocialLoginUserInfo();
-  }
-
   // returns wether wallet is connected to service or not
   public async isLoggedIn(): Promise<boolean> {
     return this.polkamarkets.isLoggedIn();
+  }
+
+  public async initSmartAccount(provider, isConnectedWallet) {
+    return this.polkamarkets.login(provider, isConnectedWallet);
   }
 
   public async login() {

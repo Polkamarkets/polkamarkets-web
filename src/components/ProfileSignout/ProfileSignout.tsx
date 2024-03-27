@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import { usePrivy } from '@privy-io/react-auth';
 import { features, ui } from 'config';
 import { formatNumberToString } from 'helpers/math';
 import shortenAddress from 'helpers/shortenAddress';
@@ -28,6 +29,8 @@ import {
 import profileSignoutClasses from './ProfileSignout.module.scss';
 
 export default function ProfileSignout() {
+  const { logout: logoutPrivy, getAccessToken } = usePrivy();
+
   const theme = useTheme();
   const dispatch = useAppDispatch();
   const fantasyTokenTicker = useFantasyTokenTicker();
@@ -54,8 +57,11 @@ export default function ProfileSignout() {
     const { logout } = await import('redux/ducks/polkamarkets');
 
     polkamarketsService.logoutSocialLogin();
+    await logoutPrivy();
+
     dispatch(logout());
-  }, [dispatch, polkamarketsService]);
+  }, [dispatch, polkamarketsService, logoutPrivy]);
+
   const handleClaim = useCallback(async () => {
     const { claim } = await import('redux/ducks/polkamarkets');
 
@@ -119,9 +125,15 @@ export default function ProfileSignout() {
 
       if (!socialLoginInfo) return;
 
+      const accessToken = await getAccessToken();
+
+      if (!accessToken) {
+        // is connected wallet (metamask, coinbase, etc.)
+        return;
+      }
       // send data to backend
       const res = await updateSocialLoginInfo(
-        socialLoginInfo.idToken,
+        accessToken!,
         socialLoginInfo.typeOfLogin,
         address,
         socialLoginInfo.profileImage,
@@ -159,7 +171,8 @@ export default function ProfileSignout() {
     address,
     dispatch,
     hasUpdatedSocialLoginInfo,
-    theme.device.isDesktop
+    theme.device.isDesktop,
+    getAccessToken
   ]);
 
   return (
