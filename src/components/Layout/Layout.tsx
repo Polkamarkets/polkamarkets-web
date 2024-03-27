@@ -16,7 +16,7 @@ import WrongNetwork from 'components/WrongNetwork';
 
 import { useAppSelector, useNetwork } from 'hooks';
 
-import layoutClasses from './Layout.module.scss';
+import styles from './Layout.module.scss';
 
 export default function Layout({ children }: React.PropsWithChildren<{}>) {
   const { network } = useNetwork();
@@ -35,9 +35,8 @@ export default function Layout({ children }: React.PropsWithChildren<{}>) {
 
   return (
     <div
-      className={cn(layoutClasses.root, {
-        [layoutClasses.placeholderBottom]:
-          features.fantasy.enabled && isLoggedIn
+      className={cn(styles.root, {
+        [styles.placeholderBottom]: features.fantasy.enabled && isLoggedIn
       })}
     >
       {page?.meta && <SEO {...page.meta} />}
@@ -53,7 +52,7 @@ export default function Layout({ children }: React.PropsWithChildren<{}>) {
         </Drawer>
       )}
       <Header />
-      {children}
+      <main className={styles.main}>{children}</main>
       <Footer />
       <div id="toast-notification-portal" />
     </div>
