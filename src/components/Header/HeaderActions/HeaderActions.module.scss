@@ -2,16 +2,15 @@
   display: flex;
   align-items: center;
   transition: background-color 200ms ease-in-out;
-  background-color: #0A0B0E;
+  background-color: #0a0b0e;
   justify-content: flex-end;
   gap: 16px;
   width: 100%;
-  color: #FFF;
+  color: #fff;
   font-size: 14px;
   font-style: normal;
   font-weight: 500;
   line-height: 20px;
-
 
   @media (min-width: 1024px) {
     transition: unset;
@@ -20,6 +19,7 @@
     position: unset;
     width: unset;
     padding: 0;
+    background-color: transparent;
   }
 }
 
@@ -47,9 +47,7 @@
   width: 40px;
   height: 40px;
   background: rgba(32, 41, 57, 0.72);
-
 }
-
 
 .actions {
   &Group {
@@ -74,7 +72,7 @@
 }
 
 .createButton {
-  color: #FFF;
+  color: #fff;
   font-size: 14px !important;
   font-style: normal !important;
   font-weight: 500 !important;

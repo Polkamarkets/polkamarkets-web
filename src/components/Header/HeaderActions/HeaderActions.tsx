@@ -69,7 +69,7 @@ export default function HeaderActions() {
             <>
               <Link to="/markets/create" aria-label="Create Market">
                 <Button variant="ghost" className={styles.createButton}>
-                  <Icon name="Plus" size="lg" />
+                  <Icon name="PlusRectangular" size="lg" />
                 </Button>
               </Link>
               <TransactionsButton />

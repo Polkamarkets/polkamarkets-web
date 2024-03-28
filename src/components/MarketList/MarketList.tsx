@@ -8,11 +8,10 @@ import { Virtuoso as ReactVirtuoso } from 'react-virtuoso';
 
 import cn from 'classnames';
 import { features } from 'config';
+import { QuestionCard } from 'containers';
 import type { Market } from 'models/market';
 
 import { InfoIcon } from 'assets/icons';
-
-import PredictionCard from 'components/PredictionCard';
 
 import { useAppSelector, useMarkets } from 'hooks';
 
@@ -35,9 +34,9 @@ function Virtuoso({ data, maxVisibleItems }: VirtuosoProps) {
 
   const handleItemContent = useCallback(
     (index: number, market: Market) => (
-      <PredictionCard
+      <QuestionCard
         market={market}
-        $gutter={data && index !== data.length - 1}
+        gutter={data && index !== data.length - 1}
       />
     ),
     [data]

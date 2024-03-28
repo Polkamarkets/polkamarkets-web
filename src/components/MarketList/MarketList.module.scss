@@ -21,7 +21,7 @@
     bottom: 0;
 
     &AlongHeader {
-      bottom: var(--header-y);
+      bottom: var(--header-height);
 
       @media (min-width: 1024px) {
         bottom: 0;

@@ -48,7 +48,7 @@ function BannerSearch({
         </h1>
 
         <Button color="primary" size="sm">
-          <Icon name="Plus" />
+          <Icon name="PlusRectangular" />
           Create a Community
         </Button>
       </div>

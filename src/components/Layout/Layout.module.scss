@@ -1,3 +1,21 @@
+:root {
+  --header-height: 79px;
+
+  --main-padding-y: 18px;
+  --main-padding-x: 12px;
+
+  @media (min-width: 768px) {
+    --main-padding-y: 24px;
+  }
+
+  @media (min-width: 1024px) {
+    --header-height: 89px;
+
+    --main-padding-y: 40px;
+    --main-padding-x: 24px;
+  }
+}
+
 .root {
   display: flex;
   flex-direction: column;
@@ -13,4 +31,13 @@
       padding-bottom: unset;
     }
   }
+}
+
+.main {
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+
+  padding: var(--main-padding-y) var(--main-padding-x);
 }

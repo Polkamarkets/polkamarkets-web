@@ -4,7 +4,7 @@
     align-items: center;
     border-bottom: 1px solid themed('border-bottom-color');
     transition: $navbar-transitions;
-    height: var(--header-y);
+    height: var(--header-height);
 
     &__logos {
       display: inherit;

@@ -1,11 +1,12 @@
 .root {
   position: fixed;
+  z-index: 9999;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   transition: transform 0.3s ease-in-out;
-  background: var(--Color-Grey-950, #0A0B0E);
+  background: var(--Color-Grey-950, #0a0b0e);
   display: grid;
   grid-template-rows: auto 1fr auto;
 }
@@ -33,7 +34,7 @@
   gap: 16px;
   align-self: stretch;
   border-bottom: 1px solid var(--Color-Grey-800, #202939);
-  color: var(--Color-Grey-25, #FCFCFD);
+  color: var(--Color-Grey-25, #fcfcfd);
   text-align: center;
   font-size: 14px;
   font-style: normal;
@@ -50,7 +51,7 @@
   gap: var(--Spacing-spacing-lg, 16px);
   align-self: stretch;
 
-  color: var(--Color-Grey-25, #FCFCFD);
+  color: var(--Color-Grey-25, #fcfcfd);
   /* Base/Medium */
   font-family: Inter;
   font-size: 16px;
