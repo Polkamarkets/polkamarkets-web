@@ -4,14 +4,16 @@
   align-items: flex-start;
   gap: 16px;
 
-  padding: 32px;
+  @media (min-width: 768px) {
+    padding: 32px;
 
-  background-color: rgba(10, 11, 14, 0.32);
+    background-color: rgba(10, 11, 14, 0.32);
 
-  border: 1px solid #202939;
-  border-radius: 32px;
+    border: 1px solid #202939;
+    border-radius: 32px;
 
-  backdrop-filter: blur(2px);
+    backdrop-filter: blur(2px);
+  }
 }
 
 .header,
@@ -21,13 +23,18 @@
 
 .title {
   font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 2.8rem;
-  line-height: 1.28;
+  font-size: 2.4rem;
+  line-height: 1.33;
   font-style: normal;
   font-weight: 600;
   letter-spacing: -0.014em;
 
   color: #f9fafb;
+
+  @media (min-width: 768px) {
+    font-size: 2.8rem;
+    line-height: 1.28;
+  }
 }
 
 .tabs {

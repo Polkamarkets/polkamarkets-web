@@ -2,7 +2,6 @@ import { Suspense, useEffect } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
 import { pages, ui, environment } from 'config';
-import { Spinner } from 'ui';
 
 import { Layout } from 'components';
 
@@ -30,7 +29,7 @@ export default function AppRoutes() {
   }, [isLoadingLogin, isLoggedIn, setLoggedInCookie]);
 
   return (
-    <Suspense fallback={<Spinner />}>
+    <Suspense fallback={null}>
       <Switch>
         {/* <Route
           exact={pages.embed.exact}

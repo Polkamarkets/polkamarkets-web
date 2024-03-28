@@ -6,12 +6,12 @@
   bottom: 0px;
   left: 0px;
   transition: background-color 200ms ease-in-out;
-  background-color: #0A0B0E;
+  background-color: #0a0b0e;
   justify-content: flex-end;
   gap: 6px;
   width: 100%;
   padding: 0 var(--size-12);
-  color: #FFF;
+  color: #fff;
   font-size: 14px;
   font-style: normal;
   font-weight: 500;
@@ -23,6 +23,7 @@
     position: unset;
     width: unset;
     padding: 0;
+    background-color: transparent;
   }
 }
 
@@ -47,7 +48,7 @@
 }
 
 .createButton {
-  color: #FFF;
+  color: #fff;
   font-size: 14px !important;
   font-style: normal !important;
   font-weight: 500 !important;

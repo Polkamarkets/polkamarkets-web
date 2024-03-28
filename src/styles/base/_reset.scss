@@ -68,9 +68,15 @@ html {
   color-scheme: light dark;
   font-size: 62.5%;
   box-sizing: border-box;
+
+  scrollbar-gutter: stable;
 }
 
 body {
+  position: relative;
+  min-height: 100%;
+  max-width: 100vw;
+
   scroll-behavior: smooth;
 }
 

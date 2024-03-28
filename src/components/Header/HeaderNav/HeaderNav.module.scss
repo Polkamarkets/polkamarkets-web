@@ -33,7 +33,7 @@
   }
 }
 .link {
-  color: #FFF;
+  color: #fff;
   font-size: 16px;
   font-style: normal;
   font-weight: 500;
@@ -68,7 +68,7 @@
   flex-flow: column nowrap;
 }
 .header {
-  height: var(--header-y);
+  height: var(--header-height);
 }
 .hide {
   float: right;
