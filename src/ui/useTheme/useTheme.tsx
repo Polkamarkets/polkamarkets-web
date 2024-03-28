@@ -47,7 +47,7 @@ const ThemeContext = createContext<ThemeProps>({
     isDesktop: false,
     isTablet: false,
     isMobileDevice: false,
-    setMode: () => { }
+    setMode: () => {}
   }
 });
 ThemeContext.displayName = 'Theme';

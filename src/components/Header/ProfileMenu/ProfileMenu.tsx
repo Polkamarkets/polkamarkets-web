@@ -136,12 +136,13 @@ export default function ProfileMenu() {
           <Drawer.Separator />
 
           <Link
-            to={`/user/${slug ||
+            to={`/user/${
+              slug ||
               leaderboard.data?.slug ||
               leaderboard.data?.username ||
               username ||
               address
-              }`}
+            }`}
           >
             <Drawer.Item className={styles.mobileMenuItem}>
               <Icon name="Profile" />
@@ -232,12 +233,13 @@ export default function ProfileMenu() {
                 </div>
                 <div className={styles.divider} />
                 <Link
-                  to={`/user/${slug ||
+                  to={`/user/${
+                    slug ||
                     leaderboard.data?.slug ||
                     leaderboard.data?.username ||
                     username ||
                     address
-                    }`}
+                  }`}
                   className={styles.menuItem}
                 >
                   <Icon name="Profile" />
