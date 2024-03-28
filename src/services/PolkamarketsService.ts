@@ -853,9 +853,10 @@ export default class PolkamarketsService {
     return response;
   }
 
-  public async getUserBonds(_user: string): Promise<Object> {
-    // TODO: use correct user
-    return this.getBonds();
+  public async getUserBonds(user: string): Promise<Object> {
+    const bonds = await this.contracts.realitio.getUserBonds({ user });
+
+    return bonds;
   }
 
   public async getBonds(): Promise<Object> {
@@ -879,9 +880,16 @@ export default class PolkamarketsService {
     return response;
   }
 
-  public async getUserBondMarketsIds(_user: string): Promise<string[]> {
-    // TODO: use correct user
-    return this.getBondMarketIds();
+  public async getUserBondMarketsIds(user: string): Promise<string[]> {
+    if (!this.contracts.realitio.getContract()._address) return [];
+
+    const questions = await this.contracts.realitio.getUserQuestions({ user });
+
+    const marketIds = await this.contracts.pm.getMarketIdsFromQuestions({
+      questions: questions.map(question => question.question)
+    });
+
+    return marketIds;
   }
 
   public async getBondMarketIds(): Promise<string[]> {
