@@ -1,4 +1,10 @@
 .root {
+  flex: 1;
+  width: auto;
+
+  margin: calc(var(--main-padding-y) * -1) calc(var(--main-padding-x) * -1);
+  margin-top: calc((var(--header-height) + var(--main-padding-y)) * -1);
+
   background: linear-gradient(
       0deg,
       rgba(16, 18, 24, 0.18) -5.92%,
@@ -22,11 +28,11 @@
     gap: 80px;
   }
 
-  padding-top: var(--size-24);
+  padding-top: calc(var(--header-height) + 64px);
   padding-bottom: var(--size-24);
 
   @media (min-width: 1024px) {
-    padding-top: var(--size-32);
+    padding-top: calc(var(--header-height) + 48px);
     padding-bottom: var(--size-32);
   }
 }
