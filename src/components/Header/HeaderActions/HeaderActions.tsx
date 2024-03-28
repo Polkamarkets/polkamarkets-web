@@ -1,33 +1,18 @@
-import { Fragment, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import cn from 'classnames';
-import { features, ui } from 'config';
-import { AnimatePresence, motion } from 'framer-motion';
+import { community } from 'config';
 import { Skeleton, useTheme } from 'ui';
 
 import { Button, Icon } from 'components';
 import Profile from 'components/Header/Profile';
 import TransactionsButton from 'components/Header/TransactionsButton';
-import NetworkSelector from 'components/NetworkSelector';
 
-import { useAppSelector, usePortal } from 'hooks';
+import { useAppSelector } from 'hooks';
 
+import * as Drawer from '../Drawer/Drawer';
+import { MobileSearchBar } from '../MobileSearchBar/MobileSearchBar';
 import styles from './HeaderActions.module.scss';
-
-function HeaderActionsWrapper(
-  props: React.PropsWithChildren<Record<string, unknown>>
-) {
-  const Portal = usePortal({
-    root: document.body
-  });
-
-  useEffect(() => {
-    Portal.mount(true);
-  }, [Portal]);
-
-  return <Portal {...props} />;
-}
 
 function SkeletonProfile() {
   return (
@@ -68,72 +53,107 @@ function SkeletonProfile() {
     </div>
   );
 }
-function HeaderActionsAnimate({
-  children,
-  show
-}: React.PropsWithChildren<{ show: boolean }>) {
-  const theme = useTheme();
-
-  if (!theme.device.isDesktop)
-    return (
-      <AnimatePresence>
-        {show && (
-          <motion.div
-            initial={{
-              y: 60
-            }}
-            animate={{
-              y: 0
-            }}
-            exit={{
-              y: 60
-            }}
-          >
-            {children}
-          </motion.div>
-        )}
-      </AnimatePresence>
-    );
-
-  return <>{children}</>;
-}
 export default function HeaderActions() {
   const isLoggedIn = useAppSelector(state => state.polkamarkets.isLoggedIn);
   const isLoading = useAppSelector(state => state.polkamarkets.isLoading.login);
   const theme = useTheme();
-  const Root = theme.device.isDesktop ? Fragment : HeaderActionsWrapper;
 
   return (
-    <Root>
-      <HeaderActionsAnimate show={!features.fantasy.enabled || isLoggedIn}>
-        <div className={cn(styles.root)}>
-          {isLoading ? (
-            <SkeletonProfile />
-          ) : (
+    <div className={cn(styles.root)}>
+      {theme.device.isMobileDevice && <MobileSearchBar />}
+      {isLoading ? (
+        <SkeletonProfile />
+      ) : (
+        <>
+          {isLoggedIn && theme.device.isDesktop && (
             <>
-              {isLoggedIn && (
-                <>
-                  <Link to="/markets/create" aria-label="Create Market">
-                    <Button variant="ghost" className={styles.createButton}>
-                      <Icon name="PlusRectangular" size="lg" />
-                    </Button>
-                  </Link>
-                  {ui.layout.transactionsQueue && <TransactionsButton />}
-                  {ui.layout.header.networkSelector.enabled &&
-                    theme.device.isDesktop && (
-                      <NetworkSelector
-                        size="sm"
-                        responsive
-                        className={styles.network}
-                      />
-                    )}
-                </>
-              )}
-              <Profile isLoggedIn={isLoggedIn} />
+              <Link to="/markets/create" aria-label="Create Market">
+                <Button variant="ghost" className={styles.createButton}>
+                  <Icon name="PlusRectangular" size="lg" />
+                </Button>
+              </Link>
+              <TransactionsButton />
             </>
           )}
-        </div>
-      </HeaderActionsAnimate>
-    </Root>
+          <Profile isLoggedIn={isLoggedIn} />
+          {theme.device.isMobileDevice && (
+            <Drawer.Root>
+              <Drawer.Trigger>
+                <Icon name="Menu" size="lg" title="Open Menu" />
+              </Drawer.Trigger>
+              <Drawer.Header>Menu</Drawer.Header>
+              <Drawer.Content>
+                <Link to="/lands">
+                  <Drawer.Item className={styles.menuItem}>
+                    <Icon name="UserCommunities" />
+                    Lands
+                  </Drawer.Item>
+                </Link>
+                <Link to="/contests">
+                  <Drawer.Item className={styles.menuItem}>
+                    <Icon name="Cup" />
+                    Contests
+                  </Drawer.Item>
+                </Link>
+                <Link to="/questions">
+                  <Drawer.Item className={styles.menuItem}>
+                    <Icon name="Layers" />
+                    Questions
+                  </Drawer.Item>
+                </Link>
+                <Drawer.Separator />
+                <Link to="/#">
+                  <Drawer.Item className={styles.menuItem}>
+                    <Icon name="Help" />
+                    Help Center
+                  </Drawer.Item>
+                </Link>
+                <Link to="/#">
+                  <Drawer.Item className={styles.menuItem}>
+                    <Icon name="CommentAlert" color="transparent" />
+                    Send Feedback
+                  </Drawer.Item>
+                </Link>
+                <Drawer.Separator />
+                <Link to="/#">
+                  <Drawer.Item className={styles.menuItem}>
+                    <Icon name="NewsPaper" />
+                    Blog
+                  </Drawer.Item>
+                </Link>
+                <Link to="/#">
+                  <Drawer.Item className={styles.menuItem}>
+                    <Icon name="Planet" />
+                    About
+                  </Drawer.Item>
+                </Link>
+                <Drawer.Separator />
+                <Link to="/#">
+                  <Drawer.Item className={styles.menuItem}>
+                    <Icon name="Book" />
+                    Terms
+                  </Drawer.Item>
+                </Link>
+                <Link to="/#">
+                  <Drawer.Item className={styles.menuItem}>
+                    <Icon name="BookOpen" />
+                    Privacy
+                  </Drawer.Item>
+                </Link>
+              </Drawer.Content>
+              <Drawer.Footer>
+                <div className={styles.social}>
+                  {community.map(({ name, href }) => (
+                    <a key={name} href={href} target="_blank" rel="noreferrer">
+                      <Icon name={name} />
+                    </a>
+                  ))}
+                </div>
+              </Drawer.Footer>
+            </Drawer.Root>
+          )}
+        </>
+      )}
+    </div>
   );
 }

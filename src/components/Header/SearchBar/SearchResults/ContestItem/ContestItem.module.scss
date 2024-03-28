@@ -10,14 +10,17 @@
     border-radius: var(--Radius-rounded-lg, 12px);
 }
 
-.root:hover, .root:focus {
-    
+.root:hover,
+.root:focus {
+
     background: rgba(54, 65, 82, 0.40);
     outline: none;
 }
+
 .root img {
     width: 16px;
     height: 16px;
+    border-radius: 50%;
 }
 
 .contestTitle {
@@ -40,6 +43,3 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
-
-
-

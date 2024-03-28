@@ -70,7 +70,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({ className }) => {
   };
   return (
     <div className={cn(styles.root, className)}>
-      <Icon name="Search" size="md" title="Search" />
+      <Icon name="Search" size="md" title="Search" color="#9AA4B2" />
       <input
         type="text"
         placeholder="Search"

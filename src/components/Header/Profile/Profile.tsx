@@ -1,7 +1,6 @@
 import AuthModal from 'components/AuthModal';
 import Icon from 'components/Icon';
 
-import Text from '../../Text';
 import ProfileMenu from '../ProfileMenu/ProfileMenu';
 
 type ProfileProps = {
@@ -12,13 +11,12 @@ export default function Profile({ isLoggedIn }: ProfileProps) {
   return (
     <>
       {!isLoggedIn && (
-        <AuthModal>
+        <AuthModal size="md">
           <Icon name="Profile" size="md" />
-          <Text as="span" scale="caption">
-            Sign In
-          </Text>
+          Sign In
         </AuthModal>
       )}
+
       <ProfileMenu />
     </>
   );
