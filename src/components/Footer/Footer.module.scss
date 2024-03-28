@@ -6,11 +6,12 @@
   border-top: 1px solid var(--Color-Grey-800, #202939);
   background: var(--Color-Grey-950, #0A0B0E);
 
-  @media  (max-width: 1024px) {
-    display: flex;
+  @media (max-width: 768px) {
+    display: none;
     flex-direction: column-reverse;
     padding: 20px;
   }
+
   margin-top: auto;
 }
 
@@ -25,8 +26,10 @@
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
-  line-height: 20px; /* 142.857% */
-  @media  (max-width: 1024px) {
+  line-height: 20px;
+
+  /* 142.857% */
+  @media (max-width: 1024px) {
     font-size: 12px;
     align-items: center;
     justify-content: center;
@@ -36,7 +39,8 @@
 
 .copyRight p {
   font-size: 14px;
-  @media  (max-width: 1024px) {
+
+  @media (max-width: 1024px) {
     font-size: 12px;
   }
 }
@@ -48,12 +52,14 @@
 .navigation {
   display: flex;
   gap: 40px;
-  color:#EAECF0;
+  color: #EAECF0;
   font-size: 14px;
   font-style: normal;
   font-weight: 500;
-  line-height: 20px; /* 142.857% */
-  @media  (max-width: 1024px) {
+  line-height: 20px;
+
+  /* 142.857% */
+  @media (max-width: 1024px) {
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -74,7 +80,8 @@
   display: flex;
   justify-self: end;
   gap: 20px;
-  @media  (max-width: 1024px) {
+
+  @media (max-width: 1024px) {
     align-items: center;
     justify-content: center;
   }

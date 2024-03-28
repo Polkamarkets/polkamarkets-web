@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import * as Popover from '@radix-ui/react-popover';
 import { changeSocialLoginInfo } from 'redux/ducks/polkamarkets';
 import { useGetLeaderboardByAddressQuery } from 'services/Polkamarkets';
-import { Avatar } from 'ui';
+import { Avatar, useTheme } from 'ui';
 import { Button } from 'ui/Button';
 
 import { Icon } from 'components';
@@ -16,12 +16,14 @@ import {
   usePolkamarketsService
 } from 'hooks';
 
+import * as Drawer from '../Drawer/Drawer';
 import styles from './ProfileMenu.module.scss';
 
 export default function ProfileMenu() {
   const dispatch = useAppDispatch();
   const [menuOpen, setMenuOpen] = useState(false);
   const isLoggedIn = useAppSelector(state => state.polkamarkets.isLoggedIn);
+  const themes = useTheme();
 
   const polkamarketsService = usePolkamarketsService();
   const address = useAppSelector(state => state.polkamarkets.ethAddress);
@@ -95,6 +97,86 @@ export default function ProfileMenu() {
     hasUpdatedSocialLoginInfo,
     isLoggedIn
   ]);
+
+  if (themes.device.isMobileDevice && isLoggedIn) {
+    return (
+      <Drawer.Root>
+        <Drawer.Trigger>
+          <Avatar
+            $radius="lg"
+            className={styles.avatar}
+            src={socialLoginInfo?.profileImage}
+            alt={username || 'avatar'}
+          />
+        </Drawer.Trigger>
+        <Drawer.Header>Menu</Drawer.Header>
+        <Drawer.Content>
+          <div className={styles.menuProfileAvatar}>
+            <Avatar
+              $radius="lg"
+              className={styles.menuAvatar}
+              src={socialLoginInfo?.profileImage}
+              alt={username || 'avatar'}
+            />
+            <div className={styles.menuProfileInfo}>
+              <span className={styles.menuUserName}>
+                {username || 'Unnamed'}
+              </span>
+              <span className={styles.menuUserAddress}>
+                0x25256230...ca49
+                <Icon
+                  name="Copy"
+                  onClick={() =>
+                    navigator.clipboard.writeText('0x25256230...ca49')
+                  }
+                />
+              </span>
+            </div>
+          </div>
+          <Drawer.Separator />
+
+          <Link
+            to={`/user/${
+              slug ||
+              leaderboard.data?.slug ||
+              leaderboard.data?.username ||
+              username ||
+              address
+            }`}
+          >
+            <Drawer.Item className={styles.mobileMenuItem}>
+              <Icon name="Profile" />
+              Profile
+            </Drawer.Item>
+          </Link>
+
+          <Link to="/#">
+            <Drawer.Item className={styles.mobileMenuItem}>
+              <Icon name="Settings" />
+              Account Settings
+            </Drawer.Item>
+          </Link>
+          <Link to="/lands">
+            <Drawer.Item className={styles.mobileMenuItem}>
+              <Icon name="BookMarks" />
+              Watchlist
+            </Drawer.Item>
+          </Link>
+          <Drawer.Separator />
+          <Drawer.Item
+            className={styles.mobileMenuItem}
+            onClick={handleSocialLogout}
+          >
+            <Icon name="Logout" />
+            Disconnect
+          </Drawer.Item>
+          <Drawer.Separator />
+        </Drawer.Content>
+      </Drawer.Root>
+    );
+  }
+
+  if (themes.device.isMobileDevice) return null;
 
   return (
     <Popover.Root open={menuOpen} onOpenChange={setMenuOpen}>
