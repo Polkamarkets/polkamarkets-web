@@ -1,12 +1,8 @@
 import { Button } from 'ui';
 
-import { useAppSelector } from 'hooks';
-
 import styles from './HomeBanner.module.scss';
 
 function HomeBanner() {
-  const isLoggedIn = useAppSelector(state => state.polkamarkets.isLoggedIn);
-
   return (
     <div className={styles.root}>
       <div className={styles.content}>
@@ -16,9 +12,7 @@ function HomeBanner() {
         </p>
         <p className={styles.description}>Turn insights into real prizes.</p>
       </div>
-      <Button size="lg">
-        {isLoggedIn ? 'Start Playing' : 'Sign up to Play'}
-      </Button>
+      <Button size="lg">Sign up to Play</Button>
     </div>
   );
 }
