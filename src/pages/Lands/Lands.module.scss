@@ -26,10 +26,23 @@
 .title {
   font-family: 'Plus Jakarta Sans', sans-serif;
   font-size: 2rem;
-  font-style: normal;
   font-weight: 600;
   line-height: 1.4;
   letter-spacing: -0.01em;
 
   color: #fcfcfd;
+}
+
+.tooltipTitle {
+  color: var(--Color-Grey-950, #0A0B0E);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+}
+
+.tooltipContent {
+  color: var(--Color-Grey-600, #4B5565);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
 }

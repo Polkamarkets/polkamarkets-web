@@ -1,0 +1,28 @@
+.userCell {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+
+}
+
+.userImg {
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+}
+
+.headerWithSort {
+    cursor: pointer;
+}
+
+.headerWithSort:hover {
+    color: var(--Color-Grey-25, #FCFCFD);
+}
+
+.headerWithSortActive {
+    color: var(--Color-Grey-25, #FCFCFD);
+}
+
+.alignRight {
+    text-align: right;
+}

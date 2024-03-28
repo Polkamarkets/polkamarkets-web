@@ -135,13 +135,14 @@ const polkamarketsApi = createApi({
       GetLeaderboardByTimeframeData,
       GetLeaderboardByTimeframeArgs
     >({
-      query: ({ timeframe, networkId, tournamentId }) => ({
+      query: ({ timeframe, networkId, tournamentId, landId }) => ({
         url: `/leaderboards`,
         params: pickBy(
           {
             timeframe,
             network_id: networkId,
-            tournament_id: tournamentId
+            tournament_id: tournamentId,
+            land_id: landId
           },
           identity
         )

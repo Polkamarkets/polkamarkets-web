@@ -1,26 +1,57 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
+import { Tab, TabList, TabPanel, Tabs } from 'react-aria-components';
 import { useParams } from 'react-router-dom';
 
 import classNames from 'classnames';
+import { ContestCard } from 'containers';
+import dayjs from 'dayjs';
 import isError404 from 'helpers/isError404';
 import isEmpty from 'lodash/isEmpty';
 import uniqBy from 'lodash/uniqBy';
+import { setSorter } from 'redux/ducks/markets';
 import {
   useGetLandBySlugQuery,
-  useGetMarketsByIdsQuery
+  useGetLeaderboardByTimeframeQuery
 } from 'services/Polkamarkets';
-import { Container } from 'ui';
+import { Tournament } from 'types/tournament';
+import { Container, Spinner } from 'ui';
 
 import Error404 from 'pages/Error404';
 
-import { AlertMini, SEO } from 'components';
+import { MarketList, SEO } from 'components';
 
-import TournamentsUpcomingMarkets from '../Tournaments/TournamentsUpcomingMarkets';
+import { Dropdowns, filtersInitialState } from 'contexts/filters';
+
+import { useAppDispatch, useFilters } from 'hooks';
+
+import { ReactComponent as EmptyImage } from '../../assets/images/landEmpty.svg';
+import { About } from './About/About';
+import { Card } from './Card/Card';
 import styles from './Land.module.scss';
-import LandHero from './LandHero';
-import LandTournamentList from './LandTournamentList';
+import LandHero from './LandHero/LandHero';
+import { LandRankings } from './LandRankings/LandRankings';
 
-function Land() {
+const IfNotEmpty = ({
+  children,
+  show = true
+}: {
+  children: React.ReactNode;
+  show?: boolean;
+}) => {
+  if (show) return <>{children}</>;
+
+  return (
+    <div className={styles.emptyRoot}>
+      <EmptyImage className={styles.emptyImage} />
+      <span>No Live Content for Now</span>
+      <p>
+        Join our Land so you don&apos;t miss our upcoming Prediction Contests!
+      </p>
+    </div>
+  );
+};
+
+const Land = () => {
   const { slug } = useParams<{ slug: string }>();
 
   const {
@@ -42,53 +73,83 @@ function Land() {
     ).map(market => market.id);
   }, [isEmptyLand, isLoadingGetLandBySlugQuery, land]);
 
-  const {
-    data: markets,
-    isLoading: isLoadingMarkets,
-    isFetching: isFetchingMarkets
-  } = useGetMarketsByIdsQuery(
+  const filters = {
+    ids: marketsIds,
+    networkId: land?.tournaments?.[0]?.networkId || 0
+  };
+
+  const dispatch = useAppDispatch();
+  const { controls } = useFilters();
+  const { updateDropdown } = controls;
+
+  useEffect(() => {
+    updateDropdown({
+      dropdown: Dropdowns.STATES,
+      state: []
+    });
+
+    return () => {
+      updateDropdown({
+        dropdown: Dropdowns.STATES,
+        state: filtersInitialState.dropdowns.states
+      });
+    };
+  }, [updateDropdown]);
+
+  useEffect(() => {
+    dispatch(
+      setSorter({
+        value: 'createdAt',
+        sortBy: 'desc'
+      })
+    );
+  }, [dispatch]);
+
+  const { data: leaderboard } = useGetLeaderboardByTimeframeQuery(
     {
-      ids: marketsIds,
-      networkId: `${land?.tournaments?.[0]?.networkId}`
+      timeframe: 'at',
+      networkId: `${land?.tournaments?.[0]?.networkId || 0}`,
+      landId: `${land?.id}`
     },
     {
-      skip: isEmpty(marketsIds)
+      skip: !land
     }
   );
 
-  const isLoadingGetMarketsByIdsQuery = isLoadingMarkets || isFetchingMarkets;
-
-  if (isLoadingGetLandBySlugQuery || isLoadingGetMarketsByIdsQuery)
-    return (
-      <div className="flex-row justify-center align-center width-full padding-y-5 padding-x-4">
-        <span className="spinner--primary" />
-      </div>
-    );
-
   if (isError404(landBySlug.error)) return <Error404 />;
 
-  if (isEmptyLand)
+  if (isLoadingGetLandBySlugQuery)
     return (
-      <div className="padding-y-5 padding-x-4 width-full border-solid border-1 border-radius-small">
-        <AlertMini
-          style={{ border: 'none' }}
-          styles="outline"
-          variant="information"
-          description="No data available at the moment."
-        />
+      <div className={styles.loadingRoot}>
+        <Spinner /> Loading ...
       </div>
     );
 
-  const {
-    slug: landSlug,
-    title,
-    description,
-    bannerUrl,
-    imageUrl,
-    tournaments,
-    users
-  } = land;
+  if (isEmptyLand) return <Error404 />;
 
+  const { tournaments } = land;
+
+  const sortedTournaments = [...tournaments].sort((a, b) => {
+    if (new Date(a.expiresAt) < new Date(b.expiresAt)) return 1;
+    if (new Date(a.expiresAt) > new Date(b.expiresAt)) return -1;
+    return 0;
+  });
+
+  const liveContests = sortedTournaments
+    .reduce<Tournament[]>((acc, tournament) => {
+      const contestEnded = dayjs()
+        .utc()
+        .isAfter(dayjs(tournament.expiresAt).utc());
+      if (!contestEnded && acc.length < 3) {
+        acc.push({ ...tournament, land });
+      }
+      return acc;
+    }, [])
+    .sort((a, b) => {
+      if (new Date(a.expiresAt) < new Date(b.expiresAt)) return -1;
+      if (new Date(a.expiresAt) > new Date(b.expiresAt)) return 1;
+      return 0;
+    });
   return (
     <>
       {land && (
@@ -97,22 +158,107 @@ function Land() {
           description={`${land.description}\nStart now with $ALPHA`}
         />
       )}
-      <LandHero
-        meta={{ slug: landSlug, title, description, bannerUrl, imageUrl }}
-        stats={{
-          tournaments: tournaments.length,
-          members: users
-          // totalRewards: 11
-        }}
-      />
-      <Container className={classNames('max-width-screen-xl', styles.root)}>
-        <div className={styles.upcoming}>
-          <TournamentsUpcomingMarkets markets={markets || []} />
-        </div>
-        <LandTournamentList tournaments={tournaments} />
+
+      <LandHero land={land} />
+      <Container className={classNames('max-width-screen-lg', styles.root)}>
+        <Tabs className={styles.tabs}>
+          <TabList className={styles.tabList} aria-label="Discover">
+            <Tab className={styles.tab} id="home">
+              Live Now
+            </Tab>
+            <Tab className={styles.tab} id="contests">
+              Contests
+            </Tab>
+            <Tab className={styles.tab} id="questions">
+              Questions
+            </Tab>
+            <Tab className={styles.tab} id="ranking">
+              Ranking
+            </Tab>
+            <Tab className={styles.tab} id="about">
+              About
+            </Tab>
+          </TabList>
+
+          <TabPanel className={styles.tabPanel} id="home">
+            <IfNotEmpty
+              show={
+                !!(
+                  tournaments.length &&
+                  tournaments.some(tournament =>
+                    dayjs().utc().isBefore(dayjs(tournament.expiresAt).utc())
+                  )
+                )
+              }
+            >
+              <Card
+                title="Live Contests"
+                tooltip="Ongoing Contests open for predictions"
+              >
+                <div className={styles.cardGrid}>
+                  {liveContests.map(tournament => (
+                    <ContestCard
+                      key={tournament.slug}
+                      tournament={{ ...tournament, land }}
+                    />
+                  ))}
+                </div>
+              </Card>
+              <Card
+                title="Featured"
+                tooltip="Live Questions with significant level of engagement."
+                className={styles.featuredQuestions}
+              >
+                <MarketList
+                  filtersVisible={false}
+                  maxVisibleItems={10}
+                  fetchByIds={filters}
+                />
+              </Card>
+            </IfNotEmpty>
+          </TabPanel>
+          <TabPanel className={styles.tabPanel} id="contests">
+            <IfNotEmpty show={!!tournaments.length}>
+              <Card title="Contests" tooltip="Leal is going to win">
+                <div className={styles.cardGrid}>
+                  {sortedTournaments.map(tournament => (
+                    <ContestCard
+                      key={tournament.slug}
+                      tournament={{ ...tournament, land }}
+                    />
+                  ))}
+                </div>
+              </Card>
+            </IfNotEmpty>
+          </TabPanel>
+          <TabPanel className={styles.tabPanel} id="questions">
+            <IfNotEmpty show={!!tournaments.length}>
+              <Card title="Questions" tooltip="Leal is going to win">
+                <MarketList
+                  filtersVisible={false}
+                  maxVisibleItems={10}
+                  fetchByIds={filters}
+                />
+              </Card>
+            </IfNotEmpty>
+          </TabPanel>
+          <TabPanel className={styles.tabPanel} id="ranking">
+            <IfNotEmpty show={!!tournaments.length}>
+              <Card
+                title="Land Ranking"
+                tooltip="The Land Ranking classifies all its members, based on their prediction accuracy and token earnings accumulated throughout all their activity."
+              >
+                <LandRankings data={leaderboard || []} />
+              </Card>
+            </IfNotEmpty>
+          </TabPanel>
+          <TabPanel className={styles.tabPanel} id="about">
+            <About land={land} />
+          </TabPanel>
+        </Tabs>
       </Container>
     </>
   );
-}
+};
 
 export default Land;

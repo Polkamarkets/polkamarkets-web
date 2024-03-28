@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import type { ButtonProps } from 'ui/Button';
 import { Button } from 'ui/Button';
+import { ButtonIcon } from 'ui/Button/ButtonIcon';
 
 import { RemoveOutlinedIcon } from 'assets/icons';
 
@@ -35,23 +36,23 @@ export default function AuthModal({ onClick, ...props }: ButtonProps) {
         <ModalContent>
           <div className={styles.closeWrapper}>
             {page === AuthModalPage.ForgotPassword && (
-              <Button
+              <ButtonIcon
                 variant="outlined"
                 className={styles.backButton}
                 aria-label="Back"
                 onClick={() => setPage(AuthModalPage.Signin)}
               >
                 <Icon name="Arrow" dir="left" />
-              </Button>
+              </ButtonIcon>
             )}
-            <Button
+            <ButtonIcon
               variant="outlined"
               className={styles.closeButton}
               aria-label="Hide"
               onClick={handleHide}
             >
               <RemoveOutlinedIcon />
-            </Button>
+            </ButtonIcon>
           </div>
           <div className={styles.modalContent}>
             {page === AuthModalPage.Signin && (

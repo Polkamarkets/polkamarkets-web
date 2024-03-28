@@ -33,9 +33,18 @@ function ContestCard({ tournament }: ContestCardProps) {
     // tournament.rewards
   ]);
 
-  const isContestEnded = dayjs()
+  const hasContestEnded = dayjs()
     .utc()
     .isAfter(dayjs(tournament.expiresAt).utc());
+  const isContestEndingSoon = dayjs(tournament.expiresAt)
+    .utc()
+    .isBetween(dayjs(Date.now()).utc(), dayjs(Date.now()).utc().add(1, 'week'));
+
+  const renderPillText = () => {
+    if (hasContestEnded) return 'Ended';
+    if (isContestEndingSoon) return 'Ending soon';
+    return 'Live now';
+  };
 
   return (
     <div className={styles.root}>
@@ -49,14 +58,13 @@ function ContestCard({ tournament }: ContestCardProps) {
       >
         <div
           className={classNames(styles.status, {
-            [styles.statusLive]: !isContestEnded,
-            [styles.statusEnded]: isContestEnded
+            [styles.statusLive]: !hasContestEnded && !isContestEndingSoon,
+            [styles.statusEnded]: hasContestEnded,
+            [styles.statusEndingSoon]: isContestEndingSoon
           })}
         >
           <span className={styles.statusDot} />
-          <span className={styles.statusTitle}>
-            {isContestEnded ? 'Ended' : 'Live now'}
-          </span>
+          <span className={styles.statusTitle}>{renderPillText()}</span>
         </div>
       </div>
       <div className={styles.info}>
@@ -92,7 +100,7 @@ function ContestCard({ tournament }: ContestCardProps) {
         </div>
       </div>
       <div className={styles.overlay}>
-        <Link to={`/${tournament.slug}`}>
+        <Link to={`/tournaments/${tournament.slug}`}>
           <Button variant="light" className={styles.playButton}>
             Play Contest
           </Button>

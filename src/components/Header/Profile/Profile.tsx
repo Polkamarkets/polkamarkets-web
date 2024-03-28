@@ -1,7 +1,7 @@
 import AuthModal from 'components/AuthModal';
 import Icon from 'components/Icon';
 
-import ProfileMenu from '../ProfileMenu/ProfileMenu';
+import { ProfileMenu } from '../ProfileMenu/ProfileMenu';
 
 type ProfileProps = {
   isLoggedIn: boolean;

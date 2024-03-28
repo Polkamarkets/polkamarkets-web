@@ -1,0 +1,29 @@
+.root {
+    border-radius: var(--Radius-rounded-3xl, 32px);
+    border: 1px solid var(--Color-Grey-800, #202939);
+
+    background: rgba(10, 11, 14, 0.32);
+
+    backdrop-filter: blur(2px);
+    display: inline-flex;
+    padding: var(--Spacing-spacing-2xl, 32px) 32px;
+
+    flex-direction: column;
+    gap: 24px;
+}
+
+.title {
+    color: var(--Color-Grey-25, #FCFCFD);
+    /* XL/SemiBold */
+    font-family: "Plus Jakarta Sans";
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 28px;
+    /* 140% */
+    letter-spacing: -0.1px;
+    position: relative;
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+}

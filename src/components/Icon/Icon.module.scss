@@ -1,8 +1,11 @@
 .root {
   user-select: none;
   vertical-align: middle;
-  fill: currentColor;
   transition: transform 200ms ease;
+}
+
+.currentColor {
+  fill: currentColor;
 }
 
 .sm {
